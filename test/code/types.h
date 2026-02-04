@@ -1,19 +1,19 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-typedef struct s_point
+typedef struct s_vec
 {
 	float	x;
 	float	y;
-}	t_point;
+}	t_vec;
 
 typedef struct s_player
 {
-	t_point pos;
+	t_vec pos;
 	float	acc;
 	float	vel;
-	t_point	dir;
-	t_point	ori;
+	t_vec	dir;
+	t_vec	ori;
 }	t_player;
 
 typedef	struct s_map
