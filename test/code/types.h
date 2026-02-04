@@ -1,11 +1,7 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-typedef struct s_vec
-{
-	float	x;
-	float	y;
-}	t_vec;
+#include "libft_math.h"
 
 typedef struct s_player
 {

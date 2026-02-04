@@ -69,44 +69,6 @@ int	key_released(int keysym, void *arg)
 	return (1);
 }
 
-t_vec	vec_add(t_vec a, t_vec b)
-{
-	return ((t_vec){a.x + a.y, b.x + b.y});
-}
-
-t_vec	vec_sub(t_vec a, t_vec b)
-{
-	return ((t_vec){b.x - a.x, b.y - a.y});
-}
-
-float	vec_mag_sqd(t_vec vec)
-{
-	return (vec.x * vec.x + vec.y * vec.y);
-}
-
-float	fast_inv_sqrt(float n)
-{
-	long		i;
-	float		x2;
-	float		y;
-	const float	three_halfs = 1.5F;
-}
-
-float	vec_mag(t_vec vec)
-{
-	return (fast_inv_sqrt((double)vec_mag_sqd(vec)));
-}
-
-t_vec	vec_unit(t_vec vec, float len, bool sqd)
-{
-	if (sqd == true)
-	{
-		vec.x *= vec.x;
-		vec.y *= vec.y;
-	}
-	return ((t_vec){vec.x / len});
-}
-
 void	line_draw(t_vec a, t_vec b)
 {
 	int		i;
