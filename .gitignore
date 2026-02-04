@@ -2,6 +2,7 @@
 */*.o
 */*/*.o
 */**.o
+*/**a.out
 test/libs/libft/libft.a
 test/libs/libft/srcs/*.o
 libs/libft/libft.a

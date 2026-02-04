@@ -1,18 +1,19 @@
 MLX_DIR = libs/minilibx-linux/
-
 MLX = $(MLX_DIR)/libmlx.a
 
 LIBFT_DIR = libs/libft
-
 LIBFT = $(LIBFT_DIR)/libft.a
 
 LDFLAGS = -L $(LIBFT_DIR) -lft \
           -L $(MLX_DIR) -lmlx \
           -lX11 -lbsd -lXext -lX11 -lm
 
+$(LIBFT):
+	make -C $(LIBFT_DIR)
 
-minilibx: $(MINILIBX_DIR)
-	make -C $(MINILIBX_DIR)
 
-game:
-	cc code/teste.c $(LDFLAGS) $(LIBFT) $(MINILIBX)
+$(MLX):
+	make -C $(MLX_DIR)
+
+game: $(MLX) $(LIBFT)
+	cc code/teste.c $(LDFLAGS) $(LIBFT) $(MLX)
