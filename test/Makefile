@@ -8,6 +8,8 @@ LDFLAGS = -L $(LIBFT_DIR) -lft \
           -L $(MLX_DIR) -lmlx \
           -lX11 -lbsd -lXext -lX11 -lm
 
+CFLAGS = -g
+
 $(LIBFT):
 	make -C $(LIBFT_DIR)
 
@@ -16,4 +18,4 @@ $(MLX):
 	make -C $(MLX_DIR)
 
 game: $(MLX) $(LIBFT)
-	cc code/teste.c $(LDFLAGS) $(LIBFT) $(MLX)
+	cc $(CFLAGS) code/teste.c code/libft_math.c $(LDFLAGS) $(LIBFT) $(MLX)

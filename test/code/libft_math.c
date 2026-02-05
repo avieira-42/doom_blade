@@ -1,5 +1,23 @@
 #include "libft_math.h"
 
+float	ft_abs(float n)
+{
+	if (n < 0)
+		n = n * -1;
+	return (n);
+}
+
+int	vec_max_coord(t_vec vec)
+{
+	int	const x = ft_abs(vec.x);
+	int	const y = ft_abs(vec.y);
+
+	if (x > y)
+		return (x);
+	else
+		return (y);
+}
+
 t_vec	vec_add(t_vec a, t_vec b)
 {
 	return ((t_vec){a.x + b.x, a.y + b.y});
@@ -27,6 +45,8 @@ float	q_rsqrt(float n)
 	i = * (int32_t *) &y;
 	i = 0x5f3759df - (i >> 1);
 	y = * (float *) &i;
+	y = y * (three_halfs - (x2 * y * y));
+	y = y * (three_halfs - (x2 * y * y));
 	y = y * (three_halfs - (x2 * y * y));
 	return (y);
 }

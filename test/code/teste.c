@@ -36,17 +36,25 @@ void	time_delta_get(t_game *game)
 int	key_pressed(int keysym, void *arg)
 {
 	printf("key %i pressed\n", keysym);
-	t_player	*player;
+	t_game	*game;
 
-	player = (t_player *)arg;
+	game = (t_game *)arg;
 	if (keysym == XK_w)
-		player->dir.y += -1;
+		game->player.dir.y += -1;
 	if (keysym == XK_a)
-		player->dir.x += -1;
+		game->player.dir.x += -1;
 	if (keysym == XK_s)
-		player->dir.y += 1;
+		game->player.dir.y += 1;
 	if (keysym == XK_d)
-		player->dir.x += 1;
+		game->player.dir.x += 1;
+	if (keysym == XK_i)
+		game->origin.dir.y += -1;
+	if (keysym == XK_j)
+		game->origin.dir.x += -1;
+	if (keysym == XK_k)
+		game->origin.dir.y += 1;
+	if (keysym == XK_l)
+		game->origin.dir.x += 1;
 	if (keysym == XK_Escape)
 		free_displays();
 	return (1);
@@ -55,33 +63,142 @@ int	key_pressed(int keysym, void *arg)
 int	key_released(int keysym, void *arg)
 {
 	printf("key %i released\n", keysym);
-	t_player	*player;
+	t_game	*game;
 
-	player = (t_player *)arg;
+	game = (t_game *)arg;
 	if (keysym == XK_w)
-		player->dir.y += 1;
+		game->player.dir.y += 1;
 	if (keysym == XK_a)
-		player->dir.x += 1;
+		game->player.dir.x += 1;
 	if (keysym == XK_s)
-		player->dir.y += -1;
+		game->player.dir.y += -1;
 	if (keysym == XK_d)
-		player->dir.x += -1;
+		game->player.dir.x += -1;
+	if (keysym == XK_i)
+		game->origin.dir.y += 1;
+	if (keysym == XK_j)
+		game->origin.dir.x += 1;
+	if (keysym == XK_k)
+		game->origin.dir.y += -1;
+	if (keysym == XK_l)
+		game->origin.dir.x += -1;
 	return (1);
 }
 
-void	line_draw(t_vec a, t_vec b)
+void	line_draw(t_vec a, t_vec b, t_game *game, int color)
 {
-	int		i;
-	t_vec	line;
-	float	mag_sqd;
+	int			i;
+	t_vec const	line = vec_sub(a, b);
+	float		x;
+	float		y;
+	int const	max = vec_max_coord(a);
 
-	line = vec_sub(a, b);
-	mag_sqd = vec_mag_sqd(line);
-
-	i = 0;
-	while (i < 0)
+	if (max != 0)
 	{
+		x = line.x / max;
+		y = line.y / max;
+		i = 0;
+		while (i < max)
+		{
+			a.x += x;
+			a.y += y;
+			mlx_pixel_put(game->mlx_ptr, game->win_ptr, a.x, a.y, color);
+			i++;
+		}
 	}
+}
+
+void	line_draw_bresenham_v(t_vec a, t_vec b, t_game *game, int color)
+{
+	t_vec	line;
+	t_vec	tmp;
+	int		max;
+	int		x;
+	int		p;
+	int		i;
+	int		dir;
+
+	i = -1;
+	if (a.y > b.y)
+	{
+		tmp = a;
+		a = b;
+		b = tmp;
+	}
+	line = vec_sub(a, b);
+	max = vec_max_coord(line);
+	if (line.x < 0)
+		dir = -1;
+	else
+		dir = 1;
+	line.x *= dir;
+	if (line.y != 0)
+	{
+		x = a.x;
+		p = 2 * line.x - line.y;
+		while (++i < max)
+		{
+			a.y++;
+			mlx_pixel_put(game->mlx_ptr, game->win_ptr, x, a.y, color);
+			if (p >= 0)
+			{
+				x += dir;
+				p = p - 2 * line.y;
+			}
+			p = p + 2 * line.x;
+		}
+	}
+}
+
+void	line_draw_bresenham_h(t_vec a, t_vec b, t_game *game, int color)
+{
+	t_vec	line;
+	t_vec	tmp;
+	int		max;
+	int		y;
+	int		p;
+	int		i;
+	int		dir;
+
+	i = -1;
+	if (a.x > b.x)
+	{
+		tmp = a;
+		a = b;
+		b = tmp;
+	}
+	line = vec_sub(a, b);
+	max = vec_max_coord(line);
+	if (line.y < 0)
+		dir = -1;
+	else
+		dir = 1;
+	line.y *= dir;
+	if (line.x != 0)
+	{
+		y = a.y;
+		p = 2 * line.y - line.x;
+		while (++i < max)
+		{
+			a.x++;
+			mlx_pixel_put(game->mlx_ptr, game->win_ptr, a.x, y, color);
+			if (p >= 0)
+			{
+				y += dir;
+				p = p - 2 * line.x;
+			}
+			p = p + 2 * line.y;
+		}
+	}
+}
+
+void	line_draw_bresenham(t_vec a, t_vec b, t_game *game, int color)
+{
+	t_vec const	line = vec_sub(a, b);
+	if (ft_abs(line.x) >= ft_abs(line.y))
+		line_draw_bresenham_h(a, b, game, color);
+	else
+		line_draw_bresenham_v(a, b, game, color);
 }
 
 void	player_move(t_player *player, float dt)
@@ -94,14 +211,20 @@ void	update(t_game *game)
 {
 	time_delta_get(game);
 	player_move(&game->player, game->dt);
+	player_move(&game->origin, game->dt);
 	printf("dt: %f \n", game->dt);
 }
 
 void	render(t_game *game)
 {
 	mlx_clear_window(game->mlx_ptr, game->win_ptr);
+	//line_draw(game->origin.pos, game->player.pos, game, 0xFF00FF);
+	line_draw_bresenham(game->origin.pos, game->player.pos, game, 0xFFFFFF);
+	printf("x: %f\ny: %f\n", game->player.pos.x, game->player.pos.y);
 	mlx_pixel_put(game->mlx_ptr, game->win_ptr,
-			game->player.pos.x, game->player.pos.y, 0xFFFFFF);
+			game->player.pos.x, game->player.pos.y, 0xFF0000);
+	mlx_pixel_put(game->mlx_ptr, game->win_ptr,
+			game->origin.pos.x, game->origin.pos.y, 0x00FF00);
 }
 
 int	game_loop(void *arg)
@@ -146,8 +269,11 @@ void	read_map(t_game *game, char *argv1)
 			{
 				game->player.pos.y = i * game->map.tile_y;
 				game->player.pos.x = j * game->map.tile_x;
-				printf("i: %i\nj: %i\n", i, j);
-				printf("x: %f\ny: %f\n", game->player.pos.x, game->player.pos.y);
+			}
+			if (game->map.grid[i][j] == 'O')
+			{
+				game->origin.pos.y = i * game->map.tile_y;
+				game->origin.pos.x = j * game->map.tile_x;
 			}
 			j++;
 		}
@@ -174,6 +300,12 @@ void	game_init(t_game *game)
 	game->player.dir.y = 0;
 	game->player.ori.x = 0;
 	game->player.ori.y = 0;
+	game->origin.acc = 10;
+	game->origin.vel = 300;
+	game->origin.dir.x = 0;
+	game->origin.dir.y = 0;
+	game->origin.ori.x = 0;
+	game->origin.ori.y = 0;
 }
 
 int	main(int argc, char **argv)
@@ -183,8 +315,8 @@ int	main(int argc, char **argv)
 	if (parse(&game, argv[1]) == -1)
 		return (1);
 	game_init(&game);
-	mlx_hook(game.win_ptr, 02, (1L << 0), key_pressed, &game.player);
-	mlx_hook(game.win_ptr, 03, (1L << 1), key_released, &game.player);
+	mlx_hook(game.win_ptr, 02, (1L << 0), key_pressed, &game);
+	mlx_hook(game.win_ptr, 03, (1L << 1), key_released, &game);
 	mlx_hook(game.win_ptr, 17, 0, free_displays, &game);
 	mlx_loop_hook(game.mlx_ptr, game_loop, &game);
 	mlx_loop(game.mlx_ptr);
