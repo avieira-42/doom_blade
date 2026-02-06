@@ -18,6 +18,7 @@ typedef struct	s_cam
 	float	angle;
 	float	dist;
 	int		dir;
+	int		dist_mod;
 }	t_cam;
 
 typedef struct s_player
