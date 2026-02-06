@@ -3,9 +3,18 @@
 
 #include "libft_math.h"
 
+typedef struct	s_img
+{
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		l_len;
+	int		endian;
+}	t_img;
+
 typedef struct s_player
 {
-	t_vec pos;
+	t_vec	pos;
 	float	acc;
 	float	vel;
 	t_vec	dir;
@@ -23,6 +32,10 @@ typedef	struct s_map
 
 typedef struct s_game
 {
+	int			fov;
+	int			vd;
+	int			rc_size;
+	t_img		img;
 	t_map		map;
 	void		*mlx_ptr;
 	void		*win_ptr;

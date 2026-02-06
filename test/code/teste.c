@@ -15,6 +15,43 @@ int	free_displays()
 	exit(1);
 }
 
+void	img_pixel_put(t_game *game, int x, int y, int color)
+{
+	char	*dst;
+
+	if (x < 0 || x >= 1000 || y < 0 || y >= 1000)
+		return ;
+	dst = game->img.addr + (y * game->img.l_len + x * (game->img.bpp / 8));
+	*(unsigned int *)dst = color;
+}
+
+int	ray_cast_size(t_game *game)
+{
+	return (2 * tanf(game->fov * 0.5) * 2 * game->vd);
+}
+
+void	ray_cast(t_game *game, t_vec a, t_vec b, int color)
+{
+}
+
+void	window_clear(t_game *game, int color)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < 1000)
+	{
+		j = 0;
+		while (j < 1000)
+		{
+			img_pixel_put(game, j, i, color);
+			j++;
+		}
+		i++;
+	}
+}
+
 long long	time_get()
 {
 	struct timeval	tv;
@@ -47,14 +84,6 @@ int	key_pressed(int keysym, void *arg)
 		game->player.dir.y += 1;
 	if (keysym == XK_d)
 		game->player.dir.x += 1;
-	if (keysym == XK_i)
-		game->origin.dir.y += -1;
-	if (keysym == XK_j)
-		game->origin.dir.x += -1;
-	if (keysym == XK_k)
-		game->origin.dir.y += 1;
-	if (keysym == XK_l)
-		game->origin.dir.x += 1;
 	if (keysym == XK_Escape)
 		free_displays();
 	return (1);
@@ -74,14 +103,6 @@ int	key_released(int keysym, void *arg)
 		game->player.dir.y += -1;
 	if (keysym == XK_d)
 		game->player.dir.x += -1;
-	if (keysym == XK_i)
-		game->origin.dir.y += 1;
-	if (keysym == XK_j)
-		game->origin.dir.x += 1;
-	if (keysym == XK_k)
-		game->origin.dir.y += -1;
-	if (keysym == XK_l)
-		game->origin.dir.x += -1;
 	return (1);
 }
 
@@ -89,8 +110,8 @@ void	line_draw(t_vec a, t_vec b, t_game *game, int color)
 {
 	int			i;
 	t_vec const	line = vec_sub(a, b);
-	float		x;
-	float		y;
+	int		x;
+	int		y;
 	int const	max = vec_max_coord(a);
 
 	if (max != 0)
@@ -102,7 +123,7 @@ void	line_draw(t_vec a, t_vec b, t_game *game, int color)
 		{
 			a.x += x;
 			a.y += y;
-			mlx_pixel_put(game->mlx_ptr, game->win_ptr, a.x, a.y, color);
+			img_pixel_put(game, a.x , a.y, color);
 			i++;
 		}
 	}
@@ -139,7 +160,7 @@ void	line_draw_bresenham_v(t_vec a, t_vec b, t_game *game, int color)
 		while (++i < max)
 		{
 			a.y++;
-			mlx_pixel_put(game->mlx_ptr, game->win_ptr, x, a.y, color);
+			img_pixel_put(game, x, a.y, color);
 			if (p >= 0)
 			{
 				x += dir;
@@ -181,7 +202,7 @@ void	line_draw_bresenham_h(t_vec a, t_vec b, t_game *game, int color)
 		while (++i < max)
 		{
 			a.x++;
-			mlx_pixel_put(game->mlx_ptr, game->win_ptr, a.x, y, color);
+			img_pixel_put(game, a.x, y, color);
 			if (p >= 0)
 			{
 				y += dir;
@@ -201,6 +222,24 @@ void	line_draw_bresenham(t_vec a, t_vec b, t_game *game, int color)
 		line_draw_bresenham_v(a, b, game, color);
 }
 
+void	quad_draw(t_vec a, t_game *game, int color)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < game->map.tile_y)
+	{
+		x = 0;
+		while (x < game->map.tile_x)
+		{
+			img_pixel_put(game, (int)a.x + x, (int)a.y + y, color);
+			x++;
+		}
+		y++;
+	}
+}
+
 void	player_move(t_player *player, float dt)
 {
 	player->pos.x += player->vel * player->dir.x * dt;
@@ -211,20 +250,55 @@ void	update(t_game *game)
 {
 	time_delta_get(game);
 	player_move(&game->player, game->dt);
-	player_move(&game->origin, game->dt);
 	printf("dt: %f \n", game->dt);
+}
+
+void	map_draw(t_game *game)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < game->map.height)
+	{
+		j = 0;
+		while(j < game->map.width)
+		{
+			if (game->map.grid[i][j] == '1')
+				quad_draw((t_vec){j * game->map.tile_x,
+						i * game->map.tile_y},
+						game, 0xFFFFFF);
+			j++;
+		}
+		i++;
+	}
+}
+
+void	fov_draw(t_game *game)
+{
+	int			i;
+	t_vec const	start = (t_vec){game->player.pos.x - 500
+													+ game->map.tile_x * 0.5,
+								game->player.pos.y + game->vd};
+
+	i = 0;
+	while (i < 1000)
+	{
+		line_draw_bresenham((t_vec){game->player.pos.x + game->map.tile_x * 0.5,
+									game->player.pos.y + game->map.tile_y},
+							(t_vec){start.x + i, start.y}, game, 0xFF0000);
+		 i++;
+	}
 }
 
 void	render(t_game *game)
 {
-	mlx_clear_window(game->mlx_ptr, game->win_ptr);
-	//line_draw(game->origin.pos, game->player.pos, game, 0xFF00FF);
-	line_draw_bresenham(game->origin.pos, game->player.pos, game, 0xFFFFFF);
-	printf("x: %f\ny: %f\n", game->player.pos.x, game->player.pos.y);
-	mlx_pixel_put(game->mlx_ptr, game->win_ptr,
-			game->player.pos.x, game->player.pos.y, 0xFF0000);
-	mlx_pixel_put(game->mlx_ptr, game->win_ptr,
-			game->origin.pos.x, game->origin.pos.y, 0x00FF00);
+	window_clear(game, 0x000000);
+	map_draw(game);
+	quad_draw(game->player.pos, game, 0xFF00FF);
+	fov_draw(game);
+	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr,
+			game->img.img, 0, 0);
 }
 
 int	game_loop(void *arg)
@@ -255,8 +329,8 @@ void	read_map(t_game *game, char *argv1)
 	game->map.grid[i] = NULL;
 	game->map.height = i;
 	game->map.width = strlen(game->map.grid[i-2]);
-	game->map.tile_x = 800 / game->map.width;
-	game->map.tile_y = 600 / game->map.height;
+	game->map.tile_x = 1000 / game->map.width;
+	game->map.tile_y = 1000 / game->map.height;
 	printf("width: %i\nheight: %i\n", game->map.width, game->map.height);
 	printf("tile_x: %i\ntile_y: %i\n", game->map.tile_x, game->map.tile_y);
 	i = 0;
@@ -269,11 +343,6 @@ void	read_map(t_game *game, char *argv1)
 			{
 				game->player.pos.y = i * game->map.tile_y;
 				game->player.pos.x = j * game->map.tile_x;
-			}
-			if (game->map.grid[i][j] == 'O')
-			{
-				game->origin.pos.y = i * game->map.tile_y;
-				game->origin.pos.x = j * game->map.tile_x;
 			}
 			j++;
 		}
@@ -291,8 +360,11 @@ int	parse(t_game *game, char *argv1)
 void	game_init(t_game *game)
 {
 	game->mlx_ptr = mlx_init();
-	game->win_ptr = mlx_new_window(game->mlx_ptr, 800, 800, "doom_blade");
+	game->win_ptr = mlx_new_window(game->mlx_ptr, 1000, 1000, "doom_blade");
 	game->t0 = time_get();
+	game->img.img = mlx_new_image(game->mlx_ptr, 1000, 1000);
+	game->img.addr = mlx_get_data_addr(
+			game->img.img, &game->img.bpp, &game->img.l_len, &game->img.endian);
 	time_delta_get(game);
 	game->player.acc = 10;
 	game->player.vel = 300;
@@ -300,12 +372,9 @@ void	game_init(t_game *game)
 	game->player.dir.y = 0;
 	game->player.ori.x = 0;
 	game->player.ori.y = 0;
-	game->origin.acc = 10;
-	game->origin.vel = 300;
-	game->origin.dir.x = 0;
-	game->origin.dir.y = 0;
-	game->origin.ori.x = 0;
-	game->origin.ori.y = 0;
+	game->fov = 120;
+	game->vd = 500;
+	game->rc_size = ray_cast_size(game);
 }
 
 int	main(int argc, char **argv)

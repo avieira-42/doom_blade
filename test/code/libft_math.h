@@ -5,8 +5,8 @@
 
 typedef struct	s_vec
 {
-	float	x;
-	float	y;
+	int	x;
+	int	y;
 }	t_vec;
 
 typedef union	u_f32
