@@ -19,7 +19,7 @@ void	img_pixel_put(t_game *game, int x, int y, int color)
 {
 	char	*dst;
 
-	if (x < 0 || x >= 1000 || y < 0 || y >= 1000)
+	if (x < 0 || x >= 800 || y < 0 || y >= 800)
 		return ;
 	dst = game->img.addr + (y * game->img.l_len + x * (game->img.bpp / 8));
 	*(unsigned int *)dst = color;
@@ -40,10 +40,10 @@ void	window_clear(t_game *game, int color)
 	int	j;
 
 	i = 0;
-	while (i < 1000)
+	while (i < 800)
 	{
 		j = 0;
-		while (j < 1000)
+		while (j < 800)
 		{
 			img_pixel_put(game, j, i, color);
 			j++;
@@ -87,9 +87,9 @@ int     key_pressed(int keysym, void *arg)
 		game->player.cam.dir += -1;
 	if (keysym == XK_j)
 		game->player.cam.dir += 1;
-	if (keysym == XK_i)
-		game->player.cam.dist_mod += -1;
 	if (keysym == XK_k)
+		game->player.cam.dist_mod += -1;
+	if (keysym == XK_i)
 		game->player.cam.dist_mod += 1;
 	if (keysym == XK_Escape)
 		free_displays();
@@ -113,9 +113,9 @@ int     key_released(int keysym, void *arg)
 		game->player.cam.dir += 1;
 	if (keysym == XK_j)
 		game->player.cam.dir += -1;
-	if (keysym == XK_i)
-		game->player.cam.dist_mod += 1;
 	if (keysym == XK_k)
+		game->player.cam.dist_mod += 1;
+	if (keysym == XK_i)
 		game->player.cam.dist_mod += -1;
 	return (1);
 }
@@ -238,8 +238,9 @@ void	line_draw_bresenham(t_vecf a, t_vecf b, t_game *game, int color)
 
 void	quad_draw(t_vecf a, t_game *game, int color, float scale)
 {
-	int	x;
-	int	y;
+	int			x;
+	int			y;
+	int const	border_color = 0xFFFFFF;
 
 	y = 0;
 	while (y < game->map.tile_y * scale)
@@ -284,7 +285,7 @@ void	map_draw(t_game *game)
 	int	j;
 
 	i = 0;
-	while (i < game->map.height)
+	while (i < game->map.width)
 	{
 		j = 0;
 		while(j < game->map.width)
@@ -292,15 +293,15 @@ void	map_draw(t_game *game)
 			if (game->map.grid[i][j] == '1')
 				quad_draw((t_vecf){j * game->map.tile_x,
 						i * game->map.tile_y},
-						game, 0xFFFFFF, 1);
-			if (game->map.grid[i][j] == 'W')
-				quad_draw((t_vecf){j * game->map.tile_x,
-						i * game->map.tile_y},
-						game, 0x0000FF, 1);
+						game, 0x555555, 1);
+			if (i == 0 || (i * 800) % game->map.tile_y == 0)
+				img_pixel_put(game, j * game->map.tile_x,
+						i * game->map.tile_y, 0xFFFFFF);
 			j++;
 		}
 		i++;
 	}
+	game->start = 1;
 }
 
 void	fov_draw(t_game *game)
@@ -324,9 +325,12 @@ void	render(t_game *game)
 {
 	window_clear(game, 0x000000);
 	quad_draw(game->player.pos, game, 0xFF00FF, 1);
-	line_draw_bresenham(game->player.pos, game->player.cam.pos, game, 0XFFFFFF);
+	line_draw_bresenham(game->player.pos, game->player.cam.pos, game, 0xFFFFFF);
+	/*line_draw_bresenham((t_vecf){game->player.pos.x + game->map.tile_x * 0.5,
+			game->player.pos.y + game->map.tile_y * 0.5},
+			game->player.cam.pos, game, 0X00FF00);*/
 	//fov_draw(game);
-	quad_draw(game->player.cam.pos, game, 0x00FF00, 0.5);
+	//quad_draw(game->player.cam.pos, game, 0x00FF00, 0.5);
 	map_draw(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr,
 			game->img.img, 0, 0);
@@ -359,9 +363,10 @@ void	read_map(t_game *game, char *argv1)
 	}
 	game->map.grid[i] = NULL;
 	game->map.height = i;
-	game->map.width = strlen(game->map.grid[i-2]);
-	game->map.tile_x = 1000 / game->map.width;
-	game->map.tile_y = 1000 / game->map.height;
+	game->map.width = strlen(game->map.grid[0]) - 1;
+	game->map.tile_x = 800 / game->map.width;
+	game->map.tile_y = 800 / game->map.height;
+	printf("tile_x: %i\ntile_y: %i\n", game->map.tile_x, game->map.tile_y);
 	i = 0;
 	while (game->map.grid[i])
 	{
@@ -388,9 +393,9 @@ int	parse(t_game *game, char *argv1)
 void	game_init(t_game *game)
 {
 	game->mlx_ptr = mlx_init();
-	game->win_ptr = mlx_new_window(game->mlx_ptr, 1000, 1000, "doom_blade");
+	game->win_ptr = mlx_new_window(game->mlx_ptr, 800, 800, "doom_blade");
 	game->t0 = time_get();
-	game->img.img = mlx_new_image(game->mlx_ptr, 1000, 1000);
+	game->img.img = mlx_new_image(game->mlx_ptr, 800, 800);
 	game->img.addr = mlx_get_data_addr(
 			game->img.img, &game->img.bpp, &game->img.l_len, &game->img.endian);
 	time_delta_get(game);
@@ -414,6 +419,7 @@ void	game_init(t_game *game)
 	game->camera.dir.y = 0;
 	game->camera.ori.x = 0;
 	game->camera.ori.y = 0;
+	game->start = 0;
 }
 
 int	main(int argc, char **argv)

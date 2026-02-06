@@ -33,8 +33,8 @@ typedef struct s_player
 
 typedef	struct s_map
 {
-	int		height;
-	int		width;
+	float		height;
+	float		width;
 	int		tile_y;
 	int		tile_x;
 	char	*grid[500];
@@ -53,6 +53,7 @@ typedef struct s_game
 	t_player	player;
 	long long	t0;
 	float		dt;
+	int			start;
 }	t_game;
 
 #endif
