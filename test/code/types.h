@@ -19,6 +19,7 @@ typedef struct s_player
 	float	vel;
 	t_vec	dir;
 	t_vec	ori;
+	t_vec	cam;
 }	t_player;
 
 typedef	struct s_map
@@ -39,7 +40,7 @@ typedef struct s_game
 	t_map		map;
 	void		*mlx_ptr;
 	void		*win_ptr;
-	t_player	origin;
+	t_player	camera;
 	t_player	player;
 	long long	t0;
 	float		dt;
