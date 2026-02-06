@@ -12,14 +12,22 @@ typedef struct	s_img
 	int		endian;
 }	t_img;
 
+typedef struct	s_cam
+{
+	t_vecf	pos;
+	float	angle;
+	float	dist;
+	int		dir;
+}	t_cam;
+
 typedef struct s_player
 {
-	t_vec	pos;
+	t_vecf	pos;
 	float	acc;
 	float	vel;
-	t_vec	dir;
-	t_vec	ori;
-	t_vec	cam;
+	t_vecf	dir;
+	t_vecf	ori;
+	t_cam	cam;
 }	t_player;
 
 typedef	struct s_map

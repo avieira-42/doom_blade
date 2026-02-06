@@ -30,7 +30,7 @@ int	ray_cast_size(t_game *game)
 	return (2 * tanf(game->fov * 0.5) * 2 * game->vd);
 }
 
-void	ray_cast(t_game *game, t_vec a, t_vec b, int color)
+void	ray_cast(t_game *game, t_vecf a, t_vecf b, int color)
 {
 }
 
@@ -72,7 +72,6 @@ void	time_delta_get(t_game *game)
 
 int     key_pressed(int keysym, void *arg)
 {
-        printf("key %i pressed\n", keysym);
         t_game  *game;
 
         game = (t_game *)arg;
@@ -84,14 +83,10 @@ int     key_pressed(int keysym, void *arg)
                 game->player.dir.y += 1;
         if (keysym == XK_d)
                 game->player.dir.x += 1;
-        if (keysym == XK_i)
-                game->camera.dir.y += -1;
-        if (keysym == XK_j)
-                game->camera.dir.x += -1;
-        if (keysym == XK_k)
-                game->camera.dir.y += 1;
+        if (keysym == XK_h)
+                game->player.cam.dir += -1;
         if (keysym == XK_l)
-                game->camera.dir.x += 1;
+                game->player.cam.dir += 1;
         if (keysym == XK_Escape)
                 free_displays();
         return (1);
@@ -99,7 +94,6 @@ int     key_pressed(int keysym, void *arg)
 
 int     key_released(int keysym, void *arg)
 {
-        printf("key %i released\n", keysym);
         t_game  *game;
 
         game = (t_game *)arg;
@@ -111,21 +105,17 @@ int     key_released(int keysym, void *arg)
                 game->player.dir.y += -1;
         if (keysym == XK_d)
                 game->player.dir.x += -1;
-        if (keysym == XK_i)
-                game->camera.dir.y += 1;
-        if (keysym == XK_j)
-                game->camera.dir.x += 1;
-        if (keysym == XK_k)
-                game->camera.dir.y += -1;
+        if (keysym == XK_h)
+                game->player.cam.dir += 1;
         if (keysym == XK_l)
-                game->camera.dir.x += -1;
+                game->player.cam.dir += -1;
         return (1);
 }
 
-void	line_draw(t_vec a, t_vec b, t_game *game, int color)
+void	line_draw(t_vecf a, t_vecf b, t_game *game, int color)
 {
 	int			i;
-	t_vec const	line = vec_sub(a, b);
+	t_vecf const	line = vec_sub(a, b);
 	int		x;
 	int		y;
 	int const	max = vec_max_coord(a);
@@ -145,10 +135,10 @@ void	line_draw(t_vec a, t_vec b, t_game *game, int color)
 	}
 }
 
-void	line_draw_bresenham_v(t_vec a, t_vec b, t_game *game, int color)
+void	line_draw_bresenham_v(t_vecf a, t_vecf b, t_game *game, int color)
 {
-	t_vec	line;
-	t_vec	tmp;
+	t_vecf	line;
+	t_vecf	tmp;
 	int		max;
 	int		x;
 	int		p;
@@ -187,10 +177,10 @@ void	line_draw_bresenham_v(t_vec a, t_vec b, t_game *game, int color)
 	}
 }
 
-void	line_draw_bresenham_h(t_vec a, t_vec b, t_game *game, int color)
+void	line_draw_bresenham_h(t_vecf a, t_vecf b, t_game *game, int color)
 {
-	t_vec	line;
-	t_vec	tmp;
+	t_vecf	line;
+	t_vecf	tmp;
 	int		max;
 	int		y;
 	int		p;
@@ -229,16 +219,16 @@ void	line_draw_bresenham_h(t_vec a, t_vec b, t_game *game, int color)
 	}
 }
 
-void	line_draw_bresenham(t_vec a, t_vec b, t_game *game, int color)
+void	line_draw_bresenham(t_vecf a, t_vecf b, t_game *game, int color)
 {
-	t_vec const	line = vec_sub(a, b);
+	t_vecf const	line = vec_sub(a, b);
 	if (ft_abs(line.x) >= ft_abs(line.y))
 		line_draw_bresenham_h(a, b, game, color);
 	else
 		line_draw_bresenham_v(a, b, game, color);
 }
 
-void	quad_draw(t_vec a, t_game *game, int color, float scale)
+void	quad_draw(t_vecf a, t_game *game, int color, float scale)
 {
 	int	x;
 	int	y;
@@ -264,9 +254,11 @@ void	character_move(t_player *player, float dt)
 	player->pos.y += player->vel * player->dir.y * dt;
 }
 
-void	camera_move(t_game *game)
+void	camera_move(t_vecf player_pos, t_cam *cam)
 {
-	game->player.cam.y = game->player.pos.y + game->vd;
+	cam->angle += 0.01 * cam->dir;
+	cam->pos.x = player_pos.x + sinf(cam->angle) * cam->dist;
+	cam->pos.y = player_pos.y + cosf(cam->angle) * cam->dist;
 }
 
 void	update(t_game *game)
@@ -274,8 +266,7 @@ void	update(t_game *game)
 	time_delta_get(game);
 	character_move(&game->camera, game->dt);
 	character_move(&game->player, game->dt);
-	camera_move(game);
-	printf("dt: %f \n", game->dt);
+	camera_move(game->player.pos, &game->player.cam);
 }
 
 void	map_draw(t_game *game)
@@ -290,11 +281,11 @@ void	map_draw(t_game *game)
 		while(j < game->map.width)
 		{
 			if (game->map.grid[i][j] == '1')
-				quad_draw((t_vec){j * game->map.tile_x,
+				quad_draw((t_vecf){j * game->map.tile_x,
 						i * game->map.tile_y},
 						game, 0xFFFFFF, 1);
 			if (game->map.grid[i][j] == 'W')
-				quad_draw((t_vec){j * game->map.tile_x,
+				quad_draw((t_vecf){j * game->map.tile_x,
 						i * game->map.tile_y},
 						game, 0x0000FF, 1);
 			j++;
@@ -306,16 +297,16 @@ void	map_draw(t_game *game)
 void	fov_draw(t_game *game)
 {
 	int			i;
-	t_vec const	start = (t_vec){game->player.pos.x - game->rc_size * 0.5
+	t_vecf const	start = (t_vecf){game->player.pos.x - game->rc_size * 0.5
 													+ game->map.tile_x * 0.5,
 								game->player.pos.y + game->vd};
 
 	i = 0;
 	while (i < game->rc_size)
 	{
-		line_draw_bresenham((t_vec){game->player.pos.x + game->map.tile_x * 0.5,
+		line_draw_bresenham((t_vecf){game->player.pos.x + game->map.tile_x * 0.5,
 									game->player.pos.y + game->map.tile_y},
-							(t_vec){start.x + i, start.y}, game, 0xFF0000);
+							(t_vecf){start.x + i, start.y}, game, 0xFF0000);
 		 i++;
 	}
 }
@@ -324,9 +315,9 @@ void	render(t_game *game)
 {
 	window_clear(game, 0x000000);
 	quad_draw(game->player.pos, game, 0xFF00FF, 1);
-	line_draw_bresenham(game->player.pos, game->player.cam, game, 0XFFFFFF);
-	fov_draw(game);
-	quad_draw(game->player.cam, game, 0x00FF00, 0.5);
+	line_draw_bresenham(game->player.pos, game->player.cam.pos, game, 0XFFFFFF);
+	//fov_draw(game);
+	quad_draw(game->player.cam.pos, game, 0x00FF00, 0.5);
 	map_draw(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr,
 			game->img.img, 0, 0);
@@ -362,8 +353,6 @@ void	read_map(t_game *game, char *argv1)
 	game->map.width = strlen(game->map.grid[i-2]);
 	game->map.tile_x = 1000 / game->map.width;
 	game->map.tile_y = 1000 / game->map.height;
-	printf("width: %i\nheight: %i\n", game->map.width, game->map.height);
-	printf("tile_x: %i\ntile_y: %i\n", game->map.tile_x, game->map.tile_y);
 	i = 0;
 	while (game->map.grid[i])
 	{
@@ -377,7 +366,6 @@ void	read_map(t_game *game, char *argv1)
 			}
 			j++;
 		}
-		printf("%s", game->map.grid[i]);
 		i++;
 	}
 }
@@ -406,8 +394,10 @@ void	game_init(t_game *game)
 	game->fov = 120;
 	game->vd = 300;
 	game->rc_size = ray_cast_size(game);
-	game->player.cam.x = game->player.pos.x;
-	game->player.cam.y = game->player.pos.y + game->vd;
+	game->player.cam.angle = 0;
+	game->player.cam.dist = game->vd;
+	game->player.cam.dir = 0;
+	camera_move(game->player.pos, &game->player.cam);
 	game->camera.acc = 10;
 	game->camera.vel = 300;
 	game->camera.dir.x = 0;
