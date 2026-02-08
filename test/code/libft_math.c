@@ -7,7 +7,7 @@ float	ft_abs(float n)
 	return (n);
 }
 
-int	vec_max_coord(t_vecf vec)
+int	vec_max_coord(t_vecf32 vec)
 {
 	int	const x = ft_abs(vec.x);
 	int	const y = ft_abs(vec.y);
@@ -18,17 +18,17 @@ int	vec_max_coord(t_vecf vec)
 		return (y);
 }
 
-t_vecf	vec_add(t_vecf a, t_vecf b)
+t_vecf32	vec_add(t_vecf32 a, t_vecf32 b)
 {
-	return ((t_vecf){a.x + b.x, a.y + b.y});
+	return ((t_vecf32){a.x + b.x, a.y + b.y});
 }
 
-t_vecf	vec_sub(t_vecf a, t_vecf b)
+t_vecf32	vec_sub(t_vecf32 a, t_vecf32 b)
 {
-	return ((t_vecf){b.x - a.x, b.y - a.y});
+	return ((t_vecf32){b.x - a.x, b.y - a.y});
 }
 
-float	vec_mag_sqd(t_vecf vec)
+float	vec_mag_sqd(t_vecf32 vec)
 {
 	return (vec.x * vec.x + vec.y * vec.y);
 }
@@ -63,21 +63,21 @@ float	u_rsqrt(float n)
 	return (f.float32 * (three_halfs - (x2 * f.float32 * f.float32)));
 }
 
-float	vec_inv_mag(t_vecf vec)
+float	vec_inv_mag(t_vecf32 vec)
 {
 	return (q_rsqrt(vec_mag_sqd(vec)));
 }
 
-t_vecf	vec_unit(t_vecf vec)
+t_vecf32	vec_unit(t_vecf32 vec)
 {
 	float	mag_sqd;
 	float	inv_mag;
 
 	mag_sqd = vec_mag_sqd(vec);
 	if (mag_sqd < 1e-10f)
-		return ((t_vecf){0, 0});
+		return ((t_vecf32){0, 0});
 	inv_mag = q_rsqrt(mag_sqd);
-	return ((t_vecf){vec.x * inv_mag, vec.y * inv_mag});
+	return ((t_vecf32){vec.x * inv_mag, vec.y * inv_mag});
 }
 
 void	vec_dot_product()

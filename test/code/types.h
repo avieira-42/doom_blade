@@ -14,7 +14,7 @@ typedef struct	s_img
 
 typedef struct	s_cam
 {
-	t_vecf	pos;
+	t_vecf32	pos;
 	float	angle;
 	float	dist;
 	int		dir;
@@ -23,12 +23,13 @@ typedef struct	s_cam
 
 typedef struct s_player
 {
-	t_vecf	pos;
+	t_vecf32	pos;
 	float	acc;
 	float	vel;
-	t_vecf	dir;
-	t_vecf	ori;
+	t_vecf32	dir;
+	t_vecf32	ori;
 	t_cam	cam;
+	t_vecf32	coll;
 }	t_player;
 
 typedef	struct s_map
@@ -54,6 +55,7 @@ typedef struct s_game
 	long long	t0;
 	float		dt;
 	int			start;
+	int			here;
 }	t_game;
 
 #endif

@@ -287,8 +287,94 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 	   			calculate y_ray
 	   		check ray collision */
 
-}
+	t_veci32	map;
+	t_veci32	unit_ori;
+	t_vecf32	unit_size;
+	t_vecf32	ray_len;
+	t_vecf32	hit_pos;
+	int32_t		hit;
+	float		hit_len;
 
+	// normalizing the map coordinates
+	map.x = player.pos.x / game->map.tile_x;
+	map.y = player.pos.y / game->map.tile_y;
+	printf("map.x: %i\nmap.y: %i\n", map.x, map.y);
+	printf("p_x: %f\np_y: %f\n", game->player.pos.x, game->player.pos.y);
+
+	// setting unit_size
+	unit_size.x = 1 / (u_rsqrt(1 + (r_dir.x * r_dir.x) / (r_dir.x * r_dir.x)));
+	unit_size.y = 1 / (u_rsqrt(1 + (r_dir.y * r_dir.y) / (r_dir.y * r_dir.y)));
+	//printf("r_dir.x: %f\nr_dir.y: %f\n", r_dir.x, r_dir.y);
+	//printf("unit_size_x: %f\nunit_size_y: %f\n", unit_size.x, unit_size.y);
+
+	// setting 
+	if (r_dir.x < 0)
+	{
+		unit_ori.x = -1;
+		ray_len.x = unit_size.x * (player.pos.x - (float)map.x);
+	}
+	else
+	{
+		unit_ori.x = 1;
+		ray_len.x = unit_size.x * ((float)(map.x + 1) - player.pos.x);
+	}
+	if (r_dir.y < 0)
+	{
+		unit_ori.y = -1;
+		ray_len.y = unit_size.y * (player.pos.y - (float)map.y);
+	}
+	else
+	{
+		unit_ori.y = 1;
+		ray_len.y = unit_size.y * ((float)(map.y + 1) - player.pos.y);
+	}
+
+	hit = false;
+	while (!hit && hit_len < (player.cam.dist / (float)game->map.tile_x))
+	{
+		if (ray_len.x < ray_len.x)
+		{
+			hit_len = ray_len.x;
+			ray_len.x += unit_size.x;
+			map.x += unit_ori.x;
+		}
+		else
+		{
+			hit_len = ray_len.y;
+			ray_len.y += unit_size.y;
+			map.y += unit_ori.y;
+		}
+		hit_pos.x = player.pos.x + (r_dir.x * hit_len * game->map.tile_x);
+		hit_pos.y = player.pos.y + (r_dir.y * hit_len * game->map.tile_y);
+		quad_draw(hit_pos, game, 0xFF0000, 0.3);
+
+		if (map.x < game->map.width && map.y < game->map.height
+				&& map.x >= 0 && map.y >= 0)
+		{
+			if (game->map.grid[map.x][map.y] == '1')
+			{
+				//printf("true\n");
+				hit = true;
+			}
+			else
+			{
+				quad_draw(hit_pos, game, 0xFF0000, 10);
+				hit = false;
+				//printf("false\n");
+			}
+		}
+	}
+	printf("map.x: %i\nmap.y: %i\n", map.x, map.y);
+	printf("p_x: %f\np_y: %f\n", game->player.pos.x, game->player.pos.y);
+
+	hit_pos.x = player.pos.x + (r_dir.x * hit_len * game->map.tile_x);
+	hit_pos.y = player.pos.y + (r_dir.y * hit_len * game->map.tile_y);
+	//printf("ray_len_x: %f\nray_len_y: %f\n", ray_len.x, ray_len.y);
+	//printf("hit_x: %f\nhit_y: %f\n", hit_pos.x, hit_pos.y);
+	//printf("p_x: %f\np_y: %f\n", game->player.pos.x, game->player.pos.y);
+	quad_draw(hit_pos, game, 0xFF0000, 10);
+}
+ 
 void	update(t_game *game)
 {
 	time_delta_get(game);
@@ -419,7 +505,7 @@ void	read_map(t_game *game, char *argv1)
 	}
 }
 
-	static
+static
 int32_t	stt_parse(t_game *game, char *argv1)
 {
 	read_map(game, argv1);
