@@ -15,21 +15,22 @@ typedef struct	s_img
 typedef struct	s_cam
 {
 	t_vecf32	pos;
-	float	angle;
-	float	dist;
-	int		dir;
-	int		dist_mod;
+	float		angle;
+	float		dist;
+	int			dir;
+	int			dist_mod;
 }	t_cam;
 
 typedef struct s_player
 {
 	t_vecf32	pos;
-	float	acc;
-	float	vel;
+	float		acc;
+	float		vel;
 	t_vecf32	dir;
 	t_vecf32	ori;
-	t_cam	cam;
+	t_cam		cam;
 	t_vecf32	coll;
+	t_vecf32	center;
 }	t_player;
 
 typedef	struct s_map

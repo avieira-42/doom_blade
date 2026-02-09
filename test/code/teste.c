@@ -253,12 +253,14 @@ void	quad_draw(t_vecf32 a, t_game *game, int color, float scale)
 	}
 }
 
-void	character_move(t_player *player, float dt)
+void	character_move(t_game * game, t_player *player, float dt)
 {
 	float	len;
 
 	player->pos.x += player->vel * player->ori.x * dt;
 	player->pos.y += player->vel * player->ori.y * dt;
+	player->center.x = player->pos.x + game->map.tile_x * 0.5;
+	player->center.y = player->pos.y + game->map.tile_y * 0.5;
 }
 
 void	camera_move(t_vecf32 player_pos, t_cam *cam)
@@ -329,8 +331,8 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 	bool		hit;
 
 	// translate the player pos vec to float tile units
-	p_pos.x = player.pos.x / game->map.tile_x;
-	p_pos.y = player.pos.y / game->map.tile_y;
+	p_pos.x = player.center.x / game->map.tile_x;
+	p_pos.y = player.center.y / game->map.tile_y;
 	printf("p_pos.x: %f\np_pos.y: %f\n", p_pos.x, p_pos.y);
 
 	// translate player pos to integer tile units
@@ -411,9 +413,9 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 void	update(t_game *game)
 {
 	time_delta_get(game);
-	character_move(&game->player, game->dt);
-	camera_move(game->player.pos, &game->player.cam);
-	game->player.dir = update_player_dir(game->player.pos, game->player.cam.pos);
+	character_move(game, &game->player, game->dt);
+	camera_move(game->player.center, &game->player.cam);
+	game->player.dir = update_player_dir(game->player.center, game->player.cam.pos);
 }
 
 void    grid_draw(t_game *game)
@@ -458,6 +460,7 @@ void	map_draw(t_game *game)
 
 void	fov_draw(t_game *game)
 {
+	// HERE
 	size_t			i;
 	t_vecf32 const	start = (t_vecf32){game->player.pos.x - game->rc_size * 0.5
 		+ game->map.tile_x * 0.5,
@@ -483,8 +486,8 @@ void	render(t_game *game)
 	//quad_draw(game->player.cam.pos, game, 0x00FF00, 0.5);
 	map_draw(game);
 	grid_draw(game);
-	quad_draw(game->player.pos, game, 0xFF00FF, 0.5);
-	line_draw_bresenham(game->player.pos, game->player.cam.pos, game, 0x00FF00);
+	quad_draw(game->player.pos, game, 0xFF00FF, 1);
+	line_draw_bresenham(game->player.center, game->player.cam.pos, game, 0x00FF00);
 	ray_cast(game, game->player, game->player.dir);
 	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr,
 			game->img.img, 0, 0);
@@ -568,6 +571,8 @@ void	game_init(t_game *game)
 	game->player.cam.angle = 15;
 	game->player.cam.dist = game->vd;
 	game->player.cam.dir = 0;
+	game->player.center.x = 0;
+	game->player.center.x = 0;
 	camera_move(game->player.pos, &game->player.cam);
 	game->camera.acc = 10;
 	game->camera.vel = 300;
