@@ -18,7 +18,7 @@ int	vec_max_coord(t_vecf32 vec)
 		return (y);
 }
 
-t_vecf32	vec_add(t_vecf32 a, t_vecf32 b)
+t_vecf32	vec_sum(t_vecf32 a, t_vecf32 b)
 {
 	return ((t_vecf32){a.x + b.x, a.y + b.y});
 }
@@ -28,9 +28,19 @@ t_vecf32	vec_sub(t_vecf32 a, t_vecf32 b)
 	return ((t_vecf32){b.x - a.x, b.y - a.y});
 }
 
+t_vecf32	vec_scalar_mult(t_vecf32 unit, float scalar)
+{
+	return ((t_vecf32){unit.x * scalar, unit.y * scalar});
+}
+
 float	vec_mag_sqd(t_vecf32 vec)
 {
 	return (vec.x * vec.x + vec.y * vec.y);
+}
+
+t_vecf32	vec_prepend_dir(t_vecf32 a)
+{
+	return (vec_unit((t_vecf32){1, - (a.x / a.y)}));
 }
 
 float	q_rsqrt(float n)
@@ -80,18 +90,39 @@ t_vecf32	vec_unit(t_vecf32 vec)
 	return ((t_vecf32){vec.x * inv_mag, vec.y * inv_mag});
 }
 
-void	vec_dot_product()
+t_vecf32	vec_dir(t_vecf32 a, t_vecf32 b)
 {
+	return (vec_unit(vec_sub(a, b)));
 }
 
-void	vec_cosin()
+float	vec_dot_product(t_vecf32 a, t_vecf32 b)
 {
+	return (a.x * b.x + a.y * b.y);
 }
 
-void	vec_sin()
+float	vec_scalar_projec(t_vecf32 a, t_vecf32 b)
 {
+	return (vec_dot_product(vec_unit(b), a));
 }
 
-void	vec_tan()
+t_vecf32	vec_proj(t_vecf32 a, t_vecf32 b)
 {
+	float const scalar = vec_scalar_projec(a, b);
+
+	return (vec_sum(vec_scalar_mult(a, scalar), b));
+}
+
+float	vec_cosin()
+{
+	return (1);
+}
+
+float	vec_sin()
+{
+	return (1);
+}
+
+float	vec_tan()
+{
+	return (1);
 }
