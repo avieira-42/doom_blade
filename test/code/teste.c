@@ -21,7 +21,7 @@ void	img_pixel_put(t_game *game, int x, int y, int color)
 {
 	char	*dst;
 
-	if (x < 0 || x >= 800 || y < 0 || y >= 800)
+	if (x < 0 || x >= 400 || y < 0 || y >= 400)
 		return ;
 	dst = game->img.addr + (y * game->img.l_len + x * (game->img.bpp / 8));
 	*(unsigned int *)dst = color;
@@ -85,10 +85,10 @@ int     key_pressed(int keysym, void *arg)
 		game->player.cam.dir += -1;
 	if (keysym == XK_j)
 		game->player.cam.dir += 1;
-	if (keysym == XK_k)
+	/*if (keysym == XK_k)
 		game->player.cam.dist_mod += -1;
 	if (keysym == XK_i)
-		game->player.cam.dist_mod += 1;
+		game->player.cam.dist_mod += 1;*/
 	if (keysym == XK_Escape)
 		free_displays();
 	return (1);
@@ -111,10 +111,10 @@ int     key_released(int keysym, void *arg)
 		game->player.cam.dir += 1;
 	if (keysym == XK_j)
 		game->player.cam.dir += -1;
-	if (keysym == XK_k)
+	/*if (keysym == XK_k)
 		game->player.cam.dist_mod += 1;
 	if (keysym == XK_i)
-		game->player.cam.dist_mod += -1;
+		game->player.cam.dist_mod += -1;*/
 	return (1);
 }
 
@@ -263,10 +263,14 @@ void	character_move(t_game * game, t_player *player, float dt)
 	player->center.y = player->pos.y + game->map.tile_y * 0.5;
 }
 
+void	ray_get(t_vecf32 player_pos, t_ray *ray)
+{
+}
+
 void	camera_move(t_vecf32 player_pos, t_cam *cam)
 {
-	cam->dist += 1 * cam->dist_mod;
-	cam->angle += 0.01 * cam->dir;
+	//cam->dist += 1 * cam->dist_mod; // might add this to be more eerie
+	cam->angle += 0.5 * RADIANS * cam->dir;
 	cam->pos.x = player_pos.x + sinf(cam->angle) * cam->dist;
 	cam->pos.y = player_pos.y + cosf(cam->angle) * cam->dist;
 }
@@ -276,10 +280,7 @@ t_vecf32	update_player_dir(t_vecf32 player, t_vecf32 cam)
 	return (vec_unit(vec_sub(player, cam)));
 }
 
-void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
-{
-	/* 
-		For the dda ray_cast algorithm to work, all the coordinates
+		/*For the dda ray_cast algorithm to work, all the coordinates
 			must be translated to tile map unit coordinates, with
 			the small caveat that theres the necessity of storing
 			two different data types of the player position, one
@@ -307,7 +308,19 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 						len corresponds to the next collision
 						point to break out of the loop in case
 						of maximum view distance reached
-	*/
+
+		while ray < view_distance
+			if x_ray <= y_ray
+				ray = x_ray
+	   			increase x
+	   			calculate x_ray
+	   		else
+				ray = y_ray
+	   			increase y
+	   			calculate y_ray
+	   		check ray collision */
+void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
+{
 
 	t_vecf32	p_pos;
 	t_veci32	p_map_pos;
@@ -360,20 +373,6 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 
 	hit = false;
 	final_len = 0;
-
-	 /*
-		while ray < view_distance
-			if x_ray <= y_ray
-				ray = x_ray
-	   			increase x
-	   			calculate x_ray
-	   		else
-				ray = y_ray
-	   			increase y
-	   			calculate y_ray
-	   		check ray collision
-	*/
-
 	while (!hit && final_len < game->player.cam.dist / game->map.tile_x)
 	{
 		if (ray_len.x < ray_len.y)
@@ -408,7 +407,7 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 	{
 		hit_pos.x = (p_pos.x + r_dir.x * final_len) * game->map.tile_x;
 		hit_pos.y = (p_pos.y + r_dir.y * final_len) * game->map.tile_y;
-		quad_draw(hit_pos, game, 0xFF0000, 0.2);
+		//quad_draw(hit_pos, game, 0xFF0000, 1);
 	}
 	line_draw_bresenham(game->player.center, hit_pos, game, 0x00FF00);
 }
@@ -426,10 +425,10 @@ void    grid_draw(t_game *game)
 	int	pos;
 
 	pos = 0;
-	while (pos <= 800)
+	while (pos <= 400)
 	{
-		if (pos == 800)
-			pos = 799;
+		if (pos == 400)
+			pos = 399;
 		line_draw_bresenham((t_vecf32){pos, 0},
 				(t_vecf32){pos, 799},
 				game, 0x777777);
@@ -461,33 +460,23 @@ void	map_draw(t_game *game)
 	}
 }
 
-void	fov_draw(t_game *game)
+void	fov_draw(t_game *game, t_player player)
 {
 	// HERE
-	size_t			i;
-	size_t const	half_len = game->rc_size * 0.5;
-	t_vecf32 const	cam_plane_dir = vec_prepend_dir(game->player.dir);
-	t_vecf32		start;
+	int32_t		i;
+	float		ray_angle;
+	t_vecf32	ray_target;
+	t_vecf32	ray_dir;
 
-	// DEBUG
-	t_vecf32 const	prep = vec_sum(game->player.cam.pos,
-			vec_scalar_mult(cam_plane_dir, 100));
-	t_vecf32 const	inv_prep = (t_vecf32){prep.x * -1, prep.y * -1};
-	//printf("cam_plane_dir.x: %f\ncam_plane_dir.y: %f\n", cam_plane_dir.x, cam_plane_dir.y);
-	//line_draw_bresenham(game->player.cam.pos, prep, game, 0xFFFFFF);
-	// DEBUG
-
+	ray_angle = player.cam.angle - RADIANS * 960 * 0.05;
 	i = 0;
-	start = vec_sum(game->player.cam.pos, vec_scalar_mult(cam_plane_dir, half_len));
-	quad_draw(start, game, 0xFFFFFF, 1);
-	while (i < half_len)
+	while (i < 1920)
 	{
-		//ray_cast(game, game->player, vec_dir(game->player.cam, start );
-		i++;
-	}
-	i = 0;
-	while (i < half_len)
-	{
+		ray_angle += RADIANS * 0.05;
+		ray_target.x = player.pos.x + sinf(ray_angle) * game->vd;
+		ray_target.y = player.pos.y + cosf(ray_angle) * game->vd;
+		ray_dir = vec_dir(player.pos, ray_target);
+		ray_cast(game, player, ray_dir);
 		i++;
 	}
 }
@@ -503,7 +492,7 @@ void	render(t_game *game)
 	grid_draw(game);
 	quad_draw(game->player.pos, game, 0xFF00FF, 1);
 	ray_cast(game, game->player, game->player.dir);
-	fov_draw(game);
+	fov_draw(game, game->player);
 	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr,
 			game->img.img, 0, 0);
 }
@@ -537,8 +526,8 @@ void	read_map(t_game *game, char *argv1)
 	game->map.height = i;
 	game->map.width = strlen(game->map.grid[0]) - 1;
 	//printf("w: %f\nh: %f\n", game->map.width, game->map.height);
-	game->map.tile_x = 800 / game->map.width;
-	game->map.tile_y = 800 / game->map.height;
+	game->map.tile_x = 400 / game->map.width;
+	game->map.tile_y = 400 / game->map.height;
 	i = 0;
 	while (game->map.grid[i])
 	{
@@ -566,12 +555,13 @@ int32_t	stt_parse(t_game *game, char *argv1)
 void	game_init(t_game *game)
 {
 	game->mlx_ptr = mlx_init();
-	game->win_ptr = mlx_new_window(game->mlx_ptr, 800, 800, "doom_blade");
+	game->win_ptr = mlx_new_window(game->mlx_ptr, 1920, 1080, "doom_blade");
 	game->t0 = time_get();
-	game->img.img = mlx_new_image(game->mlx_ptr, 800, 800);
+	game->img.img = mlx_new_image(game->mlx_ptr, 400, 400);
 	game->img.addr = mlx_get_data_addr(
 			game->img.img, &game->img.bpp, &game->img.l_len, &game->img.endian);
 	time_delta_get(game);
+	//game->player = (t_player){.acc = 10, .vel = 300, .ori = (t_vecf32){0, 0}};
 	game->player.acc = 10;
 	game->player.vel = 300;
 	game->player.ori.x = 0;
@@ -579,8 +569,8 @@ void	game_init(t_game *game)
 	game->player.dir.x = 0;
 	game->player.dir.y = 0;
 	game->here = 0;
-	game->fov = 120;
-	game->vd = 300;
+	game->fov = 90 * RADIANS;
+	game->vd = 800;
 	game->rc_size = ray_cast_size(game);
 	game->player.cam.dist_mod = 0;
 	game->player.cam.angle = 15;

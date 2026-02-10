@@ -11,6 +11,10 @@ typedef struct	s_img
 	int		l_len;
 	int		endian;
 }	t_img;
+ 
+typedef struct	s_ray
+{
+}	t_ray;
 
 typedef struct	s_cam
 {

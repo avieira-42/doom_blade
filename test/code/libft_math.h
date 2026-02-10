@@ -1,7 +1,9 @@
 #ifndef LIBFT_MATH_H
 #define LIBFT_MATH_H
 
-#include <stdint.h>
+# include <stdint.h>
+
+# define RADIANS 0.0174533
 
 typedef struct	s_vecf32
 {
