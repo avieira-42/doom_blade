@@ -3,6 +3,14 @@
 
 #include "libft_math.h"
 
+typedef enum	e_card
+{
+	N,
+	S,
+	E,
+	W,
+}	t_card;
+
 typedef struct	s_img
 {
 	void	*img;
@@ -10,6 +18,8 @@ typedef struct	s_img
 	int		bpp;
 	int		l_len;
 	int		endian;
+	float	width;
+	float	height;;
 }	t_img;
  
 typedef struct	s_ray
@@ -51,7 +61,8 @@ typedef struct s_game
 	int			fov;
 	int			vd;
 	int			rc_size;
-	t_img		img;
+	t_img		map_2d;
+	t_img		map_3d;
 	t_map		map;
 	void		*mlx_ptr;
 	void		*win_ptr;

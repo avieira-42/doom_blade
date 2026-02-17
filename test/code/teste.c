@@ -17,14 +17,42 @@ int	free_displays()
 	exit(1);
 }
 
-void	img_pixel_put(t_game *game, int x, int y, int color)
+void	map_img_pixel_put(t_game *game, int x, int y, int color)
 {
 	char	*dst;
 
 	if (x < 0 || x >= 400 || y < 0 || y >= 400)
 		return ;
-	dst = game->img.addr + (y * game->img.l_len + x * (game->img.bpp / 8));
+	dst = game->map_2d.addr + (y * game->map_2d.l_len + x * (game->map_2d.bpp / 8));
 	*(unsigned int *)dst = color;
+}
+
+void	screen_img_pixel_put(t_game *game, int x, int y, int color)
+{
+	char	*dst;
+
+	if (x < 0 || x >= 1920 || y < 0 || y >= 1024)
+		return ;
+	dst = game->map_3d.addr + (y * game->map_3d.l_len + x * (game->map_3d.bpp / 8));
+	*(unsigned int *)dst = color;
+}
+
+void	screen_img_column_put(t_game *game, int x, float len, int color)
+{
+	int			y;
+	float const	scale = 1024 / len;
+	float const	limit = scale / 2;
+	float const	draw_area = 1024 - limit * 2;
+	printf("scale: %f\n", scale);
+	printf("len: %f\n", len);
+
+	y = 0;
+	while (y <= 1920)
+	{
+		if (y >= limit && y <= limit + draw_area)
+			screen_img_pixel_put(game, x, y, color);
+		y++;
+	}
 }
 
 int32_t	ray_cast_size(t_game *game)
@@ -38,12 +66,13 @@ void	window_clear(t_game *game, int color)
 	size_t	j;
 
 	i = 0;
-	while (i < 800)
+	while (i < 1920)
 	{
 		j = 0;
-		while (j < 800)
+		while (j < 1920)
 		{
-			img_pixel_put(game, j, i, color);
+			map_img_pixel_put(game, j, i, color);
+			screen_img_pixel_put(game, j, i, color);
 			j++;
 		}
 		i++;
@@ -135,7 +164,7 @@ void	line_draw(t_vecf32 a, t_vecf32 b, t_game *game, int color)
 		{
 			a.x += x;
 			a.y += y;
-			img_pixel_put(game, a.x , a.y, color);
+			map_img_pixel_put(game, a.x , a.y, color);
 			i++;
 		}
 	}
@@ -172,7 +201,7 @@ void	line_draw_bresenham_v(t_vecf32 a, t_vecf32 b, t_game *game, int color)
 		while (++i < max)
 		{
 			a.y++;
-			img_pixel_put(game, x, a.y, color);
+			map_img_pixel_put(game, x, a.y, color);
 			if (p >= 0)
 			{
 				x += dir;
@@ -214,7 +243,7 @@ void	line_draw_bresenham_h(t_vecf32 a, t_vecf32 b, t_game *game, int color)
 		while (++i < max)
 		{
 			a.x++;
-			img_pixel_put(game, a.x, y, color);
+			map_img_pixel_put(game, a.x, y, color);
 			if (p >= 0)
 			{
 				y += dir;
@@ -246,7 +275,7 @@ void	quad_draw(t_vecf32 a, t_game *game, int color, float scale)
 		x = 0;
 		while (x < game->map.tile_x * scale)
 		{
-			img_pixel_put(game, a.x + x, a.y + y, color);
+			map_img_pixel_put(game, a.x + x, a.y + y, color);
 			x++;
 		}
 		y++;
@@ -329,6 +358,7 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 	t_vecf32	ray_len;
 	t_vecf32	hit_pos;
 	float		final_len;
+	int			color;
 	bool		hit;
 
 	// translate the player pos vec to float tile units
@@ -380,8 +410,8 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 			final_len = ray_len.x;
 			p_map_pos.x += step_ori.x;
 			ray_len.x += step_size.x;
-			hit_pos.x = (p_pos.x + r_dir.x * final_len) * game->map.tile_x;
-			hit_pos.y = (p_pos.y + r_dir.y * final_len) * game->map.tile_y;
+			//hit_pos.x = (p_pos.x + r_dir.x * final_len) * game->map.tile_x;
+			//hit_pos.y = (p_pos.y + r_dir.y * final_len) * game->map.tile_y;
 			//quad_draw(hit_pos, game, 0x0000FF, 0.3);
 		}
 		else
@@ -389,16 +419,28 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 			final_len = ray_len.y;
 			p_map_pos.y += step_ori.y;
 			ray_len.y += step_size.y;
-			hit_pos.x = (p_pos.x + r_dir.x * final_len) * game->map.tile_x;
-			hit_pos.y = (p_pos.y + r_dir.y * final_len) * game->map.tile_y;
+			//hit_pos.x = (p_pos.x + r_dir.x * final_len) * game->map.tile_x;
+			//hit_pos.y = (p_pos.y + r_dir.y * final_len) * game->map.tile_y;
 			//quad_draw(hit_pos, game, 0xFF00FF, 0.3);
 		}
 
 		if (p_map_pos.x < game->map.width && p_map_pos.y < game->map.height
 				&& p_map_pos.x >= 0 && p_map_pos.y >= 0)
 		{
-			if (game->map.grid[p_map_pos.y][p_map_pos.x] == '1')
+			if (game->map.grid[p_map_pos.y][p_map_pos.x] != '0')
 			{
+				if (game->map.grid[p_map_pos.y][p_map_pos.x] == 'N')
+					color = 0x0000FF;
+				else if (game->map.grid[p_map_pos.y][p_map_pos.x] == 'S')
+					color = 0xFF0000;
+				else if (game->map.grid[p_map_pos.y][p_map_pos.x] == 'E')
+					color = 0xFFFF00;
+				else if (game->map.grid[p_map_pos.y][p_map_pos.x] == 'W')
+					color = 0x00FF00;
+				else if (game->map.grid[p_map_pos.y][p_map_pos.x] == '1')
+					color = 0xFFFFFF;
+				else
+					continue;
 				hit = true;
 			}
 		}
@@ -406,8 +448,10 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 	if (hit == true)
 	{
 		hit_pos.x = (p_pos.x + r_dir.x * final_len) * game->map.tile_x;
+		//printf("hit_pos.x: %f\n", hit_pos.x);
 		hit_pos.y = (p_pos.y + r_dir.y * final_len) * game->map.tile_y;
 		//quad_draw(hit_pos, game, 0xFF0000, 1);
+		//screen_img_column_put(game, (p_pos.y + r_dir.y * final_len) * 128, final_len, color);
 	}
 	line_draw_bresenham(game->player.center, hit_pos, game, 0x00FF00);
 }
@@ -494,7 +538,9 @@ void	render(t_game *game)
 	ray_cast(game, game->player, game->player.dir);
 	fov_draw(game, game->player);
 	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr,
-			game->img.img, 0, 0);
+			game->map_3d.img, 0, 0);
+	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr,
+			game->map_2d.img, 0, 0);
 }
 
 int	game_loop(void *arg)
@@ -528,6 +574,8 @@ void	read_map(t_game *game, char *argv1)
 	//printf("w: %f\nh: %f\n", game->map.width, game->map.height);
 	game->map.tile_x = 400 / game->map.width;
 	game->map.tile_y = 400 / game->map.height;
+	//printf("map.tile_x: %i\n", game->map.tile_x);
+	//printf("map.tile_y: %i\n", game->map.tile_y);
 	i = 0;
 	while (game->map.grid[i])
 	{
@@ -555,11 +603,18 @@ int32_t	stt_parse(t_game *game, char *argv1)
 void	game_init(t_game *game)
 {
 	game->mlx_ptr = mlx_init();
-	game->win_ptr = mlx_new_window(game->mlx_ptr, 1920, 1080, "doom_blade");
+	game->win_ptr = mlx_new_window(game->mlx_ptr, 1920, 1024, "doom_blade");
 	game->t0 = time_get();
-	game->img.img = mlx_new_image(game->mlx_ptr, 400, 400);
-	game->img.addr = mlx_get_data_addr(
-			game->img.img, &game->img.bpp, &game->img.l_len, &game->img.endian);
+	//game->map_2d.width = 128;
+	//game->map_2d.height = 128;
+	game->map_2d.img = mlx_new_image(game->mlx_ptr, 400, 400);
+	game->map_2d.addr = mlx_get_data_addr(
+			game->map_2d.img, &game->map_2d.bpp, &game->map_2d.l_len, &game->map_2d.endian);
+	game->map_3d.img = mlx_new_image(game->mlx_ptr, 1920, 1024);
+	game->map_3d.addr = mlx_get_data_addr(
+			game->map_3d.img, &game->map_3d.bpp, &game->map_3d.l_len, &game->map_3d.endian);
+	game->map_3d.width = 1920;
+	game->map_3d.height = 1024;
 	time_delta_get(game);
 	//game->player = (t_player){.acc = 10, .vel = 300, .ori = (t_vecf32){0, 0}};
 	game->player.acc = 10;
@@ -570,7 +625,7 @@ void	game_init(t_game *game)
 	game->player.dir.y = 0;
 	game->here = 0;
 	game->fov = 90 * RADIANS;
-	game->vd = 800;
+	game->vd = 2000;
 	game->rc_size = ray_cast_size(game);
 	game->player.cam.dist_mod = 0;
 	game->player.cam.angle = 15;
