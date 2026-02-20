@@ -3,6 +3,11 @@
 
 #include "libft_math.h"
 
+#define SPRITE_X 128
+#define SPRITE_Y 128
+#define SCREEN_X 1920
+#define SCREEN_Y 1024
+
 typedef enum	e_card
 {
 	N,
@@ -61,8 +66,7 @@ typedef struct s_game
 	int			fov;
 	int			vd;
 	int			rc_size;
-	t_img		map_2d;
-	t_img		map_3d;
+	t_img		image;
 	t_map		map;
 	void		*mlx_ptr;
 	void		*win_ptr;

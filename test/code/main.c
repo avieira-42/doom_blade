@@ -12,31 +12,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-int	free_displays()
-{
-	exit(1);
-}
-
-void	map_img_pixel_put(t_game *game, int x, int y, int color)
-{
-	char	*dst;
-
-	if (x < 0 || x >= 400 || y < 0 || y >= 400)
-		return ;
-	dst = game->map_2d.addr + (y * game->map_2d.l_len + x * (game->map_2d.bpp / 8));
-	*(unsigned int *)dst = color;
-}
-
-void	screen_img_pixel_put(t_game *game, int x, int y, int color)
-{
-	char	*dst;
-
-	if (x < 0 || x >= 1920 || y < 0 || y >= 1024)
-		return ;
-	dst = game->map_3d.addr + (y * game->map_3d.l_len + x * (game->map_3d.bpp / 8));
-	*(unsigned int *)dst = color;
-}
-
 void	screen_img_column_put(t_game *game, int x, float len, int color)
 {
 	int			y;
@@ -84,10 +59,7 @@ uint64_t 	time_get()
 	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL) == -1)
-	{
 		free_displays();
-		write(2, "Could not get time!\n", 20);
-	}
 	return ((uint64_t)(tv.tv_sec * 1000000) + (tv.tv_usec));
 }
 
@@ -95,32 +67,6 @@ void	time_delta_get(t_game *game)
 {
 	game->dt = (time_get() - game->t0) / 1000000.0f;
 	game->t0 = time_get();
-}
-
-int     key_pressed(int keysym, void *arg)
-{
-	t_game  *game;
-
-	game = (t_game *)arg;
-	if (keysym == XK_w)
-		game->player.ori.y += -1;
-	if (keysym == XK_a)
-		game->player.ori.x += -1;
-	if (keysym == XK_s)
-		game->player.ori.y += 1;
-	if (keysym == XK_d)
-		game->player.ori.x += 1;
-	if (keysym == XK_l)
-		game->player.cam.dir += -1;
-	if (keysym == XK_j)
-		game->player.cam.dir += 1;
-	/*if (keysym == XK_k)
-		game->player.cam.dist_mod += -1;
-	if (keysym == XK_i)
-		game->player.cam.dist_mod += 1;*/
-	if (keysym == XK_Escape)
-		free_displays();
-	return (1);
 }
 
 int     key_released(int keysym, void *arg)
@@ -140,166 +86,21 @@ int     key_released(int keysym, void *arg)
 		game->player.cam.dir += 1;
 	if (keysym == XK_j)
 		game->player.cam.dir += -1;
-	/*if (keysym == XK_k)
-		game->player.cam.dist_mod += 1;
-	if (keysym == XK_i)
-		game->player.cam.dist_mod += -1;*/
 	return (1);
-}
-
-void	line_draw(t_vecf32 a, t_vecf32 b, t_game *game, int color)
-{
-	size_t			i;
-	t_vecf32 const	line = vec_sub(a, b);
-	int		x;
-	int		y;
-	int const	max = vec_max_coord(a);
-
-	if (max != 0)
-	{
-		x = line.x / max;
-		y = line.y / max;
-		i = 0;
-		while (i < max)
-		{
-			a.x += x;
-			a.y += y;
-			map_img_pixel_put(game, a.x , a.y, color);
-			i++;
-		}
-	}
-}
-
-void	line_draw_bresenham_v(t_vecf32 a, t_vecf32 b, t_game *game, int color)
-{
-	t_vecf32	line;
-	t_vecf32	tmp;
-	int		max;
-	int		x;
-	int		p;
-	int		i;
-	int		dir;
-
-	i = -1;
-	if (a.y > b.y)
-	{
-		tmp = a;
-		a = b;
-		b = tmp;
-	}
-	line = vec_sub(a, b);
-	max = vec_max_coord(line);
-	if (line.x < 0)
-		dir = -1;
-	else
-		dir = 1;
-	line.x *= dir;
-	if (line.y != 0)
-	{
-		x = a.x;
-		p = 2 * line.x - line.y;
-		while (++i < max)
-		{
-			a.y++;
-			map_img_pixel_put(game, x, a.y, color);
-			if (p >= 0)
-			{
-				x += dir;
-				p = p - 2 * line.y;
-			}
-			p = p + 2 * line.x;
-		}
-	}
-}
-
-void	line_draw_bresenham_h(t_vecf32 a, t_vecf32 b, t_game *game, int color)
-{
-	t_vecf32	line;
-	t_vecf32	tmp;
-	int		max;
-	int		y;
-	int		p;
-	int		i;
-	int		dir;
-
-	i = -1;
-	if (a.x > b.x)
-	{
-		tmp = a;
-		a = b;
-		b = tmp;
-	}
-	line = vec_sub(a, b);
-	max = vec_max_coord(line);
-	if (line.y < 0)
-		dir = -1;
-	else
-		dir = 1;
-	line.y *= dir;
-	if (line.x != 0)
-	{
-		y = a.y;
-		p = 2 * line.y - line.x;
-		while (++i < max)
-		{
-			a.x++;
-			map_img_pixel_put(game, a.x, y, color);
-			if (p >= 0)
-			{
-				y += dir;
-				p = p - 2 * line.x;
-			}
-			p = p + 2 * line.y;
-		}
-	}
-}
-
-void	line_draw_bresenham(t_vecf32 a, t_vecf32 b, t_game *game, int color)
-{
-	t_vecf32 const	line = vec_sub(a, b);
-	if (ft_abs(line.x) >= ft_abs(line.y))
-		line_draw_bresenham_h(a, b, game, color);
-	else
-		line_draw_bresenham_v(a, b, game, color);
-}
-
-void	quad_draw(t_vecf32 a, t_game *game, int color, float scale)
-{
-	int			x;
-	int			y;
-	int const	border_color = 0xFFFFFF;
-
-	y = 0;
-	while (y < game->map.tile_y * scale)
-	{
-		x = 0;
-		while (x < game->map.tile_x * scale)
-		{
-			map_img_pixel_put(game, a.x + x, a.y + y, color);
-			x++;
-		}
-		y++;
-	}
 }
 
 void	character_move(t_game * game, t_player *player, float dt)
 {
-	float	len;
-
 	player->pos.x += player->vel * player->ori.x * dt;
 	player->pos.y += player->vel * player->ori.y * dt;
 	player->center.x = player->pos.x + game->map.tile_x * 0.5;
 	player->center.y = player->pos.y + game->map.tile_y * 0.5;
 }
 
-void	ray_get(t_vecf32 player_pos, t_ray *ray)
-{
-}
-
 void	camera_move(t_vecf32 player_pos, t_cam *cam)
 {
 	//cam->dist += 1 * cam->dist_mod; // might add this to be more eerie
-	cam->angle += 0.5 * RADIANS * cam->dir;
+	cam->angle += RADIANS * cam->dir;
 	cam->pos.x = player_pos.x + sinf(cam->angle) * cam->dist;
 	cam->pos.y = player_pos.y + cosf(cam->angle) * cam->dist;
 }
@@ -358,7 +159,7 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 	t_vecf32	ray_len;
 	t_vecf32	hit_pos;
 	float		final_len;
-	int			color;
+	//int			color;
 	bool		hit;
 
 	// translate the player pos vec to float tile units
@@ -429,7 +230,7 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 		{
 			if (game->map.grid[p_map_pos.y][p_map_pos.x] != '0')
 			{
-				if (game->map.grid[p_map_pos.y][p_map_pos.x] == 'N')
+				/*if (game->map.grid[p_map_pos.y][p_map_pos.x] == 'N')
 					color = 0x0000FF;
 				else if (game->map.grid[p_map_pos.y][p_map_pos.x] == 'S')
 					color = 0xFF0000;
@@ -440,7 +241,7 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 				else if (game->map.grid[p_map_pos.y][p_map_pos.x] == '1')
 					color = 0xFFFFFF;
 				else
-					continue;
+					continue;*/
 				hit = true;
 			}
 		}
@@ -625,7 +426,7 @@ void	game_init(t_game *game)
 	game->player.dir.y = 0;
 	game->here = 0;
 	game->fov = 90 * RADIANS;
-	game->vd = 2000;
+	game->vd = 1024;
 	game->rc_size = ray_cast_size(game);
 	game->player.cam.dist_mod = 0;
 	game->player.cam.angle = 15;
@@ -645,6 +446,8 @@ void	game_init(t_game *game)
 
 int	main(int argc, char **argv)
 {
+	if (argc != 2)
+		return (1);
 	t_game	game;
 
 	if (stt_parse(&game, argv[1]) == -1)

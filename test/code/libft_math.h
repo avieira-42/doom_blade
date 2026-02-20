@@ -28,7 +28,6 @@ float		ft_abs(float n);
 float		vec_dot_product(t_vecf32 a, t_vecf32 b);
 float		vec_mag_sqd(t_vecf32 vec);
 float		vec_inv_mag(t_vecf32 vec);
-float		q_rsqrt(float n);
 float		u_rsqrt(float n);
 float		vec_scalar_projec(t_vecf32 a, t_vecf32 b);
 float		vec_cosin();
