@@ -8,7 +8,9 @@ LDFLAGS = -L $(LIBFT_DIR) -lft \
           -L $(MLX_DIR) -lmlx \
           -lX11 -lbsd -lXext -lX11 -lm
 
-CFLAGS = -g
+##CFLAGS = -g
+
+CFLAGS = -Wall -Wextra -Werror -g -O3
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
