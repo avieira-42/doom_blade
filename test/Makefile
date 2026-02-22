@@ -2,7 +2,7 @@ LDFLAGS = -L $(LIBFT_DIR) -lft \
           -L $(MLX_DIR) -lmlx \
           -lX11 -lbsd -lXext -lX11 -lm
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -O3
 
 CC = cc $(CFLAGS)
 
