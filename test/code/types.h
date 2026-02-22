@@ -66,7 +66,8 @@ typedef struct s_game
 	int			fov;
 	int			vd;
 	int			rc_size;
-	t_img		image;
+	t_img		map_2d;
+	t_img		map_3d;
 	t_map		map;
 	void		*mlx_ptr;
 	void		*win_ptr;
