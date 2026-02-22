@@ -2,7 +2,7 @@ LDFLAGS = -L $(LIBFT_DIR) -lft \
           -L $(MLX_DIR) -lmlx \
           -lX11 -lbsd -lXext -lX11 -lm
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -O3
 
 CC = cc $(CFLAGS)
 
@@ -57,7 +57,7 @@ define progress_bar
 	printf "Compiling samus_invasion objects [%s] %3d%%\r" "$$bar" $$percent;
 endef
 
-bin/%.o: code/%.c | bin
+%.o: %.c | bin
 	@$(call progress_bar)
 	@$(CC) -c $< -o $@
 
@@ -79,5 +79,3 @@ clean:
 
 fclean:
 	@rm -rf bin
-
-re: fclean game

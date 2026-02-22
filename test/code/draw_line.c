@@ -1,5 +1,6 @@
-#include "types.h"
 #include <unistd.h>
+#include "render.h"
+#include "types.h"
 
 void	line_draw(t_vecf32 a, t_vecf32 b, t_game *game, int color)
 {
