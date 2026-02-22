@@ -43,14 +43,14 @@ void	map_draw(t_game *game)
 	}
 }
 
-void	fov_draw(t_game *game, t_player player)
+void	fov_draw(t_game *game, t_player player, t_cam cam)
 {
 	int32_t		i;
 	float		ray_angle;
 	t_vecf32	ray_target;
 	t_vecf32	ray_dir;
 
-	ray_angle = player.cam.angle - RADIANS * 960 * 0.05;
+	ray_angle = cam.angle - RADIANS * 960 * 0.05;
 	i = 0;
 	while (i < 1920)
 	{

@@ -20,9 +20,9 @@ typedef struct	s_img
 {
 	void	*img;
 	char	*addr;
-	int		bpp;
-	int		l_len;
-	int		endian;
+	int32_t	bpp;
+	int32_t	l_len;
+	int32_t	endian;
 	float	width;
 	float	height;;
 }	t_img;
@@ -34,10 +34,11 @@ typedef struct	s_ray
 typedef struct	s_cam
 {
 	t_vecf32	pos;
+	t_vecf32	plane;
 	float		angle;
 	float		dist;
-	int			dir;
-	int			dist_mod;
+	int32_t		dir;
+	int32_t		dist_mod;
 }	t_cam;
 
 typedef struct s_player
@@ -47,7 +48,6 @@ typedef struct s_player
 	float		vel;
 	t_vecf32	dir;
 	t_vecf32	ori;
-	t_cam		cam;
 	t_vecf32	coll;
 	t_vecf32	center;
 }	t_player;
@@ -56,27 +56,30 @@ typedef	struct s_map
 {
 	float		height;
 	float		width;
-	int		tile_y;
-	int		tile_x;
-	char	*grid[500];
+	int32_t		tile_y;
+	int32_t		tile_x;
+	char		*grid[500];
 }	t_map;
 
 typedef struct s_game
 {
-	int			fov;
-	int			vd;
-	int			rc_size;
-	t_img		map_2d;
-	t_img		map_3d;
+	//	definitive
+	t_cam		cam;
+	t_player	player;
 	t_map		map;
 	void		*mlx_ptr;
 	void		*win_ptr;
-	t_player	camera;
-	t_player	player;
+
+	//	maybe tmp
+	int32_t		fov;
+	int32_t		vd;
+	int32_t		rc_size;
+	t_img		map_2d;
+	t_img		map_3d;
 	long long	t0;
 	float		dt;
-	int			start;
-	int			here;
+	int32_t		start;
+	int32_t		here;
 }	t_game;
 
 #endif

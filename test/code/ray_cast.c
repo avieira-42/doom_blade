@@ -102,7 +102,7 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 
 	hit = false;
 	final_len = 0;
-	while (!hit && final_len < game->player.cam.dist / game->map.tile_x)
+	while (!hit && final_len < game->cam.dist / game->map.tile_x)
 	{
 		if (ray_len.x < ray_len.y)
 		{

@@ -18,8 +18,8 @@ void	update(t_game *game)
 {
 	time_delta_get(game);
 	character_move(game, &game->player, game->dt);
-	camera_move(game->player.center, &game->player.cam);
-	game->player.dir = update_player_dir(game->player.center, game->player.cam.pos);
+	camera_move(game->player.center, &game->cam);
+	.game->player.dir = update_player_dir(game->player.center, game->cam.pos);
 }
 
 int	game_loop(void *arg)
@@ -59,19 +59,13 @@ void	game_init(t_game *game)
 	game->fov = 90 * RADIANS;
 	game->vd = 1024;
 	game->rc_size = ray_cast_size(game);
-	game->player.cam.dist_mod = 0;
-	game->player.cam.angle = 15;
-	game->player.cam.dist = game->vd;
-	game->player.cam.dir = 0;
+	game->cam.dist_mod = 0;
+	game->cam.angle = 15;
+	game->cam.dist = game->vd;
+	game->cam.dir = 0;
 	game->player.center.x = 0;
 	game->player.center.x = 0;
-	camera_move(game->player.pos, &game->player.cam);
-	game->camera.acc = 10;
-	game->camera.vel = 300;
-	game->camera.dir.x = 0;
-	game->camera.dir.y = 0;
-	game->camera.ori.x = 0;
-	game->camera.ori.y = 0;
+	camera_move(game->player.pos, &game->cam);
 	game->start = 0;
 }
 

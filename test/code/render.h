@@ -10,7 +10,7 @@ void	line_draw_bresenham(t_vecf32 a, t_vecf32 b, t_game *game, int color);
 void	line_draw_bresenham_v(t_vecf32 a, t_vecf32 b, t_game *game, int color);
 void	line_draw_bresenham_h(t_vecf32 a, t_vecf32 b, t_game *game, int color);
 void	quad_draw(t_vecf32 a, t_game *game, int color, float scale);
-void	fov_draw(t_game *game, t_player player);
+void	fov_draw(t_game *game, t_player player, t_cam cam);
 void    grid_draw(t_game *game);
 void	map_draw(t_game *game);
 void	render(t_game *game);
