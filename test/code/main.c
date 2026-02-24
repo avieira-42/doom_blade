@@ -19,7 +19,7 @@ void	update(t_game *game)
 	time_delta_get(game);
 	character_move(game, &game->player, game->dt);
 	camera_move(game->player.center, &game->cam);
-	.game->player.dir = update_player_dir(game->player.center, game->cam.pos);
+	game->player.dir = update_player_dir(game->player.center, game->cam.pos);
 }
 
 int	game_loop(void *arg)
