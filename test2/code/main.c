@@ -17,15 +17,18 @@
 void	update(t_game *game)
 {
 	time_delta_get(game);
-	player_move(game, &game->player, game->dt);
-	camera_move(game->player.center, &game->cam);
+	player_move(&game->player, game->dt);
+	camera_move(game->player, &game->cam);
 }
 
 void	render(t_game *game)
 {
 	window_clear(game, 0x000000);
 	minimap_draw(game);
-	ray_cast(game, game->player, game->player.dir);
+	//ray_cast(game, game->player, game->player.dir);
+	line_draw_bresenham(game->player.pos, game->cam.pos, game, 0xFF0000);
+	line_draw_bresenham(game->cam.pos, vec_sum(game->cam.pos, vec_scalar_mult(game->cam.dir, game->cam.half_len)), game, 0x00FF00);
+	line_draw_bresenham(game->cam.pos, vec_sum(game->cam.pos, vec_scalar_mult(game->cam.dir, game->cam.half_len * -1)), game, 0x00FF00);
 	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr,
 			game->frame.img, 0, 0);
 }
@@ -45,6 +48,7 @@ void	game_init(t_game *game)
 	screen_init(game);
 	time_delta_get(game);
 	player_init(game);
+	cam_init(game);
 
 	// DEBUG
 	game->here = 0;

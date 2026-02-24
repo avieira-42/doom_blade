@@ -23,7 +23,6 @@ void	player_init(t_game *game)
 	game->player.dir = (t_vecf32){1, 0};
 	game->player.pos = (t_vecf32){0, 0};
 	game->player.ori = (t_vecf32){0, 0};
-	game->player.center = (t_vecf32){0, 0};
 	game->player.dir_mod = 0;
 	game->player.acc = 10;
 	game->player.vel = 300;

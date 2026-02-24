@@ -57,8 +57,8 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 	bool		hit;
 
 	// translate the player pos vec to float tile units
-	p_pos.x = player.center.x / game->map.tile_x;
-	p_pos.y = player.center.y / game->map.tile_y;
+	p_pos.x = player.pos.x / game->map.tile_x;
+	p_pos.y = player.pos.y / game->map.tile_y;
 	//printf("p_pos.x: %f\np_pos.y: %f\n", p_pos.x, p_pos.y);
 
 	// translate player pos to integer tile units
@@ -133,11 +133,11 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 		hit_pos.y = (p_pos.y + r_dir.y * final_len) * game->map.tile_y;
 		//quad_draw(hit_pos, game, 0xFF0000, 1);
 		//screen_img_column_put(game, (p_pos.y + r_dir.y * final_len) * 128, final_len, color);
-		line_draw_bresenham(game->player.center, hit_pos, game, 0x00FF00);
+		line_draw_bresenham(game->player.pos, hit_pos, game, 0xFF0000);
 	}
-	/*else
+	else
 	{
 		hit_pos = vec_sum(p_pos, vec_scalar_mult(r_dir, game->cam.dist));
-		line_draw_bresenham(game->player.center, hit_pos, game, 0x00FF00);
-	}*/
+		line_draw_bresenham(game->player.pos, hit_pos, game, 0x00FF00);
+	}
 }

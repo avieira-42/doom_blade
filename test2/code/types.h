@@ -45,7 +45,6 @@ typedef struct s_player
 	t_vecf32	dir;
 	t_vecf32	pos;
 	t_vecf32	ori;
-	t_vecf32	center;
 	int32_t		dir_mod;
 	float		acc;
 	float		vel;

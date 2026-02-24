@@ -4,8 +4,8 @@
 # include <stdint.h>
 
 # define RADIANS 0.0174533
-# define LEFT 1
-# define RIGHT -1
+# define LEFT -1
+# define RIGHT 1
 
 typedef struct	s_vecf32
 {

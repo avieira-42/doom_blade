@@ -117,7 +117,7 @@ t_vecf32	vec_rotate(t_vecf32 vec, int32_t speed, int32_t side)
 {
 	float const	dir_x = vec.x;
 	float const	dir_y = vec.y;
-	float const	rot_speed = speed * side;
+	float const	rot_speed = speed * RADIANS * side;
 
 	vec.x = dir_x * cosf(rot_speed) - dir_y * sinf(rot_speed);
 	vec.y = dir_x * sinf(rot_speed) + dir_y * cosf(rot_speed);

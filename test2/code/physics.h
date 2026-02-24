@@ -4,8 +4,8 @@
 # include "types.h"
 
 void		time_delta_get(t_game *game);
-void		player_move(t_game * game, t_player *player, float dt);
-void		camera_move(t_vecf32 player_pos, t_cam *cam);
+void		player_move(t_player *player, float dt);
+void		camera_move(t_player player, t_cam *cam);
 uint64_t 	time_get();
 t_vecf32	update_player_dir(t_vecf32 player, t_vecf32 cam);
 

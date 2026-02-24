@@ -56,9 +56,12 @@ void	player_draw(t_game *game)
 {
 	int32_t	const	max_x = game->map.width * game->map.tile_x;
 	int32_t const	max_y = game->map.height * game->map.tile_y;
+	t_vecf32		p_pos;
 
+	p_pos.x = game->player.pos.x - game->map.tile_x * 0.5;
+	p_pos.y = game->player.pos.y - game->map.tile_y * 0.5;
 	if (game->player.pos.x <= max_x && game->player.pos.y <= max_y)
-		quad_draw(game->player.pos, game, 0xFF00FF, 1);
+		quad_draw(p_pos, game, 0xFF00FF, 1);
 }
 
 void	minimap_draw(t_game *game)

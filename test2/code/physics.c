@@ -19,24 +19,24 @@ void	time_delta_get(t_game *game)
 	game->t0 = time_get();
 }
 
-void	player_move(t_game * game, t_player *player, float dt)
+void	player_move(t_player *player, float dt)
 {
 	player->pos.x += player->vel * player->ori.x * dt;
 	player->pos.y += player->vel * player->ori.y * dt;
-	player->center.x = player->pos.x + game->map.tile_x * 0.5;
-	player->center.y = player->pos.y + game->map.tile_y * 0.5;
 	if (player->dir_mod == -1)
-		player->dir = vec_rotate(player->dir, 3, RIGHT);
+		player->dir = vec_rotate(player->dir, 1, RIGHT);
 	if (player->dir_mod == 1)
-		player->dir = vec_rotate(player->dir, 3, LEFT);
+		player->dir = vec_rotate(player->dir, 1, LEFT);
 }
 
+#include <stdio.h>
 void	camera_move(t_player player, t_cam *cam)
 {
 	cam->dist += cam->dist_mod;
-	cam->pos = vec_sum(player.pos, player.dir);
+	cam->pos = vec_sum(player.pos, vec_scalar_mult(player.dir, cam->dist));
+	printf("x: %f\ny: %f\n", player.dir.x, player.dir.y);
 	if (player.dir_mod == -1)
-		cam->dir = vec_rotate(cam->dir, 3, RIGHT);
+		cam->dir = vec_rotate(cam->dir, 1, RIGHT);
 	if (player.dir_mod == 1)
-		cam->dir = vec_rotate(cam->dir, 3, LEFT);
+		cam->dir = vec_rotate(cam->dir, 1, LEFT);
 }
