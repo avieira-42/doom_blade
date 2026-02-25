@@ -31,7 +31,7 @@ void	player_move(t_player *player, float dt)
 
 void	camera_move(t_player player, t_cam *cam)
 {
-	cam->dist += cam->dist_mod;
+	cam->dist += 0.1 * cam->dist_mod;
 	if (cam->dist <= 1)
 		cam->dist = 1;
 	cam->pos = vec_sum(player.pos, vec_scalar_mult(player.dir, cam->dist));

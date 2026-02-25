@@ -118,16 +118,16 @@ void	line_draw_bresenham(t_vecf32 a, t_vecf32 b, t_game *game, int color)
 		line_draw_bresenham_v(a, b, game, color);
 }
 
-void	quad_draw(t_vecf32 a, t_game *game, int color, float scale)
+void	quad_draw(t_vecf32 a, t_game *game, int color, t_vecf32 len)
 {
 	int			x;
 	int			y;
 
 	y = 0;
-	while (y < game->map.tile_y * scale)
+	while (y < len.y)
 	{
 		x = 0;
-		while (x < game->map.tile_x * scale)
+		while (x < len.x)
 		{
 			img_pixel_put(game, a.x + x, a.y + y, color);
 			x++;

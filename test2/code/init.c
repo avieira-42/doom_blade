@@ -6,11 +6,11 @@
 void	screen_init(t_game *game)
 {
 	game->mlx_ptr = mlx_init();
-	game->win_ptr = mlx_new_window(game->mlx_ptr, 1920, 1024, "doom_blade");
+	game->win_ptr = mlx_new_window(game->mlx_ptr, SCREEN_X, SCREEN_Y, "doom_blade");
 	game->t0 = time_get();
 	time_delta_get(game);
 	game->vd = 1024;
-	game->frame.img = mlx_new_image(game->mlx_ptr, 1920, 1024);
+	game->frame.img = mlx_new_image(game->mlx_ptr, SCREEN_X, SCREEN_Y);
 	game->frame.addr = mlx_get_data_addr(
 			game->frame.img, &game->frame.bpp, &game->frame.l_len,
 				&game->frame.endian);
@@ -20,7 +20,7 @@ void	screen_init(t_game *game)
 
 void	player_init(t_game *game)
 {
-	game->player.dir = (t_vecf32){1, 0};
+	game->player.dir = (t_vecf32){0.71, 0.71};
 	game->player.pos = (t_vecf32){0, 0};
 	game->player.ori = (t_vecf32){0, 0};
 	game->player.dir_mod = 0;
@@ -32,7 +32,7 @@ void	cam_init(t_cam *cam, t_player player)
 	cam->dist = 30;
 	cam->dist_mod = 0;
 	cam->half_len = 30;
-	cam->dir = (t_vecf32){0, 1};
+	cam->dir = (t_vecf32){-0.71, 0.71};
 	cam->pos = vec_sum(player.pos,
 				vec_scalar_mult(player.dir, cam->dist));
 }

@@ -3,15 +3,14 @@
 
 #include "libft_math.h"
 #include <stdio.h>
-
 #define RED 0xFF0000
 #define GREEN 0x00FF00
 #define BLUE 0x0000FF
 #define WHITE 0xFFFFFF
 #define SPRITE_X 128
 #define SPRITE_Y 128
-#define SCREEN_X 1920
-#define SCREEN_Y 1024
+#define SCREEN_X 1920.0
+#define SCREEN_Y 1024.0
 
 typedef enum	e_card
 {
@@ -41,7 +40,7 @@ typedef struct	s_cam
 	t_vecf32	pos;
 	t_vecf32	dir;
 	int32_t		half_len;
-	int32_t		dist;
+	float		dist;
 	int32_t		dist_mod;
 }	t_cam;
 
@@ -59,8 +58,10 @@ typedef	struct s_map
 {
 	float		height;
 	float		width;
-	int32_t		tile_y;
-	int32_t		tile_x;
+	float		tile_y;
+	float		tile_x;
+	float		max_x;
+	float		max_y;
 	char		*grid[500];
 }	t_map;
 

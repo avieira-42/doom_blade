@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include "render.h"
 #include "types.h"
+#include "libft_math.h"
 
 
 	/*For the dda ray_cast algorithm to work, all the coordinates
@@ -64,14 +65,16 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 	p_map_pos = (t_veci32){p_pos.x, p_pos.y};
 
 	// set unit size for each step taken on each grid axis
-	step_size.x = 1 / u_rsqrt(1 + (r_dir.y * r_dir.y) / (r_dir.x * r_dir.x));
-	step_size.y = 1 / u_rsqrt(1 + (r_dir.x * r_dir.x) / (r_dir.y * r_dir.y));
+	//step_size.x = 1 / u_rsqrt(1 + (r_dir.y * r_dir.y) / (r_dir.x * r_dir.x));
+	//step_size.y = 1 / u_rsqrt(1 + (r_dir.x * r_dir.x) / (r_dir.y * r_dir.y));
+	step_size.x = ft_abs(1.0f / r_dir.x);
+	step_size.y = ft_abs(1.0f / r_dir.y);
 
 	// set unit orientation for each step to take and calculate respective axis starting len
 	if (r_dir.x < 0)
 	{
 		step_ori.x = -1;
-		ray_len.x = step_size.x * ft_abs(p_pos.x - p_map_pos.x) - 0.05;
+		ray_len.x = step_size.x * ft_abs(p_pos.x - p_map_pos.x);
 	}
 	else
 	{
@@ -81,7 +84,7 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 	if (r_dir.y < 0)
 	{
 		step_ori.y = -1;
-		ray_len.y = step_size.y * (ft_abs(p_pos.y - p_map_pos.y)) - 0.06;
+		ray_len.y = step_size.y * (ft_abs(p_pos.y - p_map_pos.y));
 	}
 	else
 	{
@@ -91,7 +94,7 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 
 	hit = false;
 	final_len = 0;
-	while (!hit && final_len < (float)game->cam.dist)
+	while (!hit)
 	{
 		if (ray_len.x < ray_len.y)
 		{
@@ -105,13 +108,15 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir)
 			p_map_pos.y += step_ori.y;
 			ray_len.y += step_size.y;
 		}
+		if (final_len >= (float)game->cam.dist)
+			break;
 
 		if (p_map_pos.x < game->map.width && p_map_pos.y < game->map.height
 				&& p_map_pos.x >= 0 && p_map_pos.y >= 0)
 		{
 			if (game->map.grid[p_map_pos.x][p_map_pos.y] == '1')
 				hit = true;
-			printf("map_x: %i\nmap_y: %i\n", p_map_pos.x, p_map_pos.y);
+			//printf("map_x: %i\nmap_y: %i\n", p_map_pos.x, p_map_pos.y);
 		}
 	}
 	if (hit == true)
