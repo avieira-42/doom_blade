@@ -25,9 +25,9 @@ void	render(t_game *game)
 {
 	window_clear(game, 0x000000);
 	minimap_draw(game);
-	ray_cast(game, game->player, game->player.dir);
 
 	// debug
+	//ray_cast(game, game->player, game->player.dir);
 	//t_vecf32 line = vec_dir(game->cam.pos, game->player.pos);
 	//printf("P_DIR\nx: %f\ny: %f\n\n", game->player.dir.x, game->player.dir.y);
 	//printf("P_LINE\nx: %f\ny: %f\n\n", line.x, game->player.dir.y);

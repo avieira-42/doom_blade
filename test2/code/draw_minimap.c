@@ -62,7 +62,7 @@ void	fov_draw(t_game *game)
 		camera_x = 2 * x / (float)SCREEN_X - 1;
 		ray_dir.x = game->player.dir.x + game->cam.dir.x * camera_x;
 		ray_dir.y = game->player.dir.y + game->cam.dir.y * camera_x;
-		ray_cast(game, game->player, ray_dir);
+		ray_cast(game, game->player, ray_dir, x);
 		x++;
 	}
 }
