@@ -61,7 +61,10 @@ void	player_draw(t_game *game)
 	p_pos.x = game->player.pos.x - game->map.tile_x * 0.5;
 	p_pos.y = game->player.pos.y - game->map.tile_y * 0.5;
 	if (game->player.pos.x <= max_x && game->player.pos.y <= max_y)
+	{
 		quad_draw(p_pos, game, 0xFF00FF, 1);
+		img_pixel_put(game, game->player.pos.x, game->player.pos.y, 0xFFFFFF);
+	}
 }
 
 void	minimap_draw(t_game *game)

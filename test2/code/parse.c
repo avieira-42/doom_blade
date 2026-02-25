@@ -19,10 +19,10 @@ void	read_map(t_game *game, char *argv1)
 		i++;
 	}
 	game->map.grid[i] = NULL;
-	game->map.height = i;
 	game->map.width = ft_strlen(game->map.grid[0]) - 1;
-	game->map.tile_x = (1920.0 / 4) / game->map.width;
-	game->map.tile_y = (1024.0 / 3) / game->map.height;
+	game->map.height = i;
+	game->map.tile_x = 1920.0 / game->map.width;
+	game->map.tile_y = 1024.0 / game->map.height;
 	i = 0;
 	while (game->map.grid[i])
 	{
@@ -31,8 +31,8 @@ void	read_map(t_game *game, char *argv1)
 		{
 			if (game->map.grid[i][j] == 'P')
 			{
-				game->player.pos.y = i * game->map.tile_y;
-				game->player.pos.x = j * game->map.tile_x;
+				game->player.pos.y = i;
+				game->player.pos.x = j;
 			}
 			j++;
 		}

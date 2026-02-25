@@ -2,7 +2,12 @@
 #define TYPES_H
 
 #include "libft_math.h"
+#include <stdio.h>
 
+#define RED 0xFF0000
+#define GREEN 0x00FF00
+#define BLUE 0x0000FF
+#define WHITE 0xFFFFFF
 #define SPRITE_X 128
 #define SPRITE_Y 128
 #define SCREEN_X 1920

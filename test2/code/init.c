@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include "../libs/minilibx-linux/mlx.h"
 #include "types.h"
-#include "physics.h"
+#include "update.h"
 
 void	screen_init(t_game *game)
 {

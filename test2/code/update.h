@@ -1,5 +1,5 @@
-#ifndef PHYSICS_H
-#define	PHYSICS_H
+#ifndef UPDATE_H
+#define	UPDATE_H
 
 # include "types.h"
 

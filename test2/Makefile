@@ -24,7 +24,7 @@ CLEAN = code/clean.c
 
 RAY_CAST = code/ray_cast.c
 
-PHYSICS = code/physics.c
+UPDATE = code/update.c
 
 RENDER = code/draw_line.c\
 		 code/pixel_put.c\
@@ -40,7 +40,7 @@ SRCS = $(INIT)\
 	   $(INPUT)\
 	   $(CLEAN)\
 	   $(RAY_CAST)\
-	   $(PHYSICS)\
+	   $(UPDATE)\
 	   $(LIBFT_MATH)\
 	   $(MAIN)
 

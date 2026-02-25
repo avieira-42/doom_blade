@@ -29,12 +29,12 @@ void	player_move(t_player *player, float dt)
 		player->dir = vec_rotate(player->dir, 1, LEFT);
 }
 
-#include <stdio.h>
 void	camera_move(t_player player, t_cam *cam)
 {
 	cam->dist += cam->dist_mod;
+	if (cam->dist <= 1)
+		cam->dist = 1;
 	cam->pos = vec_sum(player.pos, vec_scalar_mult(player.dir, cam->dist));
-	printf("x: %f\ny: %f\n", player.dir.x, player.dir.y);
 	if (player.dir_mod == -1)
 		cam->dir = vec_rotate(cam->dir, 1, RIGHT);
 	if (player.dir_mod == 1)
