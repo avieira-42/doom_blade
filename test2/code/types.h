@@ -3,6 +3,7 @@
 
 #include "libft_math.h"
 #include <stdio.h>
+#define BLACK 0x000000
 #define RED 0xFF0000
 #define GREEN 0x00FF00
 #define BLUE 0x0000FF
@@ -49,6 +50,7 @@ typedef struct s_player
 	t_vecf32	dir;
 	t_vecf32	pos;
 	t_vecf32	ori;
+	t_vecf32	mouse_mov;
 	int32_t		dir_mod;
 	float		acc;
 	float		vel;

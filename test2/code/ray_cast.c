@@ -119,7 +119,6 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir, int32_t x)
 		{
 			if (game->map.grid[p_map_pos.x][p_map_pos.y] == '1')
 				hit = true;
-			//printf("map_x: %i\nmap_y: %i\n", p_map_pos.x, p_map_pos.y);
 		}
 	}
 	if (hit == true)
@@ -177,6 +176,4 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir, int32_t x)
 			color = GREEN;
 	}
 	line_draw_bresenham(draw_start, draw_end, game, color);
-	printf("draw_start: %f\n", draw_start.y);
-	printf("draw_end: %f\n", draw_end.y);
 }

@@ -80,14 +80,15 @@ void	minimap_draw(t_game *game)
 	t_veci32 const	map_size = (t_veci32){game->map.width, game->map.height};
 	t_vecf32		p_pos;
 
+	fov_draw(game);
+	//quad_draw((t_vecf32){0, 0}, game, BLACK, map_max);
 	objects_draw(game, map_size, map_tile);
 	grid_draw(game, map_max, map_tile, map_size);
 	p_pos.x = game->player.pos.x - game->map.tile_x * 0.5;
 	p_pos.y = game->player.pos.y - game->map.tile_y * 0.5;
+	// to remove after collisions
 	if (game->player.pos.x <= game->map.max_x
 			&& game->player.pos.y <= game->map.max_y)
-	{
 		player_draw(game, p_pos, map_tile);
-		fov_draw(game);
-	}
+	// to remove after collisions
 }

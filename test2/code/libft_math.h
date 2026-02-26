@@ -35,7 +35,7 @@ float		vec_scalar_projec(t_vecf32 a, t_vecf32 b);
 float		vec_cosin();
 float		vec_sin();
 float		vec_tan();
-t_vecf32	vec_rotate(t_vecf32 vec, int32_t speed, int32_t side);
+t_vecf32	vec_rotate(t_vecf32 vec, float speed, int32_t side);
 t_vecf32	vec_prepend_dir(t_vecf32 a);
 t_vecf32	vec_proj(t_vecf32 a, t_vecf32 b);
 t_vecf32	vec_sum(t_vecf32 a, t_vecf32 b);

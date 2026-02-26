@@ -30,6 +30,7 @@ void	player_init(t_game *game)
 	game->player.vel = 300;
 	game->player.speed = 30;
 	game->player.speed_mod = 1;
+	game->player.mouse_mov = (t_vecf32){0, 0};
 }
 
 void	cam_init(t_cam *cam, t_player player)

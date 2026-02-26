@@ -113,7 +113,7 @@ t_vecf32	vec_proj(t_vecf32 a, t_vecf32 b)
         return (vec_sum(vec_scalar_mult(a, scalar), b));
 }
 
-t_vecf32	vec_rotate(t_vecf32 vec, int32_t speed, int32_t side)
+t_vecf32	vec_rotate(t_vecf32 vec, float speed, int32_t side)
 {
 	float const	dir_x = vec.x;
 	float const	dir_y = vec.y;
