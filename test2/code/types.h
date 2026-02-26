@@ -40,8 +40,8 @@ typedef struct	s_cam
 	t_vecf32	pos;
 	t_vecf32	dir;
 	int32_t		half_len;
-	float		dist;
 	int32_t		dist_mod;
+	float		dist;
 }	t_cam;
 
 typedef struct s_player

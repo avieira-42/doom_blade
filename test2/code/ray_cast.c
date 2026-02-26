@@ -46,7 +46,6 @@
 
 void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir, int32_t x)
 {
-
 	t_vecf32	p_pos;
 	t_veci32	p_map_pos;
 	t_veci32	step_ori;
@@ -60,8 +59,9 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir, int32_t x)
 	bool		hit;
 
 	// translate the player pos vec to float tile units p_pos.x = player.pos.x / game->map.tile_x;
-	p_pos.x = player.pos.x / game->map.tile_x;
-	p_pos.y = player.pos.y / game->map.tile_y;
+	(void)player;
+	p_pos.x = game->cam.pos.x / game->map.tile_x;
+	p_pos.y = game->cam.pos.y / game->map.tile_y;
 
 	// translate player pos to integer tile units
 	p_map_pos = (t_veci32){p_pos.x, p_pos.y};
@@ -111,7 +111,7 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir, int32_t x)
 			ray_len.y += step_size.y;
 			side = 1;
 		}
-		if (final_len >= (float)game->cam.dist)
+		if (final_len >= (float)game->vd)
 			break;
 
 		if (p_map_pos.x < game->map.width && p_map_pos.y < game->map.height
@@ -135,6 +135,8 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir, int32_t x)
 		color = GREEN;
 	}
 	line_draw_bresenham(game->player.pos, hit_pos, game, color);
+	if (!hit)
+		return ;
 
 	// 3D RENDERING
 

@@ -12,7 +12,6 @@
 #include "input.h"
 #include "parse.h"
 #include "init.h"
-#include "ray_cast.h"
 
 void	update(t_game *game)
 {
@@ -25,17 +24,6 @@ void	render(t_game *game)
 {
 	window_clear(game, 0x000000);
 	minimap_draw(game);
-
-	// debug
-	//ray_cast(game, game->player, game->player.dir);
-	//t_vecf32 line = vec_dir(game->cam.pos, game->player.pos);
-	//printf("P_DIR\nx: %f\ny: %f\n\n", game->player.dir.x, game->player.dir.y);
-	//printf("P_LINE\nx: %f\ny: %f\n\n", line.x, game->player.dir.y);
-	//line_draw_bresenham(game->player.pos, game->cam.pos, game, 0xFF0000);
-	//line_draw_bresenham(game->cam.pos, vec_sum(game->cam.pos, vec_scalar_mult(game->cam.dir, game->cam.half_len)), game, 0x00FF00);
-	//line_draw_bresenham(game->cam.pos, vec_sum(game->cam.pos, vec_scalar_mult(game->cam.dir, game->cam.half_len * -1)), game, 0x00FF00);
-	// debug
-
 	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr,
 			game->frame.img, 0, 0);
 }
@@ -55,7 +43,7 @@ void	game_init(t_game *game)
 	screen_init(game);
 	time_delta_get(game);
 	player_init(game);
-	cam_init(game);
+	cam_init(&game->cam, game->player);
 
 	// DEBUG
 	game->here = 0;
