@@ -52,6 +52,8 @@ typedef struct s_player
 	int32_t		dir_mod;
 	float		acc;
 	float		vel;
+	float		speed;
+	float		speed_mod;
 }	t_player;
 
 typedef	struct s_map

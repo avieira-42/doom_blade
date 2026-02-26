@@ -177,5 +177,4 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir, int32_t x)
 	line_draw_bresenham(draw_start, draw_end, game, color);
 	printf("draw_start: %f\n", draw_start.y);
 	printf("draw_end: %f\n", draw_end.y);
-	//debug
 }

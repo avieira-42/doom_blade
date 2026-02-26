@@ -8,11 +8,11 @@ int     key_pressed(int keysym, void *arg)
 
 	game = (t_game *)arg;
 	if (keysym == XK_w)
-		game->player.ori.y += -1;
+		game->player.ori.y += 1;
 	if (keysym == XK_a)
 		game->player.ori.x += -1;
 	if (keysym == XK_s)
-		game->player.ori.y += 1;
+		game->player.ori.y += -1;
 	if (keysym == XK_d)
 		game->player.ori.x += 1;
 	if (keysym == XK_l)
@@ -23,6 +23,8 @@ int     key_pressed(int keysym, void *arg)
 		game->cam.dist_mod += -1;
 	if (keysym == XK_i)
 		game->cam.dist_mod += 1;
+	if (keysym == XK_Shift_L)
+		game->player.speed_mod += 1;
 	if (keysym == XK_Escape)
 		free_displays();
 	return (1);
@@ -34,11 +36,11 @@ int     key_released(int keysym, void *arg)
 
 	game = (t_game *)arg;
 	if (keysym == XK_w)
-		game->player.ori.y += 1;
+		game->player.ori.y += -1;
 	if (keysym == XK_a)
 		game->player.ori.x += 1;
 	if (keysym == XK_s)
-		game->player.ori.y += -1;
+		game->player.ori.y += 1;
 	if (keysym == XK_d)
 		game->player.ori.x += -1;
 	if (keysym == XK_l)
@@ -49,5 +51,7 @@ int     key_released(int keysym, void *arg)
 		game->cam.dist_mod += 1;
 	if (keysym == XK_i)
 		game->cam.dist_mod += -1;
+	if (keysym == XK_Shift_L)
+		game->player.speed_mod += -1;
 	return (1);
 }

@@ -19,10 +19,10 @@ void	time_delta_get(t_game *game)
 	game->t0 = time_get();
 }
 
-void	player_move(t_player *player, float dt)
+void		player_move(t_player *player, t_cam cam, float dt)
 {
-	player->pos.x += player->vel * player->ori.x * dt;
-	player->pos.y += player->vel * player->ori.y * dt;
+	player->pos = vec_sum(player->pos, vec_scalar_mult(player->dir, player->ori.y * player->speed * dt * player->speed_mod));
+	player->pos = vec_sum(player->pos, vec_scalar_mult(cam.dir, player->ori.x * player->speed * dt));
 	if (player->dir_mod == -1)
 		player->dir = vec_rotate(player->dir, 1, RIGHT);
 	if (player->dir_mod == 1)

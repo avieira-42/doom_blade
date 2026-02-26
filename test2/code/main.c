@@ -17,7 +17,7 @@
 void	update(t_game *game)
 {
 	time_delta_get(game);
-	player_move(&game->player, game->dt);
+	player_move(&game->player, game->cam, game->dt);
 	camera_move(game->player, &game->cam);
 }
 
