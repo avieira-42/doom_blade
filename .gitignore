@@ -1,12 +1,6 @@
+.cache
+build/**
+*.exe
+*.a
 *.o
-*/*.o
-*/*/*.o
-*/**.o
-*/**a.out
-test/libs/libft/libft.a
-test/libs/libft/srcs/*.o
-libs/libft/libft.a
-test/libs/minilibx-linux/libmlx.a
-test/libs/minilibx-linux/*.o
-libs/minilibx-linux/libmlx.a
-libs/minilibx-linux/*.o
+*.out
