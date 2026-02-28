@@ -40,7 +40,7 @@ void	objects_draw(t_game *game, t_veci32 map_size, t_vecf32 map_tile)
 		x = 0;
 		while(x < map_size.x)
 		{
-			if (game->map.grid[x][y] == '1')
+			if (game->map.grid[y][x] == '1')
 				quad_draw((t_vecf32){x * map_tile.x,
 						y * map_tile.y},
 						game, 0x555555, map_tile);

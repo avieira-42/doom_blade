@@ -119,6 +119,16 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir, int32_t x)
 		{
 			if (game->map.grid[p_map_pos.x][p_map_pos.y] == '1')
 				hit = true;
+			if (game->map.grid[p_map_pos.x][p_map_pos.y] == 'S')
+			{
+				hit = true;
+				color = 0xFF00FF;
+			}
+			if (game->map.grid[p_map_pos.x][p_map_pos.y] == 'E')
+			{
+				hit = true;
+				color = 0x777777;
+			}
 		}
 	}
 	if (hit == true)
@@ -161,19 +171,22 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir, int32_t x)
 	if (draw_end.y >= SCREEN_Y)
 		draw_end.y = SCREEN_Y - 1;
 
-	if (r_dir.x > 0)
+	if (color != 0x777777 && color != 0xFF00FF)
 	{
-		if (r_dir.y > 0)
-			color = RED;
+		if (r_dir.x > 0)
+		{
+			if (r_dir.y > 0)
+				color = RED;
+			else
+				color = BLUE;
+		}
 		else
-			color = BLUE;
-	}
-	else
-	{
-		if (r_dir.y > 0)
-			color = WHITE;
-		else
-			color = GREEN;
+		{
+			if (r_dir.y > 0)
+				color = WHITE;
+			else
+				color = GREEN;
+		}
 	}
 	line_draw_bresenham(draw_start, draw_end, game, color);
 }

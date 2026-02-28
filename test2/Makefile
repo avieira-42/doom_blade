@@ -2,7 +2,7 @@ LDFLAGS = -L $(LIBFT_DIR) -lft \
           -L $(MLX_DIR) -lmlx \
           -lX11 -lbsd -lXext -lX11 -lm
 
-OPTIMIZE = -O3
+OPTIMIZE =
 
 CFLAGS = -Wall -Wextra -Werror -g $(OPTIMIZE)
 
