@@ -40,7 +40,7 @@ void		player_move(t_player *player, t_cam cam, float dt)
 		if (player->mouse_mov.x < 0.)
 			player->dir = vec_rotate(player->dir, player->mouse_mov.x * -1, LEFT);
 	}
-	printf("mouse_mov.x: %f\n", player->mouse_mov.x);
+	//printf("mouse_mov.x: %f\n", player->mouse_mov.x);
 }
 
 void	camera_move(t_player player, t_cam *cam)
