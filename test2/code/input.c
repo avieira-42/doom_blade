@@ -84,6 +84,6 @@ int	mouse_move(int x, int y, void *arg)
 
 	game = (t_game *) arg;
 	game->player.mouse_mov.x = (x - SCREEN_X / 2) / 100;
-	game->player.mouse_mov.y = (y - SCREEN_Y / 2) / 100;
+	game->player.mouse_mov.y += (y - SCREEN_Y / 2) * -1;
 	return (1);
 }

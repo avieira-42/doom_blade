@@ -164,8 +164,8 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir, int32_t x)
 
 	draw_start.x = x;
 	draw_end.x = x;
-	draw_start.y = -line_height / 2 + SCREEN_Y / 2;
-	draw_end.y = line_height / 2 + SCREEN_Y / 2;
+	draw_start.y = -line_height / 2 + player.mouse_mov.y / 2;
+	draw_end.y = line_height / 2 + player.mouse_mov.y / 2;
 	if (draw_start.x < 0)
 		draw_start.x = 0;
 	if (draw_end.y >= SCREEN_Y)

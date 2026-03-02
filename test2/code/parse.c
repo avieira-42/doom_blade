@@ -7,7 +7,7 @@ void	read_map(t_game *game, char *argv1)
 {
 	size_t	i;
 	size_t	j;
-	int fd;
+	int		fd;
 
 	i = 0;
 	fd = open(argv1, O_RDONLY);
@@ -21,8 +21,8 @@ void	read_map(t_game *game, char *argv1)
 	game->map.grid[i] = NULL;
 	game->map.width = ft_strlen(game->map.grid[0]) - 1;
 	game->map.height = i;
-	game->map.max_x = SCREEN_X / 3;
-	game->map.max_y = SCREEN_Y / 3;
+	game->map.max_y = SCREEN_X / 3;
+	game->map.max_x = SCREEN_Y / 3;
 	game->map.tile_x = game->map.max_x / game->map.width;
 	game->map.tile_y = game->map.max_y / game->map.height;
 	i = 0;
