@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/02/19 14:06:37 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/02 13:25:52 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,15 @@ typedef struct s_ret
 	};
 	int64_t	rvalue;
 }	t_ret;
+
+typedef struct s_mat
+{
+	void		*ptr;
+	uint16_t	rows;
+	uint16_t	cols;
+	uint16_t	line_size;
+	uint16_t	type_size;
+}	t_mat;
 
 typedef struct s_map
 {

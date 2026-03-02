@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 15:23:58 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/02/28 16:20:41 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/01 15:17:43 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "cub_utils.h"
-
-typedef struct s_image
-{
-	uint32_t	*ptr;
-	uint32_t	width;
-	uint32_t	height;
-}	t_image;
+#include "tmp_math.h"
 
 static inline
 void	stt_linecpy(uint32_t *restrict src, uint32_t *restrict dst, size_t factor, size_t width)
