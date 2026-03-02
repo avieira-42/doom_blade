@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/02/10 11:40:35 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/02 16:59:38 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void		*ft_memset(void *vdst, const uint8_t byte, size_t length);
 int64_t		ft_memrcmp(const void *vptr1, const void *vptr2, size_t length);
 void		*ft_realloc(void *src, size_t src_size, size_t dst_size);
 ssize_t		ft_error(const char *prefix, const char *suffix, ssize_t rvalue);
-
+int64_t		ft_strtol(const char *str, const char **str_ptr);
+uint32_t	ft_strtoargb(const char *str, const char **str_ptr);
 
 // Prototypes: IO ------------------------------------------------------------
 char		*get_next_line(int fd);

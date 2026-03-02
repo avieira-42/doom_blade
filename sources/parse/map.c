@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 11:19:47 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/02 14:35:12 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/02 17:08:18 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,49 @@
 // Validate wall exterior
 // Only one N/S/W/E
 // Map content has to be last
+// Dont forget to convert everything inside walls to 0 (NESW)
+
+static
+int	stt_horizontal_check(const char *line, const char *line_end)
+{
+	uint8_t	flag;
+
+	flag = 0;
+	while (line < line_end)
+	{
+		if (line[0] == '1' && line[1] == '0')
+		{
+			if (flag == 1)
+				return (1);
+			flag = 1;
+			line += 2;
+			while(*line != '1' && line < line_end)
+				line++;
+			if (*line != '1')
+				return (1);
+		}
+		line++;
+	}
+	return (0);
+}
+
+static
+int	stt_vertical_check(t_map *map)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	while (i < map->cols)
+	{
+		while (j < map->rows)
+		{
+			
+		}
+		i++;
+	}
+}
 
 // Returns: >0) Ok, -1) Invalid value (P), -2) Two Player Positions (P)
 static
@@ -33,76 +76,41 @@ ssize_t	stt_parse_line(const char *line, t_map *map)
 	const char	*oline = line;
 	size_t		cols;
 
-	cols = 0;
 	while (*line != '\n' && *line != 0)
 	{
-		if (*line == '0' || *line == '1')
-			cols++;
+		if (*line == '0' || *line == '1' || ft_isspace(*line))
+			line++;
 		else if (*line == 'N' || *line == 'E' || *line == 'S' || *line == 'W')
 		{
-			if (map->player_pos.col == 0)
+			if (map->player_pos.col != 0)
 				return (ft_error("Error\n", "", -2));	// Two player positions
 			map->player_pos.row = map->rows;
-			map->player_pos.col = cols++;	// Todo: Forgot to save player direction (save as float)
+			map->player_pos.col = (line++ - oline);	// Todo: Forgot to save player direction (save as float)
 		}
-		else if (!ft_isspace(*line))
+		else
 			return (ft_error("Error\n", "", -1));	// Not NESW, space or 01
-		line++;
 	}
+	cols = (size_t)(line - oline);
 	if (cols > map->cols)
 		map->cols = cols;
-	return ((line - oline) + (*line == '\n'));
-}
-
-static inline const
-char	*stt_max(const char *str, size_t *max, t_vec2 *player_pos)
-{
-	const char	*ostr = str;
-	uint8_t		flag;
-
-	flag = 0;
-	while (*str != 0 && *str != '\n')
-	{
-		if (str[0] == '1' && str[1] == '0')
-		{
-			if (flag == 1)
-				return (NULL);
-			flag = 1;
-			str += 2;
-			while(*str != '1' && *str != '\n' && *str != 0)
-				str++;
-			if (*str != '1')
-				return (NULL);
-		}
-		str++;
-	}
-	if ((size_t)(str - ostr) > *max)
-		*max = (size_t)(str - ostr);
-	return (str);
+	return ((ssize_t)cols + (*line == '\n'));
 }
 
 static
-void	*stt_row_check(const char *str)
+void	stt_filtercpy(const char *str, t_map *map)
 {
-	void	*ptr;
-	size_t	cols_max;
-	size_t	rows;
-	t_vec2	player_pos;
+	char	*ptr;
+	size_t	row;
 
-	rows = 0;
-	cols_max = 0;
-	player_pos.row = SIZE_MAX;
-	while (*str != 0 && *str != '\n')
+	row = 0;
+	while (*str != 0)
 	{
-		str = stt_max(str, &cols_max, &player_pos);
-		str += *str != 0;
-		rows++;
+		ptr = (char *)map->ptr + row * map->cols;
+		while (*str != 0 && *str != '\n')
+			*ptr++ = (*str++ == 1) + '0';	// Normalizes values to 1 or 0, becomes a problem with doors
+		str += (*str != 0);
+		row++;
 	}
-	ptr = malloc(rows * cols_max);
-	if (ptr == NULL)
-		return (NULL);
-	ft_memset(ptr, 0, rows * cols_max);
-	return (ptr);
 }
 
 int	cub_validate_map(const char *str, t_map *map)
@@ -117,5 +125,10 @@ int	cub_validate_map(const char *str, t_map *map)
 			return (offset);
 		map->rows++;
 	}
+	map->ptr = malloc(map->rows * map->cols);
+	if (map->ptr == NULL)
+		return (-1);
+	ft_memset(map->ptr, 0, map->rows * map->cols);
+	stt_filtercpy(str, map);
 	return (0);
 }

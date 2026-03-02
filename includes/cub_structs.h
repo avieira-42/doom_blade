@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/02 13:25:52 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/02 16:44:46 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include "cub_defines.h"
 
 typedef struct s_game
 {
@@ -95,13 +96,11 @@ typedef struct s_mat
 
 typedef struct s_map
 {
-	char	*ptr;
+	void	*ptr;
 	size_t	cols;
 	size_t	rows;
 	t_vec2	player_pos;
-	void	*textures[4];	// NESW order
-	t_argb	ceil;
-	t_argb	floor;
+	t_mat	textures[6];	// NESWCF order
 }	t_map;
 
 #endif
