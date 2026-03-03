@@ -117,14 +117,14 @@ void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir, int32_t x)
 		if (p_map_pos.x < game->map.width && p_map_pos.y < game->map.height
 				&& p_map_pos.x >= 0 && p_map_pos.y >= 0)
 		{
-			if (game->map.grid[p_map_pos.x][p_map_pos.y] == '1')
+			if (game->map.grid[p_map_pos.y][p_map_pos.x] == '1')
 				hit = true;
-			if (game->map.grid[p_map_pos.x][p_map_pos.y] == 'S')
+			if (game->map.grid[p_map_pos.y][p_map_pos.x] == 'S')
 			{
 				hit = true;
 				color = 0xFF00FF;
 			}
-			if (game->map.grid[p_map_pos.x][p_map_pos.y] == 'E')
+			if (game->map.grid[p_map_pos.y][p_map_pos.x] == 'E')
 			{
 				hit = true;
 				color = 0x777777;

@@ -44,6 +44,14 @@ void	objects_draw(t_game *game, t_veci32 map_size, t_vecf32 map_tile)
 				quad_draw((t_vecf32){x * map_tile.x,
 						y * map_tile.y},
 						game, 0x555555, map_tile);
+			if (game->map.grid[y][x] == 'S')
+				quad_draw((t_vecf32){x * map_tile.x,
+						y * map_tile.y},
+						game, 0xffff00, map_tile);
+			if (game->map.grid[y][x] == 'E')
+				quad_draw((t_vecf32){x * map_tile.x,
+						y * map_tile.y},
+						game, 0xeaddca, map_tile);
 			x++;
 		}
 		y++;
