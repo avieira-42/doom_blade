@@ -33,8 +33,8 @@ void	read_map(t_game *game, char *argv1)
 		{
 			if (game->map.grid[i][j] == 'P')
 			{
-				game->player.pos.y = i;
-				game->player.pos.x = j;
+				game->player.pos.y = i * game->map.tile_y;
+				game->player.pos.x = j * game->map.tile_x;
 			}
 			j++;
 		}

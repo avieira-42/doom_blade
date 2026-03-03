@@ -16,7 +16,7 @@
 void	update(t_game *game)
 {
 	time_delta_get(game);
-	player_move(&game->player, game->cam, game->dt);
+	player_move(*game, &game->player, game->cam, game->dt);
 	camera_move(game->player, &game->cam);
 	mlx_mouse_move(game->mlx_ptr, game->win_ptr, SCREEN_X / 2, SCREEN_Y / 2);
 }

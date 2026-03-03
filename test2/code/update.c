@@ -19,13 +19,22 @@ void	time_delta_get(t_game *game)
 	game->t0 = time_get();
 }
 
-void		player_move(t_player *player, t_cam cam, float dt)
+void		player_move(t_game game, t_player *player, t_cam cam, float dt)
 {
-	player->pos = vec_sum(player->pos,
+	(void)game;
+	t_vecf32	new_pos;
+
+	new_pos = vec_sum(player->pos,
 			vec_scalar_mult(player->dir, player->ori.y * player->speed
 								* dt * player->speed_mod));
-	player->pos = vec_sum(player->pos,
+	//if (game.map.grid[(int)new_pos.y / (int)game.map.tile_y][(int)new_pos.x / (int)game.map.tile_x] != '1')
+	player->pos = new_pos;
+
+	new_pos = vec_sum(player->pos,
 			vec_scalar_mult(cam.dir, player->ori.x * player->speed * dt));
+	//if (game.map.grid[(int)new_pos.y / (int)game.map.tile_y][(int)new_pos.x / (int)game.map.tile_x] != '1')
+	player->pos = new_pos;
+
 	if (player->mouse_mov.x == 0)
 	{
 		if (player->dir_mod == -1)
