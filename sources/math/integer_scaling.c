@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 15:23:58 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/01 15:17:43 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/04 15:12:58 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,25 @@ void	stt_linecpy(uint32_t *restrict src, uint32_t *restrict dst, size_t factor, 
 
 // Do we do error checking here? (opted not to, makes more sense to do it from outside)
 // Assumption is image is stored in width by height
-void	ft_integer_scaling(t_image *src, t_image *dst, size_t factor)
+void	ft_integer_scaling(t_mat32 *src, t_mat32 *dst, size_t factor)
 {
 	size_t			i;
 	uint32_t		*dst_ptr;
 	const uint32_t	*src_ptr = src->ptr;
-	const uint32_t	*src_end = src->ptr + src->width * src->height;
-	const size_t	line_size = dst->width * sizeof(uint32_t);
+	const uint32_t	*src_end = src->ptr + src->cols * src->rows;
+	const size_t	line_size = dst->cols * sizeof(uint32_t);
 
 	dst_ptr = dst->ptr;
 	while (src_ptr < src_end)
 	{
-		stt_linecpy(src_ptr, dst_ptr, factor, src->width);	// Copies the line, 123 becomes 112233
+		stt_linecpy(src_ptr, dst_ptr, factor, src->cols);	// Copies the line, 123 becomes 112233
 		i = 1;
 		while (i < factor)
 		{
-			ft_memcpy(dst_ptr + dst->width, dst_ptr, line_size);	// Copies the line across N rows
-			dst_ptr += dst->width;
+			ft_memcpy(dst_ptr + dst->cols, dst_ptr, line_size);	// Copies the line across N rows
+			dst_ptr += dst->cols;
 			i++;
 		}
-		src_ptr += src->width;
+		src_ptr += src->cols;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/02 16:44:46 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/04 15:11:57 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,22 +85,23 @@ typedef struct s_ret
 	int64_t	rvalue;
 }	t_ret;
 
-typedef struct s_mat
+
+
+typedef struct s_block
 {
-	void		*ptr;
-	uint16_t	rows;
-	uint16_t	cols;
-	uint16_t	line_size;
-	uint16_t	type_size;
-}	t_mat;
+	t_mat	north;
+	t_mat	east;
+	t_mat	south;
+	t_mat	west;
+}	t_block;
 
 typedef struct s_map
 {
-	void	*ptr;
+	uint8_t	*ptr;
 	size_t	cols;
 	size_t	rows;
 	t_vec2	player_pos;
-	t_mat	textures[6];	// NESWCF order
+	t_block	blocks[4];	// World, Ceil/Floor, Doors, etc...
 }	t_map;
 
 #endif
