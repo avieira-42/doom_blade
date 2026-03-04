@@ -58,19 +58,40 @@ void	objects_draw(t_game *game, t_veci32 map_size, t_vecf32 map_tile)
 	}
 }
 
+void	ray_draw(t_game *game, t_player player, t_ray ray, int32_t x)
+{
+	if (ray.hit == true)
+	{
+		ray.hit_pos.x = (ray.p_pos.x + ray.dir.x * ray.final_len) * game->map.tile_x;
+		ray.hit_pos.y = (ray.p_pos.y + ray.dir.y * ray.final_len) * game->map.tile_y;
+		ray.color = RED;
+	}
+	else
+	{
+		ray.hit_pos.x = (ray.p_pos.x + ray.dir.x * game->cam.dist) * game->map.tile_x;
+		ray.hit_pos.y = (ray.p_pos.y + ray.dir.y * game->cam.dist) * game->map.tile_y;
+		ray.color = GREEN;
+	}
+	line_draw_bresenham(game->player.pos, ray.hit_pos, game, ray.color);
+	if (!ray.hit)
+		return ;
+	column_render(game, ray, player, x);
+}
+
 void	fov_draw(t_game *game)
 {
 	int32_t		x;
 	float		camera_x;
-	t_vecf32	ray_dir;
+	t_ray		ray;
 
 	x = 0;
 	while(x < SCREEN_X)
 	{
 		camera_x = 2 * x / (float)SCREEN_X - 1;
-		ray_dir.x = game->player.dir.x + game->cam.dir.x * camera_x;
-		ray_dir.y = game->player.dir.y + game->cam.dir.y * camera_x;
-		ray_cast(game, game->player, ray_dir, x);
+		ray.dir.x = game->player.dir.x + game->cam.dir.x * camera_x;
+		ray.dir.y = game->player.dir.y + game->cam.dir.y * camera_x;
+		ray_cast(game, &ray);
+		ray_draw(game, game->player, ray, x);
 		x++;
 	}
 }

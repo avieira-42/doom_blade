@@ -3,6 +3,8 @@
 
 #include "libft_math.h"
 #include <stdio.h>
+#include <stdbool.h>
+
 #define BLACK 0x000000
 #define RED 0xFF0000
 #define GREEN 0x00FF00
@@ -32,10 +34,6 @@ typedef struct	s_img
 	float	height;;
 }	t_img;
  
-typedef struct	s_ray
-{
-}	t_ray;
-
 typedef struct	s_cam
 {
 	t_vecf32	pos;
@@ -58,7 +56,31 @@ typedef struct s_player
 	float		speed_mod;
 }	t_player;
 
-typedef	struct s_map
+typedef struct	s_ray
+{
+	t_vecf32	dir;
+	t_vecf32	p_pos;
+	t_veci32	p_map_pos;
+	t_veci32	step_ori;
+	t_vecf32	step_size;
+	t_vecf32	ray_len;
+	t_vecf32	hit_pos;
+	int32_t		color;
+	int32_t		side;
+	float		final_len;
+	float		perp_wall_dist;
+	bool		hit;
+}	t_ray;
+
+typedef struct	s_column
+{
+	t_vecf32	start;
+	t_vecf32	end;
+	float		height;
+
+}	t_column;
+
+typedef	struct	s_map
 {
 	float		height;
 	float		width;

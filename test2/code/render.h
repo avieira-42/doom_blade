@@ -11,5 +11,6 @@ void	line_draw_bresenham_h(t_vecf32 a, t_vecf32 b, t_game *game, int color);
 void	quad_draw(t_vecf32 a, t_game *game, int color, t_vecf32 len);
 void	window_clear(t_game *game, int color);
 void	minimap_draw(t_game *game);
+void	column_render(t_game *game, t_ray ray, t_player player, int32_t x);
 
 #endif

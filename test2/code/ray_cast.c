@@ -1,5 +1,4 @@
 #include <stdbool.h>
-#include "render.h"
 #include "types.h"
 #include "libft_math.h"
 
@@ -44,149 +43,61 @@
    			calculate y_ray
    		check ray collision */
 
-void	ray_cast(t_game *game, t_player player, t_vecf32 r_dir, int32_t x)
+void	ray_cast_init(t_cam cam, t_map map, t_ray *ray)
 {
-	t_vecf32	p_pos;
-	t_veci32	p_map_pos;
-	t_veci32	step_ori;
-	t_vecf32	step_size;
-	t_vecf32	ray_len;
-	t_vecf32	hit_pos;
-	int32_t		color;
-	int32_t		side;
-	float		final_len;
-	float		perp_wall_dist;
-	bool		hit;
-
-	// translate the player pos vec to float tile units p_pos.x = player.pos.x / game->map.tile_x;
-	(void)player;
-	p_pos.x = game->cam.pos.x / game->map.tile_x;
-	p_pos.y = game->cam.pos.y / game->map.tile_y;
-
-	// translate player pos to integer tile units
-	p_map_pos = (t_veci32){p_pos.x, p_pos.y};
-
-	// set unit size for each step taken on each grid axis
-	//step_size.x = 1 / u_rsqrt(1 + (r_dir.y * r_dir.y) / (r_dir.x * r_dir.x)); step_size.y = 1 / u_rsqrt(1 + (r_dir.x * r_dir.x) / (r_dir.y * r_dir.y));
-	step_size.x = ft_abs(1.0f / r_dir.x);
-	step_size.y = ft_abs(1.0f / r_dir.y);
-
-	// set unit orientation for each step to take and calculate respective axis starting len
-	if (r_dir.x < 0)
+	ray->p_pos = (t_vecf32){cam.pos.x / map.tile_x, cam.pos.y / map.tile_y};
+	ray->p_map_pos = (t_veci32){ray->p_pos.x, ray->p_pos.y};
+	ray->step_size.x = ft_abs(1.0f / ray->dir.x);
+	ray->step_size.y = ft_abs(1.0f / ray->dir.y);
+	ray->hit = false;
+	ray->final_len = 0;
+	if (ray->dir.x < 0)
 	{
-		step_ori.x = -1;
-		ray_len.x = step_size.x * ft_abs(p_pos.x - p_map_pos.x);
+		ray->step_ori.x = -1;
+		ray->ray_len.x = ray->step_size.x * ft_abs(ray->p_pos.x - ray->p_map_pos.x);
 	}
 	else
 	{
-		step_ori.x = 1;
-		ray_len.x = step_size.x * (1 - ft_abs(p_pos.x - p_map_pos.x));
+		ray->step_ori.x = 1;
+		ray->ray_len.x = ray->step_size.x * (1 - ft_abs(ray->p_pos.x - ray->p_map_pos.x));
 	}
-	if (r_dir.y < 0)
+	if (ray->dir.y < 0)
 	{
-		step_ori.y = -1;
-		ray_len.y = step_size.y * (ft_abs(p_pos.y - p_map_pos.y));
+		ray->step_ori.y = -1;
+		ray->ray_len.y = ray->step_size.y * (ft_abs(ray->p_pos.y - ray->p_map_pos.y));
 	}
 	else
 	{
-		step_ori.y = 1;
-		ray_len.y = step_size.y * (1 - ft_abs(p_pos.y - p_map_pos.y));
+		ray->step_ori.y = 1;
+		ray->ray_len.y = ray->step_size.y * (1 - ft_abs(ray->p_pos.y - ray->p_map_pos.y));
 	}
+}
 
-	hit = false;
-	final_len = 0;
-	while (!hit)
+void	ray_cast(t_game *game, t_ray *ray)
+{
+	ray_cast_init(game->cam, game->map, ray);
+	while (!ray->hit)
 	{
-		if (ray_len.x < ray_len.y)
+		if (ray->ray_len.x < ray->ray_len.y)
 		{
-			final_len = ray_len.x;
-			p_map_pos.x += step_ori.x;
-			ray_len.x += step_size.x;
-			side = 0;
+			ray->final_len = ray->ray_len.x;
+			ray->p_map_pos.x += ray->step_ori.x;
+			ray->ray_len.x += ray->step_size.x;
+			ray->side = 0;
 		}
 		else
 		{
-			final_len = ray_len.y;
-			p_map_pos.y += step_ori.y;
-			ray_len.y += step_size.y;
-			side = 1;
+			ray->final_len = ray->ray_len.y;
+			ray->p_map_pos.y += ray->step_ori.y;
+			ray->ray_len.y += ray->step_size.y;
+			ray->side = 1;
 		}
-		if (final_len >= (float)game->vd)
+		if (ray->final_len >= (float)game->vd)
 			break;
-
-		if (p_map_pos.x < game->map.width && p_map_pos.y < game->map.height
-				&& p_map_pos.x >= 0 && p_map_pos.y >= 0)
-		{
-			if (game->map.grid[p_map_pos.y][p_map_pos.x] == '1')
-				hit = true;
-			if (game->map.grid[p_map_pos.y][p_map_pos.x] == 'S')
-			{
-				hit = true;
-				color = 0xFF00FF;
-			}
-			if (game->map.grid[p_map_pos.y][p_map_pos.x] == 'E')
-			{
-				hit = true;
-				color = 0x777777;
-			}
-		}
+		if (ray->p_map_pos.x < game->map.width
+				&& ray->p_map_pos.y < game->map.height
+				&& ray->p_map_pos.x >= 0 && ray->p_map_pos.y >= 0)
+			if (game->map.grid[ray->p_map_pos.y][ray->p_map_pos.x] == '1')
+				ray->hit = true;
 	}
-	if (hit == true)
-	{
-		hit_pos.x = (p_pos.x + r_dir.x * final_len) * game->map.tile_x;
-		hit_pos.y = (p_pos.y + r_dir.y * final_len) * game->map.tile_y;
-		color = RED;
-	}
-	else
-	{
-		hit_pos.x = (p_pos.x + r_dir.x * game->cam.dist) * game->map.tile_x;
-		hit_pos.y = (p_pos.y + r_dir.y * game->cam.dist) * game->map.tile_y;
-		color = GREEN;
-	}
-	line_draw_bresenham(game->player.pos, hit_pos, game, color);
-	if (!hit)
-		return ;
-
-	// 3D RENDERING
-
-	// calculate perp_wall_dist
-	if (side == 0)
-		perp_wall_dist = (p_map_pos.x - p_pos.x + (1 - step_ori.x) / 2.0f) / r_dir.x;
-	else
-		perp_wall_dist = (p_map_pos.y - p_pos.y + (1 - step_ori.y) / 2.0f) / r_dir.y;
-
-	//	calculate height of line to be drawn
-	float	line_height = SCREEN_Y / perp_wall_dist;
-
-	// calculate lowest and highest pixel to fill in current stripe
-	t_vecf32	draw_start;
-	t_vecf32	draw_end;
-
-	draw_start.x = x;
-	draw_end.x = x;
-	draw_start.y = -line_height / 2 + player.mouse_mov.y / 2;
-	draw_end.y = line_height / 2 + player.mouse_mov.y / 2;
-	if (draw_start.x < 0)
-		draw_start.x = 0;
-	if (draw_end.y >= SCREEN_Y)
-		draw_end.y = SCREEN_Y - 1;
-
-	if (color != 0x777777 && color != 0xFF00FF)
-	{
-		if (r_dir.x > 0)
-		{
-			if (r_dir.y > 0)
-				color = RED;
-			else
-				color = BLUE;
-		}
-		else
-		{
-			if (r_dir.y > 0)
-				color = WHITE;
-			else
-				color = GREEN;
-		}
-	}
-	line_draw_bresenham(draw_start, draw_end, game, color);
 }
