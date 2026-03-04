@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/04 15:11:57 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/04 16:36:14 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,12 @@ typedef struct s_ret
 	int64_t	rvalue;
 }	t_ret;
 
-
-
 typedef struct s_block
 {
-	t_mat	north;
-	t_mat	east;
-	t_mat	south;
-	t_mat	west;
+	t_mat32	north;
+	t_mat32	east;
+	t_mat32	south;
+	t_mat32	west;
 }	t_block;
 
 typedef struct s_map
