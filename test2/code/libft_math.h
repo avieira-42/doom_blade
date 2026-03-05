@@ -42,6 +42,6 @@ t_vecf32	vec_sum(t_vecf32 a, t_vecf32 b);
 t_vecf32	vec_sub(t_vecf32 a, t_vecf32 b);
 t_vecf32	vec_unit(t_vecf32 vec);
 t_vecf32	vec_dir(t_vecf32 a, t_vecf32 b);
-t_vecf32	vec_scalar_mult(t_vecf32 unit, float scalar);
+t_vecf32	vec_scalar_mult(t_vecf32 vec, float scalar);
 
 #endif

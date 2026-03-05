@@ -85,5 +85,11 @@ int	mouse_move(int x, int y, void *arg)
 	game = (t_game *) arg;
 	game->player.mouse_mov.x = (x - SCREEN_X / 2) / 100;
 	game->player.mouse_mov.y += (y - SCREEN_Y / 2) * -1;
+	if (game->player.mouse_mov.y <= -1000.)
+		game->player.mouse_mov.y = -1000.;
+	if (game->player.mouse_mov.y <= -1200.)
+		game->player.mouse_mov.y = -1000.;
+	if (game->player.mouse_mov.y >= 3500.)
+		game->player.mouse_mov.y = 3500.;
 	return (1);
 }

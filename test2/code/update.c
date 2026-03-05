@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   update.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/05 16:39:17 by avieira-          #+#    #+#             */
+/*   Updated: 2026/03/05 16:39:20 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
 #include <stdint.h>
 #include <sys/time.h>
@@ -26,19 +38,22 @@ bool	collision_check(t_game *game, t_vecf32 new_pos)
 	return (false);
 }
 
-void		player_move(t_game *game, t_player *player, t_cam *cam, float dt, t_vecf32 *collision)
+void		player_move(t_game *game, t_player *player, t_cam *cam, float dt)
 {
-	(void)game;
-	*collision = vec_sum(player->pos,
-			vec_scalar_mult(player->dir, player->ori.y * player->speed
-								* dt * player->speed_mod));
-	*collision = vec_sum(*collision,
-			vec_scalar_mult(cam->dir, player->ori.x * player->speed * dt));
-	if (collision_check(game, *collision) == false)
-	{
-		player->pos = *collision;
-		*collision = (t_vecf32){0,0};
-	}
+	t_vecf32	increment_vec_x;
+	t_vecf32	increment_vec_y;
+	t_vecf32	increment_vec;
+
+	increment_vec_x = vec_scalar_mult(cam->dir, player->ori.x * player->speed * dt);
+	increment_vec_y = vec_scalar_mult(player->dir, player->ori.y * player->speed * dt * player->speed_mod);
+	increment_vec = vec_sum(increment_vec_x, increment_vec_y);
+	increment_vec_x = (t_vecf32){increment_vec.x, 0};
+	increment_vec_y = (t_vecf32){0, increment_vec.y};
+	if (collision_check(game, vec_sum(increment_vec_x, player->pos)) == false)
+		player->pos = vec_sum(increment_vec_x, player->pos);
+	if (collision_check(game, vec_sum(increment_vec_y, player->pos)) == false)
+		player->pos = vec_sum(increment_vec_y, player->pos);
+
 	if (player->mouse_mov.x == 0)
 	{
 		if (player->dir_mod == -1)

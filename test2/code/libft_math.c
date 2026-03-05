@@ -29,9 +29,9 @@ t_vecf32	vec_sub(t_vecf32 a, t_vecf32 b)
         return ((t_vecf32){b.x - a.x, b.y - a.y});
 }
 
-t_vecf32	vec_scalar_mult(t_vecf32 unit, float scalar)
+t_vecf32	vec_scalar_mult(t_vecf32 vec, float scalar)
 {
-        return ((t_vecf32){unit.x * scalar, unit.y * scalar});
+        return ((t_vecf32){vec.x * scalar, vec.y * scalar});
 }
 
 float	vec_mag_sqd(t_vecf32 vec)

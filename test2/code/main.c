@@ -13,12 +13,10 @@
 #include "parse.h"
 #include "init.h"
 
-t_vecf32	collision = (t_vecf32){0,0};
-
 void	update(t_game *game)
 {
 	time_delta_get(game);
-	player_move(game, &game->player, &game->cam, game->dt, &collision);
+	player_move(game, &game->player, &game->cam, game->dt);
 	camera_move(&game->player, &game->cam);
 	mlx_mouse_move(game->mlx_ptr, game->win_ptr, SCREEN_X / 2, SCREEN_Y / 2);
 }
@@ -27,10 +25,6 @@ void	render(t_game *game)
 {
 	window_clear(game, 0x000000);
 	space_render(game);
-	if (collision.x != 0 && collision.y != 0)
-		quad_draw((t_vecf32){collision.x * game->map.tile_x, collision.y *game->map.tile_y},
-				game, 0xffffff,
-				(t_vecf32){game->map.tile_x, game->map.tile_y});
 	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr,
 			game->frame.img, 0, 0);
 }
