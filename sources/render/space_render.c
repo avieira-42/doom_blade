@@ -1,53 +1,68 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   space_render.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/05 19:02:22 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/03/05 19:03:40 by adeimlin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include <stdint.h>
+#include <stddef.h>
+#include <stdbool.h>
 #include <unistd.h>
+#include "cub_structs.h"
 
-void    grid_draw(t_game *game, t_vecf32 map_max,
-		t_vecf32 map_tile, t_veci32 map_size)
-{
-	int	i;
-	float	pos;
+// void    grid_draw(t_game *game, t_vecf32 map_max,
+// 		t_vecf32 map_tile, t_veci32 map_size)
+// {
+// 	int	i;
+// 	float	pos;
 
-	i = 0;
-	pos = 0;
-	while (i <= map_size.y)
-	{
-		line_draw_bresenham((t_vecf32){0, pos},
-				(t_vecf32){map_max.x, pos},
-				game, 0x777777);
-		pos += map_tile.y;
-		i++;
-	}
-	i = 0;
-	pos = 0; while (i <= map_size.x)
-	{
-		line_draw_bresenham((t_vecf32){pos, 0},
-				(t_vecf32){pos, map_max.y},
-				game, 0x777777);
-		pos += map_tile.x;
-		i++;
-	}
-}
+// 	i = 0;
+// 	pos = 0;
+// 	while (i <= map_size.y)
+// 	{
+// 		line_draw_bresenham((t_vecf32){0, pos},
+// 				(t_vecf32){map_max.x, pos},
+// 				game, 0x777777);
+// 		pos += map_tile.y;
+// 		i++;
+// 	}
+// 	i = 0;
+// 	pos = 0; while (i <= map_size.x)
+// 	{
+// 		line_draw_bresenham((t_vecf32){pos, 0},
+// 				(t_vecf32){pos, map_max.y},
+// 				game, 0x777777);
+// 		pos += map_tile.x;
+// 		i++;
+// 	}
+// }
 
-void	objects_draw(t_game *game, t_veci32 map_size, t_vecf32 map_tile)
-{
-	int32_t	y;
-	int32_t	x;
+// void	objects_draw(t_game *game, t_veci32 map_size, t_vecf32 map_tile)
+// {
+// 	int32_t	y;
+// 	int32_t	x;
 
-	y = 0;
-	while (y < map_size.y)
-	{
-		x = 0;
-		while(x < map_size.x)
-		{
-			if (game->map.grid[y][x] == '1')
-				quad_draw((t_vecf32){x * map_tile.x,
-						y * map_tile.y},
-						game, 0x555555, map_tile);
-			x++;
-		}
-		y++;
-	}
-}
+// 	y = 0;
+// 	while (y < map_size.y)
+// 	{
+// 		x = 0;
+// 		while(x < map_size.x)
+// 		{
+// 			if (game->map.grid[y][x] == '1')
+// 				quad_draw((t_vecf32){x * map_tile.x,
+// 						y * map_tile.y},
+// 						game, 0x555555, map_tile);
+// 			x++;
+// 		}
+// 		y++;
+// 	}
+// }
 
 void	ray_draw(t_game *game, t_player player, t_ray ray, int32_t x)
 {
@@ -79,15 +94,21 @@ void	fov_draw(t_game *game)
 	float		camera_x;
 	t_ray		ray;
 	x = 0;
-	while(x < SCREEN_X)
+	while(x < SCREEN_WIDTH)
 	{
-		camera_x = 2 * x / (float)SCREEN_X - 1;
+		camera_x = 2 * x / (float)SCREEN_WIDTH - 1;
 		ray.dir.x = game->player.dir.x + game->cam.dir.x * camera_x;
 		ray.dir.y = game->player.dir.y + game->cam.dir.y * camera_x;
 		ray_cast(game, &ray);
 		ray_draw(game, game->player, ray, x);
 		x++;
 	}
+}
+
+static inline
+void	stt_putrgb(t_img *img, uint32_t x, uint32_t y, uint32_t argb)
+{
+	((uint32_t (*)[img->width])img->data)[y][x] = argb;
 }
 
 void	player_draw(t_game *game, t_vecf32 map_tile)
@@ -97,7 +118,7 @@ void	player_draw(t_game *game, t_vecf32 map_tile)
 	p_pos.x = (game->player.pos.x - 0.5f) * map_tile.x;
 	p_pos.y = (game->player.pos.y - 0.5f) * map_tile.y;
 	quad_draw(p_pos, game, 0xFF00FF, map_tile);
-	img_pixel_put(game, p_pos.x, p_pos.y, 0xFFFFFF);
+	stt_putrgb(game->frame, p_pos.x, p_pos.y, 0xFFFFFF);
 }
 
 void	space_render(t_game *game)

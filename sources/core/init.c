@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/05 15:30:14 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/05 17:29:42 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/05 18:25:22 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ int	cub_init(t_xvar *mlx, t_map *map)
 
 void	screen_init(t_game *game)
 {
-	game->mlx_ptr = mlx_init();
-	game->win_ptr = mlx_new_window(game->mlx_ptr, SCREEN_X, SCREEN_Y, "doom_blade");
+	game->mlx = mlx_init();
+	game->mlx->win_list = mlx_new_window(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "doom_blade");
 	game->t0 = time_get();
 	time_delta_get(game);
 	game->vd = 1 / u_rsqrt(game->map.width * game->map.width
 			+ game->map.height * game->map.height);
-	game->frame.img = mlx_new_image(game->mlx_ptr, SCREEN_X, SCREEN_Y);
+	game->frame.img = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	game->frame.addr = mlx_get_data_addr(
 			game->frame.img, &game->frame.bpp, &game->frame.l_len,
 				&game->frame.endian);
@@ -42,12 +42,12 @@ void	screen_init(t_game *game)
 
 void	player_init(t_game *game)
 {
-	game->player.dir = (t_vecf32){0.71, 0.71};
-	game->player.ori = (t_vecf32){0, 0};
+	game->player.dir = (t_vec2){.x.f = 0.71f, .y.f = 0.71f};
+	game->player.ori = (t_vec2){.x.f = 0.0f, .y.f = 0.0f};
 	game->player.dir_mod = 0;
 	game->player.speed = 3;
 	game->player.speed_mod = 1;
-	game->player.mouse_mov = (t_vecf32){0, 0};
+	game->cam.mouse_mov = (t_vec2){.x.f = 0.0f, .y.f = 0.0f};
 }
 
 void	cam_init(t_cam *cam, t_player player)

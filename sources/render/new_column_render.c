@@ -16,7 +16,7 @@ t_column	column_init(t_ray ray, t_player player, int32_t x)
 				+ (1 - ray.step_ori.y) / 2.0f) / ray.dir.y;
 
 	//	calculate height of line to be drawn
-	column.height = SCREEN_Y / ray.perp_wall_dist;
+	column.height = SCREEN_HEIGHT / ray.perp_wall_dist;
 
 	// calculate lowest and highest pixel to fill in current stripe
 	column.end.x = x;
@@ -25,8 +25,8 @@ t_column	column_init(t_ray ray, t_player player, int32_t x)
 	column.end.y = column.height / 2 + player.mouse_mov.y / 2;
 	if (column.start.x < 0)
 		column.start.x = 0;
-	if (column.end.y >= SCREEN_Y)
-		column.end.y = SCREEN_Y - 1;
+	if (column.end.y >= SCREEN_HEIGHT)
+		column.end.y = SCREEN_HEIGHT - 1;
 	return (column);
 }
 
