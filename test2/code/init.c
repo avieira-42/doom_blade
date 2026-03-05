@@ -23,12 +23,9 @@ void	screen_init(t_game *game)
 void	player_init(t_game *game)
 {
 	game->player.dir = (t_vecf32){0.71, 0.71};
-	game->player.pos = (t_vecf32){100, 100};
 	game->player.ori = (t_vecf32){0, 0};
 	game->player.dir_mod = 0;
-	game->player.acc = 10;
-	game->player.vel = 300;
-	game->player.speed = 30;
+	game->player.speed = 3;
 	game->player.speed_mod = 1;
 	game->player.mouse_mov = (t_vecf32){0, 0};
 }
@@ -37,8 +34,10 @@ void	cam_init(t_cam *cam, t_player player)
 {
 	cam->dist = 1;
 	cam->dist_mod = 0;
-	cam->half_len = 30;
+	cam->half_len = 10;
 	cam->dir = (t_vecf32){-0.71, 0.71};
 	cam->pos = vec_sum(player.pos,
 				vec_scalar_mult(player.dir, cam->dist));
+	printf("p.x: %f\np.y: %f\n", player.pos.x, player.pos.y);
+	printf("cam.x: %f\ncam.y: %f\n", cam->pos.x, cam->pos.y);
 }

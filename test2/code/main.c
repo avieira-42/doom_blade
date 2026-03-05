@@ -19,12 +19,13 @@ void	update(t_game *game)
 	player_move(*game, &game->player, game->cam, game->dt);
 	camera_move(game->player, &game->cam);
 	mlx_mouse_move(game->mlx_ptr, game->win_ptr, SCREEN_X / 2, SCREEN_Y / 2);
+	//printf("p.x: %f\np.y: %f\n", game->player.pos.x, game->player.pos.y);
 }
 
 void	render(t_game *game)
 {
 	window_clear(game, 0x000000);
-	minimap_draw(game);
+	space_render(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr,
 			game->frame.img, 0, 0);
 }

@@ -50,8 +50,6 @@ typedef struct s_player
 	t_vecf32	ori;
 	t_vecf32	mouse_mov;
 	int32_t		dir_mod;
-	float		acc;
-	float		vel;
 	float		speed;
 	float		speed_mod;
 }	t_player;

@@ -43,9 +43,9 @@
    			calculate y_ray
    		check ray collision */
 
-void	ray_cast_init(t_cam cam, t_map map, t_ray *ray)
+void	ray_cast_init(t_cam cam, t_ray *ray)
 {
-	ray->p_pos = (t_vecf32){cam.pos.x / map.tile_x, cam.pos.y / map.tile_y};
+	ray->p_pos = (t_vecf32){cam.pos.x, cam.pos.y};
 	ray->p_map_pos = (t_veci32){ray->p_pos.x, ray->p_pos.y};
 	ray->step_size.x = ft_abs(1.0f / ray->dir.x);
 	ray->step_size.y = ft_abs(1.0f / ray->dir.y);
@@ -75,7 +75,7 @@ void	ray_cast_init(t_cam cam, t_map map, t_ray *ray)
 
 void	ray_cast(t_game *game, t_ray *ray)
 {
-	ray_cast_init(game->cam, game->map, ray);
+	ray_cast_init(game->cam, ray);
 	while (!ray->hit)
 	{
 		if (ray->ray_len.x < ray->ray_len.y)

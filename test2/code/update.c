@@ -3,6 +3,7 @@
 #include <sys/time.h>
 #include "types.h"
 #include "clean.h"
+#include "render.h"
 
 uint64_t 	time_get()
 {
@@ -19,22 +20,26 @@ void	time_delta_get(t_game *game)
 	game->t0 = time_get();
 }
 
+bool	collision_check(t_game game, t_vecf32 new_pos)
+{
+	if (game.map.grid[(int)(new_pos.y / game.map.tile_y)]
+			[(int)(new_pos.x / game.map.tile_x)] == '1')
+		return (true);
+	return (false);
+}
+
 void		player_move(t_game game, t_player *player, t_cam cam, float dt)
 {
-	(void)game;
 	t_vecf32	new_pos;
 
 	new_pos = vec_sum(player->pos,
 			vec_scalar_mult(player->dir, player->ori.y * player->speed
 								* dt * player->speed_mod));
-	//if (game.map.grid[(int)new_pos.y / (int)game.map.tile_y][(int)new_pos.x / (int)game.map.tile_x] != '1')
-	player->pos = new_pos;
-
-	new_pos = vec_sum(player->pos,
+	new_pos = vec_sum(new_pos,
 			vec_scalar_mult(cam.dir, player->ori.x * player->speed * dt));
-	//if (game.map.grid[(int)new_pos.y / (int)game.map.tile_y][(int)new_pos.x / (int)game.map.tile_x] != '1')
+	(void)game;
+	//if (collision_check(game, new_pos) == false)
 	player->pos = new_pos;
-
 	if (player->mouse_mov.x == 0)
 	{
 		if (player->dir_mod == -1)
@@ -49,7 +54,6 @@ void		player_move(t_game game, t_player *player, t_cam cam, float dt)
 		if (player->mouse_mov.x < 0.)
 			player->dir = vec_rotate(player->dir, player->mouse_mov.x * -1, LEFT);
 	}
-	//printf("mouse_mov.x: %f\n", player->mouse_mov.x);
 }
 
 void	camera_move(t_player player, t_cam *cam)

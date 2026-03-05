@@ -5,8 +5,8 @@
 
 void	read_map(t_game *game, char *argv1)
 {
-	size_t	i;
-	size_t	j;
+	int32_t	i;
+	int32_t	j;
 	int		fd;
 
 	i = 0;
@@ -33,8 +33,9 @@ void	read_map(t_game *game, char *argv1)
 		{
 			if (game->map.grid[i][j] == 'P')
 			{
-				game->player.pos.y = i * game->map.tile_y;
-				game->player.pos.x = j * game->map.tile_x;
+				game->player.pos.y = i;
+				game->player.pos.x = j;
+				printf("i: %i, j: %i\n", i, j);
 			}
 			j++;
 		}

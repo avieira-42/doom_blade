@@ -28,7 +28,7 @@ UPDATE = code/update.c
 
 RENDER = code/draw_line.c\
 		 code/pixel_put.c\
-		 code/draw_minimap.c\
+		 code/column_render.c\
 		 code/space_render.c
 
 LIBFT_MATH = code/libft_math.c
