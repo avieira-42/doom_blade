@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/04 16:36:14 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/05 13:36:24 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,32 +23,67 @@ typedef struct s_game
 	const char	*cwd;
 }	t_game;
 
+typedef struct s_mat
+{
+	void		*ptr;
+	uint16_t	rows;
+	uint16_t	cols;
+	uint16_t	depth;
+	uint8_t		type_size;
+	uint8_t		flags;	// MSB -> LSB: float, transposed, 
+}	t_mat;
+
+typedef struct s_mat32
+{
+	uint32_t	*ptr;
+	uint16_t	rows;
+	uint16_t	cols;
+	uint16_t	depth;
+	uint16_t	flags;
+}	t_mat32;
+
+typedef struct s_mat2
+{
+	uint32_t	p00;
+	uint32_t	p01;
+	uint32_t	p10;
+	uint32_t	p11;
+}	t_mat2;
+
+typedef union t_32
+{
+	float 		f;
+	int32_t		i;
+	uint32_t	u;
+	struct
+	{
+		uint8_t	b;	// LSB
+		uint8_t	g;
+		uint8_t	r;
+		uint8_t	a;	// MSB
+	};
+}	t_32;
+
 typedef struct s_vec2
 {
-	uint32_t	col;
-	uint32_t	row;
+	t_32	x;
+	t_32	y;
 }	t_vec2;
 
-typedef struct s_vec2f
+typedef struct s_vec3
 {
-	float	x;
-	float	y;
-}	t_vec2f;
+	t_32	x;
+	t_32	y;
+	t_32	z;
+}	t_vec3;
 
-typedef union u_vec2
+typedef struct s_vec4
 {
-	struct
-	{
-		uint32_t	x;
-		uint32_t	y;
-	};
-	struct
-	{
-		float	xf;
-		float	yf;
-	};
-}	t_uvec;
-
+	t_32	x;
+	t_32	y;
+	t_32	z;
+	t_32	w;
+}	t_vec4;
 
 // 0xAARRGGBB
 typedef union u_argb
@@ -62,28 +97,6 @@ typedef union u_argb
 		uint8_t	a;
 	};
 }	t_argb;
-
-typedef union u_32
-{
-	uint32_t	i;
-	float		f;
-	char		c[4];
-}	t_32;
-
-typedef struct s_ret
-{
-	union
-	{
-		void		*ptr;
-		uint64_t	u64;
-		uint32_t	u32;
-		uint8_t		u8;
-		int64_t		i64;
-		int32_t		i32;
-		int8_t		i8;
-	};
-	int64_t	rvalue;
-}	t_ret;
 
 typedef struct s_block
 {

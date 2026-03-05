@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 15:23:58 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/04 15:12:58 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/05 13:37:58 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "cub_utils.h"
-#include "tmp_math.h"
+#include "cub_structs.h"
 
 static inline
 void	stt_linecpy(uint32_t *restrict src, uint32_t *restrict dst, size_t factor, size_t width)
@@ -42,11 +42,13 @@ void	ft_integer_scaling(t_mat32 *src, t_mat32 *dst, size_t factor)
 {
 	size_t			i;
 	uint32_t		*dst_ptr;
-	const uint32_t	*src_ptr = src->ptr;
-	const uint32_t	*src_end = src->ptr + src->cols * src->rows;
+	uint32_t		*src_ptr;
+	uint32_t		*src_end;
 	const size_t	line_size = dst->cols * sizeof(uint32_t);
 
+	src_ptr = src->ptr;
 	dst_ptr = dst->ptr;
+	src_end = src->ptr + src->cols * src->rows;
 	while (src_ptr < src_end)
 	{
 		stt_linecpy(src_ptr, dst_ptr, factor, src->cols);	// Copies the line, 123 becomes 112233

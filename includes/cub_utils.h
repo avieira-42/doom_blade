@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/02 16:59:38 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/05 14:02:23 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include "cub_structs.h"
 
 void		**ft_free_array(void *array, size_t length);
 void		*ft_memset(void *vdst, const uint8_t byte, size_t length);

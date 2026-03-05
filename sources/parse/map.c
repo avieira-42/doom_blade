@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 11:19:47 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/02 17:08:18 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/05 15:02:33 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 #include <unistd.h>
 #include "cub_structs.h"
 #include "cub_utils.h"
-#include "cmlx.h"
-#include "mlx.h"
 
 // Save max wall width and height
 // Validate wall exterior
@@ -82,10 +80,10 @@ ssize_t	stt_parse_line(const char *line, t_map *map)
 			line++;
 		else if (*line == 'N' || *line == 'E' || *line == 'S' || *line == 'W')
 		{
-			if (map->player_pos.col != 0)
+			if (map->player_pos.x.u != 0)
 				return (ft_error("Error\n", "", -2));	// Two player positions
-			map->player_pos.row = map->rows;
-			map->player_pos.col = (line++ - oline);	// Todo: Forgot to save player direction (save as float)
+			map->player_pos.y.u = map->rows;
+			map->player_pos.x.u = (line++ - oline);	// Todo: Forgot to save player direction (save as float)
 		}
 		else
 			return (ft_error("Error\n", "", -1));	// Not NESW, space or 01

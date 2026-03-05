@@ -1,6 +1,6 @@
 # Configuration ------------------------------- #
 NAME = main
-VPATH = sources sources/utils sources/parse
+VPATH = sources sources/utils sources/parse sources/math
 SRCS = read_rgb.c
 LDLIBS = 
 ASM = $(OBJS:.o=.s)

@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 13:56:02 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/02/25 11:48:22 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/05 14:55:12 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,16 +109,3 @@ uint32_t	ft_strtoargb(const char *str, const char **str_ptr)
 		*str_ptr = str;
 	return (argb_value);
 }
-
-int	main(int argc, char **argv, char **envp)
-{
-	uint32_t	rvalue;
-	const char	str[] = "200,,100,50";
-
-	rvalue = ft_strtorgb(str, &str);
-
-	return (0);
-}
-
-
-// buffer[index] = buffer[index] * 10 + (*str - '0');

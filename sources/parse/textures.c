@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 15:46:12 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/03 15:08:58 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/05 14:54:27 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "cub_defines.h"
 #include "cub_structs.h"
 #include "cub_utils.h"
+#include "cub_functions.h"
 #include "cmlx.h"
 #include "mlx.h"
 
@@ -53,57 +54,92 @@ t_img	*stt_read_xpm(t_xvar *mlx, const char **filename_ptr)
 	return (ptr);
 }
 
+// Reads
 static
-void	stt_cleanup(void *ptr1, void *ptr2, void *ptr3)
-{
-	free(ptr1);
-	free(ptr2);
-	free(ptr3);
-}
-
-static
-void	stt_transpose(t_mat *src, t_mat *dst)
-{
-	size_t		i;
-	size_t		j;
-	uint32_t	*dst_ptr;
-	uint32_t	*src_ptr;
-
-	i = 0;
-	src_ptr = src->ptr;
-	dst_ptr = dst->ptr;
-	while (i < src->rows)
-	{
-		j = 0;
-		while (j < src->cols)
-		{
-			dst_ptr[i * src->cols + j] = src_ptr[j * src->cols + i];
-			j++;
-		}
-		i++;
-	}
-}
-
-t_mat	read_texture(t_xvar *mlx, const char **filename_ptr)
+int	stt_read_texture(t_xvar *mlx, t_mat32 *texture, const char **filename_ptr)
 {
 	t_img	*img;
-	t_mat	texture;
-	void	*tmp;
 
-	texture.rows = RENDER_HEIGHT;
+	if (texture->ptr != NULL)
+		return (-2);
 	img = stt_read_xpm(mlx, filename_ptr);
 	if (img == NULL)
-		return (texture);
-	texture.cols = (double)texture.rows / (double)img->height * img->width;
-	texture.ptr = malloc(texture.cols * texture.rows * sizeof(uint32_t));
-	if (texture.ptr == NULL)
-		return (stt_cleanup(img->data, img, NULL), texture);
-	// bilinear scale to A x RENDER_HEIGHT
-	// Transpose to RENDER_HEIGHT x A
-	texture.depth = 1;
-	texture.type_size = sizeof(uint32_t);
-	texture.flags = 0;
-	free(img->data);
-	free(img);
-	return (texture);
+		return (-1);
+	texture->rows = RENDER_HEIGHT;
+	texture->cols = (double)texture->rows / (double)img->height * img->width;
+	texture->depth = 1;
+	texture->ptr = malloc(texture->cols * texture->rows * sizeof(uint32_t));
+	if (texture->ptr == NULL)
+		return (mlx_destroy_image(mlx, img), -1);
+	ft_bilinear_scaling(&(t_mat32){(uint32_t*)img->data, img->height, img->width, 1, 0}, texture);
+	ft_transpose(texture, img->data);
+	mlx_destroy_image(mlx, img);
+	return (0);
+}
+
+static
+int	stt_read_color(t_xvar *mlx, t_mat32 *texture, const char **filename_ptr)
+{
+	size_t		i;
+	const char	*filename = *filename_ptr;
+	uint32_t	color;
+
+	if (texture->ptr != NULL)
+		return (-1);	// TODO: Print error
+	while (ft_isspace(*filename))
+		filename++;
+	if (filename[0] == '.' && filename[1] == '/')
+		return (stt_read_texture(mlx, texture, filename_ptr));
+	color = ft_strtoargb(filename, filename_ptr);
+	texture->ptr = malloc(RENDER_HEIGHT * sizeof(uint32_t));		// Creates a column of colors
+	if (texture->ptr == NULL)
+		return (-1);	// TODO: Print error
+	texture->rows = RENDER_HEIGHT;	// Consider it transposed
+	texture->cols = 1;
+	i = 0;
+	while (i < RENDER_HEIGHT)
+		texture->ptr[i++] = color;
+	return (0);
+}
+
+static inline
+int	stt_match_texture(t_xvar *mlx, const char *str, t_block *blocks, const char **str_ptr)
+{
+	int	rvalue;
+
+	rvalue = 1;
+	if (str[0] == 'N' && str[1] == 'O')
+		rvalue = stt_read_texture(mlx, &blocks[0].north, str_ptr);
+	else if (str[0] == 'E' && str[1] == 'A')
+		rvalue = stt_read_texture(mlx, &blocks[0].east, str_ptr);
+	else if (str[0] == 'S' && str[1] == 'O')
+		rvalue = stt_read_texture(mlx, &blocks[0].south, str_ptr);
+	else if (str[0] == 'W' && str[1] == 'E')
+		rvalue = stt_read_texture(mlx, &blocks[0].west, str_ptr);
+	else if (str[0] == 'F')
+		rvalue = stt_read_color(mlx, &blocks[1].south, str_ptr);
+	else if (str[0] == 'C')
+		rvalue = stt_read_color(mlx, &blocks[1].north, str_ptr);
+	return (rvalue);
+}
+
+int	cub_read_textures(t_xvar *mlx, const char *str, t_block *blocks)
+{
+	int		rvalue;
+	size_t	matches;
+
+	matches = 0;
+	while (*str != 0)
+	{
+		rvalue = stt_match_texture(mlx, str, blocks, &str);
+		if (rvalue < 0)
+			return (-1);	// Future exit cleanup
+		else if (rvalue == 0)
+			matches++;
+		else
+			str++;
+	}
+	if (matches != 6)
+		return (-1);
+	return (0);
 }

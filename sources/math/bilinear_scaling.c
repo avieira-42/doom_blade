@@ -6,14 +6,14 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 15:13:28 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/05 13:15:15 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/05 13:37:54 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
-#include "tmp_math.h"
+#include "cub_structs.h"
 
 static inline
 uint32_t	stt_lerp_argb(uint32_t p0, uint32_t p1, uint8_t alpha)
