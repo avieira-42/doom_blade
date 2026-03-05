@@ -6,97 +6,19 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/05 13:36:24 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/05 16:47:26 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB_STRUCTS_H
 # define CUB_STRUCTS_H
 
-#include <stdint.h>
-#include <stddef.h>
-#include <stdbool.h>
-#include "cub_defines.h"
-
-typedef struct s_game
-{
-	const char	*cwd;
-}	t_game;
-
-typedef struct s_mat
-{
-	void		*ptr;
-	uint16_t	rows;
-	uint16_t	cols;
-	uint16_t	depth;
-	uint8_t		type_size;
-	uint8_t		flags;	// MSB -> LSB: float, transposed, 
-}	t_mat;
-
-typedef struct s_mat32
-{
-	uint32_t	*ptr;
-	uint16_t	rows;
-	uint16_t	cols;
-	uint16_t	depth;
-	uint16_t	flags;
-}	t_mat32;
-
-typedef struct s_mat2
-{
-	uint32_t	p00;
-	uint32_t	p01;
-	uint32_t	p10;
-	uint32_t	p11;
-}	t_mat2;
-
-typedef union t_32
-{
-	float 		f;
-	int32_t		i;
-	uint32_t	u;
-	struct
-	{
-		uint8_t	b;	// LSB
-		uint8_t	g;
-		uint8_t	r;
-		uint8_t	a;	// MSB
-	};
-}	t_32;
-
-typedef struct s_vec2
-{
-	t_32	x;
-	t_32	y;
-}	t_vec2;
-
-typedef struct s_vec3
-{
-	t_32	x;
-	t_32	y;
-	t_32	z;
-}	t_vec3;
-
-typedef struct s_vec4
-{
-	t_32	x;
-	t_32	y;
-	t_32	z;
-	t_32	w;
-}	t_vec4;
-
-// 0xAARRGGBB
-typedef union u_argb
-{
-	uint32_t	i;
-	struct
-	{
-		uint8_t	b;
-		uint8_t	g;
-		uint8_t	r;
-		uint8_t	a;
-	};
-}	t_argb;
+# include <stdint.h>
+# include <stddef.h>
+# include <stdbool.h>
+# include "cmlx.h"
+# include "cub_defines.h"
+# include "cub_types.h"
 
 typedef struct s_block
 {
@@ -106,13 +28,42 @@ typedef struct s_block
 	t_mat32	west;
 }	t_block;
 
-typedef struct s_map
+typedef struct	s_cam
 {
-	uint8_t	*ptr;
-	size_t	cols;
-	size_t	rows;
-	t_vec2	player_pos;
-	t_block	blocks[4];	// World, Ceil/Floor, Doors, etc...
-}	t_map;
+	t_vec2	pos;
+	t_vec2	dir;
+	int32_t	half_len;
+	int32_t	dist_mod;
+	float	dist;
+}	t_cam;
+
+typedef struct s_player
+{
+	t_vec2		dir;
+	t_vec2		pos;
+	t_vec2		ori;
+	t_vec2		mouse_mov;
+	int32_t		dir_mod;
+	float		speed;
+	float		speed_mod;
+}	t_player;
+
+typedef struct s_game
+{
+	//	definitive
+	t_xvar		*mlx;	// win_ptr is inside mlx already
+	// void		*win;
+	t_cam		cam;
+	t_player	player;
+	t_mat8		map;
+	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
+	// t_img	frame;
+	//	maybe tmp
+	int32_t		vd;
+	long long	t0;
+	float		dt;
+	int32_t		start;
+	int32_t		here;
+}	t_game;
 
 #endif

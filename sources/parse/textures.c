@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 15:46:12 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/05 14:54:27 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/05 16:29:06 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,26 +120,27 @@ int	stt_match_texture(t_xvar *mlx, const char *str, t_block *blocks, const char 
 		rvalue = stt_read_color(mlx, &blocks[1].south, str_ptr);
 	else if (str[0] == 'C')
 		rvalue = stt_read_color(mlx, &blocks[1].north, str_ptr);
+		// Continue here for more textures
 	return (rvalue);
 }
 
 int	cub_read_textures(t_xvar *mlx, const char *str, t_block *blocks)
 {
 	int		rvalue;
-	size_t	matches;
+	size_t	match_target;
 
-	matches = 0;
-	while (*str != 0)
+	match_target = 6;	// If DOOR is found, then match_target needs to be increased
+	while (*str != 0 && match_target > 0)
 	{
 		rvalue = stt_match_texture(mlx, str, blocks, &str);
 		if (rvalue < 0)
 			return (-1);	// Future exit cleanup
 		else if (rvalue == 0)
-			matches++;
+			match_target--;
 		else
 			str++;
 	}
-	if (matches != 6)
+	if (match_target != 0)
 		return (-1);
 	return (0);
 }

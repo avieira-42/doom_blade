@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/05 13:19:14 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/05 15:04:12 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/05 15:21:16 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,16 @@ int	ft_transpose(t_mat32 *src, void *dst)
 		if (dst == NULL)
 			return (-1);
 		stt_transpose(src->ptr, dst, src->cols, src->rows);
-		tmp = src->cols;
-		src->cols = src->rows;
-		src->rows = tmp;
 		ft_memcpy(src->ptr, dst, mat_size);
 		free(dst);
 	}
 	else
 	{
 		stt_transpose(src->ptr, dst, src->cols, src->rows);
-		tmp = src->cols;
-		src->cols = src->rows;
-		src->rows = tmp;
 		ft_memcpy(src->ptr, dst, mat_size);
 	}
+	tmp = src->cols;
+	src->cols = src->rows;
+	src->rows = tmp;
 	return (0);
 }

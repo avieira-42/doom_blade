@@ -1,38 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmlx_open.c                                        :+:      :+:    :+:   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/11 11:33:01 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/02/11 11:38:43 by adeimlin         ###   ########.fr       */
+/*   Created: 2026/03/05 15:23:59 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/03/05 16:49:12 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdint.h>
-#include <stddef.h>
-#include <stdbool.h>
 #include <stdlib.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include "cub_structs.h"
-#include "cub_utils.h"
 #include "cmlx.h"
-#include "mlx.h"
+#include "cub_defines.h"
+#include "cub_structs.h"
 
-t_img	cmlx_xpm_to_image(t_xvar *mlx, const char *path)
+// Cleanup process
+static
+int	stt_cleanup(t_game *game)
 {
-	int		width;
-	int		height;
-	t_img	*img_ptr;
-	t_img	img;
+	size_t	i;
 
-	img.data = NULL;
-	img_ptr = mlx_xpm_file_to_image(mlx, path, &width, &height);
-	if (img_ptr == NULL)
-		return (img);
-	img = *img_ptr;
-	free(img_ptr);
-	return (img);
+	free(map->ptr);
+	i = 0;
+	while (i < NUM_BLOCKS)
+	{
+		free(map->blocks[i].north.ptr);
+		free(map->blocks[i].south.ptr);
+		free(map->blocks[i].east.ptr);
+		free(map->blocks[i].west.ptr);
+	}
+}
+
+int	cub_cleanup(t_xvar *mlx, t_map *map)
+{
+	
 }

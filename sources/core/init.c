@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printstr.c                                      :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/28 09:10:09 by avieira-          #+#    #+#             */
-/*   Updated: 2025/05/14 00:17:30 by avieira-         ###   ########.fr       */
+/*   Created: 2026/03/05 15:30:14 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/03/05 15:33:48 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#include <stdint.h>
+#include <stddef.h>
+#include <stdbool.h>
+#include "cmlx.h"
+#include "cub_structs.h"
+#include "cub_utils.h"
 
-int	ft_printstr(char *str)
+int	cub_init(t_xvar *mlx, t_map *map)
 {
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (ft_printstr("(null)"));
-	while (*str)
-		i += ft_printchar(*str++);
-	return ((i));
+	
+	ft_memset(mlx, 0, sizeof(*mlx));
+	ft_memset(map, 0, sizeof(*map));
 }
