@@ -52,10 +52,10 @@ void	objects_draw(t_game *game, t_veci32 map_size, t_vecf32 map_tile)
 
 void	ray_draw(t_game *game, t_player player, t_ray ray, int32_t x)
 {
-	t_vecf32	cam_pos;
+	t_vecf32	p_pos;
 
-	cam_pos.x = game->cam.pos.x * game->map.tile_x;
-	cam_pos.y = game->cam.pos.y * game->map.tile_y;
+	p_pos.x = game->player.pos.x * game->map.tile_x;
+	p_pos.y = game->player.pos.y * game->map.tile_y;
 	if (ray.hit == true)
 	{
 		ray.hit_pos.x = (ray.p_pos.x + ray.dir.x * ray.final_len) * game->map.tile_x;
@@ -68,7 +68,7 @@ void	ray_draw(t_game *game, t_player player, t_ray ray, int32_t x)
 		ray.hit_pos.y = (ray.p_pos.y + ray.dir.y * game->cam.dist) * game->map.tile_y;
 		ray.color = GREEN;
 	}
-	line_draw_bresenham(cam_pos, ray.hit_pos, game, ray.color);
+	line_draw_bresenham(p_pos, ray.hit_pos, game, ray.color);
 	if (!ray.hit)
 		return ;
 	column_render(game, ray, player, x);
@@ -93,12 +93,12 @@ void	fov_draw(t_game *game)
 
 void	player_draw(t_game *game, t_vecf32 map_tile)
 {
-	t_vecf32	cam_pos;
+	t_vecf32	p_pos;
 
-	cam_pos.x = (game->cam.pos.x - 0.5f) * map_tile.x;
-	cam_pos.y = (game->cam.pos.y - 0.5f) * map_tile.y;
-	quad_draw(cam_pos, game, 0xFF00FF, map_tile);
-	img_pixel_put(game, cam_pos.x, cam_pos.y, 0xFFFFFF);
+	p_pos.x = (game->player.pos.x - 0.5f) * map_tile.x;
+	p_pos.y = (game->player.pos.y - 0.5f) * map_tile.y;
+	quad_draw(p_pos, game, 0xFF00FF, map_tile);
+	img_pixel_put(game, p_pos.x, p_pos.y, 0xFFFFFF);
 }
 
 void	space_render(t_game *game)

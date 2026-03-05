@@ -26,17 +26,19 @@ bool	collision_check(t_game *game, t_vecf32 new_pos)
 	return (false);
 }
 
-void		player_move(t_game *game, t_player *player, t_cam *cam, float dt)
+void		player_move(t_game *game, t_player *player, t_cam *cam, float dt, t_vecf32 *collision)
 {
-	t_vecf32	new_pos;
-
-	new_pos = vec_sum(player->pos,
+	(void)game;
+	*collision = vec_sum(player->pos,
 			vec_scalar_mult(player->dir, player->ori.y * player->speed
 								* dt * player->speed_mod));
-	new_pos = vec_sum(new_pos,
+	*collision = vec_sum(*collision,
 			vec_scalar_mult(cam->dir, player->ori.x * player->speed * dt));
-	if (collision_check(game, new_pos) == false)
-		player->pos = new_pos;
+	if (collision_check(game, *collision) == false)
+	{
+		player->pos = *collision;
+		*collision = (t_vecf32){0,0};
+	}
 	if (player->mouse_mov.x == 0)
 	{
 		if (player->dir_mod == -1)

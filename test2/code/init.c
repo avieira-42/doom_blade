@@ -38,6 +38,4 @@ void	cam_init(t_cam *cam, t_player player)
 	cam->dir = (t_vecf32){-0.71, 0.71};
 	cam->pos = vec_sum(player.pos,
 				vec_scalar_mult(player.dir, cam->dist));
-	printf("p.x: %f\np.y: %f\n", player.pos.x, player.pos.y);
-	printf("cam.x: %f\ncam.y: %f\n", cam->pos.x, cam->pos.y);
 }

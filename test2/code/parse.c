@@ -35,7 +35,6 @@ void	read_map(t_game *game, char *argv1)
 			{
 				game->player.pos.y = i;
 				game->player.pos.x = j;
-				printf("i: %i, j: %i\n", i, j);
 			}
 			j++;
 		}
