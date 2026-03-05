@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/05 14:02:23 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/05 17:37:30 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,17 @@ void		*ft_realloc(void *src, size_t src_size, size_t dst_size);
 ssize_t		ft_error(const char *prefix, const char *suffix, ssize_t rvalue);
 int64_t		ft_strtol(const char *str, const char **str_ptr);
 uint32_t	ft_strtoargb(const char *str, const char **str_ptr);
+
+float	ft_min(float number1, float number2);
+float	ft_max(float number1, float number2);
+float	ft_abs(float number);
+float	ft_absdiff(float number1, float number2);
+int64_t	ft_iabsmax(int64_t number1, int64_t number2);
+
+int64_t	ft_imin(int64_t number1, int64_t number2);
+int64_t	ft_imax(int64_t number1, int64_t number2);
+int64_t	ft_iabs(int64_t number);
+int64_t	ft_iabsdiff(int64_t number1, int64_t number2);
 
 // Prototypes: IO ------------------------------------------------------------
 char		*get_next_line(int fd);
