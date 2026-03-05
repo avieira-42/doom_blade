@@ -3,7 +3,6 @@
 #include <sys/time.h>
 #include "types.h"
 #include "clean.h"
-#include "render.h"
 
 uint64_t 	time_get()
 {
@@ -20,15 +19,14 @@ void	time_delta_get(t_game *game)
 	game->t0 = time_get();
 }
 
-bool	collision_check(t_game game, t_vecf32 new_pos)
+bool	collision_check(t_game *game, t_vecf32 new_pos)
 {
-	if (game.map.grid[(int)(new_pos.y / game.map.tile_y)]
-			[(int)(new_pos.x / game.map.tile_x)] == '1')
+	if (game->map.grid[(int)new_pos.y][(int)new_pos.x] == '1')
 		return (true);
 	return (false);
 }
 
-void		player_move(t_game game, t_player *player, t_cam cam, float dt)
+void		player_move(t_game *game, t_player *player, t_cam *cam, float dt)
 {
 	t_vecf32	new_pos;
 
@@ -36,10 +34,9 @@ void		player_move(t_game game, t_player *player, t_cam cam, float dt)
 			vec_scalar_mult(player->dir, player->ori.y * player->speed
 								* dt * player->speed_mod));
 	new_pos = vec_sum(new_pos,
-			vec_scalar_mult(cam.dir, player->ori.x * player->speed * dt));
-	(void)game;
-	//if (collision_check(game, new_pos) == false)
-	player->pos = new_pos;
+			vec_scalar_mult(cam->dir, player->ori.x * player->speed * dt));
+	if (collision_check(game, new_pos) == false)
+		player->pos = new_pos;
 	if (player->mouse_mov.x == 0)
 	{
 		if (player->dir_mod == -1)
@@ -56,24 +53,24 @@ void		player_move(t_game game, t_player *player, t_cam cam, float dt)
 	}
 }
 
-void	camera_move(t_player player, t_cam *cam)
+void	camera_move(t_player *player, t_cam *cam)
 {
-	if (player.mouse_mov.x == 0)
+	if (player->mouse_mov.x == 0)
 	{
-		if (player.dir_mod == -1)
+		if (player->dir_mod == -1)
 			cam->dir = vec_rotate(cam->dir, 1, RIGHT);
-		if (player.dir_mod == 1)
+		if (player->dir_mod == 1)
 			cam->dir = vec_rotate(cam->dir, 1, LEFT);
 	}
 	else
 	{
-		if (player.mouse_mov.x > 0.)
-			cam->dir = vec_rotate(cam->dir, player.mouse_mov.x, RIGHT);
-		if (player.mouse_mov.x < 0.)
-			cam->dir = vec_rotate(cam->dir, player.mouse_mov.x * -1, LEFT);
+		if (player->mouse_mov.x > 0.)
+			cam->dir = vec_rotate(cam->dir, player->mouse_mov.x, RIGHT);
+		if (player->mouse_mov.x < 0.)
+			cam->dir = vec_rotate(cam->dir, player->mouse_mov.x * -1, LEFT);
 	}
 	cam->dist += 0.1 * cam->dist_mod;
 	if (cam->dist <= 1)
 		cam->dist = 1;
-	cam->pos = vec_sum(player.pos, vec_scalar_mult(player.dir, cam->dist));
+	cam->pos = vec_sum(player->pos, vec_scalar_mult(player->dir, cam->dist));
 }
