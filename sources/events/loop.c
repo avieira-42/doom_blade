@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/05 17:29:05 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/06 13:08:37 by adeimlin         ###   ########.fr       */
+/*   Created: 2026/03/06 12:22:52 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/03/06 12:48:44 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdbool.h>
-#include <stddef.h>
 #include <stdint.h>
-#include "cub_structs.h"
+#include <stddef.h>
+#include <stdbool.h>
 
-int	main(int argc, char **argv)
+int	game_loop(void *arg)
 {
-	t_game	game;
+	t_game *game;
 
-	if (argc != 2)
-		return (1);
-	if (parse(&game, argv[1]) == -1)
-		return (1);
-	game_init(&game);
-	mlx_hook(game.win_ptr, 17, 0, free_displays, &game);
-	mlx_loop_hook(game.mlx, game_loop, &game);
-	mlx_loop(game.mlx);
+	game = (t_game *)arg;
+	player_move(game, &game->player, &game->cam, game->dt);
+	camera_move(&game->player, &game->cam);
+	mlx_mouse_move(game->mlx, game->win_ptr, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	window_clear(game, 0x000000);
+	space_render(game);
+	mlx_put_image_to_window(game->mlx, game->win_ptr, game->frame.img, 0, 0);
+	return (1);
 }

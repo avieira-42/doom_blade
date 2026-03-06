@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/05 17:54:39 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/06 12:46:43 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,15 @@ typedef struct s_game
 {
 	//	definitive
 	t_xvar		*mlx;	// win_ptr is inside mlx already
-	// void		*win;
+	t_img		*frame;
 	t_cam		cam;
 	t_player	player;
 	t_mat8		map;
 	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
-	t_img		frame;
 	//	maybe tmp
 	int32_t		vd;
-	long long	t0;
-	float		dt;
+	// long long	t0;
+	// float		dt;
 	int32_t		start;
 	int32_t		here;
 }	t_game;

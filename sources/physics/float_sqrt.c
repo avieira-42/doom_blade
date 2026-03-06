@@ -1,30 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   float_sqrt.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/05 17:29:05 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/06 13:08:37 by adeimlin         ###   ########.fr       */
+/*   Created: 2025/04/13 10:28:32 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/03/06 13:04:17 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdbool.h>
-#include <stddef.h>
 #include <stdint.h>
+#include <stddef.h>
 #include "cub_structs.h"
 
-int	main(int argc, char **argv)
+// This is faster than receiving a t_32 (thank god)
+float	ft_qinvsqrt(float number)
 {
-	t_game	game;
+	t_32	result;
 
-	if (argc != 2)
-		return (1);
-	if (parse(&game, argv[1]) == -1)
-		return (1);
-	game_init(&game);
-	mlx_hook(game.win_ptr, 17, 0, free_displays, &game);
-	mlx_loop_hook(game.mlx, game_loop, &game);
-	mlx_loop(game.mlx);
+	result.f = number;
+	result.u = 0x5f3759df - (result.u >> 1);
+	result.f = result.f * (1.5f - (number * 0.5f * result.f * result.f));
+	return (result.f);
+}
+
+float	ft_qsqrt(float number)
+{
+	t_32	result;
+
+	result.f = number;
+	result.u = (result.u >> 1) + 0x1FBD3EE0;
+	result.f = 0.5f * (result.f + number / result.f);
+	return (result.f);
 }

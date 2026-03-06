@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/05 17:37:30 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/06 13:02:37 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@ int64_t	ft_imin(int64_t number1, int64_t number2);
 int64_t	ft_imax(int64_t number1, int64_t number2);
 int64_t	ft_iabs(int64_t number);
 int64_t	ft_iabsdiff(int64_t number1, int64_t number2);
+
+float	ft_qinvsqrt(float number);
+
+float	ft_qsqrt(float number);
+
 
 // Prototypes: IO ------------------------------------------------------------
 char		*get_next_line(int fd);

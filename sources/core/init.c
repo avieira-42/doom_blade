@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/05 15:30:14 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/05 18:25:22 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/06 13:08:28 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,56 +16,51 @@
 #include "cmlx.h"
 #include "cub_structs.h"
 #include "cub_utils.h"
+#include "cub_functions.h"
 
-int	cub_init(t_xvar *mlx, t_map *map)
-{
-	
-	ft_memset(mlx, 0, sizeof(*mlx));
-	ft_memset(map, 0, sizeof(*map));
-}
-
-void	screen_init(t_game *game)
+static
+int	stt_mlx_init(t_game *game)
 {
 	game->mlx = mlx_init();
+	if (game->mlx == NULL)
+		return (-1);	// TODO: Print Error
 	game->mlx->win_list = mlx_new_window(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "doom_blade");
-	game->t0 = time_get();
-	time_delta_get(game);
-	game->vd = 1 / u_rsqrt(game->map.width * game->map.width
-			+ game->map.height * game->map.height);
-	game->frame.img = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
-	game->frame.addr = mlx_get_data_addr(
-			game->frame.img, &game->frame.bpp, &game->frame.l_len,
-				&game->frame.endian);
-	if (game->frame.addr == NULL)
-		return ;
+	if (game->mlx->win_list == NULL)
+		return (-1);
+	game->frame = mlx_int_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, ZPixmap);
+	if (game->frame == NULL)
+		return (-1);
+	return (0);
 }
 
-void	player_init(t_game *game)
+static
+int	stt_mlx_hooks(t_win_list *window, t_game *game)
 {
+	mlx_hook(window, KeyPress, KeyPressMask, cmlx_keydown, game);
+	mlx_hook(window, KeyRelease, KeyReleaseMask, cmlx_keyup, game);
+	mlx_hook(window, ButtonPress, ButtonPressMask, cmlx_mousedown, game);
+	mlx_hook(window, ButtonRelease, ButtonReleaseMask, cmlx_mouseup, game);
+	mlx_hook(window, MotionNotify, PointerMotionMask, cmlx_mousemove, game);
+	mlx_mouse_hide(game->mlx, window);
+	// mlx_loop_hook(game->mlx, cmlx_loop, game);	//
+	return (0);
+}
+
+void	game_init(t_game *game)
+{
+	ft_memset(game, 0, sizeof(*game));
+	game->vd = ft_qsqrt(game->map.cols * game->map.cols + game->map.rows * game->map.rows);
 	game->player.dir = (t_vec2){.x.f = 0.71f, .y.f = 0.71f};
 	game->player.ori = (t_vec2){.x.f = 0.0f, .y.f = 0.0f};
 	game->player.dir_mod = 0;
 	game->player.speed = 3;
 	game->player.speed_mod = 1;
 	game->cam.mouse_mov = (t_vec2){.x.f = 0.0f, .y.f = 0.0f};
-}
-
-void	cam_init(t_cam *cam, t_player player)
-{
-	cam->dist = 1;
-	cam->dist_mod = 0;
-	cam->half_len = 10;
-	cam->dir = (t_vecf32){-0.71, 0.71};
-	cam->pos = vec_sum(player.pos,
-				vec_scalar_mult(player.dir, cam->dist));
-}
-
-void	game_init(t_game *game)
-{
-	screen_init(game);
-	time_delta_get(game);
-	player_init(game);
-	cam_init(&game->cam, game->player);
+	game->cam.dist = 1;
+	game->cam.dist_mod = 0;
+	game->cam.half_len = 10;
+	game->cam.dir = (t_vec2){.x.f = 0.71f, .y.f = 0.71f};
+	game->cam.pos = vec_sum(player.pos, vec_scalar_mult(player.dir, cam->dist));
 
 	// DEBUG
 	game->here = 0;
