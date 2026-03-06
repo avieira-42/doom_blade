@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/06 12:46:43 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/06 17:01:12 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,7 @@ typedef struct	s_cam
 {
 	t_vec2	pos;
 	t_vec2	dir;
-	t_vec2	mouse_mov;
-	int32_t	half_len;
-	int32_t	dist_mod;
-	float	dist;
+	t_vec2	plane;
 }	t_cam;
 
 typedef struct s_entity
@@ -48,20 +45,29 @@ typedef struct s_entity
 	float		speed_mod;
 }	t_player;
 
-typedef struct	s_ray
+// typedef struct	s_ray
+// {
+// 	t_vec2		dir;
+// 	t_vec2		p_pos;
+// 	t_vec2		p_map_pos;
+// 	t_vec2		step_ori;
+// 	t_vec2		step_size;
+// 	t_vec2		ray_len;
+// 	t_vec2		hit_pos;
+// 	int32_t		color;
+// 	int32_t		side;
+// 	float		final_len;
+// 	float		perp_wall_dist;
+// 	bool		hit;
+// }	t_ray;
+
+typedef struct s_ray
 {
-	t_vec2		dir;
-	t_vec2		p_pos;
-	t_vec2		p_map_pos;
-	t_vec2		step_ori;
-	t_vec2		step_size;
-	t_vec2		ray_len;
-	t_vec2		hit_pos;
-	int32_t		color;
-	int32_t		side;
-	float		final_len;
-	float		perp_wall_dist;
-	bool		hit;
+	t_vec2	ray_dir;
+	t_vec2	map_pos;	// Integer
+	t_vec2	delta_dist;
+	t_vec2	side_dist;
+	t_vec2	step;		// Integer
 }	t_ray;
 
 typedef struct s_game
@@ -79,6 +85,7 @@ typedef struct s_game
 	// float		dt;
 	int32_t		start;
 	int32_t		here;
+	t_vec2		mouse_pos;
 }	t_game;
 
 #endif

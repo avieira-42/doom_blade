@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 10:28:32 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/06 13:04:17 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/06 14:31:33 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <stddef.h>
 #include "cub_structs.h"
 
-// This is faster than receiving a t_32 (thank god)
 float	ft_qinvsqrt(float number)
 {
 	t_32	result;
