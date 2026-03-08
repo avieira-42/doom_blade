@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/08 16:32:04 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/08 18:08:11 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,38 +28,20 @@ typedef struct s_block
 	t_mat32	west;
 }	t_block;
 
-typedef struct	s_cam
+typedef struct	s_view
 {
 	t_vec2	pos;
 	t_vec2	dir;
 	t_vec2	plane;
-}	t_cam;
+}	t_view;
 
 typedef struct s_entity
 {
-	t_vec2		pos;	// TODO: create a struct ocntaining pos dir plane
-	t_vec2		dir;
-	t_vec2		ori;
+	t_view		cam;
 	int32_t		dir_mod;
 	float		speed;
 	float		speed_mod;
-}	t_player;
-
-// typedef struct	s_ray
-// {
-// 	t_vec2		dir;
-// 	t_vec2		p_pos;
-// 	t_vec2		p_map_pos;
-// 	t_vec2		step_ori;
-// 	t_vec2		step_size;
-// 	t_vec2		ray_len;
-// 	t_vec2		hit_pos;
-// 	int32_t		color;
-// 	int32_t		side;
-// 	float		final_len;
-// 	float		perp_wall_dist;
-// 	bool		hit;
-// }	t_ray;
+}	t_entity;
 
 typedef struct s_ray
 {
@@ -76,16 +58,9 @@ typedef struct s_game
 	t_xvar		*mlx;	// win_ptr is inside mlx already
 	t_img		*frame;
 	uint32_t	render_frame[RENDER_HEIGHT][RENDER_WIDTH];
-	t_cam		cam;
-	t_player	player;
+	t_entity	player;
 	t_mat8		map;
 	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
-	//	maybe tmp
-	int32_t		vd;
-	// long long	t0;
-	// float		dt;
-	int32_t		start;
-	int32_t		here;
 	t_vec2		mouse_pos;
 }	t_game;
 

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   input.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/06 12:58:03 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/06 13:01:17 by adeimlin         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <X11/keysym.h>
 #include "cub_structs.h"
 
@@ -30,10 +18,10 @@ int	cmlx_keydown(int keycode, t_game *game)
 		game->player.dir_mod += -1;
 	if (keycode == XK_j)
 		game->player.dir_mod += 1;
-	if (keycode == XK_k)
-		game->cam.dist_mod += -1;
-	if (keycode == XK_i)
-		game->cam.dist_mod += 1;
+	// if (keycode == XK_k)
+	// 	game->cam.dist_mod += -1;
+	// if (keycode == XK_i)
+	// 	game->cam.dist_mod += 1;
 	if (keycode == XK_Shift_L)
 		game->player.speed_mod += 1;
 	// if (keycode == XK_Escape)
@@ -56,10 +44,10 @@ int	cmlx_keyup(int keycode, t_game *game)
 		game->player.dir_mod += 1;
 	if (keycode == XK_j)
 		game->player.dir_mod += -1;
-	if (keycode == XK_k)
-		game->cam.dist_mod += 1;
-	if (keycode == XK_i)
-		game->cam.dist_mod += -1;
+	// if (keycode == XK_k)
+	// 	game->cam.dist_mod += 1;
+	// if (keycode == XK_i)
+	// 	game->cam.dist_mod += -1;
 	if (keycode == XK_Shift_L)
 		game->player.speed_mod += -1.0f;
 	return (0);

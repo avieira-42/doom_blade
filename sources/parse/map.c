@@ -15,7 +15,7 @@
 
 // Returns: >0) Ok, -1) Invalid value (P), -2) Two Player Positions (P)
 static
-ssize_t	stt_parse_line(const char *line, t_mat8 *map, t_player *player)
+ssize_t	stt_parse_line(const char *line, t_mat8 *map, t_entity *player)
 {
 	const char	*oline = line;
 	size_t		cols;
@@ -26,10 +26,10 @@ ssize_t	stt_parse_line(const char *line, t_mat8 *map, t_player *player)
 			line++;
 		else if (*line == 'N' || *line == 'E' || *line == 'S' || *line == 'W')
 		{
-			if (player->pos.x.f != 0.0f)
+			if (player->cam.pos.x.f != 0.0f)
 				return (ft_error("Error\n", "", -2));	// Two player positions
-			player->pos.x.f = (line++ - oline) + 0.5f;	// Todo: Forgot to save player direction (save as float)
-			player->pos.y.f = map->rows + 0.5f;
+			player->cam.pos.x.f = (line++ - oline) + 0.5f;	// Todo: Forgot to save player direction (save as float)
+			player->cam.pos.y.f = map->rows + 0.5f;
 		}
 		else
 			return (ft_error("Error\n", "", -1));	// Not NESW, space or 01
@@ -57,7 +57,7 @@ void	stt_filtercpy(const char *str, t_mat8 *map)
 	}
 }
 
-int	cub_read_map(const char *str, t_mat8 *map, t_player *player)
+int	cub_read_map(const char *str, t_mat8 *map, t_entity *player)
 {
 	ssize_t		offset;
 	const char	*ostr = str;

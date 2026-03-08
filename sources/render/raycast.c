@@ -7,7 +7,7 @@
 #include "cub_utils.h"
 
 static
-t_ray	stt_raycast_init(float camera_x, t_cam *cam)
+t_ray	stt_raycast_init(float camera_x, t_view *cam)
 {
 	t_ray	ray;
 
@@ -65,7 +65,7 @@ uint8_t	stt_dda(t_ray *ray, t_mat8 *map, uint8_t *block_index)
 }
 
 static
-void	*stt_raycast(t_ray *ray, t_cam *cam, t_mat8 *map, t_game *game)
+void	*stt_raycast(t_ray *ray, t_view *cam, t_mat8 *map, t_game *game)
 {
 	float	perp_dist;
 	t_mat32	block;
@@ -96,7 +96,7 @@ void	*stt_raycast(t_ray *ray, t_cam *cam, t_mat8 *map, t_game *game)
 
 // Blocks contains transposed rows for sequential memory access
 // Everything is done in cols by rows, and then tranposed for the rendering
-void	raycast(t_cam *cam, t_mat8 *map, t_game *game)
+void	raycast(t_view *cam, t_mat8 *map, t_game *game)
 {
 	size_t		x;
 	t_ray		ray;

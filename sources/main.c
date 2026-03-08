@@ -29,14 +29,11 @@ static
 void	stt_params_init(t_game *game)
 {
 	game->vd = ft_qsqrt(game->map.cols * game->map.cols + game->map.rows * game->map.rows);
-	game->player.dir = (t_vec2){.x.f = 0.71f, .y.f = 0.71f};
-	game->player.ori = (t_vec2){.x.f = 0.0f, .y.f = 0.0f};
+	game->player.cam.dir = (t_vec2){.x.f = 0.71f, .y.f = 0.71f};
+	game->player.cam.plane = (t_vec2){.x.f = 0.0f, .y.f = 0.0f};
 	game->player.dir_mod = 0;
 	game->player.speed = 3;
 	game->player.speed_mod = 1;
-	game->cam.dir = (t_vec2){.x.f = 0.71f, .y.f = 0.71f};
-	// game->cam.pos = vec_sum(player.pos, vec_scalar_mult(player.dir, cam->dist));
-
 }
 
 static

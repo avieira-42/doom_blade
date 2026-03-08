@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/08 16:55:21 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/08 18:06:30 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game);
 int		cmlx_mousemove(int32_t x1, int32_t y1, t_game *game);
 
 int		cub_read_textures(t_xvar *mlx, const char *str, const char **str_ptr, t_block *blocks);
-int		cub_read_map(const char *str, t_mat8 *map, t_player *player);
+int		cub_read_map(const char *str, t_mat8 *map, t_entity *player);
 uint32_t	ft_strtoargb(const char *str, const char **str_ptr);
 void		*ft_read_all(const char *filename, size_t *file_size);
 int		cub_init(const char *filename, t_game *game);
