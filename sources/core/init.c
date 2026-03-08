@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/05 15:30:14 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/06 13:08:28 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/07 14:07:13 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,9 @@ void	game_init(t_game *game)
 	// DEBUG
 	game->here = 0;
 	game->start = 0;
+}
+
+int	cub_init()
+{
+	
 }

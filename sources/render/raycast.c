@@ -1,21 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ray_cast.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/06 15:01:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/06 17:36:50 by adeimlin         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
 #include <math.h>
 #include "cub_defines.h"
 #include "cub_structs.h"
+#include "cub_utils.h"
 
 static
 t_ray	stt_raycast_init(float camera_x, t_cam *cam)
@@ -76,10 +65,10 @@ uint8_t	stt_dda(t_ray *ray, t_mat8 *map, uint8_t *block_index)
 }
 
 static
-void	stt_raycast(t_ray *ray, t_cam *cam, t_mat8 *map)
+void	*stt_raycast(t_ray *ray, t_cam *cam, t_mat8 *map, t_game *game)
 {
 	float	perp_dist;
-	uint8_t	block_dir;
+	t_mat32	block;
 	uint8_t	block_index;
 	float	block_pos_x;
 	uint8_t	side;
@@ -88,28 +77,40 @@ void	stt_raycast(t_ray *ray, t_cam *cam, t_mat8 *map)
 	if (side == 0)
 	{
 		perp_dist = (ray->map_pos.x.i - cam->pos.x.f + (1 - ray->step.x.i) / 2) / ray->ray_dir.x.f;
-		block_dir = 1 + ((ray->step.x.i > 0) << 1);
+		if (ray->step.x.i > 0)
+			block = game->blocks[block_index].west;
+		else
+			block = game->blocks[block_index].east;
 	}
 	else
 	{
 		perp_dist = (ray->map_pos.y.i - cam->pos.y.f + (1 - ray->step.y.i) / 2) / ray->ray_dir.y.f;
-		block_dir = (ray->step.y.i <= 0) << 1;
+		if (ray->step.y.i > 0)
+			block = game->blocks[block_index].north;
+		else
+			block = game->blocks[block_index].south;
 	}
 	block_pos_x = cam->pos.x.f + perp_dist * ray->ray_dir.x.f;
+	return (block.ptr + (size_t)(block_pos_x * (block.rows - 1)));
 }
 
-void	raycast(t_cam *cam, t_mat8 *map)
+// Blocks contains transposed rows for sequential memory access
+// Everything is done in cols by rows, and then tranposed for the rendering
+void	raycast(t_cam *cam, t_mat8 *map, t_game *game)
 {
-	size_t	x;
-	t_ray	ray;
-	float	camera_x;
+	size_t		x;
+	t_ray		ray;
+	uint32_t	*src;
+	float		camera_x;
 
 	x = 0;
 	while (x < RENDER_WIDTH)
 	{
 		camera_x = 2.0f * x / (float)RENDER_WIDTH - 1.0f;
 		ray = stt_raycast_init(camera_x, cam);
-		stt_raycast(&ray, cam, map);
+		src = stt_raycast(&ray, cam, map, game);
+		ft_memcpy(&game->render_frame[x][0], src, RENDER_HEIGHT);
 		x++;
 	}
+	ft_integer_scaling_t(game->render_frame, game->frame, UPSCALING_FACTOR);
 }

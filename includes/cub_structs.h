@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/06 17:01:12 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/06 17:56:27 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct s_game
 	//	definitive
 	t_xvar		*mlx;	// win_ptr is inside mlx already
 	t_img		*frame;
+	uint32_t	render_frame[RENDER_HEIGHT][RENDER_WIDTH];
 	t_cam		cam;
 	t_player	player;
 	t_mat8		map;

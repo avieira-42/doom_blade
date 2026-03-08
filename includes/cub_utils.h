@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/06 13:02:37 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/08 16:17:49 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,20 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include "cub_structs.h"
+
+void	ft_bilinear_scaling(t_mat32 *src, t_mat32 *dst);
+void	ft_bilinear_scaling_t(t_mat32 *src, t_mat32 *dst);
+void	ft_integer_scaling(t_mat32 *src, t_mat32 *dst, size_t factor);
+void	ft_integer_scaling_t(t_mat32 *src, t_mat32 *dst, size_t factor);
+int		ft_transpose(t_mat32 *src, void *dst);
+
+int		cmlx_keydown(int keycode, t_game *game);
+int		cmlx_keyup(int keycode, t_game *game);
+int		cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game);
+int		cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game);
+int		cmlx_mousemove(int32_t x1, int32_t y1, t_game *game);
+
+// 
 
 void		**ft_free_array(void *array, size_t length);
 void		*ft_memset(void *vdst, const uint8_t byte, size_t length);

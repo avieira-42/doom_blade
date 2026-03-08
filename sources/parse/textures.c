@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   textures.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/18 15:46:12 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/05 16:29:06 by adeimlin         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -19,7 +7,6 @@
 #include "cub_defines.h"
 #include "cub_structs.h"
 #include "cub_utils.h"
-#include "cub_functions.h"
 #include "cmlx.h"
 #include "mlx.h"
 
