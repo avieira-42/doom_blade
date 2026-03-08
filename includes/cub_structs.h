@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/06 17:56:27 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/08 16:32:04 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ typedef struct	s_cam
 
 typedef struct s_entity
 {
+	t_vec2		pos;	// TODO: create a struct ocntaining pos dir plane
 	t_vec2		dir;
-	t_vec2		pos;
 	t_vec2		ori;
 	int32_t		dir_mod;
 	float		speed;

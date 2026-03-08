@@ -111,7 +111,7 @@ int	stt_match_texture(t_xvar *mlx, const char *str, t_block *blocks, const char 
 	return (rvalue);
 }
 
-int	cub_read_textures(t_xvar *mlx, const char *str, t_block *blocks)
+int	cub_read_textures(t_xvar *mlx, const char *str, const char **str_ptr, t_block *blocks)
 {
 	int		rvalue;
 	size_t	match_target;
@@ -129,5 +129,11 @@ int	cub_read_textures(t_xvar *mlx, const char *str, t_block *blocks)
 	}
 	if (match_target != 0)
 		return (-1);
-	return (0);
+	while (*str != 0 && *str != '1')	// Skips until the map portion
+	{
+		if (*str == '\n')
+			*str_ptr = str + 1;
+		str++;
+	}
+	return (-(*str == 0));
 }

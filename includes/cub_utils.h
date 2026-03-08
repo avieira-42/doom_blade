@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/08 16:17:49 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/08 16:55:21 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,12 @@ int		cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game);
 int		cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game);
 int		cmlx_mousemove(int32_t x1, int32_t y1, t_game *game);
 
-// 
+int		cub_read_textures(t_xvar *mlx, const char *str, const char **str_ptr, t_block *blocks);
+int		cub_read_map(const char *str, t_mat8 *map, t_player *player);
+uint32_t	ft_strtoargb(const char *str, const char **str_ptr);
+void		*ft_read_all(const char *filename, size_t *file_size);
+int		cub_init(const char *filename, t_game *game);
+// ------------------------------
 
 void		**ft_free_array(void *array, size_t length);
 void		*ft_memset(void *vdst, const uint8_t byte, size_t length);
@@ -39,7 +44,7 @@ int64_t		ft_memrcmp(const void *vptr1, const void *vptr2, size_t length);
 void		*ft_realloc(void *src, size_t src_size, size_t dst_size);
 ssize_t		ft_error(const char *prefix, const char *suffix, ssize_t rvalue);
 int64_t		ft_strtol(const char *str, const char **str_ptr);
-uint32_t	ft_strtoargb(const char *str, const char **str_ptr);
+
 
 float	ft_min(float number1, float number2);
 float	ft_max(float number1, float number2);
@@ -53,7 +58,6 @@ int64_t	ft_iabs(int64_t number);
 int64_t	ft_iabsdiff(int64_t number1, int64_t number2);
 
 float	ft_qinvsqrt(float number);
-
 float	ft_qsqrt(float number);
 
 
