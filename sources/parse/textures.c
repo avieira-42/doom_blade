@@ -15,27 +15,26 @@
 // TODO: Create a wrapper function for xpm_to_image that removes struct malloc
 // TODO: Function that rescales, mallocs and frees the image after scaling
 static
-t_img	*stt_read_xpm(t_xvar *mlx, const char **filename_ptr)
+t_img	*stt_read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr)
 {
 	t_img		*ptr;
-	int			tmp;
-	const char	*filename = *filename_ptr;
-	char		path[256];
-	size_t		length;
+	int			tmp[2];
+	char		buffer[256];
+	char		*path;
+	const char	*path_end = buffer + sizeof(buffer) - 1;
 
-	length = 0;
-	while (ft_isspace(filename[length]))
-		length++;
-	while (filename[length] != 0 && !ft_isspace(filename[length]))
+	path = buffer;
+	while (ft_isspace(*filename))
+		filename++;
+	while (*filename != 0 && !ft_isspace(*filename))
 	{
-		if (length >= 255)
+		if (path >= path_end)
 			return (NULL);	// Path too long, TODO: print
-		path[length] = filename[length];
-		length++;
+		*path++ = *filename++;
 	}
-	path[length] = 0;
+	*path = 0;
 	*filename_ptr = filename;
-	ptr = mlx_xpm_file_to_image(mlx, path, &tmp, &tmp);
+	ptr = mlx_xpm_file_to_image(mlx, buffer, tmp, tmp + 1);
 	if (ptr == NULL)
 		return (NULL);	// Error opening file, TODO: print
 	return (ptr);
@@ -43,13 +42,13 @@ t_img	*stt_read_xpm(t_xvar *mlx, const char **filename_ptr)
 
 // Reads
 static
-int	stt_read_texture(t_xvar *mlx, t_mat32 *texture, const char **filename_ptr)
+int	stt_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr)
 {
 	t_img	*img;
 
 	if (texture->ptr != NULL)
 		return (-2);
-	img = stt_read_xpm(mlx, filename_ptr);
+	img = stt_read_xpm(mlx, filename, filename_ptr);
 	if (img == NULL)
 		return (-1);
 	texture->rows = RENDER_HEIGHT;
@@ -59,16 +58,15 @@ int	stt_read_texture(t_xvar *mlx, t_mat32 *texture, const char **filename_ptr)
 	if (texture->ptr == NULL)
 		return (mlx_destroy_image(mlx, img), -1);
 	ft_bilinear_scaling(&(t_mat32){(uint32_t*)img->data, img->height, img->width, 1, 0}, texture);
-	ft_transpose(texture, img->data);
+	ft_transpose(texture);
 	mlx_destroy_image(mlx, img);
 	return (0);
 }
 
 static
-int	stt_read_color(t_xvar *mlx, t_mat32 *texture, const char **filename_ptr)
+int	stt_read_color(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr)
 {
 	size_t		i;
-	const char	*filename = *filename_ptr;
 	uint32_t	color;
 
 	if (texture->ptr != NULL)
@@ -76,7 +74,7 @@ int	stt_read_color(t_xvar *mlx, t_mat32 *texture, const char **filename_ptr)
 	while (ft_isspace(*filename))
 		filename++;
 	if (filename[0] == '.' && filename[1] == '/')
-		return (stt_read_texture(mlx, texture, filename_ptr));
+		return (stt_read_texture(mlx, texture, filename, filename_ptr));
 	color = ft_strtoargb(filename, filename_ptr);
 	texture->ptr = malloc(RENDER_HEIGHT * sizeof(uint32_t));		// Creates a column of colors
 	if (texture->ptr == NULL)
@@ -94,19 +92,21 @@ int	stt_match_texture(t_xvar *mlx, const char *str, t_block *blocks, const char 
 {
 	int	rvalue;
 
+	while (ft_isspace(*str))	// TODO: Check that this doesnt break anything
+		str++;
 	rvalue = 1;
 	if (str[0] == 'N' && str[1] == 'O')
-		rvalue = stt_read_texture(mlx, &blocks[0].north, str_ptr);
+		rvalue = stt_read_texture(mlx, &blocks[0].north, str + 2, str_ptr);
 	else if (str[0] == 'E' && str[1] == 'A')
-		rvalue = stt_read_texture(mlx, &blocks[0].east, str_ptr);
+		rvalue = stt_read_texture(mlx, &blocks[0].east, str + 2, str_ptr);
 	else if (str[0] == 'S' && str[1] == 'O')
-		rvalue = stt_read_texture(mlx, &blocks[0].south, str_ptr);
+		rvalue = stt_read_texture(mlx, &blocks[0].south, str + 2, str_ptr);
 	else if (str[0] == 'W' && str[1] == 'E')
-		rvalue = stt_read_texture(mlx, &blocks[0].west, str_ptr);
+		rvalue = stt_read_texture(mlx, &blocks[0].west, str + 2,  str_ptr);
 	else if (str[0] == 'F')
-		rvalue = stt_read_color(mlx, &blocks[1].south, str_ptr);
+		rvalue = stt_read_color(mlx, &blocks[1].south, str + 1, str_ptr);
 	else if (str[0] == 'C')
-		rvalue = stt_read_color(mlx, &blocks[1].north, str_ptr);
+		rvalue = stt_read_color(mlx, &blocks[1].north, str + 1, str_ptr);
 		// Continue here for more textures
 	return (rvalue);
 }

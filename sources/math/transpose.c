@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/05 13:19:14 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/05 15:21:16 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/09 15:50:44 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	stt_transpose(uint32_t *src, uint32_t *dst, uint32_t cols, uint32_t rows)
 		j = 0;
 		while (j < cols)
 		{
-			dst[i * cols + j] = src[j * cols + i];
+			dst[j * rows + i] = src[i * cols + j];
 			j++;
 		}
 		i++;
@@ -36,25 +36,18 @@ void	stt_transpose(uint32_t *src, uint32_t *dst, uint32_t cols, uint32_t rows)
 
 // Possible to remove malloc requirement with block transpose
 // Passing a NULL ptr to dst mallocs the required buffer memory
-int	ft_transpose(t_mat32 *src, void *dst)
+int	ft_transpose(t_mat32 *src)
 {
 	uint32_t		tmp;
-	const size_t	mat_size = src->cols * src->rows * sizeof(uint32_t);
+	const size_t	mat_size = (size_t)src->cols * (size_t)src->rows * sizeof(uint32_t);
+	uint32_t		*dst;
 
+	dst = malloc(mat_size);
 	if (dst == NULL)
-	{
-		dst = malloc(mat_size);
-		if (dst == NULL)
-			return (-1);
-		stt_transpose(src->ptr, dst, src->cols, src->rows);
-		ft_memcpy(src->ptr, dst, mat_size);
-		free(dst);
-	}
-	else
-	{
-		stt_transpose(src->ptr, dst, src->cols, src->rows);
-		ft_memcpy(src->ptr, dst, mat_size);
-	}
+		return (-1);
+	stt_transpose(src->ptr, dst, src->cols, src->rows);
+	ft_memcpy(src->ptr, dst, mat_size);
+	free(dst);
 	tmp = src->cols;
 	src->cols = src->rows;
 	src->rows = tmp;

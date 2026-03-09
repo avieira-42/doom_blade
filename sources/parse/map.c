@@ -27,12 +27,12 @@ ssize_t	stt_parse_line(const char *line, t_mat8 *map, t_entity *player)
 		else if (*line == 'N' || *line == 'E' || *line == 'S' || *line == 'W')
 		{
 			if (player->cam.pos.x.f != 0.0f)
-				return (ft_error("Error\n", "", -2));	// Two player positions
+				return (-2);	// TODO: PRINT Two player positions
 			player->cam.pos.x.f = (line++ - oline) + 0.5f;	// Todo: Forgot to save player direction (save as float)
 			player->cam.pos.y.f = map->rows + 0.5f;
 		}
 		else
-			return (ft_error("Error\n", "", -1));	// Not NESW, space or 01
+			return (-1);	// Not NESW, space or 01
 	}
 	cols = (size_t)(line - oline);
 	if (cols > map->cols)

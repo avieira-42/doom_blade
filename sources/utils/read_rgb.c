@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 13:56:02 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/05 14:55:12 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/09 16:04:56 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,16 +95,15 @@ uint32_t	ft_strtoargb(const char *str, const char **str_ptr)
 	argb_value = 0;
 	while (i < 4)
 	{
-		number = ft_strtol(str, &str);
-		if (number < 0 || number > 255 || (i < 3 && *str++ != ','))	// Optionally could just cast to char and read any value
-		{
-			if (str_ptr != NULL)
-				*str_ptr = NULL;
-			return (0);
-		}
+		number = (uint8_t)ft_strtol(str, &str);
 		argb_value = (argb_value << 8) + (uint32_t) number;
 		i++;
+		if (*str != ',')
+			break ;
+		str++;
 	}
+	if (i < 3)
+		str = NULL;
 	if (str_ptr != NULL)
 		*str_ptr = str;
 	return (argb_value);

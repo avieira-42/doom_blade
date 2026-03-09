@@ -1,14 +1,18 @@
 # Configuration ------------------------------- #
 NAME = main
-VPATH = sources sources/utils sources/parse sources/math
-SRCS = read_rgb.c
-LDLIBS = 
+VPATH = sources sources/utils sources/parse sources/math sources/core sources/events soruces/physics sources/render
+SRCS = main.c \
+io_basic.c read_rgb.c memory.c char_ascii.c transpose.c \
+map.c textures.c \
+bilinear_scaling.c integer_scaling.c \
+input.c 
+LDLIBS = libraries/mlx/libmlx_Linux.a
 ASM = $(OBJS:.o=.s)
 
 # Defaults ------------------------------------ #
 RM := rm -f
 BUILD_PATH = build
-INC_PATH = includes
+INC_PATH = includes libraries/mlx
 OBJ_PATH = $(BUILD_PATH)/obj
 BIN = $(BUILD_PATH)/$(NAME)
 OBJS = $(addprefix $(OBJ_PATH)/, $(SRCS:.c=.o))
@@ -17,7 +21,7 @@ OBJS = $(addprefix $(OBJ_PATH)/, $(SRCS:.c=.o))
 CC = clang
 CPPFLAGS = $(addprefix -I,$(INC_PATH))
 CFLAGS = -Wall -Wextra -march=native -std=c11
-LDFLAGS =
+LDFLAGS = -lXext -lX11 -lm -lz
 DEBUG = -g -Wpedantic -Wcast-qual -Wfloat-equal -Wswitch-default -Wsign-conversion
 ASAN = -fsanitize=address,undefined,leak -fno-omit-frame-pointer
 TSAN = -fsanitize=thread -fno-omit-frame-pointer

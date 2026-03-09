@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/08 18:06:30 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/09 15:50:21 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_bilinear_scaling(t_mat32 *src, t_mat32 *dst);
 void	ft_bilinear_scaling_t(t_mat32 *src, t_mat32 *dst);
 void	ft_integer_scaling(t_mat32 *src, t_mat32 *dst, size_t factor);
 void	ft_integer_scaling_t(t_mat32 *src, t_mat32 *dst, size_t factor);
-int		ft_transpose(t_mat32 *src, void *dst);
+int		ft_transpose(t_mat32 *src);
 
 int		cmlx_keydown(int keycode, t_game *game);
 int		cmlx_keyup(int keycode, t_game *game);
@@ -42,7 +42,6 @@ void		**ft_free_array(void *array, size_t length);
 void		*ft_memset(void *vdst, const uint8_t byte, size_t length);
 int64_t		ft_memrcmp(const void *vptr1, const void *vptr2, size_t length);
 void		*ft_realloc(void *src, size_t src_size, size_t dst_size);
-ssize_t		ft_error(const char *prefix, const char *suffix, ssize_t rvalue);
 int64_t		ft_strtol(const char *str, const char **str_ptr);
 
 
