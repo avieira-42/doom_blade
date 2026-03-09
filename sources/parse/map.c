@@ -43,8 +43,11 @@ ssize_t	stt_parse_line(const char *line, t_mat8 *map, t_entity *player)
 static
 void	stt_filtercpy(const char *str, t_mat8 *map)
 {
-	uint8_t	*dst;
-	size_t	row;
+	uint8_t			*dst;
+	size_t			row;
+	static const uint8_t	lut[256] = {
+		['\t'] = 1, ['\n'] = 1, ['\v'] = 1, ['\f'] = 1, ['\r'] = 1, [' '] = 1,
+		['0'] = 0, ['1'] = 1};
 
 	row = 0;
 	while (*str != 0)
@@ -52,10 +55,7 @@ void	stt_filtercpy(const char *str, t_mat8 *map)
 		dst = (uint8_t *) map->ptr + row * map->cols;
 		while (*str != 0 && *str != '\n')
 		{
-			if (ft_isspace(*str))
-				*dst = '1';
-			else
-				*dst = (uint8_t)*str;
+			*dst = lut[(uint8_t)*str];
 			dst++;
 			str++;
 		}
@@ -103,7 +103,7 @@ int	cub_read_map(const char *str, t_mat8 *map, t_entity *player)
 	map->ptr = malloc(map->rows * map->cols);
 	if (map->ptr == NULL)
 		return (-1);
-	ft_memset(map->ptr, '1', map->rows * map->cols);
+	ft_memset(map->ptr, 1, map->rows * map->cols);
 	stt_filtercpy(ostr, map);
 	return (0);
 }

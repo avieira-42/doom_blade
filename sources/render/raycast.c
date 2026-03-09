@@ -70,7 +70,7 @@ void	*stt_raycast(t_ray *ray, t_view *cam, t_mat8 *map, t_block *blocks)
 	float	perp_dist;
 	t_mat32	block;
 	uint8_t	block_index;
-	float	block_pos_x;
+	float	block_x;
 	uint8_t	side;
 
 	side = stt_dda(ray, map, &block_index);
@@ -81,6 +81,7 @@ void	*stt_raycast(t_ray *ray, t_view *cam, t_mat8 *map, t_block *blocks)
 			block = blocks[block_index].west;
 		else
 			block = blocks[block_index].east;
+		block_x = cam->pos.y.f + perp_dist * ray->ray_dir.y.f;
 	}
 	else
 	{
@@ -89,9 +90,10 @@ void	*stt_raycast(t_ray *ray, t_view *cam, t_mat8 *map, t_block *blocks)
 			block = blocks[block_index].north;
 		else
 			block = blocks[block_index].south;
+		block_x = cam->pos.x.f + perp_dist * ray->ray_dir.x.f;
 	}
-	block_pos_x = cam->pos.x.f + perp_dist * ray->ray_dir.x.f;
-	return (block.ptr + (size_t)(block_pos_x * (block.rows - 1)));
+	block_x -= floorf(block_x);
+	return (block.ptr + (size_t)(block_x * (block.rows - 1)) * block.cols);
 }
 
 // Blocks contains transposed rows for sequential memory access
@@ -109,7 +111,7 @@ void	raycast(t_view *cam, t_mat8 *map, t_block *blocks, uint32_t *render_frame)
 		camera_x = 2.0f * x / (float)RENDER_WIDTH - 1.0f;
 		ray = stt_raycast_init(camera_x, cam);
 		src = stt_raycast(&ray, cam, map, blocks);
-		ft_memcpy(render_frame + x * RENDER_WIDTH, src, RENDER_HEIGHT);
+		ft_memcpy(render_frame + x * RENDER_WIDTH, src, RENDER_HEIGHT * sizeof(uint32_t));
 		x++;
 	}
 }
