@@ -24,6 +24,7 @@ int		cub_read_map(const char *str, t_mat8 *map, t_entity *player);
 uint32_t	ft_strtoargb(const char *str, const char **str_ptr);
 void		*ft_read_all(const char *filename, size_t *file_size);
 int		cub_init(const char *filename, t_game *game);
+int		cub_is_map_enclosed(t_mat8 map, t_vec2 p_pos);
 // ------------------------------
 
 void		**ft_free_array(void *array, size_t length);

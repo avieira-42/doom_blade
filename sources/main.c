@@ -29,7 +29,7 @@ int	stt_mlx_init(t_game *game)
 static
 void	stt_params_init(t_game *game)
 {
-	// game->vd = ft_qsqrt(game->map.cols * game->map.cols + game->map.rows * game->map.rows);
+	//game->vd = ft_qsqrt(game->map.cols * game->map.cols + game->map.rows * game->map.rows);
 	game->player.cam.dir = (t_vec2){.x.f = 0.71f, .y.f = 0.71f};
 	game->player.cam.plane = (t_vec2){.x.f = 0.0f, .y.f = 0.0f};
 	game->player.dir_mod = 0;
@@ -56,6 +56,8 @@ int	stt_cub_init(const char *filename, t_game *game)
 		return (free(file), -1);
 	free(file);
 	if (stt_mlx_init(game) == -1)
+		return (-1);
+	if (cub_is_map_enclosed(game->map, game->player.cam.pos) == -1)
 		return (-1);
 	stt_params_init(game);
 	return (0);

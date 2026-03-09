@@ -4,21 +4,29 @@
 #include "cub_utils.h"
 #include "cub_structs.h"
 
-int	loop(t_mat8 *map, t_entity *player)
+static
+int	stt_cub_flood_fill(t_mat8 map, int32_t x, int32_t y)
 {
-	size_t	i;
-	size_t	j;
 	uint8_t	block;
 
-	i = 0;
-	while (i < map->cols)
-	{
-		j = 0;
-		while (j < map->rows)
-		{
-			block = map->ptr[i * map->cols + j * map->rows];
-			j++;
-		}
-		i++;
-	}
+	if (x >= map.cols || x <= -1 || y >= map.rows || y <= -1)
+		return (-1);
+	block = map.ptr[map.cols * x + map.rows * y];
+	if (block != 0)
+		return (0);
+	map.ptr[map.cols * x + map.rows * y] = '1';
+	if (stt_cub_flood_fill(map, x + 1, y) == -1)
+		return (-1);
+	if (stt_cub_flood_fill(map, x - 1, y) == -1)
+		return (-1);
+	if (stt_cub_flood_fill(map, x, y + 1) == -1)
+		return (-1);
+	if (stt_cub_flood_fill(map, x, y - 1) == -1)
+		return (-1);
+	return (0);
+}
+
+int	cub_is_map_enclosed(t_mat8 map, t_vec2 p_pos)
+{
+	return (stt_cub_flood_fill(map, p_pos.x.i, p_pos.y.i));
 }
