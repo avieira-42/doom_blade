@@ -7,20 +7,20 @@
 static
 int	stt_cleanup(t_game *game)
 {
-	size_t	i;
+	// size_t	i;
 
-	free(map->ptr);
-	i = 0;
-	while (i < NUM_BLOCKS)
-	{
-		free(map->blocks[i].north.ptr);		// Careful with double free of repeated ptrs
-		free(map->blocks[i].south.ptr);
-		free(map->blocks[i].east.ptr);
-		free(map->blocks[i].west.ptr);
-	}
+	// free(game->map.ptr);
+	// i = 0;
+	// while (i < NUM_BLOCKS)
+	// {
+	// 	free(game->blocks[i].north.ptr);		// Careful with double free of repeated ptrs
+	// 	free(game->blocks[i].south.ptr);
+	// 	free(game->blocks[i].east.ptr);
+	// 	free(game->blocks[i].west.ptr);
+	// }
 }
 
-int	cub_cleanup(t_xvar *mlx, t_map *map)
+int	cub_cleanup(t_game *game)
 {
-	
+	exit(1);
 }

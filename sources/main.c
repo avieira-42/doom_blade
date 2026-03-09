@@ -23,6 +23,7 @@ int	stt_mlx_init(t_game *game)
 	mlx_hook(window, ButtonRelease, ButtonReleaseMask, cmlx_mouseup, game);
 	mlx_hook(window, MotionNotify, PointerMotionMask, cmlx_mousemove, game);
 	mlx_mouse_hide(game->mlx, window);
+	mlx_loop_hook(game->mlx, cmlx_loop, &game);
 	return (0);
 }
 
@@ -57,8 +58,8 @@ int	stt_cub_init(const char *filename, t_game *game)
 	free(file);
 	if (stt_mlx_init(game) == -1)
 		return (-1);
-	if (cub_is_map_enclosed(game->map, game->player.cam.pos) == -1)
-		return (-1);
+	// if (cub_is_map_enclosed(game->map, game->player.cam.pos) == -1)
+	// 	return (-1);
 	stt_params_init(game);
 	return (0);
 }
@@ -71,7 +72,5 @@ int	main(int argc, char **argv)
 		return (1);
 	if (stt_cub_init(argv[1], &game) == -1)
 		return (1);
-	// mlx_hook(game.win_ptr, 17, 0, free_displays, &game);
-	// mlx_loop_hook(game.mlx, game_loop, &game);
-	// mlx_loop(game.mlx);
+	mlx_loop(game.mlx);
 }

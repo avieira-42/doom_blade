@@ -64,6 +64,29 @@ void	stt_filtercpy(const char *str, t_mat8 *map)
 	}
 }
 
+// static
+// int	stt_validate_map(t_mat8 *map)
+// {
+// 	size_t	i;
+// 	uint8_t	*ptr1;
+// 	uint8_t	*ptr2;
+
+// 	i = 0;
+// 	ptr1 = map->ptr;
+// 	ptr2 = map->ptr + map->rows * map->cols;	// Possible off by one
+// 	while (ptr1[i] == '1' && ptr2[i] && i < map->cols)
+// 		i++;
+// 	if (i != map->cols)
+// 		return (-1);
+// 	i = 0;
+// 	ptr2 = map->ptr + map->cols;
+// 	while (ptr1[i] == '1' && ptr2[i] && i < map->rows)
+// 		i += map->cols;
+// 	if (i != map->rows)
+// 		return (-1);
+// 	return (0);
+// }
+
 int	cub_read_map(const char *str, t_mat8 *map, t_entity *player)
 {
 	ssize_t		offset;

@@ -1,11 +1,11 @@
 # Configuration ------------------------------- #
 NAME = main
 VPATH = sources sources/utils sources/parse sources/math sources/core sources/events soruces/physics sources/render
-SRCS = main.c \
+SRCS = main.c cleanup.c raycast.c \
 io_basic.c read_rgb.c memory.c char_ascii.c transpose.c \
 map.c textures.c \
 bilinear_scaling.c integer_scaling.c \
-input.c 
+input.c loop.c
 LDLIBS = libraries/mlx/libmlx_Linux.a
 ASM = $(OBJS:.o=.s)
 
@@ -38,8 +38,7 @@ $(BIN): $(OBJS) $(ASM) | $(BUILD_PATH)
 # Assembly
 $(OBJ_PATH)/%.s: $(OBJ_PATH)/%.o
 	llvm-objdump -d --x86-asm-syntax=intel --no-show-raw-insn \
-	--no-leading-addr --no-leading-headers --symbolize-operands \
-	--pretty-pgo-analysis-map $< > $@
+	--no-leading-addr --no-leading-headers --symbolize-operands $< > $@
 
 # Directory
 $(OBJ_PATH):

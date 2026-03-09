@@ -26,7 +26,7 @@ int	stt_cub_flood_fill(t_mat8 map, int32_t x, int32_t y)
 	return (0);
 }
 
-int	cub_is_map_enclosed(t_mat8 map, t_vec2 p_pos)
+int	cub_is_map_enclosed(t_mat8 map, t_vec2 player_pos)
 {
-	return (stt_cub_flood_fill(map, p_pos.x.i, p_pos.y.i));
+	return (stt_cub_flood_fill(map, player_pos.x.i, player_pos.y.i));
 }

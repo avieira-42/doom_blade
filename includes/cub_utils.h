@@ -13,18 +13,22 @@ void	ft_integer_scaling(t_mat32 *src, t_mat32 *dst, size_t factor);
 void	ft_integer_scaling_t(t_mat32 *src, t_mat32 *dst, size_t factor);
 int		ft_transpose(t_mat32 *src);
 
+void	raycast(t_view *cam, t_mat8 *map, t_block *blocks, uint32_t *render_frame);
+
 int		cmlx_keydown(int keycode, t_game *game);
 int		cmlx_keyup(int keycode, t_game *game);
 int		cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game);
 int		cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game);
 int		cmlx_mousemove(int32_t x1, int32_t y1, t_game *game);
+int		cmlx_loop(t_game *game);
 
+int		cub_cleanup(t_game *game);
 int		cub_read_textures(t_xvar *mlx, const char *str, const char **str_ptr, t_block *blocks);
 int		cub_read_map(const char *str, t_mat8 *map, t_entity *player);
 uint32_t	ft_strtoargb(const char *str, const char **str_ptr);
 void		*ft_read_all(const char *filename, size_t *file_size);
 int		cub_init(const char *filename, t_game *game);
-int		cub_is_map_enclosed(t_mat8 map, t_vec2 p_pos);
+int		cub_is_map_enclosed(t_mat8 map, t_vec2 player_pos);
 // ------------------------------
 
 void		**ft_free_array(void *array, size_t length);
@@ -32,7 +36,6 @@ void		*ft_memset(void *vdst, const uint8_t byte, size_t length);
 int64_t		ft_memrcmp(const void *vptr1, const void *vptr2, size_t length);
 void		*ft_realloc(void *src, size_t src_size, size_t dst_size);
 int64_t		ft_strtol(const char *str, const char **str_ptr);
-
 
 float	ft_min(float number1, float number2);
 float	ft_max(float number1, float number2);

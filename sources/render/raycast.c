@@ -65,7 +65,7 @@ uint8_t	stt_dda(t_ray *ray, t_mat8 *map, uint8_t *block_index)
 }
 
 static
-void	*stt_raycast(t_ray *ray, t_view *cam, t_mat8 *map, t_game *game)
+void	*stt_raycast(t_ray *ray, t_view *cam, t_mat8 *map, t_block *blocks)
 {
 	float	perp_dist;
 	t_mat32	block;
@@ -78,17 +78,17 @@ void	*stt_raycast(t_ray *ray, t_view *cam, t_mat8 *map, t_game *game)
 	{
 		perp_dist = (ray->map_pos.x.i - cam->pos.x.f + (1 - ray->step.x.i) / 2) / ray->ray_dir.x.f;
 		if (ray->step.x.i > 0)
-			block = game->blocks[block_index].west;
+			block = blocks[block_index].west;
 		else
-			block = game->blocks[block_index].east;
+			block = blocks[block_index].east;
 	}
 	else
 	{
 		perp_dist = (ray->map_pos.y.i - cam->pos.y.f + (1 - ray->step.y.i) / 2) / ray->ray_dir.y.f;
 		if (ray->step.y.i > 0)
-			block = game->blocks[block_index].north;
+			block = blocks[block_index].north;
 		else
-			block = game->blocks[block_index].south;
+			block = blocks[block_index].south;
 	}
 	block_pos_x = cam->pos.x.f + perp_dist * ray->ray_dir.x.f;
 	return (block.ptr + (size_t)(block_pos_x * (block.rows - 1)));
@@ -96,7 +96,7 @@ void	*stt_raycast(t_ray *ray, t_view *cam, t_mat8 *map, t_game *game)
 
 // Blocks contains transposed rows for sequential memory access
 // Everything is done in cols by rows, and then tranposed for the rendering
-void	raycast(t_view *cam, t_mat8 *map, t_game *game)
+void	raycast(t_view *cam, t_mat8 *map, t_block *blocks, uint32_t *render_frame)
 {
 	size_t		x;
 	t_ray		ray;
@@ -108,9 +108,8 @@ void	raycast(t_view *cam, t_mat8 *map, t_game *game)
 	{
 		camera_x = 2.0f * x / (float)RENDER_WIDTH - 1.0f;
 		ray = stt_raycast_init(camera_x, cam);
-		src = stt_raycast(&ray, cam, map, game);
-		ft_memcpy(&game->render_frame[x][0], src, RENDER_HEIGHT);
+		src = stt_raycast(&ray, cam, map, blocks);
+		ft_memcpy(render_frame + x * RENDER_WIDTH, src, RENDER_HEIGHT);
 		x++;
 	}
-	ft_integer_scaling_t(game->render_frame, game->frame, UPSCALING_FACTOR);
 }
