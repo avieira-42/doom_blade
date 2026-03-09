@@ -43,15 +43,22 @@ ssize_t	stt_parse_line(const char *line, t_mat8 *map, t_entity *player)
 static
 void	stt_filtercpy(const char *str, t_mat8 *map)
 {
-	char	*ptr;
+	uint8_t	*dst;
 	size_t	row;
 
 	row = 0;
 	while (*str != 0)
 	{
-		ptr = (char *)map->ptr + row * map->cols;
+		dst = (uint8_t *) map->ptr + row * map->cols;
 		while (*str != 0 && *str != '\n')
-			*ptr++ = (*str++ == 1) + '0';	// Normalizes values to 1 or 0, becomes a problem with doors
+		{
+			if (ft_isspace(*str))
+				*dst = '1';
+			else
+				*dst = (uint8_t)*str;
+			dst++;
+			str++;
+		}
 		str += (*str != 0);
 		row++;
 	}
@@ -67,12 +74,13 @@ int	cub_read_map(const char *str, t_mat8 *map, t_entity *player)
 		offset = stt_parse_line(str, map, player);
 		if (offset <= 0)
 			return (offset);
+		str += offset;
 		map->rows++;
 	}
 	map->ptr = malloc(map->rows * map->cols);
 	if (map->ptr == NULL)
 		return (-1);
-	ft_memset(map->ptr, 0, map->rows * map->cols);
-	stt_filtercpy(str, map);
+	ft_memset(map->ptr, '1', map->rows * map->cols);
+	stt_filtercpy(ostr, map);
 	return (0);
 }
