@@ -111,7 +111,7 @@ void	raycast(t_view *cam, t_mat8 *map, t_block *blocks, uint32_t *render_frame)
 		camera_x = 2.0f * x / (float)RENDER_WIDTH - 1.0f;
 		ray = stt_raycast_init(camera_x, cam);
 		src = stt_raycast(&ray, cam, map, blocks);
-		ft_memcpy(render_frame + x * RENDER_WIDTH, src, RENDER_HEIGHT * sizeof(uint32_t));
+		ft_memcpy(render_frame + x * RENDER_HEIGHT, src, RENDER_HEIGHT * sizeof(uint32_t));
 		x++;
 	}
 }

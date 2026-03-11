@@ -13,8 +13,8 @@ int	stt_mlx_init(t_game *game)
 	game->mlx->win_list = mlx_new_window(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "doom_blade");
 	if (game->mlx->win_list == NULL)
 		return (-1);
-	game->frame = mlx_int_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, ZPixmap);
-	if (game->frame == NULL)
+	game->img = mlx_int_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, ZPixmap);
+	if (game->img == NULL)
 		return (-1);
 	window = game->mlx->win_list;
 	mlx_hook(window, KeyPress, KeyPressMask, cmlx_keydown, game);
@@ -36,6 +36,12 @@ void	stt_params_init(t_game *game)
 	game->player.dir_mod = 0;
 	game->player.speed = 3;
 	game->player.speed_mod = 1;
+	game->frame.ptr = (uint32_t*)game->img->data;
+	game->frame.rows = game->img->height;
+	game->frame.cols = game->img->width;
+	game->render_frame.ptr = (uint32_t*)game->memory.render_frame;
+	game->render_frame.rows = RENDER_HEIGHT;
+	game->render_frame.cols = RENDER_WIDTH;
 }
 
 static

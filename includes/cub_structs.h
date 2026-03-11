@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/08 18:08:11 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/11 13:32:14 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,22 @@ typedef struct s_ray
 	t_vec2	step;		// Integer
 }	t_ray;
 
+typedef struct s_memory
+{
+	uint32_t	render_frame[RENDER_WIDTH][RENDER_HEIGHT];
+}	t_memory;
+
 typedef struct s_game
 {
-	//	definitive
-	t_xvar		*mlx;	// win_ptr is inside mlx already
-	t_img		*frame;
-	uint32_t	render_frame[RENDER_HEIGHT][RENDER_WIDTH];
+	t_xvar		*mlx;
+	t_img		*img;
+	t_mat32		frame;
+	t_mat32		render_frame;
 	t_entity	player;
 	t_mat8		map;
 	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
 	t_vec2		mouse_pos;
+	t_memory	memory;
 }	t_game;
 
 #endif

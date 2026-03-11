@@ -1,7 +1,7 @@
 # Configuration ------------------------------- #
 NAME = main
 VPATH = sources sources/utils sources/parse sources/math sources/core sources/events soruces/physics sources/render
-SRCS = main.c cleanup.c raycast.c \
+SRCS = main.c cleanup.c raycast.c draw_image.c \
 io_basic.c read_rgb.c memory.c char_ascii.c transpose.c \
 map.c textures.c \
 bilinear_scaling.c integer_scaling.c \
