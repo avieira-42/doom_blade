@@ -10,7 +10,7 @@ int	stt_mlx_init(t_game *game)
 {
 	t_win_list *window;
 
-	game->mlx->win_list = mlx_new_window(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "doom_blade");
+	mlx_new_window(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "doom_blade");
 	if (game->mlx->win_list == NULL)
 		return (-1);
 	game->img = mlx_int_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, ZPixmap);
@@ -28,7 +28,7 @@ int	stt_mlx_init(t_game *game)
 }
 
 static
-void	stt_params_init(t_game *game)
+void	stt_params_init(t_game *game, t_memory *memory)
 {
 	//game->vd = ft_qsqrt(game->map.cols * game->map.cols + game->map.rows * game->map.rows);
 	game->player.cam.dir = (t_vec2){.x.f = 0.71f, .y.f = 0.71f};
@@ -42,13 +42,13 @@ void	stt_params_init(t_game *game)
 	game->frame.ptr = (uint32_t*)game->img->data;
 	game->frame.rows = game->img->height;
 	game->frame.cols = game->img->width;
-	game->render_frame.ptr = (uint32_t*)game->memory.render_frame;
+	game->render_frame.ptr = (uint32_t*)memory->render_frame;
 	game->render_frame.rows = RENDER_WIDTH;
 	game->render_frame.cols = RENDER_HEIGHT;
 }
 
 static
-int	stt_cub_init(const char *filename, t_game *game)
+int	stt_cub_init(const char *filename, t_game *game, t_memory *memory)
 {
 	size_t		file_size;
 	const char	*file = ft_read_all(filename, &file_size);
@@ -69,17 +69,18 @@ int	stt_cub_init(const char *filename, t_game *game)
 		return (-1);
 	// if (cub_is_map_enclosed(game->map, game->player.cam.pos) == -1)
 	// 	return (-1);
-	stt_params_init(game);
+	stt_params_init(game, memory);
 	return (0);
 }
 
 int	main(int argc, char **argv)
 {
-	t_game	game;
+	t_game		game;
+	t_memory	memory;
 
 	if (argc != 2)
 		return (1);
-	if (stt_cub_init(argv[1], &game) == -1)
+	if (stt_cub_init(argv[1], &game, &memory) == -1)
 		return (1);
 	mlx_loop(game.mlx);
 }

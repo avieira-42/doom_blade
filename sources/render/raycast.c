@@ -65,44 +65,69 @@ uint8_t	stt_dda(t_ray *ray, t_mat8 *map, uint8_t *block_index)
 }
 
 static
-void	*stt_raycast(t_ray *ray, t_view *cam, t_mat8 *map, t_block *blocks)
+t_ray_hit	stt_raycast(t_ray *ray, t_view *cam, t_mat8 *map, t_block *blocks)
 {
-	float	perp_dist;
-	t_mat32	block;
-	uint8_t	block_index;
-	float	block_x;
-	uint8_t	side;
+	t_ray_hit	hit;
+	uint8_t		block_index;
 
-	side = stt_dda(ray, map, &block_index);
-	if (side == 0)
+	if (stt_dda(ray, map, &block_index) == 0)
 	{
-		perp_dist = (ray->map_pos.x.i - cam->pos.x.f + (1 - ray->step.x.i) / 2) / ray->ray_dir.x.f;
+		hit.perp_dist = (ray->map_pos.x.i - cam->pos.x.f + (1 - ray->step.x.i) / 2) / ray->ray_dir.x.f;
 		if (ray->step.x.i > 0)
-			block = blocks[block_index].west;
+			hit.texture = blocks[block_index].west;
 		else
-			block = blocks[block_index].east;
-		block_x = cam->pos.y.f + perp_dist * ray->ray_dir.y.f;
+			hit.texture = blocks[block_index].east;
+		hit.x_pos_texture = cam->pos.y.f + hit.perp_dist * ray->ray_dir.y.f;
 	}
 	else
 	{
-		perp_dist = (ray->map_pos.y.i - cam->pos.y.f + (1 - ray->step.y.i) / 2) / ray->ray_dir.y.f;
+		hit.perp_dist = (ray->map_pos.y.i - cam->pos.y.f + (1 - ray->step.y.i) / 2) / ray->ray_dir.y.f;
 		if (ray->step.y.i > 0)
-			block = blocks[block_index].north;
+			hit.texture = blocks[block_index].north;
 		else
-			block = blocks[block_index].south;
-		block_x = cam->pos.x.f + perp_dist * ray->ray_dir.x.f;
+			hit.texture = blocks[block_index].south;
+		hit.x_pos_texture = cam->pos.x.f + hit.perp_dist * ray->ray_dir.x.f;
 	}
-	block_x -= floorf(block_x);
-	return (block.ptr + (size_t)(block_x * (block.rows - 1)) * block.cols);
+	hit.x_pos_texture -= floorf(hit.x_pos_texture);
+	return (hit);
+}
+
+t_ray_hit	raycast2(float camera_x, t_view *cam, t_game *game)
+{
+	t_ray		ray;
+	t_ray_hit	hit;
+	uint8_t		block_index;
+
+	ray = stt_raycast_init(camera_x, cam);
+	if (stt_dda(&ray, &game->map, &block_index) == 0)
+	{
+		hit.perp_dist = (ray.map_pos.x.i - cam->pos.x.f + (1 - ray.step.x.i) / 2) / ray.ray_dir.x.f;
+		if (ray.step.x.i > 0)
+			hit.texture = game->blocks[block_index].west;
+		else
+			hit.texture = game->blocks[block_index].east;
+		hit.x_pos_texture = cam->pos.y.f + hit.perp_dist * ray.ray_dir.y.f;
+	}
+	else
+	{
+		hit.perp_dist = (ray.map_pos.y.i - cam->pos.y.f + (1 - ray.step.y.i) / 2) / ray.ray_dir.y.f;
+		if (ray.step.y.i > 0)
+			hit.texture = game->blocks[block_index].north;
+		else
+			hit.texture = game->blocks[block_index].south;
+		hit.x_pos_texture = cam->pos.x.f + hit.perp_dist * ray.ray_dir.x.f;
+	}
+	hit.x_pos_texture -= floorf(hit.x_pos_texture);
+	return (hit);
 }
 
 // Blocks contains transposed rows for sequential memory access
 // Everything is done in cols by rows, and then tranposed for the rendering
-void	raycast(t_view *cam, t_mat8 *map, t_block *blocks, uint32_t *render_frame)
+void	raycast(t_view *cam, t_mat8 *map, t_block *blocks, t_mat32 render_frame)
 {
 	size_t		x;
 	t_ray		ray;
-	uint32_t	*src;
+	t_ray_hit	hit;
 	float		camera_x;
 
 	x = 0;
@@ -110,8 +135,7 @@ void	raycast(t_view *cam, t_mat8 *map, t_block *blocks, uint32_t *render_frame)
 	{
 		camera_x = 2.0f * x / (float)RENDER_WIDTH - 1.0f;
 		ray = stt_raycast_init(camera_x, cam);
-		src = stt_raycast(&ray, cam, map, blocks);
-		ft_memcpy(render_frame + x * RENDER_HEIGHT, src, RENDER_HEIGHT * sizeof(uint32_t));
+		hit = stt_raycast(&ray, cam, map, blocks);
 		x++;
 	}
 }
