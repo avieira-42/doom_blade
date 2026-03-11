@@ -9,6 +9,7 @@
 
 void	ft_bilinear_scaling(t_mat32 *src, t_mat32 *dst);
 void	ft_integer_scaling(t_mat32 src, t_mat32 dst, size_t factor);
+void	ft_integer_scaling_t(t_mat32 src, t_mat32 dst, size_t factor);
 int		ft_transpose(t_mat32 *src);
 int		cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner);
 void	raycast(t_view *cam, t_mat8 *map, t_block *blocks, uint32_t *render_frame);

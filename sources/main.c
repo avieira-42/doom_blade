@@ -32,7 +32,10 @@ void	stt_params_init(t_game *game)
 {
 	//game->vd = ft_qsqrt(game->map.cols * game->map.cols + game->map.rows * game->map.rows);
 	game->player.cam.dir = (t_vec2){.x.f = 0.71f, .y.f = 0.71f};
-	game->player.cam.plane = (t_vec2){.x.f = 0.0f, .y.f = 0.0f};
+	game->player.cam.plane = (t_vec2){
+		.x.f = -game->player.cam.dir.y.f * 0.66f,
+		.y.f =  game->player.cam.dir.x.f * 0.66f
+	};
 	game->player.dir_mod = 0;
 	game->player.speed = 3;
 	game->player.speed_mod = 1;
@@ -40,8 +43,8 @@ void	stt_params_init(t_game *game)
 	game->frame.rows = game->img->height;
 	game->frame.cols = game->img->width;
 	game->render_frame.ptr = (uint32_t*)game->memory.render_frame;
-	game->render_frame.rows = RENDER_HEIGHT;
-	game->render_frame.cols = RENDER_WIDTH;
+	game->render_frame.rows = RENDER_WIDTH;
+	game->render_frame.cols = RENDER_HEIGHT;
 }
 
 static
