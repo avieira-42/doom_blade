@@ -9,7 +9,7 @@
 // See if FLTO inlines
 // Convert textures to power of two
 static
-void	stt_column_render(t_ray_hit hit, uint32_t *render_col)
+void	stt_column_render(t_rayhit hit, uint32_t *render_col)
 {
 	size_t			x;
 	const int32_t	line_height = (float) RENDER_HEIGHT / (float) hit.perp_dist;
@@ -34,7 +34,7 @@ void	stt_column_render(t_ray_hit hit, uint32_t *render_col)
 void	render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_mat32 render_frame)
 {
 	size_t		x;
-	t_ray_hit	hit;
+	t_rayhit	hit;
 	float		camera_x;
 	const float	dx = 2.0 / (double) RENDER_WIDTH;
 

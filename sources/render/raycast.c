@@ -36,65 +36,58 @@ t_ray	stt_raycast_init(float camera_x, t_view *cam)
 	return (ray);
 }
 
-// To do: Add safety clauses for rendering
 static inline
-uint8_t	stt_dda(t_ray *ray, t_mat8 *map, uint8_t *block_index)
+t_rayhit	stt_rayhit_info(t_ray *ray, uint8_t side, t_block *block, t_view *cam)
 {
-	uint8_t	side;
-	uint8_t	block;
+	t_rayhit	hit;
 
-	block = 0;
-	*block_index = 0;
-	while (block == 0)
+	if (side == 0)
 	{
-		if (ray->side_dist.x.f < ray->side_dist.y.f)
+		hit.perp_dist = (ray->map_pos.x.i - cam->pos.x.f + (1 - ray->step.x.i) / 2) / ray->ray_dir.x.f;
+		if (ray->step.x.i > 0)
+			hit.texture = block->west;
+		else
+			hit.texture = block->east;
+		hit.x_pos_texture = cam->pos.y.f + hit.perp_dist * ray->ray_dir.y.f;
+	}
+	else
+	{
+		hit.perp_dist = (ray->map_pos.y.i - cam->pos.y.f + (1 - ray->step.y.i) / 2) / ray->ray_dir.y.f;
+		if (ray->step.y.i > 0)
+			hit.texture = block->north;
+		else
+			hit.texture = block->south;
+		hit.x_pos_texture = cam->pos.x.f + hit.perp_dist * ray->ray_dir.x.f;
+	}
+	hit.x_pos_texture -= floorf(hit.x_pos_texture);
+	return (hit);
+}
+
+t_rayhit	raycast(float camera_x, t_view *cam, t_mat8 *map, t_block *blocks)
+{
+	t_ray		ray;
+	uint8_t		block_index;
+	uint8_t		side;
+
+	block_index = 0;
+	ray = stt_raycast_init(camera_x, cam);
+	while (block_index == 0)
+	{
+		if (ray.side_dist.x.f < ray.side_dist.y.f)
 		{
-			ray->side_dist.x.f += ray->delta_dist.x.f;
-			ray->map_pos.x.i += ray->step.x.i;
+			ray.side_dist.x.f += ray.delta_dist.x.f;
+			ray.map_pos.x.i += ray.step.x.i;
 			side = 0;
 		}
 		else
 		{
-			ray->side_dist.y.f += ray->delta_dist.y.f;
-			ray->map_pos.y.i += ray->step.y.i;
+			ray.side_dist.y.f += ray.delta_dist.y.f;
+			ray.map_pos.y.i += ray.step.y.i;
 			side = 1;
 		}
-		// if ((uint32_t)(ray->map_pos.y.i) > map->cols || (uint32_t)(ray->map_pos.x.i) > map->rows)
-		// 	return (0);
-		block = map->ptr[ray->map_pos.y.i * map->cols + ray->map_pos.x.i];
-		if (block > 0)
-			*block_index = block;
+		if ((uint32_t)(ray.map_pos.x.i) > map->cols || (uint32_t)(ray.map_pos.y.i) > map->rows)
+			break ;
+		block_index = map->ptr[ray.map_pos.y.i * map->cols + ray.map_pos.x.i];
 	}
-	return (side);
-}
-
-t_ray_hit	raycast(float camera_x, t_view *cam, t_mat8 *map, t_block *blocks)
-{
-	t_ray		ray;
-	t_ray_hit	hit;
-	uint8_t		block_index;
-	uint8_t		side;
-
-	ray = stt_raycast_init(camera_x, cam);
-	side = stt_dda(&ray, map, &block_index);
-	if (side == 0)
-	{
-		hit.perp_dist = (ray.map_pos.x.i - cam->pos.x.f + (1 - ray.step.x.i) / 2) / ray.ray_dir.x.f;
-		if (ray.step.x.i > 0)
-			hit.texture = blocks[block_index].west;
-		else
-			hit.texture = blocks[block_index].east;
-		hit.x_pos_texture = cam->pos.y.f + hit.perp_dist * ray.ray_dir.y.f;
-	}
-	else
-	{
-		hit.perp_dist = (ray.map_pos.y.i - cam->pos.y.f + (1 - ray.step.y.i) / 2) / ray.ray_dir.y.f;
-		if (ray.step.y.i > 0)
-			hit.texture = blocks[block_index].north;
-		else
-			hit.texture = blocks[block_index].south;
-		hit.x_pos_texture = cam->pos.x.f + hit.perp_dist * ray.ray_dir.x.f;
-	}
-	hit.x_pos_texture -= floorf(hit.x_pos_texture);
-	return (hit);
+	return (stt_rayhit_info(&ray, side, blocks + block_index, cam));
 }

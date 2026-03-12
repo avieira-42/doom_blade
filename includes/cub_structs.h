@@ -40,12 +40,12 @@ typedef struct s_ray
 	t_vec2	step;		// Integer
 }	t_ray;
 
-typedef struct s_ray_hit
+typedef struct s_rayhit
 {
 	t_mat32	texture;
 	float	x_pos_texture;
 	float	perp_dist;
-}	t_ray_hit;
+}	t_rayhit;
 
 typedef struct s_memory
 {
