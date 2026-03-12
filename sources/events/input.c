@@ -36,13 +36,13 @@ int	cmlx_keydown(int keycode, t_game *game)
 int	cmlx_keyup(int keycode, t_game *game)
 {
 	if (keycode == XK_w)
-		game->player.cam.pos.y.f += -0.1f;
+		game->player.cam.pos.y.f += 0.1f;
 	if (keycode == XK_a)
 		game->player.cam.pos.x.f += 0.1f;
 	if (keycode == XK_s)
-		game->player.cam.pos.y.f += 0.1f;
+		game->player.cam.pos.y.f -= 0.1f;
 	if (keycode == XK_d)
-		game->player.cam.pos.x.f += -0.1f;
+		game->player.cam.pos.x.f -= 0.1f;
 	if (keycode == XK_l)
 		game->player.dir_mod += 1;
 	if (keycode == XK_j)

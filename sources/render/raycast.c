@@ -6,7 +6,7 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
-static
+static inline
 t_ray	stt_raycast_init(float camera_x, t_view *cam)
 {
 	t_ray	ray;
@@ -36,8 +36,8 @@ t_ray	stt_raycast_init(float camera_x, t_view *cam)
 	return (ray);
 }
 
-// To do: Add safety clauses for rendering 
-static
+// To do: Add safety clauses for rendering
+static inline
 uint8_t	stt_dda(t_ray *ray, t_mat8 *map, uint8_t *block_index)
 {
 	uint8_t	side;
@@ -68,77 +68,33 @@ uint8_t	stt_dda(t_ray *ray, t_mat8 *map, uint8_t *block_index)
 	return (side);
 }
 
-static
-t_ray_hit	stt_raycast(t_ray *ray, t_view *cam, t_mat8 *map, t_block *blocks)
+t_ray_hit	raycast(float camera_x, t_view *cam, t_mat8 *map, t_block *blocks)
 {
-	t_ray_hit		hit;
-	uint8_t			block_index;
-	const uint8_t	side = stt_dda(ray, map, &block_index);
+	t_ray		ray;
+	t_ray_hit	hit;
+	uint8_t		block_index;
+	uint8_t		side;
 
+	ray = stt_raycast_init(camera_x, cam);
+	side = stt_dda(&ray, map, &block_index);
 	if (side == 0)
 	{
-		hit.perp_dist = (ray->map_pos.x.i - cam->pos.x.f + (1 - ray->step.x.i) / 2) / ray->ray_dir.x.f;
-		if (ray->step.x.i > 0)
+		hit.perp_dist = (ray.map_pos.x.i - cam->pos.x.f + (1 - ray.step.x.i) / 2) / ray.ray_dir.x.f;
+		if (ray.step.x.i > 0)
 			hit.texture = blocks[block_index].west;
 		else
 			hit.texture = blocks[block_index].east;
-		hit.x_pos_texture = cam->pos.y.f + hit.perp_dist * ray->ray_dir.y.f;
+		hit.x_pos_texture = cam->pos.y.f + hit.perp_dist * ray.ray_dir.y.f;
 	}
 	else
 	{
-		hit.perp_dist = (ray->map_pos.y.i - cam->pos.y.f + (1 - ray->step.y.i) / 2) / ray->ray_dir.y.f;
-		if (ray->step.y.i > 0)
+		hit.perp_dist = (ray.map_pos.y.i - cam->pos.y.f + (1 - ray.step.y.i) / 2) / ray.ray_dir.y.f;
+		if (ray.step.y.i > 0)
 			hit.texture = blocks[block_index].north;
 		else
 			hit.texture = blocks[block_index].south;
-		hit.x_pos_texture = cam->pos.x.f + hit.perp_dist * ray->ray_dir.x.f;
+		hit.x_pos_texture = cam->pos.x.f + hit.perp_dist * ray.ray_dir.x.f;
 	}
 	hit.x_pos_texture -= floorf(hit.x_pos_texture);
 	return (hit);
-}
-
-// See if FLTO inlines
-// Convert textures to power of two
-static
-void	stt_column_render(t_ray_hit hit, uint32_t *render_col)
-{
-	size_t			x;
-	const int32_t	line_height = (float) RENDER_HEIGHT / (float) hit.perp_dist;
-	const uint32_t	draw_start = ft_imax(0, (RENDER_HEIGHT / 2) - (line_height / 2));
-	const uint32_t	draw_end = ft_imin(RENDER_HEIGHT, (RENDER_HEIGHT / 2) + (line_height / 2));
-	const float		dx = (double)hit.texture.cols / (double)line_height;	// cols represents height here because the texture is transposed
-	float			tex_pos;
-
-	hit.texture.ptr += (size_t)(hit.x_pos_texture * hit.texture.rows) * hit.texture.cols;
-	tex_pos = (draw_start - (RENDER_HEIGHT / 2) + (line_height / 2)) * dx;
-	x = draw_start;
-	while (x < draw_end)
-	{
-		render_col[x] = hit.texture.ptr[(size_t)tex_pos];
-		tex_pos += dx;
-		x++;
-	}
-}
-
-// Blocks contains transposed rows for sequential memory access
-// Everything is done in cols by rows, and then tranposed for the rendering
-void	raycast(t_view *cam, t_mat8 *map, t_block *blocks, t_mat32 render_frame)
-{
-	size_t		x;
-	t_ray		ray;
-	t_ray_hit	hit;
-	float		camera_x;
-	const float	dx = 2.0 / (double) RENDER_WIDTH;
-
-	x = 0;
-	camera_x = -1.0f;
-	while (x < RENDER_WIDTH)
-	{
-		ray = stt_raycast_init(camera_x, cam);
-		hit = stt_raycast(&ray, cam, map, blocks);	// if block_index is a specific number, do not render
-		stt_column_render(hit, render_frame.ptr);
-		render_frame.ptr += render_frame.cols;
-		camera_x += dx;
-		x++;
-	}
 }
