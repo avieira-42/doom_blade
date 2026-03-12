@@ -30,6 +30,8 @@ int	stt_mlx_init(t_game *game)
 static
 void	stt_params_init(t_game *game, t_memory *memory)
 {
+	const t_mat32	empty = {memory->empty_line, 1, RENDER_HEIGHT, 1, 0};
+
 	//game->vd = ft_qsqrt(game->map.cols * game->map.cols + game->map.rows * game->map.rows);
 	game->player.cam.dir = (t_vec2){.x.f = 0.71f, .y.f = 0.71f};
 	game->player.cam.plane = (t_vec2){
@@ -39,12 +41,14 @@ void	stt_params_init(t_game *game, t_memory *memory)
 	game->player.dir_mod = 0;
 	game->player.speed = 3;
 	game->player.speed_mod = 1;
-	game->frame.ptr = (uint32_t*)game->img->data;
-	game->frame.rows = game->img->height;
-	game->frame.cols = game->img->width;
+	game->display_frame.ptr = (uint32_t*)game->img->data;
+	game->display_frame.rows = game->img->height;
+	game->display_frame.cols = game->img->width;
 	game->render_frame.ptr = (uint32_t*)memory->render_frame;
 	game->render_frame.rows = RENDER_WIDTH;
 	game->render_frame.cols = RENDER_HEIGHT;
+	ft_memset(memory->empty_line, 0, sizeof(memory->empty_line));
+	game->blocks[0] = (t_block){empty, empty, empty, empty};
 }
 
 static

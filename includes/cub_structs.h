@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cub_structs.h                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/11 17:16:04 by adeimlin         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef CUB_STRUCTS_H
 # define CUB_STRUCTS_H
 
@@ -62,13 +50,21 @@ typedef struct s_ray_hit
 typedef struct s_memory
 {
 	uint32_t	render_frame[RENDER_WIDTH][RENDER_HEIGHT];
+	uint32_t	empty_line[RENDER_HEIGHT];
 }	t_memory;
+
+typedef struct s_gstate
+{
+	bool	paused;
+	long	time;
+	// ...
+}	t_gstate;
 
 typedef struct s_game
 {
 	t_xvar		*mlx;
 	t_img		*img;
-	t_mat32		frame;
+	t_mat32		display_frame;
 	t_mat32		render_frame;
 	t_mat8		map;
 	t_vec2		mouse_pos;

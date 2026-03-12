@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 12:22:52 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/11 17:41:23 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/12 15:21:48 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@
 
 int	cmlx_loop(t_game *game)
 {
+	ft_memset(game->display_frame.ptr, 0, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(uint32_t));
+	ft_memset(game->render_frame.ptr, 0, RENDER_HEIGHT * RENDER_WIDTH * sizeof(uint32_t));
 	raycast(&game->player.cam, &game->map, game->blocks, game->render_frame);
-	ft_integer_scaling_t(game->render_frame, game->frame, 4);
-	// cub_draw_image(game->render_frame, game->frame, 0, 0);
+	ft_integer_scaling_t(game->render_frame, game->display_frame, 4);
 	mlx_put_image_to_window(game->mlx, game->mlx->win_list, game->img, 0, 0);
 	return (1);
 }
