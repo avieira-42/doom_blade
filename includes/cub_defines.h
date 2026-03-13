@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 13:14:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/08 16:15:18 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/13 16:56:34 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,16 @@
 # define NUM_BLOCKS 4
 # define EPS 0.00000011920929f
 # define PI 3.141592653589793238462643383279502884L
+
+// Keys
+
+enum e_keys
+{
+	key_w = 1u << 1,
+	key_s = 1u << 2,
+	key_a = 1u << 3,
+	key_d = 1u << 4,
+};
 
 // Colors
 enum e_colors

@@ -38,9 +38,6 @@ void	stt_params_init(t_game *game, t_memory *memory)
 		.x.f = -game->player.cam.dir.y.f * 0.66f,
 		.y.f =  game->player.cam.dir.x.f * 0.66f
 	};
-	game->player.dir_mod = 0;
-	game->player.speed = 3;
-	game->player.speed_mod = 1;
 	game->display_frame.ptr = (uint32_t*)game->img->data;
 	game->display_frame.rows = game->img->height;
 	game->display_frame.cols = game->img->width;
@@ -50,6 +47,8 @@ void	stt_params_init(t_game *game, t_memory *memory)
 	ft_memset(memory->empty_line, 0, sizeof(memory->empty_line));
 	game->blocks[0].east = empty;
 	game->blocks[0].west = empty;
+	game->player.move.speed.x.f = 0.0f;
+	game->player.move.speed.y.f = 0.0f;
 }
 
 int	cub_init(const char *filename, t_game *game, t_memory *memory)

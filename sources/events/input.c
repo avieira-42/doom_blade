@@ -9,26 +9,14 @@ int	cmlx_keydown(int keycode, t_game *game)
 {
 	if (keycode == XK_Escape)
 		return (cub_cleanup(game));
-	// if (keycode == XK_w)
-	// 	game->player.ori.y.f += 1.0f;
-	// if (keycode == XK_a)
-	// 	game->player.ori.x.f += -1.0f;
-	// if (keycode == XK_s)
-	// 	game->player.ori.y.f += -1.0f;
-	// if (keycode == XK_d)
-	// 	game->player.ori.x.f += 1.0f;
-	if (keycode == XK_l)
-		game->player.dir_mod += -1;
-	if (keycode == XK_j)
-		game->player.dir_mod += 1;
-	// if (keycode == XK_k)
-	// 	game->cam.dist_mod += -1;
-	// if (keycode == XK_i)
-	// 	game->cam.dist_mod += 1;
-	if (keycode == XK_Shift_L)
-		game->player.speed_mod += 1;
-	// if (keycode == XK_Escape)
-	// 	free_displays();
+	if (keycode == XK_w)
+		game->key |= (size_t)key_w;
+	if (keycode == XK_a)
+		game->key |= (size_t)key_a;
+	if (keycode == XK_s)
+		game->key |= (size_t)key_s;
+	if (keycode == XK_d)
+		game->key |= (size_t)key_d;
 	return (0);
 }
 
@@ -36,23 +24,13 @@ int	cmlx_keydown(int keycode, t_game *game)
 int	cmlx_keyup(int keycode, t_game *game)
 {
 	if (keycode == XK_w)
-		game->player.cam.pos.y.f += 0.1f;
+		game->key &= ~(size_t)key_w;
 	if (keycode == XK_a)
-		game->player.cam.pos.x.f += 0.1f;
+		game->key &= ~(size_t)key_a;
 	if (keycode == XK_s)
-		game->player.cam.pos.y.f -= 0.1f;
+		game->key &= ~(size_t)key_s;
 	if (keycode == XK_d)
-		game->player.cam.pos.x.f -= 0.1f;
-	if (keycode == XK_l)
-		game->player.dir_mod += 1;
-	if (keycode == XK_j)
-		game->player.dir_mod += -1;
-	// if (keycode == XK_k)
-	// 	game->cam.dist_mod += 1;
-	// if (keycode == XK_i)
-	// 	game->cam.dist_mod += -1;
-	if (keycode == XK_Shift_L)
-		game->player.speed_mod += -1.0f;
+		game->key &= ~(size_t)key_d;
 	return (0);
 }
 

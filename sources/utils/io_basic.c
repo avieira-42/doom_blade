@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:50:30 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/09 15:15:20 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/13 16:46:47 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	*ft_read_all(const char *filename, size_t *file_size)
 		return (free(buffer), NULL);
 	if (bytes_total < FT_IO_BUFSIZE)
 		return (buffer);
-	return (stt_read_file(filename, (size_t)bytes_total));
+	return (free(buffer), stt_read_file(filename, (size_t)bytes_total));
 }
 
 ssize_t	ft_read_size(const char *filename)

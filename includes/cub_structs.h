@@ -35,10 +35,8 @@ typedef struct s_speed
 
 typedef struct s_entity
 {
-	t_view		cam;
-	int32_t		dir_mod;
-	float		speed;
-	float		speed_mod;
+	t_view	cam;
+	t_speed	move;
 }	t_entity;
 
 typedef struct s_ray
@@ -82,6 +80,7 @@ typedef struct s_game
 	t_vec2		mouse_pos;
 	t_entity	player;
 	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
+	size_t		key;
 }	t_game;
 
 #endif
