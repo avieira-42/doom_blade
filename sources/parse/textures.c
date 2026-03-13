@@ -104,9 +104,9 @@ int	stt_match_texture(t_xvar *mlx, const char *str, t_block *blocks, const char 
 	else if (str[0] == 'W' && str[1] == 'E')
 		rvalue = stt_read_texture(mlx, &blocks[1].west, str + 2,  str_ptr);
 	else if (str[0] == 'F')
-		rvalue = stt_read_color(mlx, &blocks[2].south, str + 1, str_ptr);
+		rvalue = stt_read_color(mlx, &blocks[0].south, str + 1, str_ptr);
 	else if (str[0] == 'C')
-		rvalue = stt_read_color(mlx, &blocks[2].north, str + 1, str_ptr);
+		rvalue = stt_read_color(mlx, &blocks[0].north, str + 1, str_ptr);
 		// Continue here for more textures
 	return (rvalue);
 }

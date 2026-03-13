@@ -23,12 +23,13 @@ int		cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game);
 int		cmlx_mousemove(int32_t x1, int32_t y1, t_game *game);
 int		cmlx_loop(t_game *game);
 
+int		cub_init(const char *filename, t_game *game, t_memory *memory);
 int		cub_cleanup(t_game *game);
 int		cub_read_textures(t_xvar *mlx, const char *str, const char **str_ptr, t_block *blocks);
 int		cub_read_map(const char *str, t_mat8 *map, t_entity *player);
+
 uint32_t	ft_strtoargb(const char *str, const char **str_ptr);
 void		*ft_read_all(const char *filename, size_t *file_size);
-int		cub_init(const char *filename, t_game *game);
 int		cub_is_map_enclosed(t_mat8 map);
 // ------------------------------
 

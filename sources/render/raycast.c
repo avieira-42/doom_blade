@@ -15,7 +15,7 @@ t_ray	stt_raycast_init(float camera_x, t_view *cam)
 	ray.ray_dir.y.f = cam->dir.y.f + cam->plane.y.f * camera_x;
 	ray.map_pos.x.i = (int32_t)cam->pos.x.f;
 	ray.map_pos.y.i = (int32_t)cam->pos.y.f;
-	ray.delta_dist.x.f = fabs(1.0f / (ray.ray_dir.x.f + EPS));
+	ray.delta_dist.x.f = fabs(1.0f / (ray.ray_dir.x.f + EPS));	// TODO: Check if EPS works
 	ray.delta_dist.y.f = fabs(1.0f / (ray.ray_dir.y.f + EPS));
 	if (ray.ray_dir.x.f < 0)
 		ray.step.x.i = -1;
