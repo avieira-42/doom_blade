@@ -32,6 +32,25 @@ void	stt_texture_lerp(t_rayhit *hit, uint32_t *render_col, int32_t draw_start, i
 }
 
 static inline
+void	stt_draw_tmp(uint32_t *render_col, int32_t draw_start, int32_t draw_end)
+{
+	size_t	x;
+
+	x = 0;
+	while (x < draw_start)
+	{
+		render_col[x] = rgb_gray;
+		x++;
+	}
+	x = draw_end;
+	while (x < RENDER_HEIGHT)
+	{
+		render_col[x] = rgb_brown;
+		x++;
+	}
+}
+
+static inline
 void	stt_column_render(t_rayhit *hit, uint32_t *render_col, t_block *blocks)
 {
 	int32_t	draw_start;
@@ -42,10 +61,7 @@ void	stt_column_render(t_rayhit *hit, uint32_t *render_col, t_block *blocks)
 	draw_end = ft_imin(RENDER_HEIGHT, (RENDER_HEIGHT / 2) + (hit->line_height / 2));
 	hit->texture.ptr += (size_t)(hit->x_pos_texture * hit->texture.rows) * hit->texture.cols;
 	stt_texture_lerp(hit, render_col, draw_start, draw_end);
-	hit->texture = blocks[0].north;
-	stt_texture_lerp(hit, render_col, 0, draw_start);
-	hit->texture = blocks[0].south;
-	stt_texture_lerp(hit, render_col, draw_end, RENDER_HEIGHT);
+	stt_draw_tmp(render_col, draw_start, draw_end);	// TODO: floor and ceiling texture mapping
 }
 
 // Blocks contains transposed rows for sequential memory access

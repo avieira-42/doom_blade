@@ -16,12 +16,22 @@ typedef struct s_block
 	t_mat32	west;
 }	t_block;
 
-typedef struct	s_view
+typedef struct s_view
 {
 	t_vec2	pos;
 	t_vec2	dir;
 	t_vec2	plane;
 }	t_view;
+
+// Every physics loop, positions are updated taking into account the speed vector
+// And every physics loop, speed vector is updated with values from accel vector
+typedef struct s_speed
+{
+	t_vec3	speed;	// 3d vector representing current speed
+	t_vec3	accel;	// 3d vector representing current accel
+	// float	base_accel;
+	// float	max_speed;
+}	t_speed;
 
 typedef struct s_entity
 {
@@ -45,8 +55,8 @@ typedef struct s_rayhit
 	t_mat32		texture;
 	float		x_pos_texture;
 	float		perp_dist;
-	int32_t	line_height;
-	int32_t	slice_index;	
+	int32_t		line_height;
+	int32_t		slice_index;	
 }	t_rayhit;
 
 typedef struct s_memory

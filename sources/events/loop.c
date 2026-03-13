@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 12:22:52 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/12 18:10:36 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/13 16:13:12 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 
 int	cmlx_loop(t_game *game)
 {
+	const long	dt = get_time();
+
 	ft_memset(game->display_frame.ptr, 0, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(uint32_t));
 	ft_memset(game->render_frame.ptr, 0, RENDER_HEIGHT * RENDER_WIDTH * sizeof(uint32_t));
 	render_image(&game->player.cam, &game->map, game->blocks, game->render_frame);

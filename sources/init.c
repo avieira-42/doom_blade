@@ -33,7 +33,7 @@ void	stt_params_init(t_game *game, t_memory *memory)
 	const t_mat32	empty = {memory->empty_line, 1, RENDER_HEIGHT, 1, 0};
 
 	//game->vd = ft_qsqrt(game->map.cols * game->map.cols + game->map.rows * game->map.rows);
-	game->player.cam.dir = (t_vec2){.x.f = 0.71f, .y.f = 0.71f};
+	game->player.cam.dir = (t_vec2){.x.f = 0.0f, .y.f = 1.0f};
 	game->player.cam.plane = (t_vec2){
 		.x.f = -game->player.cam.dir.y.f * 0.66f,
 		.y.f =  game->player.cam.dir.x.f * 0.66f
@@ -74,5 +74,6 @@ int	cub_init(const char *filename, t_game *game, t_memory *memory)
 	// if (cub_is_map_enclosed(game->map, game->player.cam.pos) == -1)
 	// 	return (-1);
 	stt_params_init(game, memory);
+	get_time();
 	return (0);
 }
