@@ -6,7 +6,7 @@ raycast.c draw_image.c render_image.c \
 time.c io_basic.c read_rgb.c memory.c char_ascii.c transpose.c int_limits.c\
 map.c textures.c \
 bilinear_scaling.c integer_scaling.c \
-input.c loop.c
+mouse.c keyboard.c loop.c
 LDLIBS = libraries/mlx/libmlx_Linux.a
 ASM = $(OBJS:.o=.s)
 

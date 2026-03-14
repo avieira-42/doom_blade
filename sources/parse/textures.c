@@ -51,8 +51,10 @@ int	stt_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const 
 	img = stt_read_xpm(mlx, filename, filename_ptr);
 	if (img == NULL)
 		return (-1);
-	texture->rows = RENDER_HEIGHT;
-	texture->cols = (double)texture->rows / (double)img->height * img->width;
+	// texture->rows = RENDER_HEIGHT; TODO: 
+	// texture->cols = (double)texture->rows / (double)img->height * img->width;
+	texture->rows = img->height;
+	texture->cols = img->width;
 	texture->depth = 1;
 	texture->ptr = malloc(texture->cols * texture->rows * sizeof(uint32_t));
 	if (texture->ptr == NULL)
