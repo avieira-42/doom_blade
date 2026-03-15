@@ -14,13 +14,14 @@ int	cmlx_loop(t_game *game)
 	if (last_frame > 10000)
 	{
 		cub_update_pos(game);
-		last_frame = 0;	
+		last_frame = 0;
 	}
 	ft_memset(game->display_frame.ptr, 0, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(uint32_t));
 	ft_memset(game->render_frame.ptr, 0, RENDER_HEIGHT * RENDER_WIDTH * sizeof(uint32_t));
 	render_image(&game->player.cam, &game->map, game->blocks, game->render_frame);
 	ft_integer_scaling_t(game->render_frame, game->display_frame, UPSCALING_FACTOR);
 	mlx_put_image_to_window(game->mlx, game->mlx->win_list, game->img, 0, 0);
+	cmlx_mousemove(game);
 	return (1);
 }
 

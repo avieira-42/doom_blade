@@ -12,11 +12,12 @@ void	cub_update_pos(t_game *game)
 	t_vec2		delta;
 	const float forward = !!(game->key & key_w) - !!(game->key & key_s);
 	const float right = !!(game->key & key_d) - !!(game->key & key_a);
+	const float	move_speed = MOVE_SPEED * (1.0f + SPRINT_SPEED * !!(game->key & key_shift));
 
 	game->player.move.speed.x.f += right * (1.0f / 128);
 	game->player.move.speed.y.f += forward * (1.0f / 128);
-	game->player.move.speed.x.f = ft_clamp(game->player.move.speed.x.f, 1.0f / 32.0f);
-	game->player.move.speed.y.f = ft_clamp(game->player.move.speed.y.f, 1.0f / 32.0f);
+	game->player.move.speed.x.f = ft_clamp(game->player.move.speed.x.f, move_speed);
+	game->player.move.speed.y.f = ft_clamp(game->player.move.speed.y.f, move_speed);
 	if (right == 0.0f)
 		game->player.move.speed.x.f *= 0.9f;
 	if (forward == 0.0f)

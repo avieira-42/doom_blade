@@ -1,3 +1,4 @@
+#include <X11/Xutil.h>
 #include <X11/keysym.h>
 #include "cub_structs.h"
 #include "cub_utils.h"
@@ -17,6 +18,10 @@ int	cmlx_keydown(int keycode, t_game *game)
 		game->key |= (size_t)key_s;
 	if (keycode == XK_d)
 		game->key |= (size_t)key_d;
+	if (keycode == XK_Shift_L)
+		game->key |= (size_t)key_shift;
+	if (keycode == XK_Control_L)
+		game->key |= (size_t)key_ctrl;
 	return (0);
 }
 
@@ -31,5 +36,9 @@ int	cmlx_keyup(int keycode, t_game *game)
 		game->key &= ~(size_t)key_s;
 	if (keycode == XK_d)
 		game->key &= ~(size_t)key_d;
+	if (keycode == XK_Shift_L)
+		game->key &= ~(size_t)key_shift;
+	if (keycode == XK_Control_L)
+		game->key &= ~(size_t)key_ctrl;
 	return (0);
 }

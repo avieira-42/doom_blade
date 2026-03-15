@@ -73,7 +73,7 @@ typedef struct s_gstate
 typedef struct s_cfg
 {
 	float	sens;
-
+	float	speed;
 }	t_cfg;
 
 typedef struct s_game

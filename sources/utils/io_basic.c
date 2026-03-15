@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:50:30 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/13 16:46:47 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/15 13:29:45 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,13 @@ void	*stt_read_file(const char *filename, size_t bytes_total)
 
 	if (fd < 0)
 		return (NULL);
-	buffer = malloc(bytes_total);
+	buffer = malloc(bytes_total + 1);
 	if (buffer == NULL)
 		return (close(fd), NULL);
 	if (ft_read(fd, buffer, buffer + bytes_total, bytes_total))
 		return (close(fd), NULL);
 	close(fd);
+	buffer[bytes_total] = 0;
 	return (buffer);
 }
 
@@ -94,8 +95,11 @@ void	*ft_read_all(const char *filename, size_t *file_size)
 		*file_size = (size_t)bytes_total;
 	if (bytes_read < 0)
 		return (free(buffer), NULL);
-	if (bytes_total < FT_IO_BUFSIZE)
+	if (bytes_total + 1 < FT_IO_BUFSIZE)
+	{
+		buffer[bytes_total] = 0;
 		return (buffer);
+	}
 	return (free(buffer), stt_read_file(filename, (size_t)bytes_total));
 }
 
