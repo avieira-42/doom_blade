@@ -30,11 +30,19 @@ int		cub_cleanup(t_game *game);
 int		cub_read_textures(t_xvar *mlx, const char *str, const char **str_ptr, t_block *blocks);
 int		cub_read_map(const char *str, t_mat8 *map, t_entity *player);
 
+// Physics
+void	cub_update_pos(t_game *game);
+
 // Utils
 long	get_time(void);
 uint32_t	ft_strtoargb(const char *str, const char **str_ptr);
 void		*ft_read_all(const char *filename, size_t *file_size);
 int		cub_is_map_enclosed(t_mat8 map);
+float	vec2_dot_product(t_vec2 a, t_vec2 b);
+t_vec2	vec2_rotate(t_vec2 vec, float angle);
+t_vec2	vec2_norm(t_vec2 vec);
+
+
 // ------------------------------
 
 void		**ft_free_array(void *array, size_t length);
@@ -47,8 +55,9 @@ float	ft_min(float number1, float number2);
 float	ft_max(float number1, float number2);
 float	ft_abs(float number);
 float	ft_absdiff(float number1, float number2);
-int64_t	ft_iabsmax(int64_t number1, int64_t number2);
+float	ft_clamp(float number, float value);
 
+int64_t	ft_iabsmax(int64_t number1, int64_t number2);
 int64_t	ft_imin(int64_t number1, int64_t number2);
 int64_t	ft_imax(int64_t number1, int64_t number2);
 int64_t	ft_iabs(int64_t number);

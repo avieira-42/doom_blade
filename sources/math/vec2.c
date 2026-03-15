@@ -20,7 +20,7 @@ t_vec2	vec2_rotate(t_vec2 vec, float angle)
 	return (vec);
 }
 
-t_vec2	vec2_unit(t_vec2 vec)
+t_vec2	vec2_norm(t_vec2 vec)
 {
 	float	mag;
 	t_32	inv_sqrt;

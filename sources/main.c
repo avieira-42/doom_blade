@@ -5,10 +5,29 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
+int	cmlx_loop(t_game *game)
+{
+	static long	last_frame = 0;
+	const long	dt = get_time();
+
+	last_frame += dt;
+	if (last_frame > 10000)
+	{
+		cub_update_pos(game);
+		last_frame = 0;	
+	}
+	ft_memset(game->display_frame.ptr, 0, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(uint32_t));
+	ft_memset(game->render_frame.ptr, 0, RENDER_HEIGHT * RENDER_WIDTH * sizeof(uint32_t));
+	render_image(&game->player.cam, &game->map, game->blocks, game->render_frame);
+	ft_integer_scaling_t(game->render_frame, game->display_frame, UPSCALING_FACTOR);
+	mlx_put_image_to_window(game->mlx, game->mlx->win_list, game->img, 0, 0);
+	return (1);
+}
+
 int	main(int argc, char **argv)
 {
-	t_game		game;
-	t_memory	memory;
+	static t_game	game;
+	static t_memory	memory;
 
 	if (argc != 2)
 		return (1);

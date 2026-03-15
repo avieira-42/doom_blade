@@ -70,6 +70,12 @@ typedef struct s_gstate
 	// ...
 }	t_gstate;
 
+typedef struct s_cfg
+{
+	float	sens;
+
+}	t_cfg;
+
 typedef struct s_game
 {
 	t_xvar		*mlx;
@@ -81,6 +87,7 @@ typedef struct s_game
 	t_entity	player;
 	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
 	size_t		key;
+	t_cfg		cfg;
 }	t_game;
 
 #endif

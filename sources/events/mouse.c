@@ -18,13 +18,14 @@ int	cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game)
 // 6 MotionNotify
 int	cmlx_mousemove(int32_t x1, int32_t y1, t_game *game)
 {
-	// game->cam.mouse_mov.x.f = (x1 - SCREEN_WIDTH / 2) / 100;	// TODO: adjust values for power of two divisions, e.g. 128
-	// game->cam.mouse_mov.y.f += (y1 - SCREEN_HEIGHT / 2) * -1;
-	// if (game->cam.mouse_mov.y.f <= -1000.)
-	// 	game->cam.mouse_mov.y.f = -1000.;
-	// if (game->cam.mouse_mov.y.f <= -1200.)
-	// 	game->cam.mouse_mov.y.f = -1000.;
-	// if (game->cam.mouse_mov.y.f >= 3500.)
-	// 	game->cam.mouse_mov.y.f = 3500.;
+	static int32_t	x0 = 0;
+	static int32_t	y0 = 0;
+	float			dx;
+
+	dx = (float)(x1 - x0) * game->cfg.sens;
+	game->player.cam.dir = vec2_rotate(game->player.cam.dir, dx);
+	game->player.cam.plane = vec2_rotate(game->player.cam.plane, dx);
+	x0 = x1;
+	y0 = y1;
 	return (0);
 }

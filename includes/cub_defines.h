@@ -11,13 +11,19 @@
 # define PI 3.141592653589793238462643383279502884L
 
 // Keys
-
 enum e_keys
 {
+	key_esc = 1u,
 	key_w = 1u << 1,
 	key_s = 1u << 2,
 	key_a = 1u << 3,
 	key_d = 1u << 4,
+	key_space = 1u << 5,
+	key_shift = 1u << 6,
+	key_ctrl = 1u << 7,
+	key_lmb = 1u << 8,
+	key_rmb = 1u << 9,
+	key_r = 1u << 10,
 };
 
 // Colors

@@ -28,6 +28,15 @@ int	stt_mlx_init(t_game *game)
 }
 
 static
+t_cfg	stt_config(void)
+{
+	t_cfg	cfg;
+
+	cfg.sens = 1.0f / 512.0f;
+	return (cfg);
+}
+
+static
 void	stt_params_init(t_game *game, t_memory *memory)
 {
 	const t_mat32	empty = {memory->empty_line, 1, RENDER_HEIGHT, 1, 0};
@@ -49,6 +58,7 @@ void	stt_params_init(t_game *game, t_memory *memory)
 	game->blocks[0].west = empty;
 	game->player.move.speed.x.f = 0.0f;
 	game->player.move.speed.y.f = 0.0f;
+	game->cfg = stt_config();
 }
 
 int	cub_init(const char *filename, t_game *game, t_memory *memory)
