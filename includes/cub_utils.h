@@ -15,6 +15,8 @@ int			ft_transpose(t_mat32 *src);
 int			cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner);
 t_rayhit	raycast(float camera_x, t_view *cam, t_mat8 *map, t_block *blocks);
 void		render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_mat32 render_frame);
+int			read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr);
+t_img		*read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr);
 
 // Events
 int		cmlx_keydown(int keycode, t_game *game);
@@ -24,16 +26,18 @@ int		cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game);
 int		cmlx_mousemove(t_game *game);
 int		cmlx_loop(t_game *game);
 
-// 
+// init
 int		cub_init(const char *filename, t_game *game, t_memory *memory);
 int		cub_cleanup(t_game *game);
 int		cub_read_textures(t_xvar *mlx, const char *str, const char **str_ptr, t_block *blocks);
 int		cub_read_map(const char *str, t_mat8 *map, t_entity *player);
+void	sprites_init(t_game *game);
 
 // Physics
 void	cub_update_pos(t_game *game);
 
 // Utils
+void		time_delta_get(t_game *game);
 long	get_time(void);
 uint32_t	ft_strtoargb(const char *str, const char **str_ptr);
 void		*ft_read_all(const char *filename, size_t *file_size);

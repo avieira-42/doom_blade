@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include "cub_structs.h"
 
 // uint64_t 	time_get()
 // {
@@ -45,3 +46,10 @@ long	get_time_v2(void)
 	dt += prev_time[index];
 	return (dt);
 }
+
+void	time_delta_get(t_game *game)
+{
+	game->time.delta = (get_time() - game->time.prev) / 1000000.0f;
+	game->time.prev = get_time();
+}
+

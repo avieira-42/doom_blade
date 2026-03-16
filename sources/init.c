@@ -59,6 +59,8 @@ void	stt_params_init(t_game *game, t_memory *memory)
 	game->player.move.speed.x.f = 0.0f;
 	game->player.move.speed.y.f = 0.0f;
 	game->cfg = stt_config();
+	game->time.prev = get_time();
+	time_delta_get(game);
 }
 
 int	cub_init(const char *filename, t_game *game, t_memory *memory)
@@ -83,6 +85,7 @@ int	cub_init(const char *filename, t_game *game, t_memory *memory)
 	// if (cub_is_map_enclosed(game->map, game->player.cam.pos) == -1)
 	// 	return (-1);
 	stt_params_init(game, memory);
+	//stt_sprites_init(game);
 	get_time();
 	return (0);
 }
