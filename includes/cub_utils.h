@@ -55,7 +55,8 @@ float	ft_min(float number1, float number2);
 float	ft_max(float number1, float number2);
 float	ft_abs(float number);
 float	ft_absdiff(float number1, float number2);
-float	ft_clamp(float number, float value);
+float	ft_symclamp(float number, float value);
+// float	ft_clamp(float number, float value);
 
 int64_t	ft_iabsmax(int64_t number1, int64_t number2);
 int64_t	ft_imin(int64_t number1, int64_t number2);

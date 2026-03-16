@@ -6,13 +6,14 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 15:13:28 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/05 15:19:51 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/16 12:47:52 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <math.h>
 #include "cub_structs.h"
 
 static inline
@@ -29,7 +30,7 @@ uint32_t	stt_lerp_argb(uint32_t p0, uint32_t p1, uint8_t alpha)
 }
 
 static inline
-uint32_t	stt_bilerp(t_mat32 *src, t_mat2 index, t_vec2 src_pos)
+uint32_t	stt_bilerp(const t_mat32 *src, t_mat2 index, t_vec2 src_pos)
 {
 	t_mat2		sample;
 	uint32_t	row1;
@@ -47,7 +48,7 @@ uint32_t	stt_bilerp(t_mat32 *src, t_mat2 index, t_vec2 src_pos)
 }
 
 // Assumption is scale to fit
-void	ft_bilinear_scaling(t_mat32 *src, t_mat32 *dst)
+void	ft_bilinear_scaling(const t_mat32 *src, t_mat32 *dst)
 {
 	uint32_t		x;
 	uint32_t		y;
@@ -59,13 +60,13 @@ void	ft_bilinear_scaling(t_mat32 *src, t_mat32 *dst)
 	while (y < dst->rows)
 	{
 		x = 0;
-		src_pos.y.f = scale.y.f * ((float)y + 0.5f) - 0.5f + 1e-6f;
+		src_pos.y.f = fmaxf(0.0f, scale.y.f * ((float)y + 0.5f) - 0.5f);
 		index.p10 = src_pos.y.f;
 		index.p11 = src_pos.y.f + (index.p10 < (src->rows - 1));
 		src_pos.y.f = src_pos.y.f - (float) index.p10;	// Normalizes to 0-1, v coordinate
 		while (x < dst->cols)
 		{
-			src_pos.x.f = scale.x.f * ((float)x + 0.5f) - 0.5f + 1e-6f;
+			src_pos.x.f = fmaxf(0.0f, scale.x.f * ((float)x + 0.5f) - 0.5f);
 			index.p00 = src_pos.x.f;
 			index.p01 = src_pos.x.f + (index.p00 < (src->cols - 1));
 			src_pos.x.f = src_pos.x.f - (float) index.p00;		// Normalizes to 0-1, u coordinate

@@ -12,8 +12,6 @@
 
 // Reads a string until it finds a null terminator, space or length > 255
 // Returns: 
-// TODO: Create a wrapper function for xpm_to_image that removes struct malloc
-// TODO: Function that rescales, mallocs and frees the image after scaling
 static
 t_img	*stt_read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr)
 {
@@ -51,10 +49,8 @@ int	stt_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const 
 	img = stt_read_xpm(mlx, filename, filename_ptr);
 	if (img == NULL)
 		return (-1);
-	// texture->rows = RENDER_HEIGHT; TODO: 
-	// texture->cols = (double)texture->rows / (double)img->height * img->width;
-	texture->rows = img->height;
-	texture->cols = img->width;
+	texture->rows = TEX_HEIGHT;
+	texture->cols = (double)texture->rows / (double)img->height * img->width;
 	texture->depth = 1;
 	texture->ptr = malloc(texture->cols * texture->rows * sizeof(uint32_t));
 	if (texture->ptr == NULL)

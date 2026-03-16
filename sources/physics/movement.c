@@ -16,8 +16,8 @@ void	cub_update_pos(t_game *game)
 
 	game->player.move.speed.x.f += right * (1.0f / 128);
 	game->player.move.speed.y.f += forward * (1.0f / 128);
-	game->player.move.speed.x.f = ft_clamp(game->player.move.speed.x.f, move_speed);
-	game->player.move.speed.y.f = ft_clamp(game->player.move.speed.y.f, move_speed);
+	game->player.move.speed.x.f = ft_symclamp(game->player.move.speed.x.f, move_speed);
+	game->player.move.speed.y.f = ft_symclamp(game->player.move.speed.y.f, move_speed);
 	if (right == 0.0f)
 		game->player.move.speed.x.f *= 0.9f;
 	if (forward == 0.0f)

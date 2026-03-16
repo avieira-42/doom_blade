@@ -5,6 +5,8 @@
 # define SCREEN_HEIGHT 720
 # define RENDER_WIDTH 640
 # define RENDER_HEIGHT 360
+# define TEX_HEIGHT 256
+
 # define UPSCALING_FACTOR 2
 # define NUM_BLOCKS 4
 # define EPS 0.00000011920929f
