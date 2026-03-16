@@ -6,12 +6,6 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
-typedef struct s_render
-{
-	uint32_t	line_height;
-	uint32_t	slice_index;
-}	t_render;
-
 // See if FLTO inlines
 // Convert textures to power of two
 static inline
@@ -21,7 +15,7 @@ void	stt_texture_lerp(t_rayhit *hit, uint32_t *render_col, int32_t draw_start, i
 	float			tex_pos;
 	const float		dx = (double)hit->texture.cols / (double)hit->line_height;	// cols represents height here because the texture is transposed
 
-	tex_pos = (draw_start - (RENDER_HEIGHT / 2) + (hit->line_height / 2)) * dx;
+	tex_pos = dx * (draw_start - (RENDER_HEIGHT / 2) + (hit->line_height / 2));
 	x = draw_start;
 	while (x < draw_end)
 	{
@@ -56,10 +50,8 @@ void	stt_column_render(t_rayhit *hit, uint32_t *render_col, t_block *blocks)
 	int32_t	draw_start;
 	int32_t	draw_end;
 
-	hit->line_height = (float) RENDER_HEIGHT / hit->perp_dist;
 	draw_start = ft_imax(0, (RENDER_HEIGHT / 2) - (hit->line_height / 2));
 	draw_end = ft_imin(RENDER_HEIGHT, (RENDER_HEIGHT / 2) + (hit->line_height / 2));
-	hit->texture.ptr += (size_t)(hit->x_pos_texture * hit->texture.rows) * hit->texture.cols;
 	stt_texture_lerp(hit, render_col, draw_start, draw_end);
 	stt_draw_tmp(render_col, draw_start, draw_end);	// TODO: floor and ceiling texture mapping
 }

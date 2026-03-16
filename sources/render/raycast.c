@@ -40,6 +40,7 @@ static inline
 t_rayhit	stt_rayhit_info(t_ray *ray, uint8_t side, t_block *block, t_view *cam)
 {
 	t_rayhit	hit;
+	float		x_pos_texture;
 
 	if (side == 0)
 	{
@@ -48,7 +49,7 @@ t_rayhit	stt_rayhit_info(t_ray *ray, uint8_t side, t_block *block, t_view *cam)
 			hit.texture = block->west;
 		else
 			hit.texture = block->east;
-		hit.x_pos_texture = cam->pos.y.f + hit.perp_dist * ray->ray_dir.y.f;
+		x_pos_texture = cam->pos.y.f + hit.perp_dist * ray->ray_dir.y.f;
 	}
 	else
 	{
@@ -57,9 +58,11 @@ t_rayhit	stt_rayhit_info(t_ray *ray, uint8_t side, t_block *block, t_view *cam)
 			hit.texture = block->north;
 		else
 			hit.texture = block->south;
-		hit.x_pos_texture = cam->pos.x.f + hit.perp_dist * ray->ray_dir.x.f;
+		x_pos_texture = cam->pos.x.f + hit.perp_dist * ray->ray_dir.x.f;
 	}
-	hit.x_pos_texture -= floorf(hit.x_pos_texture);
+	x_pos_texture -= floorf(x_pos_texture);
+	hit.texture.ptr += (size_t)(x_pos_texture * hit.texture.rows) * hit.texture.cols;
+	hit.line_height = (float) RENDER_HEIGHT / hit.perp_dist;
 	return (hit);
 }
 

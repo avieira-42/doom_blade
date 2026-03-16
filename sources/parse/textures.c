@@ -38,7 +38,8 @@ t_img	*stt_read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr
 	return (ptr);
 }
 
-// Reads
+// Reads an xpm texture, scales it to tex_height, transposes the result
+// and frees the original MLX img ptr
 static
 int	stt_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr)
 {
@@ -74,13 +75,13 @@ int	stt_read_color(t_xvar *mlx, t_mat32 *texture, const char *filename, const ch
 	if (filename[0] == '.' && filename[1] == '/')
 		return (stt_read_texture(mlx, texture, filename, filename_ptr));
 	color = ft_strtoargb(filename, filename_ptr);
-	texture->ptr = malloc(RENDER_HEIGHT * sizeof(uint32_t));		// Creates a column of colors
+	texture->ptr = malloc(TEX_HEIGHT * sizeof(uint32_t));		// Creates a column of colors
 	if (texture->ptr == NULL)
 		return (-1);	// TODO: Print error
-	texture->rows = RENDER_HEIGHT;	// Consider it transposed
+	texture->rows = TEX_HEIGHT;	// Consider it transposed
 	texture->cols = 1;
 	i = 0;
-	while (i < RENDER_HEIGHT)
+	while (i < TEX_HEIGHT)
 		texture->ptr[i++] = color;
 	return (0);
 }

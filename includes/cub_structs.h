@@ -51,16 +51,14 @@ typedef struct s_ray
 typedef struct s_rayhit
 {
 	t_mat32		texture;
-	float		x_pos_texture;
 	float		perp_dist;
 	int32_t		line_height;
-	int32_t		slice_index;	
 }	t_rayhit;
 
 typedef struct s_memory
 {
 	uint32_t	render_frame[RENDER_WIDTH][RENDER_HEIGHT];
-	uint32_t	empty_line[RENDER_HEIGHT];
+	uint32_t	empty_line[TEX_HEIGHT];
 }	t_memory;
 
 typedef struct s_gstate
