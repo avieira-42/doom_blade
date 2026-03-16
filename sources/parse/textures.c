@@ -40,8 +40,7 @@ t_img	*stt_read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr
 
 // Reads an xpm texture, scales it to tex_height, transposes the result
 // and frees the original MLX img ptr
-static
-int	stt_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr)
+int	cub_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr)
 {
 	t_img	*img;
 
@@ -73,7 +72,7 @@ int	stt_read_color(t_xvar *mlx, t_mat32 *texture, const char *filename, const ch
 	while (ft_isspace(*filename))
 		filename++;
 	if (filename[0] == '.' && filename[1] == '/')
-		return (stt_read_texture(mlx, texture, filename, filename_ptr));
+		return (cub_read_texture(mlx, texture, filename, filename_ptr));
 	color = ft_strtoargb(filename, filename_ptr);
 	texture->ptr = malloc(TEX_HEIGHT * sizeof(uint32_t));		// Creates a column of colors
 	if (texture->ptr == NULL)
@@ -95,13 +94,13 @@ int	stt_match_texture(t_xvar *mlx, const char *str, t_block *blocks, const char 
 		str++;
 	rvalue = 1;
 	if (str[0] == 'N' && str[1] == 'O')
-		rvalue = stt_read_texture(mlx, &blocks[1].north, str + 2, str_ptr);
+		rvalue = cub_read_texture(mlx, &blocks[1].north, str + 2, str_ptr);
 	else if (str[0] == 'E' && str[1] == 'A')
-		rvalue = stt_read_texture(mlx, &blocks[1].east, str + 2, str_ptr);
+		rvalue = cub_read_texture(mlx, &blocks[1].east, str + 2, str_ptr);
 	else if (str[0] == 'S' && str[1] == 'O')
-		rvalue = stt_read_texture(mlx, &blocks[1].south, str + 2, str_ptr);
+		rvalue = cub_read_texture(mlx, &blocks[1].south, str + 2, str_ptr);
 	else if (str[0] == 'W' && str[1] == 'E')
-		rvalue = stt_read_texture(mlx, &blocks[1].west, str + 2,  str_ptr);
+		rvalue = cub_read_texture(mlx, &blocks[1].west, str + 2,  str_ptr);
 	else if (str[0] == 'F')
 		rvalue = stt_read_color(mlx, &blocks[0].south, str + 1, str_ptr);
 	else if (str[0] == 'C')

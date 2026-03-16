@@ -41,7 +41,7 @@ int		cub_is_map_enclosed(t_mat8 map);
 float	vec2_dot_product(t_vec2 a, t_vec2 b);
 t_vec2	vec2_rotate(t_vec2 vec, float angle);
 t_vec2	vec2_norm(t_vec2 vec);
-
+int	cub_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr);
 
 // ------------------------------
 
@@ -55,7 +55,7 @@ float	ft_min(float number1, float number2);
 float	ft_max(float number1, float number2);
 float	ft_abs(float number);
 float	ft_absdiff(float number1, float number2);
-float	ft_symclamp(float number, float value);
+float	ft_absclamp(float number, float value);
 // float	ft_clamp(float number, float value);
 
 int64_t	ft_iabsmax(int64_t number1, int64_t number2);

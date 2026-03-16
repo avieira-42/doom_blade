@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 12:06:26 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/16 13:21:25 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/16 16:23:16 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,36 +30,37 @@ float	ft_max(float number1, float number2)
 
 float	ft_abs(float number)
 {
-	t_32 value;
+	t_32 number_union;
 
-	value.f = number;
-	value.u &= 0x7FFFFFFF;
-	return (value.f);
+	number_union.f = number;
+	number_union.u &= 0x7FFFFFFF;
+	return (number_union.f);
 }
 
 float	ft_absdiff(float number1, float number2)
 {
-	if (number1 >= number2)
-		return (number1 - number2);
-	else
-		return (number2 - number1);
+	t_32	result;
+
+	result.f = number1 - number2;
+	result.u &= 0x7FFFFFFF;
+	return (result.f);
 }
 
-float	ft_symclamp(float number, float value)
+float	ft_absclamp(float number, float value)
 {
-	t_32		a;
-	t_32		b;
+	t_32		number_union;
+	t_32		value_union;
 	uint32_t	sign_mask;
 
-	a.f = number;
-	b.f = value;
-	sign_mask = (a.u & 0x80000000);
-	a.u = (a.u & 0x7FFFFFFF);
-	b.u = (b.u & 0x7FFFFFFF);
-	if (a.f >= b.f)
+	number_union.f = number;
+	value_union.f = value;
+	sign_mask = (number_union.u & 0x80000000);
+	number_union.u &= 0x7FFFFFFF;
+	value_union.u &= 0x7FFFFFFF;
+	if (number_union.f >= value_union.f)
 	{
-		b.u |= sign_mask;
-		return (b.f);
+		value_union.u |= sign_mask;
+		return (value_union.f);
 	}
 	else
 		return (number);
