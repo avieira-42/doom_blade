@@ -17,6 +17,7 @@ t_rayhit	raycast(float camera_x, t_view *cam, t_mat8 *map, t_block *blocks);
 void		render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_mat32 render_frame);
 t_img		*read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr);
 void		animate(t_game *game);
+void		window_clear(t_img *frame, int32_t color);
 
 // Events
 int		cmlx_keydown(int keycode, t_game *game);
@@ -25,6 +26,7 @@ int		cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game);
 int		cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game);
 int		cmlx_mousemove(t_game *game);
 int		cmlx_loop(t_game *game);
+void	input_handler(t_game *game);
 
 // init
 int		cub_init(const char *filename, t_game *game, t_memory *memory);

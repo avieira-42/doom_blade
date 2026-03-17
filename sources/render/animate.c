@@ -128,6 +128,7 @@ void	stt_shooting_handler(t_game *game)
 		game->hud.shoot_sound = false;
 		game->hud.shoot->end = false;
 		game->hud.shoot->iterator = 0;
+		game->hud.hands_shoot = false;
 	}
 }
 
@@ -136,6 +137,7 @@ void	stt_walking_handler(t_game *game)
 {
 	if (game->w || game->a || game->s || game->d)
 	{
+		Mix_PlayChannel(-1, game->audio.current_step, 0);
 		sprite_sheet_animate(&game->frame, game->hud.walk,
 				(t_vec2){
 				(t_32){ .i = SCREEN_WIDTH / 5.3f },
@@ -190,5 +192,6 @@ void	stt_hud_animate(t_game *game)
 void	animate(t_game *game)
 {
 	time_delta_get(game);
+	input_handler(game);
 	stt_hud_animate(game);
 }

@@ -50,11 +50,13 @@ void	input_handler(t_game *game)
 	{
 		game->audio.current_step = game->audio.step_fast;
 		game->hud.walk->loops_per_sprite--;
+		game->shift = false;
 	}
-	else
+	if (game->shift_up == true)
 	{
 		game->audio.current_step = game->audio.step;
 		game->hud.walk->loops_per_sprite++;
+		game->shift_up = false;
 	}
 	if (game->p == true)
 	{
@@ -72,13 +74,20 @@ void	input_handler(t_game *game)
 			game->r = false;
 		}
 	}
-	if (game->mouse_l == true)
+	if (game->mouse_l == true
+			&& game->hud.hands_reload == false
+			&& game->hud.hands_shoot == false)
 	{
-		game->hud.gun.ammo--;
-		game->hud.hands_shoot = true;
-		game->hud.shoot_sound = true;
-		game->hud.hands_reload = false;
-		game->mouse_l = false;
+		if (game->hud.gun.ammo == 0)
+			Mix_PlayChannel(3, game->audio.no_ammo, 0);
+		else
+		{
+			game->hud.gun.ammo--;
+			game->hud.hands_shoot = true;
+			game->hud.shoot_sound = true;
+			game->hud.hands_reload = false;
+			game->mouse_l = false;
+		}
 	}
 }
 // <<< TMP
@@ -102,13 +111,15 @@ int	cmlx_keyup(int keycode, t_game *game)
 		game->key &= ~(size_t)key_r;
 	//	TMP >>>
 	if (keycode == XK_w)
-		game->w_up = true;
+		game->w = false;
 	if (keycode == XK_a)
-		game->a_up = true;
+		game->a = false;
 	if (keycode == XK_s)
-		game->s_up = true;
+		game->s = false;
 	if (keycode == XK_d)
-		game->d_up = true;
+		game->d = false;
+	if (keycode == XK_d)
+		game->p = false;
 	if (keycode == XK_r)
 		game->r_up = true;
 	if (keycode == XK_Shift_L)

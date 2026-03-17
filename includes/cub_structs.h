@@ -27,7 +27,7 @@ typedef struct   s_anim_old
 	int32_t     endian; // endian                                                     // ADDED OLD
 	t_img       *sheet; // spritesheet                                                // ADDED OLD
 	float       counter; // counter to compare with loops per sprite                  // ADDED OLD
-	long        *dt; // delta time (TO REMOVE)                                       // ADDED OLD
+	float        *dt; // delta time (TO REMOVE)                                       // ADDED OLD
 	char        *base_path; // broader path name of sprite "sprite" -> "sprite1..."   // ADDED OLD
 	char        *file_type; // file type of the sprite "sprite1" -> "sprite1.xpm"     // ADDED OLD
 	bool        end; // animation reached its end check                              // ADDED OLD
@@ -103,7 +103,7 @@ typedef struct s_cfg
 
 typedef struct s_time               // ADDED OLD
 {                                   // ADDED OLD
-	long    delta;                  // ADDED OLD
+	float    delta;                  // ADDED OLD
 	long    prev;                   // ADDED OLD
 }   t_time;                         // ADDED OLD
 

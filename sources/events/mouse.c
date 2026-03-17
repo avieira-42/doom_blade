@@ -14,6 +14,8 @@ int	cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game)
 // 5 ButtonRelease
 int	cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game)
 {
+	if (button == 1)
+		game->mouse_l = true;
 	return (0);
 }
 

@@ -108,6 +108,8 @@ int cub_init(const char *filename, t_game *game, t_memory *memory)
     game->hud.gun.ammo = 8;               // ADDED OLD
     game->hud.gun.max_ammo = 8;           // ADDED OLD
     game->hud.gun.first_iterator = -1;    // ADDED OLD
+	game->time.prev = get_time();
+	time_delta_get(game);
     //  <<< ALEX SOEIRO INITS
 
     get_time();
