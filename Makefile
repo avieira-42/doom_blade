@@ -4,7 +4,7 @@ VPATH = sources sources/utils sources/parse sources/physics sources/math sources
 SRCS = main.c cleanup.c init.c \
 raycast.c draw_image.c render_image.c \
 time.c io_basic.c read_rgb.c memory.c char_ascii.c transpose.c int_limits.c float_limits.c vec2.c \
-map.c textures.c \
+map.c textures.c animate.c hud_init.c audio_init.c\
 movement.c \
 bilinear_scaling.c integer_scaling.c \
 mouse.c keyboard.c
@@ -23,7 +23,8 @@ OBJS = $(addprefix $(OBJ_PATH)/, $(SRCS:.c=.o))
 CC = clang
 CPPFLAGS = $(addprefix -I,$(INC_PATH))
 CFLAGS = -Wall -Wextra -march=native -std=c11
-LDFLAGS = -lXext -lX11 -lm -lz
+SDLFLAGS = -lSDL2 -lSDL2_mixer -lSDL2main
+LDFLAGS = -lXext -lX11 -lm -lz $(SDLFLAGS)
 DEBUG = -g -Wpedantic -Wcast-qual -Wfloat-equal -Wswitch-default -Wsign-conversion
 ASAN = -fsanitize=address,undefined,leak -fno-omit-frame-pointer
 TSAN = -fsanitize=thread -fno-omit-frame-pointer

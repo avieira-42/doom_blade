@@ -5,13 +5,37 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
-static char	*populate_array(char *array, int i, int n)
+static
+int	stt_calculate_length(int n)
+{
+	int	i;
+
+	i = 0;
+	if (n == -2147483648)
+		return (11);
+	if (n == 0)
+		return (1);
+	if (n < 0)
+	{
+		n = n * -1;
+		i++;
+	}
+	while (n > 0)
+	{
+		n = n / 10;
+		i++;
+	}
+	return (i);
+}
+
+static
+char	*stt_populate_array(char *array, int i, int n)
 {
 	char	c;
 
 	if (n > 9)
 	{
-		populate_array(array, i - 1, n / 10);
+		stt_populate_array(array, i - 1, n / 10);
 		n = n % 10;
 	}
 	c = '0' + n;
@@ -20,11 +44,78 @@ static char	*populate_array(char *array, int i, int n)
 }
 
 static
-void	stt_path_cat(char *path, t_anim *anim, int32_t sprite_number)
+char	*stt_ft_itoa(int n)
+{
+	int		length;
+	char	*array;
+
+	length = stt_calculate_length(n);
+	array = malloc(sizeof(char) * (length + 1));
+	if (array == NULL)
+		return (NULL);
+	if (n == -2147483648)
+	{
+		n = n + 2000000000;
+		array[1] = '2';
+	}
+	if (n < 0)
+	{
+		n = n * -1;
+		array[0] = '-';
+	}
+	array[length] = '\0';
+	stt_populate_array(array, length - 1, n);
+	return (array);
+}
+
+static
+char	*stt_ft_strcpy(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s2[i] != '\0')
+	{
+		s1[i] = s2[i];
+		i++;
+	}
+	s1[i] = '\0';
+	return (s1);
+}
+
+static
+size_t	stt_ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
+}
+
+static
+char	*stt_ft_strdup(const char *src)
+{
+	int		len;
+	char	*dup;
+	char	*s;
+
+	s = (char *) src;
+	len = stt_ft_strlen(src);
+	dup = (char *) malloc(sizeof(char) * (len + 1));
+	if (dup == NULL)
+		return (NULL);
+	dup = stt_ft_strcpy(dup, s);
+	return (dup);
+}
+
+static
+void	stt_path_cat(char *path, t_anim_old *anim, int32_t sprite_number)
 {
 	size_t		i;
 	size_t		j;
-	const char	*number = ft_itoa(sprite_number + 1);
+	const char	*number = stt_ft_itoa(sprite_number + 1);
 
 	i = 0;
 	j = 0;
@@ -53,7 +144,7 @@ void    stt_load_sprite(void *mlx_ptr, t_img *sprite, char *filepath, int32_t *e
 }
 
 static
-void    stt_load_animation(void *mlx_ptr, t_anim *animation)
+void    stt_load_animation(void *mlx_ptr, t_anim_old *animation)
 {
     int32_t     i;
     char		path[200];
@@ -69,15 +160,15 @@ void    stt_load_animation(void *mlx_ptr, t_anim *animation)
 }
 
 static
-t_anim	*stt_sprite_sheet_init(t_xvar *mlx, char *base_path,
+t_anim_old	*stt_sprite_sheet_init(t_xvar *mlx, char *base_path,
 		int32_t size, char *file_type)
 {
-	t_anim	*anim;
+	t_anim_old	*anim;
 
-	anim = malloc(sizeof(t_anim));
-	anim->base_path = ft_strdup(base_path);
+	anim = malloc(sizeof(t_anim_old));
+	anim->base_path = stt_ft_strdup(base_path);
 	anim->size = size;
-	anim->file_type = ft_strdup(file_type);
+	anim->file_type = stt_ft_strdup(file_type);
 	anim->iterator = 0;
 	anim->end = false;
 	stt_load_animation(mlx, anim);
