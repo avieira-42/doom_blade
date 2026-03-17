@@ -59,8 +59,6 @@ void	stt_params_init(t_game *game, t_memory *memory)
 	game->player.move.speed.x.f = 0.0f;
 	game->player.move.speed.y.f = 0.0f;
 	game->cfg = stt_config();
-	game->time.prev = get_time();
-	time_delta_get(game);
 }
 
 int	cub_init(const char *filename, t_game *game, t_memory *memory)

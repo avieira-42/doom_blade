@@ -5,28 +5,6 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
-static int	calculate_length(int n)
-{
-	int	i;
-
-	i = 0;
-	if (n == -2147483648)
-		return (11);
-	if (n == 0)
-		return (1);
-	if (n < 0)
-	{
-		n = n * -1;
-		i++;
-	}
-	while (n > 0)
-	{
-		n = n / 10;
-		i++;
-	}
-	return (i);
-}
-
 static char	*populate_array(char *array, int i, int n)
 {
 	char	c;
@@ -39,68 +17,6 @@ static char	*populate_array(char *array, int i, int n)
 	c = '0' + n;
 	array[i] = c;
 	return (array);
-}
-
-char	*ft_itoa(int n)
-{
-	int		length;
-	char	*array;
-
-	length = calculate_length(n);
-	array = malloc(sizeof(char) * (length + 1));
-	if (array == NULL)
-		return (NULL);
-	if (n == -2147483648)
-	{
-		n = n + 2000000000;
-		array[1] = '2';
-	}
-	if (n < 0)
-	{
-		n = n * -1;
-		array[0] = '-';
-	}
-	array[length] = '\0';
-	populate_array(array, length - 1, n);
-	return (array);
-}
-char	*ft_strcpy(char *s1, char *s2)
-{
-	int	i;
-
-	i = 0;
-	while (s2[i] != '\0')
-	{
-		s1[i] = s2[i];
-		i++;
-	}
-	s1[i] = '\0';
-	return (s1);
-}
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i] != '\0')
-		i++;
-	return (i);
-}
-
-char	*ft_strdup(const char *src)
-{
-	int		len;
-	char	*dup;
-	char	*s;
-
-	s = (char *) src;
-	len = ft_strlen(src);
-	dup = (char *) malloc(sizeof(char) * (len + 1));
-	if (dup == NULL)
-		return (NULL);
-	dup = ft_strcpy(dup, s);
-	return (dup);
 }
 
 static

@@ -8,38 +8,28 @@
 # include "cub_defines.h"
 # include "cub_types.h"
 
-/* original mlx s_img struct
- * to check more easily how
-typedef struct	s_img
-{
-	XImage			*image;
-	Pixmap			pix;
-	GC				gc;
-	int				size_line;
-	int				bpp;
-	int				width;
-	int				height;
-	int				type;
-	int				format;
-	char			*data;
-	XShmSegmentInfo	shm;
-}				t_img;*/
-
 /* struct that holds the variables
  * need to scroll each spritesheet */
-typedef struct	s_anim
+typedef struct s_anim
 {
-	int32_t		loops_per_sprite; // aprox time for each sprite to be rendered
-	int32_t		iterator; // iterator for the spritesheet scrolling
-	int32_t		size;	// number of sprites in sheet
-	int32_t		endian; // endian
-	t_img		*sheet; // spritesheet
-	float		counter; // counter to compare with loops per sprite
-	long		*dt; // delta time (TO REMOVE)
-	char		*base_path; // broader path name of sprite "sprite" -> "sprite1 sprite2 sprite3"
-	char		*file_type; // file type of the sprite "sprite1" -> "sprite1.xpm"
-	bool		end; // animation reached its end check
+	t_mat32		sprite;
+	float		counter;
+	uint32_t	iterator;
 }	t_anim;
+
+// typedef struct	s_anim
+// {
+// 	int32_t		loops_per_sprite; // aprox time for each sprite to be rendered
+// 	int32_t		iterator; // iterator for the spritesheet scrolling
+// 	int32_t		size;	// number of sprites in sheet
+// 	int32_t		endian; // endian
+// 	t_img		*sheet; // spritesheet
+// 	float		counter; // counter to compare with loops per sprite
+// 	long		*dt; // delta time (TO REMOVE)
+// 	char		*base_path; // broader path name of sprite "sprite" -> "sprite1 sprite2 sprite3"
+// 	char		*file_type; // file type of the sprite "sprite1" -> "sprite1.xpm"
+// 	bool		end; // animation reached its end check
+// }	t_anim;
 
 typedef struct s_block
 {
@@ -106,11 +96,6 @@ typedef struct s_cfg
 	float	sens;
 	float	speed;
 }	t_cfg;
-typedef struct s_time
-{
-	long	delta;
-	long	prev;
-}	t_time;
 
 typedef struct s_game
 {
@@ -124,7 +109,6 @@ typedef struct s_game
 	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
 	size_t		key;
 	t_cfg		cfg;
-	t_time		time;
 	// MAYBE CHANGE ORGANIZATION
 	// hud
 	t_anim	*reload;

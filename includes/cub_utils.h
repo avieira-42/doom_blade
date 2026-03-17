@@ -15,7 +15,6 @@ int			ft_transpose(t_mat32 *src);
 int			cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner);
 t_rayhit	raycast(float camera_x, t_view *cam, t_mat8 *map, t_block *blocks);
 void		render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_mat32 render_frame);
-int			read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr);
 t_img		*read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr);
 
 // Events
@@ -37,7 +36,6 @@ void	sprites_init(t_game *game);
 void	cub_update_pos(t_game *game);
 
 // Utils
-void		time_delta_get(t_game *game);
 long	get_time(void);
 uint32_t	ft_strtoargb(const char *str, const char **str_ptr);
 void		*ft_read_all(const char *filename, size_t *file_size);
@@ -73,6 +71,7 @@ float	ft_qsqrt(float number);
 
 
 // Prototypes: IO ------------------------------------------------------------
+size_t		ft_itoa_r(int64_t number, char *ptr);
 char		*get_next_line(int fd);
 ssize_t		ft_printf(const char *str, ...);
 ssize_t		ft_putstr_fd(char *str, int fd);

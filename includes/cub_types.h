@@ -5,6 +5,12 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+typedef struct s_str
+{
+	char	*ptr;
+	size_t	length;
+}	t_str;
+
 typedef struct s_mat
 {
 	void		*ptr;
