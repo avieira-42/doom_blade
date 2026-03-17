@@ -10,13 +10,6 @@
 
 /* struct that holds the variables
  * need to scroll each spritesheet */
-typedef struct s_anim
-{
-	t_mat32		sprite;
-	float		counter;
-	uint32_t	iterator;
-}	t_anim;
-
 // typedef struct	s_anim
 // {
 // 	int32_t		loops_per_sprite; // aprox time for each sprite to be rendered
@@ -97,6 +90,25 @@ typedef struct s_cfg
 	float	speed;
 }	t_cfg;
 
+typedef struct s_sprite
+{
+	t_mat32		texture;
+	float		counter;
+	uint16_t	iterator;
+	uint16_t	loops_per_sprite;
+}	t_sprite;
+
+typedef struct s_anim
+{
+	t_sprite	reload;
+	t_sprite	shoot;
+	t_sprite	walk;
+	t_sprite	ammo;
+	t_sprite	health;
+	t_sprite	pill;
+	t_sprite	city;
+}	t_anim;
+
 typedef struct s_game
 {
 	t_xvar		*mlx;
@@ -111,13 +123,7 @@ typedef struct s_game
 	t_cfg		cfg;
 	// MAYBE CHANGE ORGANIZATION
 	// hud
-	t_anim	*reload;
-	t_anim	*shoot;
-	t_anim	*walk;
-	t_anim	*ammo;
-	t_anim	*health;
-	t_anim	*pill;
-	t_anim	*city;
+	t_anim		sprites;
 }	t_game;
 
 #endif
