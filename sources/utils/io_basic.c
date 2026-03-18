@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:50:30 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/16 12:15:59 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/18 12:27:09 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <errno.h>
+#include "string.h"
+#include "cub_utils.h"
 
 #ifndef FT_IO_BUFSIZE
 # define FT_IO_BUFSIZE 4096
@@ -103,6 +105,26 @@ void	*ft_read_all(const char *filename, size_t *file_size)
 	if (file_size != NULL)
 		*file_size = bytes_total;
 	return (close(fd), buffer);
+}
+
+// % 512 is just to make extra sure of no buffer overflows
+// If suffix is NULL, suffix becomes strerror(errno)
+// Otherwise just send ""
+void	ft_error(const char *prefix, const char *suffix)
+{
+	char			buffer[1024];
+	const size_t	prefix_length = ft_strlen(prefix) % 512;
+	size_t			error_length;
+	size_t			total_length;
+
+	ft_memcpy(buffer, prefix, prefix_length);
+	if (suffix == NULL)
+		suffix = strerror(errno);
+	error_length = ft_strlen(suffix) % 512;
+	ft_memcpy(buffer + prefix_length, suffix, error_length);
+	total_length = prefix_length + error_length;
+	buffer[total_length++] = '\n';
+	write(STDERR_FILENO, buffer, total_length);
 }
 
 // static

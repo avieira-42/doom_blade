@@ -43,8 +43,8 @@ int		cub_is_map_enclosed(t_mat8 map);
 float	vec2_dot_product(t_vec2 a, t_vec2 b);
 t_vec2	vec2_rotate(t_vec2 vec, float angle);
 t_vec2	vec2_norm(t_vec2 vec);
-int	cub_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr);
-
+int		cub_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr);
+void	ft_error(const char *prefix, const char *suffix);
 // ------------------------------
 
 void		**ft_free_array(void *array, size_t length);

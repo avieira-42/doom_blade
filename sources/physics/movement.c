@@ -5,7 +5,45 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
-// Simple collision check, if player outside of map, pos = last known position
+#define PLAYER_RADIUS 0.125f
+
+static inline
+bool	stt_box_collision(t_mat8 *map, t_vec2 pos, float radius)
+{
+	bool		rvalue;
+	const int	left = (int)floorf(pos.x.f - radius);
+	const int	right = (int)floorf(pos.x.f + radius);
+	const int	top = (int)floorf(pos.y.f - radius);
+	const int	bottom = (int)floorf(pos.y.f + radius);
+
+	if (left < 0 || right < 0 || left >= map->cols || right >= map->cols
+		|| top < 0 || bottom < 0 || top >= map->rows || bottom >= map->rows)
+		return (1);
+	rvalue = map->ptr[bottom * map->cols + left]
+		|| map->ptr[bottom * map->cols + right]
+		|| map->ptr[top * map->cols + left]
+		|| map->ptr[top * map->cols + right];
+	if (rvalue == 1)
+		return (rvalue);	// Debugging purposes
+	return (rvalue);
+}
+
+static
+t_vec2	stt_collision(t_mat8 *map, t_vec2 delta, t_entity *entity)
+{
+	t_vec2	pos;
+
+	pos = entity->cam.pos;
+	pos.x.f += delta.x.f;
+	if (stt_box_collision(map, pos, PLAYER_RADIUS))
+		delta.x.f = 0.0f;
+	pos = entity->cam.pos;
+	pos.y.f += delta.y.f;
+	if (stt_box_collision(map, pos, PLAYER_RADIUS))
+		delta.y.f = 0.0f;
+	return (delta);
+}
+
 void	cub_update_pos(t_game *game)
 {
 	t_vec2		norm_dir;
@@ -27,6 +65,7 @@ void	cub_update_pos(t_game *game)
 	delta.y.f = norm_dir.y.f * game->player.move.speed.y.f;
 	delta.x.f -= norm_dir.y.f * game->player.move.speed.x.f; // lateral
 	delta.y.f += norm_dir.x.f * game->player.move.speed.x.f;
+	delta = stt_collision(&game->map, delta, &game->player);
 	game->player.cam.pos.x.f += delta.x.f;
 	game->player.cam.pos.y.f += delta.y.f;
 }

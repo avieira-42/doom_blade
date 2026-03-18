@@ -46,6 +46,22 @@ int	stt_load_sheet(t_xvar *mlx, t_mat32 sprite, t_str path, size_t count)
 	return (0);
 }
 
+#define SENTINEL_VALUE 0xFF000000 // Color value that should be transparent
+
+void	stt_clean_texture(t_mat32 texture)
+{
+	size_t			i;
+	const size_t	length = texture.rows * texture.cols * texture.depth;
+
+	i = 0;
+	while (i < length)
+	{
+		if (texture.ptr[i] == SENTINEL_VALUE)
+			texture.ptr[i] = 0;
+		i++;
+	}
+}
+
 // Saves images sequentially in memory, in a row x col x depth matrix
 t_sprite	cub_read_spritesheet(t_xvar *mlx, const char *base_path, size_t count)
 {
