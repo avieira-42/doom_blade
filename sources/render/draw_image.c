@@ -13,6 +13,13 @@ typedef struct s_transform
 	t_vec2	scale;
 }	t_form;
 
+// Function that takes a zbuffer, player pos and enemy pos, and draws to scale
+
+int	cub_draw_relative(t_frame *frame, t_entity *player, t_entity *enemy)
+{
+	
+}
+
 int	cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner)
 {
 	const size_t	src_line_size = src.cols * sizeof(uint32_t);

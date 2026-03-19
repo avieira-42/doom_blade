@@ -8,7 +8,7 @@
 #include "cub_structs.h"
 
 // Draw and Render
-void		ft_bilinear_scaling(t_mat32 *src, t_mat32 *dst);
+void		ft_bilinear_scaling(const t_mat32 *src, t_mat32 *dst, t_vec2 scale, t_vec2 pos);
 void		ft_integer_scaling(t_mat32 src, t_mat32 dst, size_t factor);
 void		ft_integer_scaling_t(t_mat32 src, t_mat32 dst, size_t factor);
 int			ft_transpose(t_mat32 *src);

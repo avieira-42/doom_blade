@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 09:33:45 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/01 17:59:14 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/19 14:51:51 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,20 @@ uint32_t	ft_lerp_argb(uint32_t p0, uint32_t p1, uint8_t alpha)
 {
 	uint32_t	rb;
 	uint32_t	ga;
+
+	rb = p0 & 0x00FF00FF;									// Masks red and blue channel
+	ga = (p0 >> 8) & 0x00FF00FF;							// Shifts green and alpha channel then masks
+	rb += (((p1 & 0x00FF00FF) - rb) * alpha) >> 8;			// 
+	ga += ((((p1 >> 8) & 0x00FF00FF) - ga) * alpha) >> 8;
+	return (rb & 0x00FF00FF) | ((ga & 0x00FF00FF) << 8);
+}
+
+// ARGB color interpolation using SWAR technique
+uint32_t	ft_blend_argb(uint32_t p0, uint32_t p1)
+{
+	uint32_t		rb;
+	uint32_t		ga;
+	const uint32_t	alpha = p1 >> 24;
 
 	rb = p0 & 0x00FF00FF;									// Masks red and blue channel
 	ga = (p0 >> 8) & 0x00FF00FF;							// Shifts green and alpha channel then masks

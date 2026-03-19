@@ -70,6 +70,7 @@ void	stt_linecpy_t(uint32_t *restrict dst, t_mat32 src, size_t factor)
 	}
 }
 
+// TODO: Add pos start for draw on DST, assumption isnt scale to fit
 void	ft_integer_scaling_t(t_mat32 src, t_mat32 dst, size_t factor)
 {
 	size_t			i;

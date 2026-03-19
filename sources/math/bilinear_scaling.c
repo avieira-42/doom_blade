@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 15:13:28 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/16 12:47:52 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/19 15:02:30 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,11 @@ uint32_t	stt_bilerp(const t_mat32 *src, t_mat2 index, t_vec2 src_pos)
 	return (result);
 }
 
-// Assumption is scale to fit
-void	ft_bilinear_scaling(const t_mat32 *src, t_mat32 *dst)
+// TODO: Assumption used to be scale to fit, review algorithm accordingly and add pos draw
+void	ft_bilinear_scaling(const t_mat32 *src, t_mat32 *dst, t_vec2 scale, t_vec2 pos)
 {
 	uint32_t		x;
 	uint32_t		y;
-	const t_vec2	scale = {{(double)src->cols / dst->cols}, {(double)src->rows / dst->rows}};
 	t_vec2			src_pos;
 	t_mat2			index;
 

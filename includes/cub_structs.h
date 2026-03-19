@@ -86,6 +86,7 @@ typedef struct s_gstate
 {
 	bool	paused;
 	long	time;
+	size_t	key;
 	// ...
 }	t_gstate;
 
@@ -126,14 +127,11 @@ typedef struct s_game
 {
 	t_xvar		*mlx;
 	t_frame		frame;
+	t_gstate	state;
 	t_mat8		map;
-	t_vec2		mouse_pos;
 	t_entity	player;
 	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
-	size_t		key;
 	t_cfg		cfg;
-	// MAYBE CHANGE ORGANIZATION
-	// hud
 	t_anim		sprites;
 }	t_game;
 

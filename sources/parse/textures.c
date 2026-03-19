@@ -42,6 +42,7 @@ t_img	*stt_read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr
 // and frees the original MLX img ptr
 int	cub_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr)
 {
+	t_vec2	scale;
 	t_img	*img;
 
 	if (texture->ptr != NULL)
@@ -55,7 +56,9 @@ int	cub_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const 
 	texture->ptr = malloc(texture->cols * texture->rows * sizeof(uint32_t));
 	if (texture->ptr == NULL)
 		return (mlx_destroy_image(mlx, img), -1);
-	ft_bilinear_scaling(&(t_mat32){(uint32_t*)img->data, img->height, img->width, 1, 0}, texture);
+	scale.x.f = (double)img->width / texture->cols;
+	scale.y.f = (double)img->height / texture->rows;
+	ft_bilinear_scaling(&(t_mat32){(uint32_t*)img->data, img->height, img->width, 1, 0}, texture, scale, (t_vec2){0});
 	ft_transpose(texture);
 	mlx_destroy_image(mlx, img);
 	return (0);

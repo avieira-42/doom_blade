@@ -48,9 +48,9 @@ void	cub_update_pos(t_game *game)
 {
 	t_vec2		norm_dir;
 	t_vec2		delta;
-	const float forward = !!(game->key & key_w) - !!(game->key & key_s);
-	const float right = !!(game->key & key_d) - !!(game->key & key_a);
-	const float	move_speed = MOVE_SPEED * (1.0f + SPRINT_SPEED * !!(game->key & key_shift));
+	const float forward = !!(game->state.key & key_w) - !!(game->state.key & key_s);
+	const float right = !!(game->state.key & key_d) - !!(game->state.key & key_a);
+	const float	move_speed = MOVE_SPEED * (1.0f + SPRINT_SPEED * !!(game->state.key & key_shift));
 
 	game->player.move.speed.x.f += right * (1.0f / 128);
 	game->player.move.speed.y.f += forward * (1.0f / 128);

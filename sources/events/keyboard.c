@@ -11,17 +11,17 @@ int	cmlx_keydown(int keycode, t_game *game)
 	if (keycode == XK_Escape)
 		return (cub_cleanup(game));
 	if (keycode == XK_w)
-		game->key |= (size_t)key_w;
+		game->state.key |= (size_t)key_w;
 	if (keycode == XK_a)
-		game->key |= (size_t)key_a;
+		game->state.key |= (size_t)key_a;
 	if (keycode == XK_s)
-		game->key |= (size_t)key_s;
+		game->state.key |= (size_t)key_s;
 	if (keycode == XK_d)
-		game->key |= (size_t)key_d;
+		game->state.key |= (size_t)key_d;
 	if (keycode == XK_Shift_L)
-		game->key |= (size_t)key_shift;
+		game->state.key |= (size_t)key_shift;
 	if (keycode == XK_Control_L)
-		game->key |= (size_t)key_ctrl;
+		game->state.key |= (size_t)key_ctrl;
 	return (0);
 }
 
@@ -29,16 +29,16 @@ int	cmlx_keydown(int keycode, t_game *game)
 int	cmlx_keyup(int keycode, t_game *game)
 {
 	if (keycode == XK_w)
-		game->key &= ~(size_t)key_w;
+		game->state.key &= ~(size_t)key_w;
 	if (keycode == XK_a)
-		game->key &= ~(size_t)key_a;
+		game->state.key &= ~(size_t)key_a;
 	if (keycode == XK_s)
-		game->key &= ~(size_t)key_s;
+		game->state.key &= ~(size_t)key_s;
 	if (keycode == XK_d)
-		game->key &= ~(size_t)key_d;
+		game->state.key &= ~(size_t)key_d;
 	if (keycode == XK_Shift_L)
-		game->key &= ~(size_t)key_shift;
+		game->state.key &= ~(size_t)key_shift;
 	if (keycode == XK_Control_L)
-		game->key &= ~(size_t)key_ctrl;
+		game->state.key &= ~(size_t)key_ctrl;
 	return (0);
 }
