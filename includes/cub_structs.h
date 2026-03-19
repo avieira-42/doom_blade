@@ -57,6 +57,7 @@ typedef struct s_entity
 {
 	t_view	cam;
 	t_speed	move;
+	t_mat32	texture;
 }	t_entity;
 
 typedef struct s_ray
@@ -130,6 +131,7 @@ typedef struct s_game
 	t_gstate	state;
 	t_mat8		map;
 	t_entity	player;
+	t_entity	enemies[4];
 	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
 	t_cfg		cfg;
 	t_anim		sprites;

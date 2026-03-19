@@ -37,6 +37,21 @@ t_cfg	stt_config(void)
 }
 
 static
+void	stt_tmp(t_game *game, t_memory *memory)
+{
+	t_view	cam;
+	t_speed	speed;
+	t_mat32	texture;
+
+	ft_memset(&cam, 0, sizeof(cam));
+	ft_memset(&speed, 0, sizeof(speed));
+	game->enemies[0].cam = cam;
+	game->enemies[0].move = speed;
+	cub_read_texture(game->mlx, &texture, "assets/ghost_tmp.xpm", NULL);
+	game->enemies[0].texture = texture;
+}
+
+static
 void	stt_params_init(t_game *game, t_memory *memory)
 {
 	const t_mat32	empty = {memory->empty_line, 1, RENDER_HEIGHT, 1, 0};
@@ -60,6 +75,7 @@ void	stt_params_init(t_game *game, t_memory *memory)
 	game->player.move.speed.x.f = 0.0f;
 	game->player.move.speed.y.f = 0.0f;
 	game->cfg = stt_config();
+	stt_tmp(game, memory);
 }
 
 int	cub_init(const char *filename, t_game *game, t_memory *memory)

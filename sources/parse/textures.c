@@ -31,7 +31,8 @@ t_img	*stt_read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr
 		*path++ = *filename++;
 	}
 	*path = 0;
-	*filename_ptr = filename;
+	if (filename_ptr != NULL)
+		*filename_ptr = filename;
 	ptr = mlx_xpm_file_to_image(mlx, buffer, tmp, tmp + 1);
 	if (ptr == NULL)
 		return (NULL);	// Error opening file, TODO: print

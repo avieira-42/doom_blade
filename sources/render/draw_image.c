@@ -28,7 +28,7 @@ int	cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner)
 	if ((src.cols + x_corner > dst.cols) || (src.rows + y_corner > dst.rows))
 		return (-1);	// Image does not fit
 	dst.ptr += (y_corner * dst.cols + x_corner);
-	while (src.ptr <= src_last_line)
+	while (src.ptr < src_last_line)
 	{
 		ft_memcpy(dst.ptr, src.ptr, src_line_size);
 		dst.ptr += dst.cols;
