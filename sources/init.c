@@ -14,8 +14,8 @@ int	stt_mlx_init(t_game *game)
 	mlx_new_window(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "doom_blade");
 	if (game->mlx->win_list == NULL)
 		return (-1);
-	game->img = mlx_int_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, ZPixmap);
-	if (game->img == NULL)
+	game->frame.img = mlx_int_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, ZPixmap);
+	if (game->frame.img == NULL)
 		return (-1);
 	window = game->mlx->win_list;
 	mlx_hook(window, KeyPress, KeyPressMask, cmlx_keydown, game);
@@ -47,12 +47,13 @@ void	stt_params_init(t_game *game, t_memory *memory)
 		.x.f = -game->player.cam.dir.y.f * 0.66f,
 		.y.f =  game->player.cam.dir.x.f * 0.66f
 	};
-	game->display_frame.ptr = (uint32_t*)game->img->data;
-	game->display_frame.rows = game->img->height;
-	game->display_frame.cols = game->img->width;
-	game->render_frame.ptr = (uint32_t*)memory->render_frame;
-	game->render_frame.rows = RENDER_WIDTH;
-	game->render_frame.cols = RENDER_HEIGHT;
+	game->frame.display.ptr = (uint32_t*)game->frame.img->data;
+	game->frame.display.rows = game->frame.img->height;
+	game->frame.display.cols = game->frame.img->width;
+	game->frame.render.ptr = (uint32_t*)memory->render_frame;
+	game->frame.render.rows = RENDER_WIDTH;
+	game->frame.render.cols = RENDER_HEIGHT;
+	game->frame.zbuffer = memory->zbuffer;
 	ft_memset(memory->empty_line, 0, sizeof(memory->empty_line));
 	game->blocks[0].east = empty;
 	game->blocks[0].west = empty;

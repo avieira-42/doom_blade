@@ -24,12 +24,16 @@
 // 	bool		end; // animation reached its end check
 // }	t_anim;
 
-typedef struct s_block
+typedef union u_block
 {
-	t_mat32	north;
-	t_mat32	east;
-	t_mat32	south;
-	t_mat32	west;
+	struct
+	{
+		t_mat32	north;
+		t_mat32	east;
+		t_mat32	south;
+		t_mat32	west;
+	};
+	t_mat32	index[4];
 }	t_block;
 
 typedef struct s_view
@@ -74,6 +78,7 @@ typedef struct s_rayhit
 typedef struct s_memory
 {
 	uint32_t	render_frame[RENDER_WIDTH][RENDER_HEIGHT];
+	float		zbuffer[RENDER_WIDTH];
 	uint32_t	empty_line[TEX_HEIGHT];
 }	t_memory;
 
@@ -109,12 +114,18 @@ typedef struct s_anim
 	t_sprite	city;
 }	t_anim;
 
+typedef struct s_frame
+{
+	t_mat32	display;
+	t_mat32	render;
+	float	*zbuffer;
+	t_img	*img;
+}	t_frame;
+
 typedef struct s_game
 {
 	t_xvar		*mlx;
-	t_img		*img;
-	t_mat32		display_frame;
-	t_mat32		render_frame;
+	t_frame		frame;
 	t_mat8		map;
 	t_vec2		mouse_pos;
 	t_entity	player;

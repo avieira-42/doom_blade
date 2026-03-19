@@ -58,20 +58,23 @@ void	stt_column_render(t_rayhit *hit, uint32_t *render_col, t_block *blocks)
 
 // Blocks contains transposed rows for sequential memory access
 // Everything is done in cols by rows, and then tranposed for the rendering
-void	render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_mat32 render_frame)
+void	render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_frame *frame)
 {
 	size_t		x;
 	t_rayhit	hit;
 	float		camera_x;
+	uint32_t	*ptr;
 	const float	dx = 2.0 / (double) RENDER_WIDTH;
 
 	x = 0;
 	camera_x = -1.0f;
+	ptr = frame->render.ptr;
 	while (x < RENDER_WIDTH)
 	{
 		hit = raycast(camera_x, cam, map, blocks);	// if block_index is a specific number, do not render
-		stt_column_render(&hit, render_frame.ptr, blocks);
-		render_frame.ptr += render_frame.cols;
+		frame->zbuffer[x] = hit.perp_dist;
+		stt_column_render(&hit, ptr, blocks);
+		ptr += frame->render.cols;
 		camera_x += dx;
 		x++;
 	}

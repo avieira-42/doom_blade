@@ -6,6 +6,13 @@
 
 // Draws an image on top of another image, aligned to the left corner
 // Can be used to render
+
+typedef struct s_transform
+{
+	t_vec2	pos;
+	t_vec2	scale;
+}	t_form;
+
 int	cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner)
 {
 	const size_t	src_line_size = src.cols * sizeof(uint32_t);
