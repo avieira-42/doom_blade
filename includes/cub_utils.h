@@ -58,17 +58,14 @@ float	ft_max(float number1, float number2);
 float	ft_abs(float number);
 float	ft_absdiff(float number1, float number2);
 float	ft_absclamp(float number, float value);
-// float	ft_clamp(float number, float value);
 
 int64_t	ft_iabsmax(int64_t number1, int64_t number2);
 int64_t	ft_imin(int64_t number1, int64_t number2);
 int64_t	ft_imax(int64_t number1, int64_t number2);
 int64_t	ft_iabs(int64_t number);
-int64_t	ft_iabsdiff(int64_t number1, int64_t number2);
-
+int64_t	ft_iclamp(int64_t value, int64_t min, int64_t max);
 float	ft_qinvsqrt(float number);
 float	ft_qsqrt(float number);
-
 
 // Prototypes: IO ------------------------------------------------------------
 size_t		ft_itoa_r(int64_t number, char *ptr);
