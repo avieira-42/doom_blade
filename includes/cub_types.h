@@ -39,14 +39,6 @@ typedef struct s_mat32
 	uint16_t	flags;
 }	t_mat32;
 
-typedef struct s_mat2
-{
-	uint32_t	p00;
-	uint32_t	p01;
-	uint32_t	p10;
-	uint32_t	p11;
-}	t_mat2;
-
 typedef union t_32
 {
 	float 		f;

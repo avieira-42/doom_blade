@@ -1,28 +1,26 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <math.h>
 #include "cub_structs.h"
 #include "cub_utils.h"
 
-// Draws an image on top of another image, aligned to the left corner
-// Can be used to render
-
-typedef struct s_transform
+static
+void	stt_blend_argb(uint32_t *restrict dst, const uint32_t *restrict src, size_t length)
 {
-	t_vec2	pos;
-	t_vec2	scale;
-}	t_form;
+	size_t	i;
 
-// Function that takes a zbuffer, player pos and enemy pos, and draws to scale
-
-int	cub_draw_relative(t_frame *frame, t_entity *player, t_entity *enemy)
-{
-	
+	i = 0;
+	while (i < length)
+	{
+		if (src[i] != 0xFF000000)
+			dst[i] = src[i];
+		i++;
+	}
 }
 
 int	cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner)
 {
-	const size_t	src_line_size = src.cols * sizeof(uint32_t);
 	const uint32_t	*src_last_line = src.ptr + src.cols * src.rows;
 
 	if ((src.cols + x_corner > dst.cols) || (src.rows + y_corner > dst.rows))
@@ -30,7 +28,8 @@ int	cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner)
 	dst.ptr += (y_corner * dst.cols + x_corner);
 	while (src.ptr < src_last_line)
 	{
-		ft_memcpy(dst.ptr, src.ptr, src_line_size);
+		// ft_memcpy(dst.ptr, src.ptr, src.cols * sizeof(uint32_t));
+		stt_blend_argb(dst.ptr, src.ptr, src.cols);
 		dst.ptr += dst.cols;
 		src.ptr += src.cols;
 	}

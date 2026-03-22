@@ -97,24 +97,24 @@ typedef struct s_cfg
 	float	speed;
 }	t_cfg;
 
-typedef struct s_sprite
+typedef struct s_sheet
 {
 	t_mat32		texture;
 	float		counter;
 	uint16_t	iterator;
 	uint16_t	loops_per_sprite;
-}	t_sprite;
+}	t_sheet;
 
-typedef struct s_anim
+typedef struct s_assets
 {
-	t_sprite	reload;
-	t_sprite	shoot;
-	t_sprite	walk;
-	t_sprite	ammo;
-	t_sprite	health;
-	t_sprite	pill;
-	t_sprite	city;
-}	t_anim;
+	t_sheet	reload;
+	t_sheet	shoot;
+	t_sheet	walk;
+	t_sheet	ammo;
+	t_sheet	health;
+	t_sheet	pill;
+	t_sheet	city;
+}	t_assets;
 
 typedef struct s_frame
 {
@@ -134,7 +134,7 @@ typedef struct s_game
 	t_entity	enemies[4];
 	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
 	t_cfg		cfg;
-	t_anim		sprites;
+	t_assets	assets;
 }	t_game;
 
 #endif
