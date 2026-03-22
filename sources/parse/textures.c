@@ -51,15 +51,16 @@ int	cub_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const 
 	img = stt_read_xpm(mlx, filename, filename_ptr);
 	if (img == NULL)
 		return (-1);
-	texture->rows = TEX_HEIGHT;
-	texture->cols = (double)texture->rows / (double)img->height * img->width;
+	texture->height = TEX_HEIGHT;
+	texture->width = (double)texture->height / img->height * img->width;
 	texture->depth = 1;
-	texture->ptr = malloc(texture->cols * texture->rows * sizeof(uint32_t));
+	texture->stride = texture->width;
+	texture->ptr = malloc(texture->width * texture->height * sizeof(uint32_t));
 	if (texture->ptr == NULL)
 		return (mlx_destroy_image(mlx, img), -1);
-	scale.x.f = (double)img->width / texture->cols;
-	scale.y.f = (double)img->height / texture->rows;
-	ft_bilinear_scaling(&(t_mat32){(uint32_t*)img->data, img->height, img->width, 1, 0}, texture, scale, (t_vec2){0});
+	scale.x.f = (double)img->width / texture->width;
+	scale.y.f = (double)img->height / texture->height;
+	ft_bilinear_scaling(&(t_mat32){(uint32_t*)img->data, img->width, img->height, 1, img->width}, texture, scale, (t_vec2){0});
 	ft_transpose(texture);
 	mlx_destroy_image(mlx, img);
 	return (0);
@@ -81,8 +82,9 @@ int	stt_read_color(t_xvar *mlx, t_mat32 *texture, const char *filename, const ch
 	texture->ptr = malloc(TEX_HEIGHT * sizeof(uint32_t));		// Creates a column of colors
 	if (texture->ptr == NULL)
 		return (-1);	// TODO: Print error
-	texture->rows = TEX_HEIGHT;	// Consider it transposed
-	texture->cols = 1;
+	texture->height = TEX_HEIGHT;	// Consider it transposed
+	texture->width = 1;
+	texture->stride = TEX_HEIGHT;
 	i = 0;
 	while (i < TEX_HEIGHT)
 		texture->ptr[i++] = color;

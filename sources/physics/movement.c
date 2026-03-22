@@ -7,6 +7,8 @@
 
 #define PLAYER_RADIUS 0.125f
 
+// TODO: fix diagonal movement being faster
+
 static inline
 bool	stt_box_collision(t_mat8 *map, t_vec2 pos, float radius)
 {
@@ -16,13 +18,13 @@ bool	stt_box_collision(t_mat8 *map, t_vec2 pos, float radius)
 	const int	top = (int)floorf(pos.y.f - radius);
 	const int	bottom = (int)floorf(pos.y.f + radius);
 
-	if (left < 0 || right < 0 || left >= map->cols || right >= map->cols
-		|| top < 0 || bottom < 0 || top >= map->rows || bottom >= map->rows)
+	if (left < 0 || right < 0 || left >= map->width || right >= map->width
+		|| top < 0 || bottom < 0 || top >= map->height || bottom >= map->height)
 		return (1);
-	rvalue = map->ptr[bottom * map->cols + left]
-		|| map->ptr[bottom * map->cols + right]
-		|| map->ptr[top * map->cols + left]
-		|| map->ptr[top * map->cols + right];
+	rvalue = map->ptr[bottom * map->stride + left]
+		|| map->ptr[bottom * map->stride + right]
+		|| map->ptr[top * map->stride + left]
+		|| map->ptr[top * map->stride + right];
 	if (rvalue == 1)
 		return (rvalue);	// Debugging purposes
 	return (rvalue);

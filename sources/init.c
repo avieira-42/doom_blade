@@ -63,11 +63,13 @@ void	stt_params_init(t_game *game, t_memory *memory)
 		.y.f =  game->player.cam.dir.x.f * 0.66f
 	};
 	game->frame.display.ptr = (uint32_t*)game->frame.img->data;
-	game->frame.display.rows = game->frame.img->height;
-	game->frame.display.cols = game->frame.img->width;
+	game->frame.display.height = game->frame.img->height;
+	game->frame.display.width = game->frame.img->width;
+	game->frame.display.stride = game->frame.img->width;
 	game->frame.render.ptr = (uint32_t*)memory->render_frame;
-	game->frame.render.rows = RENDER_WIDTH;
-	game->frame.render.cols = RENDER_HEIGHT;
+	game->frame.render.height = RENDER_HEIGHT;
+	game->frame.render.width = RENDER_WIDTH;
+	game->frame.render.stride = RENDER_HEIGHT;
 	game->frame.zbuffer = memory->zbuffer;
 	ft_memset(memory->empty_line, 0, sizeof(memory->empty_line));
 	game->blocks[0].east = empty;

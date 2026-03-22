@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 15:13:28 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/20 12:13:47 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/22 18:33:23 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ uint32_t	stt_bilerp(const t_mat32 *src, t_vec2 col0, t_vec2 col1, t_vec2 src_pos
 	uint32_t	row2;
 	uint32_t	result;
 
-	p0 = src->ptr[col0.y.u * src->cols + col0.x.u];
-	p1 = src->ptr[col0.y.u * src->cols + col1.x.u];
+	p0 = src->ptr[col0.y.u * src->stride + col0.x.u];
+	p1 = src->ptr[col0.y.u * src->stride + col1.x.u];
 	row1 = stt_lerp_argb(p0, p1, src_pos.x.f * 256);
-	p0 = src->ptr[col1.y.u * src->cols + col0.x.u];
-	p1 = src->ptr[col1.y.u * src->cols + col1.x.u];
+	p0 = src->ptr[col1.y.u * src->stride + col0.x.u];
+	p1 = src->ptr[col1.y.u * src->stride + col1.x.u];
 	row2 = stt_lerp_argb(p0, p1, src_pos.x.f * 256);
 	result = stt_lerp_argb(row1, row2, src_pos.y.f * 256);
 	return (result);
@@ -58,20 +58,20 @@ void	ft_bilinear_scaling(const t_mat32 *src, t_mat32 *dst, t_vec2 scale, t_vec2 
 	t_vec2			col1;
 
 	y = 0;
-	while (y < dst->rows)
+	while (y < dst->height)
 	{
 		x = 0;
 		src_pos.y.f = fmaxf(0.0f, scale.y.f * ((float)y + 0.5f) - 0.5f);
 		col0.y.u = src_pos.y.f;
-		col1.y.u = src_pos.y.f + (col0.y.u < (src->rows - 1));
+		col1.y.u = src_pos.y.f + (col0.y.u < (src->height - 1));
 		src_pos.y.f = src_pos.y.f - (float) col0.y.u;	// Normalizes to 0-1, v coordinate
-		while (x < dst->cols)
+		while (x < dst->width)
 		{
 			src_pos.x.f = fmaxf(0.0f, scale.x.f * ((float)x + 0.5f) - 0.5f);
 			col0.x.u = src_pos.x.f;
-			col1.x.u = src_pos.x.f + (col0.x.u < (src->cols - 1));
+			col1.x.u = src_pos.x.f + (col0.x.u < (src->width - 1));
 			src_pos.x.f = src_pos.x.f - (float) col0.x.u;		// Normalizes to 0-1, u coordinate
-			dst->ptr[y * dst->cols + x] = stt_bilerp(src, col0, col1, src_pos);
+			dst->ptr[y * dst->stride + x] = stt_bilerp(src, col0, col1, src_pos);
 			x++;
 		}
 		y++;

@@ -27,7 +27,7 @@ typedef struct s_transform
 	uint32_t	right;
 }	t_form;
 
-#define MIN_DRAW 0.1f
+#define NEAR_RADIUS 0.1f
 
 static inline
 uint32_t	stt_lerp_argb(uint32_t p0, uint32_t p1, uint8_t alpha)
@@ -66,16 +66,16 @@ uint32_t	stt_bilerp(const t_mat32 *src, t_vec2 norm_pos)
 	t_vec4		index;
 	t_vec4		sample;
 
-	src_pos.x.f = norm_pos.x.f * (src->cols - 1);
-	src_pos.y.f = norm_pos.y.f * (src->rows - 1);
+	src_pos.x.f = norm_pos.x.f * (src->width - 1);
+	src_pos.y.f = norm_pos.y.f * (src->height - 1);
 	index.x.u = src_pos.y.f;
-	index.y.u = src_pos.y.f + (index.x.u < (src->rows - 1));
+	index.y.u = src_pos.y.f + (index.x.u < (src->height - 1));
 	index.z.u = src_pos.x.f;
-	index.w.u = src_pos.x.f + (index.z.u < (src->cols - 1));
-	sample.x.u = src->ptr[index.x.u * src->cols + index.z.u];
-	sample.y.u = src->ptr[index.x.u * src->cols + index.w.u];
-	sample.z.u = src->ptr[index.y.u * src->cols + index.z.u];
-	sample.w.u = src->ptr[index.y.u * src->cols + index.w.u];
+	index.w.u = src_pos.x.f + (index.z.u < (src->width - 1));
+	sample.x.u = src->ptr[index.x.u * src->stride + index.z.u];
+	sample.y.u = src->ptr[index.x.u * src->stride + index.w.u];
+	sample.z.u = src->ptr[index.y.u * src->stride + index.z.u];
+	sample.w.u = src->ptr[index.y.u * src->stride + index.w.u];
 	u = src_pos.x.f - (float) index.z.u;							// Normalizes to 0-1, u coordinate
 	v = src_pos.y.f - (float) index.x.u;							// Normalizes to 0-1, v coordinate
 	return (stt_bilerp_argb(sample, u, v));
@@ -95,10 +95,10 @@ int	stt_dist(t_form *form, t_frame *frame, t_view player, t_vec2 enemy_pos)
 	enemy_dist = inv_det * (-player.plane.y.f * rel_pos.x.f + player.plane.x.f * rel_pos.y.f);
 
 	form->enemy_dist = enemy_dist;
-	if (enemy_dist < MIN_DRAW)
+	if (enemy_dist < NEAR_RADIUS)
 		return (-1);
-	form->draw_pos.x.i = (frame->display.cols * 0.5f) * (1.0f + horz_dist / enemy_dist);
-	form->draw_pos.y.i = frame->display.rows * 0.5f;
+	form->draw_pos.x.i = (frame->display.width * 0.5f) * (1.0f + horz_dist / enemy_dist);
+	form->draw_pos.y.i = frame->display.height * 0.5f;
 	return (0);
 }
 
@@ -122,20 +122,20 @@ int	stt_init(t_form *form, t_frame *frame, t_entity *player, t_entity *enemy)
 	if (stt_dist(form, frame, player->cam, enemy->cam.pos))
 		return (-1);
 	scale = 1.0 / form->enemy_dist;
-	new_size.x.i = scale * enemy->texture.cols;
-	new_size.y.i = scale * enemy->texture.rows;
+	new_size.x.i = scale * enemy->texture.width;
+	new_size.y.i = scale * enemy->texture.height;
 	form->delta.x.f = 1.0 / new_size.x.i;
 	form->delta.y.f = 1.0 / new_size.y.i;
 
 	unclipped = (int)form->draw_pos.x.i - (int)new_size.x.i / 2;
-	form->left = stt_clamp(unclipped, 0, frame->display.cols);
+	form->left = stt_clamp(unclipped, 0, frame->display.width);
 	form->norm_offset.x.f = ((int)form->left - unclipped) * form->delta.x.f;	// Clipped start
-	form->right = stt_clamp((int)form->draw_pos.x.i + (int)new_size.x.i / 2, 0, frame->display.cols);
+	form->right = stt_clamp((int)form->draw_pos.x.i + (int)new_size.x.i / 2, 0, frame->display.width);
 
 	unclipped = (int)form->draw_pos.y.i - (int)new_size.y.i / 2;
-	form->top = stt_clamp(unclipped, 0, frame->display.rows);
+	form->top = stt_clamp(unclipped, 0, frame->display.height);
 	form->norm_offset.y.f = ((int)form->top - unclipped) * form->delta.y.f;		// Clipped start
-	form->bottom = stt_clamp((int)form->draw_pos.y.i + (int)new_size.y.i / 2, 0, frame->display.rows);
+	form->bottom = stt_clamp((int)form->draw_pos.y.i + (int)new_size.y.i / 2, 0, frame->display.height);
 	return (0);
 }
 
@@ -158,7 +158,7 @@ void	cub_draw_relative(t_frame *frame, t_entity *player, t_entity *enemy)
 			norm_pos.y.f = form.norm_offset.y.f;
 			while (y < form.bottom)
 			{
-				frame->display.ptr[y * frame->display.cols + x] = stt_bilerp(&enemy->texture, norm_pos);	// Bilerp takes a normalized range to sample from
+				frame->display.ptr[y * frame->display.stride + x] = stt_bilerp(&enemy->texture, norm_pos);	// Bilerp takes a normalized range to sample from
 				norm_pos.y.f += form.delta.y.f;
 				y++;
 			}

@@ -26,18 +26,15 @@ void	stt_transpose(uint32_t *src, uint32_t *dst, uint32_t cols, uint32_t rows)
 // Passing a NULL ptr to dst mallocs the required buffer memory
 int	ft_transpose(t_mat32 *src)
 {
-	uint32_t		tmp;
-	const size_t	mat_size = (size_t)src->cols * (size_t)src->rows * sizeof(uint32_t);
+	const size_t	mat_size = (size_t)src->width * (size_t)src->height * sizeof(uint32_t);
 	uint32_t		*dst;
 
 	dst = malloc(mat_size);
 	if (dst == NULL)
 		return (-1);
-	stt_transpose(src->ptr, dst, src->cols, src->rows);
+	stt_transpose(src->ptr, dst, src->width, src->height);
 	ft_memcpy(src->ptr, dst, mat_size);
 	free(dst);
-	tmp = src->cols;
-	src->cols = src->rows;
-	src->rows = tmp;
+	src->stride = src->height;	// Texture is transposed
 	return (0);
 }

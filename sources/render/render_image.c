@@ -11,17 +11,17 @@
 static inline
 void	stt_texture_lerp(t_rayhit *hit, uint32_t *render_col, int32_t draw_start, int32_t draw_end)
 {
-	int32_t			x;
+	int32_t			y;
 	float			tex_pos;
-	const float		dx = (double)hit->texture.cols / (double)hit->line_height;	// cols represents height here because the texture is transposed
+	const float		dy = (double)hit->texture.height / (double)hit->line_height;
 
-	tex_pos = dx * (draw_start - (RENDER_HEIGHT / 2) + (hit->line_height / 2));
-	x = draw_start;
-	while (x < draw_end)
+	tex_pos = dy * (draw_start - (RENDER_HEIGHT / 2) + (hit->line_height / 2));
+	y = draw_start;
+	while (y < draw_end)
 	{
-		render_col[x] = hit->texture.ptr[(size_t)tex_pos];
-		tex_pos += dx;
-		x++;
+		render_col[y] = hit->texture.ptr[(size_t)tex_pos];
+		tex_pos += dy;
+		y++;
 	}
 }
 
@@ -74,7 +74,7 @@ void	render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_frame *frame)
 		hit = raycast(camera_x, cam, map, blocks);	// if block_index is a specific number, do not render
 		frame->zbuffer[x] = hit.perp_dist;
 		stt_column_render(&hit, ptr, blocks);
-		ptr += frame->render.cols;
+		ptr += frame->render.stride;	// 
 		camera_x += dx;
 		x++;
 	}

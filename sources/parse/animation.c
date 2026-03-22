@@ -27,20 +27,20 @@ int	stt_load_sheet(t_xvar *mlx, t_mat32 sprite, t_str path, size_t count)
 {
 	size_t			i;
 	t_img			*img;
-	const size_t	stride = sprite.rows * sprite.cols;
+	const size_t	depth_stride = sprite.height * sprite.width;
 
 	i = 2;	// TODO: Review image indexing
-	sprite.ptr += stride;
+	sprite.ptr += depth_stride;
 	while (i < count)
 	{
 		img = stt_load_img(mlx, path, i);
 		if (img == NULL)
 			return (-1);
-		if (img->width != sprite.cols || img->height != sprite.rows)	// Image sizes are different
+		if (img->width != sprite.width || img->height != sprite.height)	// Image sizes are different
 			return (mlx_destroy_image(mlx, img), -1);
-		ft_memcpy(sprite.ptr, img->data, stride * sizeof(uint32_t));
+		ft_memcpy(sprite.ptr, img->data, depth_stride * sizeof(uint32_t));
 		mlx_destroy_image(mlx, img);
-		sprite.ptr += stride;
+		sprite.ptr += depth_stride;
 		i++;
 	}
 	return (0);
@@ -51,7 +51,7 @@ int	stt_load_sheet(t_xvar *mlx, t_mat32 sprite, t_str path, size_t count)
 void	stt_clean_texture(t_mat32 texture)
 {
 	size_t			i;
-	const size_t	length = texture.rows * texture.cols * texture.depth;
+	const size_t	length = texture.height * texture.width * texture.depth;
 
 	i = 0;
 	while (i < length)
@@ -82,7 +82,7 @@ t_sprite	cub_read_spritesheet(t_xvar *mlx, const char *base_path, size_t count)
 	texture.ptr = malloc((size_t)(img->height * img->width) * count * sizeof(uint32_t));
 	if (texture.ptr == NULL)
 		return (mlx_destroy_image(mlx, img), sprite);
-	ft_memcpy(texture.ptr, img->data, texture.cols * texture.rows * sizeof(uint32_t));
+	ft_memcpy(texture.ptr, img->data, texture.width * texture.height * sizeof(uint32_t));
 	mlx_destroy_image(mlx, img);
 	if (stt_load_sheet(mlx, texture, path, count) == -1)
 		return (free(texture.ptr), sprite);

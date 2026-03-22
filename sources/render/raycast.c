@@ -61,7 +61,7 @@ t_rayhit	stt_rayhit_info(t_ray *ray, uint8_t side, t_block *block, t_view *cam)
 		x_pos_texture = cam->pos.x.f + hit.perp_dist * ray->ray_dir.x.f;
 	}
 	x_pos_texture -= floorf(x_pos_texture);
-	hit.texture.ptr += (size_t)(x_pos_texture * hit.texture.rows) * hit.texture.cols;
+	hit.texture.ptr += (size_t)(x_pos_texture * hit.texture.width) * hit.texture.stride;
 	hit.line_height = (float) RENDER_HEIGHT / hit.perp_dist;
 	return (hit);
 }
@@ -88,9 +88,9 @@ t_rayhit	raycast(float camera_x, t_view *cam, t_mat8 *map, t_block *blocks)
 			ray.map_pos.y.i += ray.step.y.i;
 			side = 1;
 		}
-		if ((uint32_t)(ray.map_pos.x.i) > map->cols || (uint32_t)(ray.map_pos.y.i) > map->rows)
+		if ((uint32_t)(ray.map_pos.x.i) > map->width || (uint32_t)(ray.map_pos.y.i) > map->height)	// REVIEW: Cast trick may be problematic
 			break ;
-		block_index = map->ptr[ray.map_pos.y.i * map->cols + ray.map_pos.x.i];
+		block_index = map->ptr[ray.map_pos.y.i * map->stride + ray.map_pos.x.i];
 	}
 	return (stt_rayhit_info(&ray, side, blocks + block_index, cam));
 }
