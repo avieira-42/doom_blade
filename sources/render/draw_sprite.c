@@ -80,7 +80,7 @@ uint32_t	stt_bilerp(const t_mat32 *src, t_vec2 norm_pos)
 }
 
 static inline
-void	stt_dist(t_form *form, t_frame *frame, t_view player, t_vec2 enemy_pos)
+int	stt_dist(t_form *form, t_frame *frame, t_view player, t_vec2 enemy_pos)
 {
 	float		enemy_dist;
 	float		horz_dist;
@@ -92,9 +92,12 @@ void	stt_dist(t_form *form, t_frame *frame, t_view player, t_vec2 enemy_pos)
 	horz_dist = inv_det * (player.dir.y.f * rel_pos.x.f - player.dir.x.f * rel_pos.y.f);
 	enemy_dist = inv_det * (-player.plane.y.f * rel_pos.x.f + player.plane.x.f * rel_pos.y.f);
 
+	form->enemy_dist = enemy_dist;
+	if (enemy_dist < 0.001f || horz_dist < 0.001f)
+		return (-1);
 	form->draw_pos.x.u = (frame->display.cols * 0.5f) * (1.0f + horz_dist / enemy_dist);
 	form->draw_pos.y.u = frame->display.rows * 0.5f;
-	form->enemy_dist = enemy_dist;
+	return (0);
 }
 
 static inline
@@ -105,7 +108,8 @@ t_form	stt_init(t_frame *frame, t_entity *player, t_entity *enemy)
 	int32_t			unclipped;
 	float			scale;
 	
-	stt_dist(&form, frame, player->cam, enemy->cam.pos);
+	if (stt_dist(&form, frame, player->cam, enemy->cam.pos))
+		return (form);
 	scale = 1.0 / form.enemy_dist;
 	new_size.x.u = scale * enemy->texture.cols;
 	new_size.y.u = scale * enemy->texture.rows;
@@ -121,7 +125,6 @@ t_form	stt_init(t_frame *frame, t_entity *player, t_entity *enemy)
 	form.top = ft_imax(0, unclipped);
 	form.norm_offset.y.f = ((int)form.top - unclipped) * form.delta.y.f;	// Clipped start
 	form.bottom = ft_imin(frame->display.rows, (int)form.draw_pos.y.u + (int)new_size.y.u / 2);
-
 	return (form);
 }
 
@@ -133,11 +136,13 @@ void	cub_draw_relative(t_frame *frame, t_entity *player, t_entity *enemy)
 	t_vec2		norm_pos;
 
 	form = stt_init(frame, player, enemy);	// TODO: Figure out draw pos of enemy
+	if (form.enemy_dist < 0.001f)
+		return ;
 	x = form.left;
 	norm_pos.x.f = form.norm_offset.x.f;
 	while (x < form.right)
 	{
-		if (form.enemy_dist < frame->zbuffer[x])	// Do not draw if wall column is ahead of enemy
+		if (form.enemy_dist < frame->zbuffer[x / 2])	// Do not draw if wall column is ahead of enemy
 		{
 			y = form.top;
 			norm_pos.y.f = form.norm_offset.y.f;
