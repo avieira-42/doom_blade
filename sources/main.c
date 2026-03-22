@@ -5,7 +5,6 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
-
 void	cub_draw_relative(t_frame *frame, t_entity *player, t_entity *enemy);
 
 int	cmlx_loop(t_game *game)

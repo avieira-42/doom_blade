@@ -27,6 +27,8 @@ typedef struct s_transform
 	uint32_t	right;
 }	t_form;
 
+#define MIN_DRAW 0.1f
+
 static inline
 uint32_t	stt_lerp_argb(uint32_t p0, uint32_t p1, uint8_t alpha)
 {
@@ -93,39 +95,48 @@ int	stt_dist(t_form *form, t_frame *frame, t_view player, t_vec2 enemy_pos)
 	enemy_dist = inv_det * (-player.plane.y.f * rel_pos.x.f + player.plane.x.f * rel_pos.y.f);
 
 	form->enemy_dist = enemy_dist;
-	if (enemy_dist < 0.001f || horz_dist < 0.001f)
+	if (enemy_dist < MIN_DRAW)
 		return (-1);
-	form->draw_pos.x.u = (frame->display.cols * 0.5f) * (1.0f + horz_dist / enemy_dist);
-	form->draw_pos.y.u = frame->display.rows * 0.5f;
+	form->draw_pos.x.i = (frame->display.cols * 0.5f) * (1.0f + horz_dist / enemy_dist);
+	form->draw_pos.y.i = frame->display.rows * 0.5f;
 	return (0);
 }
 
 static inline
-t_form	stt_init(t_frame *frame, t_entity *player, t_entity *enemy)
+uint32_t	stt_clamp(int32_t value, int32_t min, int32_t max)
 {
-	t_form			form;
+	if (value > max)
+		value = max;
+	else if (value < min)
+		value = min;
+	return (value);
+}
+
+static inline
+int	stt_init(t_form *form, t_frame *frame, t_entity *player, t_entity *enemy)
+{
 	t_vec2			new_size;
 	int32_t			unclipped;
 	float			scale;
 	
-	if (stt_dist(&form, frame, player->cam, enemy->cam.pos))
-		return (form);
-	scale = 1.0 / form.enemy_dist;
-	new_size.x.u = scale * enemy->texture.cols;
-	new_size.y.u = scale * enemy->texture.rows;
-	form.delta.x.f = 1.0 / new_size.x.u;
-	form.delta.y.f = 1.0 / new_size.y.u;
+	if (stt_dist(form, frame, player->cam, enemy->cam.pos))
+		return (-1);
+	scale = 1.0 / form->enemy_dist;
+	new_size.x.i = scale * enemy->texture.cols;
+	new_size.y.i = scale * enemy->texture.rows;
+	form->delta.x.f = 1.0 / new_size.x.i;
+	form->delta.y.f = 1.0 / new_size.y.i;
 
-	unclipped = (int)form.draw_pos.x.u - (int)new_size.x.u / 2;
-	form.left = ft_imax(0, unclipped);
-	form.norm_offset.x.f = ((int)form.left - unclipped) * form.delta.x.f;	// Clipped start
-	form.right = ft_imin(frame->display.cols, (int)form.draw_pos.x.u + (int)new_size.x.u / 2);
+	unclipped = (int)form->draw_pos.x.i - (int)new_size.x.i / 2;
+	form->left = stt_clamp(unclipped, 0, frame->display.cols);
+	form->norm_offset.x.f = ((int)form->left - unclipped) * form->delta.x.f;	// Clipped start
+	form->right = stt_clamp((int)form->draw_pos.x.i + (int)new_size.x.i / 2, 0, frame->display.cols);
 
-	unclipped = (int)form.draw_pos.y.u - (int)new_size.y.u / 2;
-	form.top = ft_imax(0, unclipped);
-	form.norm_offset.y.f = ((int)form.top - unclipped) * form.delta.y.f;	// Clipped start
-	form.bottom = ft_imin(frame->display.rows, (int)form.draw_pos.y.u + (int)new_size.y.u / 2);
-	return (form);
+	unclipped = (int)form->draw_pos.y.i - (int)new_size.y.i / 2;
+	form->top = stt_clamp(unclipped, 0, frame->display.rows);
+	form->norm_offset.y.f = ((int)form->top - unclipped) * form->delta.y.f;		// Clipped start
+	form->bottom = stt_clamp((int)form->draw_pos.y.i + (int)new_size.y.i / 2, 0, frame->display.rows);
+	return (0);
 }
 
 void	cub_draw_relative(t_frame *frame, t_entity *player, t_entity *enemy)
@@ -135,8 +146,7 @@ void	cub_draw_relative(t_frame *frame, t_entity *player, t_entity *enemy)
 	t_form		form;
 	t_vec2		norm_pos;
 
-	form = stt_init(frame, player, enemy);	// TODO: Figure out draw pos of enemy
-	if (form.enemy_dist < 0.001f)
+	if (stt_init(&form, frame, player, enemy))
 		return ;
 	x = form.left;
 	norm_pos.x.f = form.norm_offset.x.f;
