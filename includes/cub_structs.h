@@ -12,12 +12,38 @@
 
 /* struct that holds the variables
  * need to scroll each spritesheet */
-typedef struct s_anim
+
+
+/*typedef struct s_mat32
 {
-    t_mat32     sprite;
-    float       counter;
-    uint32_t    iterator;
-}   t_anim;
+	uint32_t	*ptr;
+	uint16_t	rows;
+	uint16_t	cols;
+	uint16_t	depth;
+	uint16_t	flags;
+}	t_mat32;*/
+
+typedef struct s_sheet
+{
+	t_mat32		texture;
+	size_t		iterator;
+	float		counter;
+	uint32_t	*first;
+	uint16_t	loops_per_sprite;
+	bool		end;
+}	t_sheet;
+
+typedef struct s_assets
+{
+	t_sheet	reload;
+	t_sheet	shoot;
+	t_sheet	walk;
+	t_sheet	ammo;
+	t_sheet	health;
+	t_sheet	pill;
+	t_sheet	city;
+}	t_assets;
+
 
 typedef struct   s_anim_old
 {
@@ -154,12 +180,13 @@ typedef struct s_game
 	t_block     blocks[NUM_BLOCKS]; // World, Ceil/Floor, Doors, etc...
 	size_t      key;
 	t_cfg       cfg;
+	t_assets	assets;
+
 
 	// ADDED OLD >>>>>
 	t_hud       hud;                // ADDED OLD
 	t_time      time;               // ADDED OLD
 	t_audio     audio;              // ADDED OLD
-
 	// TMP KEY INPUTS >>>
 	bool    w;                    // ADDED OLD
 	bool    a;                    // ADDED OLD

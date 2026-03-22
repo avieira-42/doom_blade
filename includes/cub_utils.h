@@ -18,6 +18,9 @@ void		render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_mat32 render_fra
 t_img		*read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr);
 void		animate(t_game *game);
 void		window_clear(t_img *frame, int32_t color);
+// TMP >>>>>>>>
+void		animate_hud(t_game *game);
+// <<<<<<<< TMP
 
 // Events
 int		cmlx_keydown(int keycode, t_game *game);
@@ -85,7 +88,7 @@ ssize_t		ft_putnbr_fd(int64_t number, int fd);
 void		ft_putchar_fd(char c, int fd);
 void		ft_putendl_fd(char *s, int fd);
 // Prototypes: Strings -------------------------------------------------------
-size_t		ft_strlen(const char *str);
+size_t		ft_strlen(const char *s);
 int32_t		ft_strncmp(const char *str1, const char *str2, size_t length);
 size_t		ft_strlcpy(char *dst, const char *src, size_t dst_size);
 size_t		ft_strlcat(char *dst, const char *src, size_t dst_size);

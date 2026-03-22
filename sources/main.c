@@ -22,12 +22,15 @@ int	cmlx_loop(t_game *game)
 		ft_memset(game->render_frame.ptr, 0, RENDER_HEIGHT * RENDER_WIDTH * sizeof(uint32_t));
 		render_image(&game->player.cam, &game->map, game->blocks, game->render_frame);
 		ft_integer_scaling_t(game->render_frame, game->display_frame, UPSCALING_FACTOR);
+		animate_hud(game);
+		// OLD >>>>>>>>>>
 		// HUD ANIMATION CLEAR >>>
-		window_clear(&game->frame, 0x000000);
+		//window_clear(&game->frame, 0x000000);
 		// <<< HUD ANIMATION CLEAR
 		// HUD ANIMATION >>>
-		animate(game);
-		mlx_put_image_to_window(game->mlx, game->mlx->win_list, game->frame.image, 0, 0);
+		//animate(game);
+		// <<<<<< OLD
+		//mlx_put_image_to_window(game->mlx, game->mlx->win_list, game->frame.image, 0, 0);
 		// <<< HUD ANIMATION
 		mlx_put_image_to_window(game->mlx, game->mlx->win_list, game->img, 0, 0);
 		cmlx_mousemove(game);

@@ -24,24 +24,6 @@ int32_t	stt_get_color(t_img *image, int32_t x, int32_t y)
 	return (*color);
 }
 
-void	window_clear(t_img *frame, int32_t color)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	while (i < SCREEN_HEIGHT)
-	{
-		j = 0;
-		while (j < SCREEN_WIDTH)
-		{
-			stt_frame_pixel_put(frame, j, i, color);
-			j++;
-		}
-		i++;
-	}
-}
-
 void	draw_texture(t_img *frame, t_img *image, t_vec2 pos, float scale)
 {
 	int32_t	x;
@@ -63,29 +45,27 @@ void	draw_texture(t_img *frame, t_img *image, t_vec2 pos, float scale)
 	}
 }
 
-int	sprite_sheet_update(t_anim_old *animation)
+/*void	cub_sprite_sheet_update(t_sheet *sheet)
 {
-	int32_t	i;
-
-	i = animation->iterator;
-	animation->counter += *animation->dt * 30;
-	if (animation->counter >= animation->loops_per_sprite)
+	sheet->counter += 30;
+	if (sheet->counter >= sheet->loops_per_sprite)
 	{
-		animation->counter = 0;
-		animation->iterator++;
-		if (animation->iterator== animation->size)
+		sheet->counter = 0;
+		sheet->iterator++;
+		sheet->texture.ptr += sheet->texture.cols *sheet->texture.rows;
+		if (sheet->iterator == sheet->texture.depth)
 		{
-			animation->iterator= 0;
-			animation->end = true;
+			sheet->texture.ptr = sheet->first;
+			sheet->end = true;
 		}
 	}
-	return (i);
 }
 
-void	sprite_sheet_animate(t_img *frame, t_anim_old *animation, t_vec2 pos, float scale)
+// TODO: Add Scale to cub_draw_image
+void	cub_sprite_sheet_animate(t_mat32 frame, t_sheet *sheet, t_vec2 pos)
 {
-	const int32_t i = sprite_sheet_update(animation);
-	draw_texture(frame, &animation->sheet[i], pos, scale);
+	cub_sprite_sheet_update(sheet);
+	cub_draw_image(sheet->texture, frame, pos.x.i, pos.y.i);
 }
 
 static
@@ -96,9 +76,9 @@ void	stt_reload_handler(t_game *game)
 		game->hud.reload->iterator = game->hud.gun.ammo * 4;
 		game->hud.gun.first_iterator = game->hud.reload->iterator;
 	}
-	sprite_sheet_animate(&game->frame, game->hud.reload,
+	cub_sprite_sheet_animate(game->render_frame, &game->assets.reload,
 			(t_vec2){(t_32){ .i = SCREEN_WIDTH / 5.3f },
-			(t_32){ .i = SCREEN_HEIGHT / 3.0f }}, 1.6);
+			(t_32){ .i = SCREEN_HEIGHT / 3.0f }});
 	if (game->hud.reload->iterator - game->hud.gun.first_iterator == 4
 			|| game->hud.reload->iterator >= game->hud.reload->size - 1)
 	{
@@ -114,7 +94,7 @@ void	stt_reload_handler(t_game *game)
 	}
 }
 
-	static
+// static
 void	stt_shooting_handler(t_game *game)
 {
 	game->hud.walk->iterator = 0;
@@ -124,11 +104,10 @@ void	stt_shooting_handler(t_game *game)
 		Mix_PlayChannel(1, game->audio.gun_shot, 0);
 		game->hud.shoot_sound = false;
 	}
-	sprite_sheet_animate(&game->frame, game->hud.shoot,
+	cub_sprite_sheet_animate(game->render_frame, &game->assets.shoot,
 			(t_vec2){
 			(t_32){ .i = SCREEN_WIDTH / 5.3f },
-			(t_32){ .i = SCREEN_HEIGHT / 3.0f }
-			}, 1.6);
+			(t_32){ .i = SCREEN_HEIGHT / 3.0f }});
 	if (game->hud.shoot->end == true)
 	{
 		game->hud.shoot_sound = false;
@@ -138,17 +117,16 @@ void	stt_shooting_handler(t_game *game)
 	}
 }
 
-	static
+// static
 void	stt_walking_handler(t_game *game)
 {
 	if (game->w || game->a || game->s || game->d)
 	{
 		Mix_PlayChannel(-1, game->audio.current_step, 0);
-		sprite_sheet_animate(&game->frame, game->hud.walk,
+		cub_sprite_sheet_animate(game->render_frame, &game->assets.walk,
 				(t_vec2){
 				(t_32){ .i = SCREEN_WIDTH / 5.3f },
-				(t_32){ .i = SCREEN_HEIGHT / 3.0f }
-				}, 1.6);
+				(t_32){ .i = SCREEN_HEIGHT / 3.0f }});
 	}
 	else
 	{
@@ -162,7 +140,7 @@ void	stt_walking_handler(t_game *game)
 }
 
 
-	static
+// static
 void	stt_hands_render(t_game *game)
 {
 	if (game->hud.hands_reload == true && game->hud.hands_shoot == false)
@@ -176,7 +154,7 @@ void	stt_hands_render(t_game *game)
 	}
 }
 
-	static
+// static
 void	stt_cards_render(t_game *game)
 {
 	draw_texture(&game->frame,
@@ -188,16 +166,22 @@ void	stt_cards_render(t_game *game)
 			(t_vec2){.x = {.i = 380}, .y = {.i = SCREEN_HEIGHT / 1.25}}, 2);
 }
 
-	static
+//static
 void	stt_hud_animate(t_game *game)
 {
 	stt_hands_render(game);
 	stt_cards_render(game);
-}
+}*/
 
-void	animate(t_game *game)
+void	animate_hud(t_game *game)
 {
-	time_delta_get(game);
+	(void)game;
+	/*time_delta_get(game);
 	input_handler(game);
-	stt_hud_animate(game);
+	stt_hud_animate(game);*/
+
+	// debug >>>>>>
+	cub_draw_image(game->assets.walk.texture, game->display_frame, 100, 100);
+	//sprite_sheet_animate(game->assets->)
+	// <<<<<<< debug
 }
