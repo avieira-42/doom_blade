@@ -107,18 +107,25 @@ void    sprites_init(t_game *game)
 {
     game->assets.shoot = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_shooting", 5);
     game->assets.shoot.end = true;
+	game->assets.shoot.loops_per_sprite = 5;
     if (game->assets.shoot.texture.ptr == NULL)
         return ;
     game->assets.walk = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_walking", 8);
     game->assets.walk.end = true;
+	game->assets.walk.loops_per_sprite = 5;
     game->assets.reload = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_reloading", 33);
     game->assets.reload.end = true;
+	game->assets.reload.loops_per_sprite = 5;
     game->assets.ammo = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_ammo/ammo", 10);
     game->assets.ammo.end = true;
+	game->assets.ammo.loops_per_sprite = 0;
     game->assets.health = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_health/health", 10);
     game->assets.health.end = true;
+	game->assets.health.loops_per_sprite = 0;
     game->assets.pill = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_pill/pill", 2);
     game->assets.pill.end = true;
+	game->assets.pill.loops_per_sprite = 0;
     game->assets.city = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/tiles/city", 4);
     game->assets.city.end = true;
+	game->assets.city.loops_per_sprite = 0;
 }

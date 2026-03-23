@@ -50,27 +50,32 @@ void	cub_draw_texture(t_mat32 frame, t_mat32 image, t_vec2 pos, float scale)
 	}
 }
 
-void	cub_sprite_sheet_update(t_sheet *sheet)
+void cub_sprite_sheet_update(t_sheet *sheet)
 {
-	sheet->counter += 30;
-	if (sheet->counter >= sheet->loops_per_sprite)
-	{
-		sheet->counter = 0;
-		sheet->iterator++;
-		sheet->texture.ptr += sheet->texture.cols *sheet->texture.rows;
-		if (sheet->iterator == sheet->texture.depth)
-		{
-			sheet->texture.ptr = sheet->first;
-			sheet->end = true;
-		}
-	}
+    sheet->counter++;
+    if (sheet->counter >= sheet->loops_per_sprite)
+    {
+        sheet->counter = 0;
+        sheet->iterator++;
+        if (sheet->iterator >= sheet->texture.depth)
+        {
+            sheet->iterator = 0;
+            sheet->end = true;
+        }
+    }
 }
 
 // TODO: Add Scale to cub_draw_texture
-void	cub_sprite_sheet_animate(t_mat32 frame, t_sheet *sheet, t_vec2 pos)
+void cub_sprite_sheet_animate(t_mat32 frame, t_sheet *sheet, t_vec2 pos)
 {
-	cub_sprite_sheet_update(sheet);
-	cub_draw_image(sheet->texture, frame, pos.x.i, pos.y.i);
+	size_t	frame_size;
+	t_mat32	texture;
+
+    cub_sprite_sheet_update(sheet);
+    frame_size = sheet->texture.cols * sheet->texture.rows;
+	texture = sheet->texture;
+    texture.ptr += sheet->iterator * frame_size;
+    cub_draw_texture(frame, texture, pos, 1.0f);
 }
 
 static
@@ -140,15 +145,15 @@ void	stt_walking_handler(t_game *game)
 // static
 void	stt_hands_render(t_game *game)
 {
-	if (game->hud.hands_reload == true && game->hud.hands_shoot == false)
+	/*if (game->hud.hands_reload == true && game->hud.hands_shoot == false)
 		stt_reload_handler(game);
 	else
 	{
 		if (game->hud.hands_shoot == true)
-			stt_shooting_handler(game);
-		else
+			stt_shooting_handler(game);*/
+		//else
 			stt_walking_handler(game);
-	}
+	//}
 }
 
 // static
@@ -179,5 +184,7 @@ void	animate_hud(t_game *game)
 
 	// debug >>>>>>
 	//cub_draw_texture(game->display_frame, game->assets.walk.texture, (t_vec2){.x = {.i = 0}, .y = {.i = 0}}, 1.3);
+	//cub_draw_texture(game->display_frame, game->assets.shoot.texture, (t_vec2){.x = {.i = 0}, .y = {.i = 0}}, 1.3);
+	//cub_draw_texture(game->display_frame, game->assets.reload.texture, (t_vec2){.x = {.i = 0}, .y = {.i = 0}}, 1.3);
 	// <<<<<<< debug
 }
