@@ -88,7 +88,7 @@ void    stt_reload_handler(t_game *game)
         game->hud.gun.first_iterator = game->assets.reload.iterator;
     }
     cub_sprite_sheet_animate(game->display_frame, &game->assets.reload,
-            (t_vec2){.x = { .i = 0 }, .y = {.i = 0}});
+            (t_vec2){.x = { .i = SCREEN_WIDTH / 5 }, .y = {.i = SCREEN_HEIGHT / 2.5}});
     if (game->assets.reload.iterator - game->hud.gun.first_iterator == 4
             || game->assets.reload.iterator >= game->assets.reload.texture.depth - 1)
     {
@@ -116,7 +116,7 @@ void    stt_shooting_handler(t_game *game)
         game->hud.shoot_sound = false;
     }
     cub_sprite_sheet_animate(game->display_frame, &game->assets.shoot,
-            (t_vec2){.x = { .i = 0}, .y = { .i = 0}});
+            (t_vec2){.x = { .i = SCREEN_WIDTH / 5 }, .y = {.i = SCREEN_HEIGHT / 2.5}});
     if (game->assets.shoot.end == true)
     {
         game->hud.shoot_sound = false;
@@ -134,13 +134,13 @@ void    stt_walking_handler(t_game *game)
     {
         Mix_PlayChannel(-1, game->audio.current_step, 0);
         cub_sprite_sheet_animate(game->display_frame, &game->assets.walk,
-                (t_vec2){.x = { .i = 0}, .y = {.i = 0}});
+            (t_vec2){.x = { .i = SCREEN_WIDTH / 5 }, .y = {.i = SCREEN_HEIGHT / 2.5}});
     }
     else
     {
         game->assets.walk.iterator = 0;
         cub_draw_texture(game->display_frame, game->assets.walk.texture,
-                (t_vec2){.x =  {.i = 0}, .y = {.i = 0}}, 1.6);
+            (t_vec2){.x = { .i = SCREEN_WIDTH / 5 }, .y = {.i = SCREEN_HEIGHT / 2.5}}, 1);
     }
 }
 
@@ -165,9 +165,9 @@ void    stt_hands_render(t_game *game)
     cub_draw_texture(game->display_frame,
             &game->hud.ammo->sheet[game->hud.ammo->size - game->hud.gun.ammo - 2],
             (t_vec2){.x = {.i = 50}, .y = {.i = SCREEN_HEIGHT / 1.25}}, 2);
-    cub_draw_texture(&game->frame, &game->hud.health->sheet[0],
+    cub_draw_texture(game->display_frame, &game->hud.health->sheet[0],
             (t_vec2){.x = {.i = 215}, .y = {.i = SCREEN_HEIGHT / 1.25}}, 2);
-    cub_draw_texture(&game->frame, &game->hud.pill->sheet[0],
+    cub_draw_texture(game->display_frame, &game->hud.pill->sheet[0],
             (t_vec2){.x = {.i = 380}, .y = {.i = SCREEN_HEIGHT / 1.25}}, 2);
 }*/
 
