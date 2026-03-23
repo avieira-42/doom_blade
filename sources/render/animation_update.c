@@ -53,6 +53,7 @@ void	cub_draw_texture(t_mat32 frame, t_mat32 image, t_vec2 pos, float scale)
 void cub_sprite_sheet_update(t_sheet *sheet)
 {
     sheet->counter++;
+	printf("loops:%i\n", sheet->loops_per_sprite);
     if (sheet->counter >= sheet->loops_per_sprite)
     {
         sheet->counter = 0;
@@ -88,8 +89,8 @@ void	stt_reload_handler(t_game *game)
 	}
 	cub_sprite_sheet_animate(game->display_frame, &game->assets.reload,
 			(t_vec2){.x = { .i = 0 }, .y = {.i = 0}});
-	if (game->hud.reload->iterator - game->hud.gun.first_iterator == 4
-			|| game->hud.reload->iterator >= game->hud.reload->size - 1)
+	if (game->assets.reload.iterator - game->hud.gun.first_iterator == 4
+			|| game->assets.reload.iterator >= game->assets.reload.texture.depth - 1)
 	{
 		Mix_PlayChannel(1, game->audio.gun_reload, 0);
 		game->hud.gun.ammo++;
@@ -115,10 +116,10 @@ void	stt_shooting_handler(t_game *game)
 	}
 	cub_sprite_sheet_animate(game->display_frame, &game->assets.shoot,
 			(t_vec2){.x = { .i = 0}, .y = { .i = 0}});
-	if (game->hud.shoot->end == true)
+	if (game->assets.shoot.end == true)
 	{
 		game->hud.shoot_sound = false;
-		game->hud.shoot->end = false;
+		game->assets.shoot.end = false;
 		game->hud.shoot->iterator = 0;
 		game->hud.hands_shoot = false;
 	}
@@ -127,9 +128,7 @@ void	stt_shooting_handler(t_game *game)
 // static
 void	stt_walking_handler(t_game *game)
 {
-	cub_sprite_sheet_animate(game->display_frame, &game->assets.walk,
-			(t_vec2){.x = { .i = 0}, .y = {.i = 0}});
-	/*if (game->w || game->a || game->s || game->d)
+	if (game->w || game->a || game->s || game->d)
 	{
 		Mix_PlayChannel(-1, game->audio.current_step, 0);
 		cub_sprite_sheet_animate(game->display_frame, &game->assets.walk,
@@ -140,7 +139,7 @@ void	stt_walking_handler(t_game *game)
 		game->hud.walk->iterator = 0;
 		cub_draw_texture(game->display_frame, game->assets.walk.texture,
 				(t_vec2){.x =  {.i = 0}, .y = {.i = 0}}, 1.6);
-	}*/
+	}
 }
 
 
@@ -180,8 +179,8 @@ void	stt_hud_animate(t_game *game)
 void	animate_hud(t_game *game)
 {
 	(void)game;
-	/*time_delta_get(game);
-	input_handler(game);*/
+	//time_delta_get(game);
+	input_handler(game);
 	stt_hud_animate(game);
 
 	// debug >>>>>>

@@ -49,13 +49,13 @@ void	input_handler(t_game *game)
 	if (game->shift == true)
 	{
 		game->audio.current_step = game->audio.step_fast;
-		game->hud.walk->loops_per_sprite--;
+		game->assets.walk.loops_per_sprite += -2;
 		game->shift = false;
 	}
 	if (game->shift_up == true)
 	{
 		game->audio.current_step = game->audio.step;
-		game->hud.walk->loops_per_sprite++;
+		game->assets.walk.loops_per_sprite += 2;
 		game->shift_up = false;
 	}
 	if (game->p == true)
@@ -74,20 +74,23 @@ void	input_handler(t_game *game)
 			game->r = false;
 		}
 	}
-	if (game->mouse_l == true
-			&& game->hud.hands_reload == false
-			&& game->hud.hands_shoot == false)
+	if (game->mouse_l == true)
 	{
-		if (game->hud.gun.ammo == 0)
-			Mix_PlayChannel(3, game->audio.no_ammo, 0);
-		else
+		if (game->hud.hands_reload == false
+				&& game->hud.hands_shoot == false)
 		{
-			game->hud.gun.ammo--;
-			game->hud.hands_shoot = true;
-			game->hud.shoot_sound = true;
-			game->hud.hands_reload = false;
-			game->mouse_l = false;
+			printf("ammo:%i\n", game->hud.gun.ammo);
+			if (game->hud.gun.ammo == 0)
+				Mix_PlayChannel(3, game->audio.no_ammo, 0);
+			else
+			{
+				game->hud.gun.ammo--;
+				game->hud.hands_shoot = true;
+				game->hud.shoot_sound = true;
+				game->hud.hands_reload = false;
+			}
 		}
+		game->mouse_l = false;
 	}
 }
 // <<< TMP
