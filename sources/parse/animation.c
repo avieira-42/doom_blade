@@ -29,7 +29,7 @@ int stt_load_sheet(t_xvar *mlx, t_mat32 sprite, t_str path, size_t count)
     t_img           *img;
     const size_t    stride = sprite.rows * sprite.cols;
 
-    i = 2;  // TODO: Review image indexing
+    i = 1;  // TODO: Review image indexing
     sprite.ptr += stride;
     while (i < count)
     {
@@ -112,7 +112,7 @@ void    sprites_init(t_game *game)
         return ;
     game->assets.walk = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_walking", 8);
     game->assets.walk.end = true;
-	game->assets.walk.loops_per_sprite = 5;
+	game->assets.walk.loops_per_sprite = 10;
     game->assets.reload = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_reloading", 33);
     game->assets.reload.end = true;
 	game->assets.reload.loops_per_sprite = 5;

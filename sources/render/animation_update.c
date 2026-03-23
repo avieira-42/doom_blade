@@ -86,7 +86,7 @@ void	stt_reload_handler(t_game *game)
 		game->hud.reload->iterator = game->hud.gun.ammo * 4;
 		game->hud.gun.first_iterator = game->hud.reload->iterator;
 	}
-	cub_sprite_sheet_animate(game->render_frame, &game->assets.reload,
+	cub_sprite_sheet_animate(game->display_frame, &game->assets.reload,
 			(t_vec2){.x = { .i = 0 }, .y = {.i = 0}});
 	if (game->hud.reload->iterator - game->hud.gun.first_iterator == 4
 			|| game->hud.reload->iterator >= game->hud.reload->size - 1)
@@ -113,7 +113,7 @@ void	stt_shooting_handler(t_game *game)
 		Mix_PlayChannel(1, game->audio.gun_shot, 0);
 		game->hud.shoot_sound = false;
 	}
-	cub_sprite_sheet_animate(game->render_frame, &game->assets.shoot,
+	cub_sprite_sheet_animate(game->display_frame, &game->assets.shoot,
 			(t_vec2){.x = { .i = 0}, .y = { .i = 0}});
 	if (game->hud.shoot->end == true)
 	{
@@ -127,10 +127,12 @@ void	stt_shooting_handler(t_game *game)
 // static
 void	stt_walking_handler(t_game *game)
 {
-	if (game->w || game->a || game->s || game->d)
+	cub_sprite_sheet_animate(game->display_frame, &game->assets.walk,
+			(t_vec2){.x = { .i = 0}, .y = {.i = 0}});
+	/*if (game->w || game->a || game->s || game->d)
 	{
 		Mix_PlayChannel(-1, game->audio.current_step, 0);
-		cub_sprite_sheet_animate(game->render_frame, &game->assets.walk,
+		cub_sprite_sheet_animate(game->display_frame, &game->assets.walk,
 				(t_vec2){.x = { .i = 0}, .y = {.i = 0}});
 	}
 	else
@@ -138,22 +140,22 @@ void	stt_walking_handler(t_game *game)
 		game->hud.walk->iterator = 0;
 		cub_draw_texture(game->display_frame, game->assets.walk.texture,
 				(t_vec2){.x =  {.i = 0}, .y = {.i = 0}}, 1.6);
-	}
+	}*/
 }
 
 
 // static
 void	stt_hands_render(t_game *game)
 {
-	/*if (game->hud.hands_reload == true && game->hud.hands_shoot == false)
+	if (game->hud.hands_reload == true && game->hud.hands_shoot == false)
 		stt_reload_handler(game);
 	else
 	{
 		if (game->hud.hands_shoot == true)
-			stt_shooting_handler(game);*/
-		//else
+			stt_shooting_handler(game);
+		else
 			stt_walking_handler(game);
-	//}
+	}
 }
 
 // static
@@ -186,5 +188,9 @@ void	animate_hud(t_game *game)
 	//cub_draw_texture(game->display_frame, game->assets.walk.texture, (t_vec2){.x = {.i = 0}, .y = {.i = 0}}, 1.3);
 	//cub_draw_texture(game->display_frame, game->assets.shoot.texture, (t_vec2){.x = {.i = 0}, .y = {.i = 0}}, 1.3);
 	//cub_draw_texture(game->display_frame, game->assets.reload.texture, (t_vec2){.x = {.i = 0}, .y = {.i = 0}}, 1.3);
+    /*size_t	frame_size = game->assets.walk.texture.cols * game->assets.walk.texture.rows;
+	t_mat32	texture = game->assets.walk.texture;
+    texture.ptr += frame_size;
+	cub_draw_texture(game->display_frame, texture, (t_vec2){.x = {.i = 0}, .y = {.i = 0}}, 1.3);*/
 	// <<<<<<< debug
 }
