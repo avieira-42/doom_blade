@@ -168,26 +168,23 @@ void  stt_cards_render(t_game *game)
 
     frame_size = game->assets.ammo.texture.cols * game->assets.ammo.texture.rows;
     texture = game->assets.ammo.texture;
-    texture.ptr += frame_size * (game->hud.ammo->size - game->hud.gun.ammo - 1);
+    texture.ptr += frame_size * game->hud.gun.ammo;
 	pos = (t_vec2){.x = {.i = 0}, .y = {.i = 0}};
     cub_draw_texture(game->display_frame, texture, pos, 1);
-
-    frame_size = game->assets.health.texture.cols * game->assets.health.texture.rows;
-    texture = game->assets.health.texture;
-	pos = (t_vec2){.x = {.i = 90}, .y = {.i = 0}};
-    cub_draw_texture(game->display_frame, texture, pos, 1);
-
-    frame_size = game->assets.pill.texture.cols * game->assets.pill.texture.rows;
-    texture = game->assets.pill.texture;
-	pos = (t_vec2){.x = {.i = 180}, .y = {.i = 0}};
-    cub_draw_texture(game->display_frame, texture, pos, 1);
+    cub_draw_texture(game->display_frame,
+            game->assets.ammo.texture[game->hud.ammo->size - game->hud.gun.ammo - 2],
+            (t_vec2){.x = {.i = 50}, .y = {.i = SCREEN_HEIGHT / 1.25}}, 2);
+    cub_draw_texture(game->display_frame, &game->hud.health->sheet[0],
+            (t_vec2){.x = {.i = 215}, .y = {.i = SCREEN_HEIGHT / 1.25}}, 2);
+    cub_draw_texture(game->display_frame, &game->hud.pill->sheet[0],
+            (t_vec2){.x = {.i = 380}, .y = {.i = SCREEN_HEIGHT / 1.25}}, 2);
 }
 
 //static
 void    stt_hud_animate(t_game *game)
 {
     stt_hands_render(game);
-    stt_cards_render(game);
+    //stt_cards_render(game);
 }
 
 void    animate_hud(t_game *game)
