@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub_structs.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/23 15:20:28 by avieira-          #+#    #+#             */
+/*   Updated: 2026/03/23 15:27:56 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB_STRUCTS_H
 # define CUB_STRUCTS_H
 
@@ -30,6 +42,7 @@ typedef struct s_sheet
 	float		counter;
 	uint32_t	*first;
 	uint16_t	loops_per_sprite;
+	float		delta;
 	bool		end;
 }	t_sheet;
 

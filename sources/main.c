@@ -18,6 +18,7 @@ int	cmlx_loop(t_game *game)
 	}
 	if (game->pause == false)
 	{
+		//time_delta_get(game);
 		ft_memset(game->display_frame.ptr, 0, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(uint32_t));
 		ft_memset(game->render_frame.ptr, 0, RENDER_HEIGHT * RENDER_WIDTH * sizeof(uint32_t));
 		render_image(&game->player.cam, &game->map, game->blocks, game->render_frame);

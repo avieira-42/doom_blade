@@ -74,21 +74,17 @@ void	input_handler(t_game *game)
 			game->r = false;
 		}
 	}
-	if (game->mouse_l == true)
+	if (game->mouse_l == true && game->hud.hands_shoot == false)
 	{
-		if (game->hud.hands_reload == false
-				&& game->hud.hands_shoot == false)
+		printf("ammo:%i\n", game->hud.gun.ammo);
+		if (game->hud.gun.ammo == 0)
+			Mix_PlayChannel(3, game->audio.no_ammo, 0);
+		else
 		{
-			printf("ammo:%i\n", game->hud.gun.ammo);
-			if (game->hud.gun.ammo == 0)
-				Mix_PlayChannel(3, game->audio.no_ammo, 0);
-			else
-			{
-				game->hud.gun.ammo--;
-				game->hud.hands_shoot = true;
-				game->hud.shoot_sound = true;
-				game->hud.hands_reload = false;
-			}
+			game->hud.gun.ammo--;
+			game->hud.hands_shoot = true;
+			game->hud.shoot_sound = true;
+			game->hud.hands_reload = false;
 		}
 		game->mouse_l = false;
 	}
@@ -121,7 +117,7 @@ int	cmlx_keyup(int keycode, t_game *game)
 		game->s = false;
 	if (keycode == XK_d)
 		game->d = false;
-	if (keycode == XK_d)
+	if (keycode == XK_p)
 		game->p = false;
 	if (keycode == XK_r)
 		game->r_up = true;
