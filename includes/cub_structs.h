@@ -23,6 +23,24 @@
 // 	char		*file_type; // file type of the sprite "sprite1" -> "sprite1.xpm"
 // 	bool		end; // animation reached its end check
 // }	t_anim;
+typedef struct s_sides
+{
+	int32_t	top;
+	int32_t	bottom;
+	int32_t	left;
+	int32_t	right;
+}	t_sides;
+
+typedef struct s_transform
+{
+	t_vec2		draw_pos;
+	t_vec2		delta;
+	t_vec2		norm_offset;	// Clip start to normalized range
+	uint32_t	top;
+	uint32_t	bottom;
+	uint32_t	left;
+	uint32_t	right;
+}	t_form;
 
 typedef union u_block
 {

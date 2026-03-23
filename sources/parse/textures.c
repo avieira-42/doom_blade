@@ -58,8 +58,8 @@ int	cub_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const 
 	texture->ptr = malloc(texture->width * texture->height * sizeof(uint32_t));
 	if (texture->ptr == NULL)
 		return (mlx_destroy_image(mlx, img), -1);
-	scale.x.f = (double)img->width / texture->width;
-	scale.y.f = (double)img->height / texture->height;
+	scale.x.f = (double)texture->width / img->width;
+	scale.y.f = (double)texture->height / img->height;
 	ft_bilinear_scaling(&(t_mat32){(uint32_t*)img->data, img->width, img->height, 1, img->width}, texture, scale, (t_vec2){0});
 	ft_transpose(texture);
 	mlx_destroy_image(mlx, img);

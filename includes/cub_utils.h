@@ -8,14 +8,18 @@
 #include "cub_structs.h"
 
 // Draw and Render
-void		ft_bilinear_scaling(const t_mat32 *src, t_mat32 *dst, t_vec2 scale, t_vec2 pos);
-void		ft_integer_scaling(t_mat32 src, t_mat32 dst, size_t factor);
-void		ft_integer_scaling_t(t_mat32 src, t_mat32 dst, size_t factor);
 int			ft_transpose(t_mat32 *src);
 int			cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner);
 t_rayhit	raycast(float camera_x, t_view *cam, t_mat8 *map, t_block *blocks);
 void		render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_frame *frame);
 t_img		*read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr);
+
+// Scaling
+uint32_t	ft_bilerp_argb(const t_mat32 *src, t_vec2 norm_pos);
+uint32_t	ft_bilerp_argb_t(const t_mat32 *src, t_vec2 norm_pos);
+void		ft_bilinear_scaling(const t_mat32 *src, t_mat32 *dst, t_vec2 scale, t_vec2 pos);
+void		ft_integer_scaling(t_mat32 src, t_mat32 dst, size_t factor);
+void		ft_integer_scaling_t(t_mat32 src, t_mat32 dst, size_t factor);
 
 // Events
 int		cmlx_keydown(int keycode, t_game *game);

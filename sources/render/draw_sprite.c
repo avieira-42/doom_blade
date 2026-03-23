@@ -15,74 +15,10 @@
 // 2) How will you determine where to draw? 
 // One alternative is to choose a center position, scale the rectangle, and just clip to screen
 
-typedef struct s_transform
-{
-	t_vec2		draw_pos;
-	t_vec2		delta;
-	t_vec2		norm_offset;	// Clip start to normalized range
-	float		enemy_dist;
-	uint32_t	top;
-	uint32_t	bottom;
-	uint32_t	left;
-	uint32_t	right;
-}	t_form;
-
 #define NEAR_RADIUS 0.1f
 
 static inline
-uint32_t	stt_lerp_argb(uint32_t p0, uint32_t p1, uint8_t alpha)
-{
-	uint32_t	rb;
-	uint32_t	ga;
-
-	rb = p0 & 0x00FF00FF;									// Masks red and blue channel
-	ga = (p0 >> 8) & 0x00FF00FF;							// Shifts green and alpha channel then masks
-	rb += (((p1 & 0x00FF00FF) - rb) * alpha) >> 8;			// 
-	ga += ((((p1 >> 8) & 0x00FF00FF) - ga) * alpha) >> 8;
-	return (rb & 0x00FF00FF) | ((ga & 0x00FF00FF) << 8);
-}
-
-static inline
-uint32_t	stt_bilerp_argb(t_vec4 sample, float uu, float vv)
-{
-	const uint8_t	u = uu * 255;
-	const uint8_t	v = vv * 255;
-	uint32_t		row1;
-	uint32_t		row2;
-	uint32_t		result;
-
-	row1 = stt_lerp_argb(sample.x.u, sample.y.u, u);
-	row2 = stt_lerp_argb(sample.z.u, sample.w.u, u);
-	result = stt_lerp_argb(row1, row2, v);
-	return (result);
-}
-
-static inline
-uint32_t	stt_bilerp(const t_mat32 *src, t_vec2 norm_pos)
-{
-	t_vec2		src_pos;
-	float		u;
-	float		v;
-	t_vec4		index;
-	t_vec4		sample;
-
-	src_pos.x.f = norm_pos.x.f * (src->width - 1);
-	src_pos.y.f = norm_pos.y.f * (src->height - 1);
-	index.x.u = src_pos.y.f;
-	index.y.u = src_pos.y.f + (index.x.u < (src->height - 1));
-	index.z.u = src_pos.x.f;
-	index.w.u = src_pos.x.f + (index.z.u < (src->width - 1));
-	sample.x.u = src->ptr[index.x.u + src->stride * index.z.u];
-	sample.y.u = src->ptr[index.x.u + src->stride * index.w.u];
-	sample.z.u = src->ptr[index.y.u + src->stride * index.z.u];
-	sample.w.u = src->ptr[index.y.u + src->stride * index.w.u];
-	u = src_pos.x.f - (float) index.z.u;							// Normalizes to 0-1, u coordinate
-	v = src_pos.y.f - (float) index.x.u;							// Normalizes to 0-1, v coordinate
-	return (stt_bilerp_argb(sample, u, v));
-}
-
-static inline
-int	stt_dist(t_form *form, t_mat32 *frame, t_view player, t_vec2 enemy_pos)
+float	stt_dist(t_form *form, t_mat32 *frame, t_view player, t_vec2 enemy_pos)
 {
 	float		enemy_dist;
 	float		horz_dist;
@@ -93,25 +29,25 @@ int	stt_dist(t_form *form, t_mat32 *frame, t_view player, t_vec2 enemy_pos)
 	rel_pos.y.f = enemy_pos.y.f - player.pos.y.f;
 	horz_dist = inv_det * (player.dir.y.f * rel_pos.x.f - player.dir.x.f * rel_pos.y.f);
 	enemy_dist = inv_det * (-player.plane.y.f * rel_pos.x.f + player.plane.x.f * rel_pos.y.f);
-
-	form->enemy_dist = enemy_dist;
-	if (enemy_dist < NEAR_RADIUS)
-		return (-1);
-	form->draw_pos.x.i = (frame->width * 0.5f) * (1.0f + horz_dist / enemy_dist);
-	form->draw_pos.y.i = frame->height * 0.5f;
-	return (0);
+	if (enemy_dist > NEAR_RADIUS)
+	{
+		form->draw_pos.x.i = (frame->width * 0.5f) * (1.0f + horz_dist / enemy_dist);
+		form->draw_pos.y.i = frame->height * 0.5f;
+	}
+	return (enemy_dist);
 }
 
 static inline
-int	stt_init(t_form *form, t_mat32 *frame, t_entity *player, t_entity *enemy)
+float	stt_init(t_form *form, t_mat32 *frame, t_entity *player, t_entity *enemy)
 {
 	t_vec2			new_size;
 	int32_t			unclipped;
+	const float		enemy_dist = stt_dist(form, frame, player->cam, enemy->cam.pos);
 	float			scale;
-	
-	if (stt_dist(form, frame, player->cam, enemy->cam.pos))
-		return (-1);
-	scale = 1.0 / form->enemy_dist;
+
+	if (enemy_dist <= NEAR_RADIUS)
+		return (enemy_dist);
+	scale = 1.0 / enemy_dist;
 	new_size.x.i = scale * enemy->texture.width;
 	new_size.y.i = scale * enemy->texture.height;
 	form->delta.x.f = 1.0 / new_size.x.i;
@@ -126,32 +62,35 @@ int	stt_init(t_form *form, t_mat32 *frame, t_entity *player, t_entity *enemy)
 	form->top = ft_iclamp(unclipped, 0, frame->height);
 	form->norm_offset.y.f = ((int)form->top - unclipped) * form->delta.y.f;		// Clipped start
 	form->bottom = ft_iclamp((int)form->draw_pos.y.i + (int)new_size.y.i / 2, 0, frame->height);
-	return (0);
+	return (enemy_dist);
 }
 
+// TODO: Merge bilinear scailing with cub draw relative, they're both the same function except
+// in the way they save the result. 
 void	cub_draw_relative(t_mat32 frame, float *zbuffer, t_entity *player, t_entity *enemy)
 {
 	uint32_t	x;
 	uint32_t	y;
 	t_form		form;
 	t_vec2		norm_pos;
+	const float	enemy_dist = stt_init(&form, &frame, player, enemy);	// Could be dist
 	uint32_t	*ptr;
 	uint32_t	c;
 
-	if (stt_init(&form, &frame, player, enemy))
+	if (enemy_dist <= NEAR_RADIUS)
 		return ;
 	x = form.left;
 	norm_pos.x.f = form.norm_offset.x.f;
 	while (x < form.right)
 	{
-		if (form.enemy_dist < zbuffer[x])	// Do not draw if wall column is ahead of enemy
+		if (enemy_dist < zbuffer[x])	// Do not draw if wall column is ahead of enemy
 		{
 			y = form.top;
 			norm_pos.y.f = form.norm_offset.y.f;
 			ptr = frame.ptr + frame.stride * x;
 			while (y < form.bottom)
 			{
-				c = stt_bilerp(&enemy->texture, norm_pos);	// Bilerp takes a normalized range to sample from
+				c = ft_bilerp_argb_t(&enemy->texture, norm_pos);	// Bilerp takes a normalized range to sample from
 				if (c != 0xFF000000)		// TODO: Proper alpha blend
 					ptr[y] = c;
 				norm_pos.y.f += form.delta.y.f;

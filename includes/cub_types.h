@@ -14,8 +14,8 @@ typedef struct s_str
 typedef struct s_mat
 {
 	void		*ptr;
-	uint16_t	rows;
-	uint16_t	cols;
+	uint16_t	width;
+	uint16_t	height;
 	uint16_t	depth;
 	uint8_t		type_size;
 	uint8_t		flags;	// MSB -> LSB: float, transposed, 
