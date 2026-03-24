@@ -13,20 +13,6 @@ void    stt_frame_pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
     *(unsigned int *)dst = color;
 }
 
-        /*y = 0;
-        while (y < map.rows)
-        {
-                x = 0;
-                while(x < map.cols)
-                {
-                        block = map.ptr[x + map.cols * y];
-                        if ((x == 0 || x == map.cols - 1 || y == 0 || y == map.rows - 1)
-                                        && block != '1')
-                                return (-1);
-                        x++;
-                }
-                y++;
-        }*/
 void    cub_draw_texture(t_mat32 frame, t_mat32 image, t_vec2 pos, float scale)
 {
     (void)scale;
@@ -82,24 +68,24 @@ void cub_sprite_sheet_animate(t_mat32 frame, t_sheet *sheet, t_vec2 pos)
 static
 void    stt_reload_handler(t_game *game)
 {
-    if (game->hud.gun.first_iterator == -1)
+    if (game->gun.first_iterator == -1)
     {
-        game->assets.reload.iterator = game->hud.gun.ammo * 4;
-        game->hud.gun.first_iterator = game->assets.reload.iterator;
+        game->assets.reload.iterator = game->gun.ammo * 4;
+        game->gun.first_iterator = game->assets.reload.iterator;
     }
     cub_sprite_sheet_animate(game->display_frame, &game->assets.reload,
             (t_vec2){.x = { .i = SCREEN_WIDTH / 5 }, .y = {.i = SCREEN_HEIGHT / 2.5}});
-    if (game->assets.reload.iterator - game->hud.gun.first_iterator == 4
+    if (game->assets.reload.iterator - game->gun.first_iterator == 4
             || game->assets.reload.iterator >= game->assets.reload.texture.depth - 1)
     {
         Mix_PlayChannel(1, game->audio.gun_reload, 0);
-        game->hud.gun.ammo++;
-        game->hud.gun.first_iterator = -1;
+        game->gun.ammo++;
+        game->gun.first_iterator = -1;
     }
-    if (game->hud.gun.ammo == game->hud.gun.max_ammo)
+    if (game->gun.ammo == game->gun.max_ammo)
     {
         game->assets.reload.start = false;
-        game->hud.gun.first_iterator = -1;
+        game->gun.first_iterator = -1;
         game->assets.reload.iterator = 0;
     }
 }
@@ -109,7 +95,7 @@ void    stt_shooting_handler(t_game *game)
 {
 	game->assets.reload.start = false;
     game->assets.walk.iterator = 0;
-    game->hud.gun.first_iterator = -1;
+    game->gun.first_iterator = -1;
     if (game->assets.shoot.sound == true)
     {
         Mix_PlayChannel(1, game->audio.gun_shot, 0);
@@ -130,7 +116,8 @@ void    stt_shooting_handler(t_game *game)
 // static
 void    stt_walking_handler(t_game *game)
 {
-    if (game->w || game->a || game->s || game->d)
+    if (game->key & key_w || game->key & key_a
+			|| game->key & key_s || game->key & key_d)
     {
         Mix_PlayChannel(-1, game->audio.current_step, 0);
         cub_sprite_sheet_animate(game->display_frame, &game->assets.walk,
@@ -168,7 +155,7 @@ void  stt_cards_render(t_game *game)
 
     frame_size = game->assets.ammo.texture.cols * game->assets.ammo.texture.rows;
     texture = game->assets.ammo.texture;
-    texture.ptr += frame_size * (game->assets.ammo.texture.depth - game->hud.gun.ammo - 1);
+    texture.ptr += frame_size * (game->assets.ammo.texture.depth - game->gun.ammo - 1);
 	pos = (t_vec2){.x = {.i = 0}, .y = {.i = 0}};
     cub_draw_texture(game->display_frame, texture, pos, 1);
 
@@ -184,7 +171,7 @@ void  stt_cards_render(t_game *game)
 }
 
 //static
-void    stt_hud_animate(t_game *game)
+void    stt_animate(t_game *game)
 {
     stt_hands_render(game);
     stt_cards_render(game);
@@ -192,10 +179,7 @@ void    stt_hud_animate(t_game *game)
 
 void    animate_hud(t_game *game)
 {
-    (void)game;
-    //time_delta_get(game);
-    input_handler(game);
-    stt_hud_animate(game);
+    stt_animate(game);
 
     // debug >>>>>>
     //cub_draw_texture(game->display_frame, game->assets.walk.texture, (t_vec2){.x = {.i = 0}, .y = {.i = 0}}, 1.3);

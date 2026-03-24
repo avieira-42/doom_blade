@@ -16,6 +16,7 @@ int	cmlx_loop(t_game *game)
 		cub_update_pos(game);
 		last_frame = 0;
 	}
+    input_handler(game);
 	if (game->pause == false)
 	{
 		//time_delta_get(game);

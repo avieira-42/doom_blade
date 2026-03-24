@@ -92,23 +92,15 @@ int cub_init(const char *filename, t_game *game, t_memory *memory)
     //  ALEX SOEIRO INITS >>>
 	sprites_init(game);
     audio_init(game);                     // ADDED OLD
-    game->frame.image = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);   // ADDED OLD
-    game->frame.data = mlx_get_data_addr(                                     // ADDED OLD
-            game->frame.image, &game->frame.bpp, &game->frame.size_line,
-                &game->frame_endian);                                         // ADDED OLD
-    game->w = false;                      // ADDED OLD
-    game->a = false;                      // ADDED OLD
-    game->s = false;                      // ADDED OLD
-    game->d = false;                      // ADDED OLD
-    game->r = false;                      // ADDED OLD
-    game->p = false;                      // ADDED OLD
-    game->shift = false;                  // ADDED OLD
     game->mouse_l = false;                // ADDED OLD
     game->pause = false;                  // ADDED OLD
-    game->hud.gun.ammo = 8;               // ADDED OLD
-    game->hud.gun.max_ammo = 8;           // ADDED OLD
-    game->hud.gun.first_iterator = -1;    // ADDED OLD
+    game->gun.ammo = 8;               // ADDED OLD
+    game->gun.max_ammo = 8;           // ADDED OLD
+    game->gun.first_iterator = -1;    // ADDED OLD
 	game->time.prev = get_time();
+	game->key = 0;
+	game->key_up = 0;
+	game->key_down = 0;
 	time_delta_get(game);
     //  <<< ALEX SOEIRO INITS
 

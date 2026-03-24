@@ -143,19 +143,6 @@ typedef struct  s_gun               // ADDED OLD
 	int32_t first_iterator;         // ADDED OLD
 }   t_gun;                           // ADDED OLD
 
-// hud animations
-typedef struct s_hud                // ADDED OLD
-{                                   // ADDED OLD
-	t_anim_old  *reload;                // ADDED OLD
-	t_anim_old  *shoot;                 // ADDED OLD
-	t_anim_old  *walk;                  // ADDED OLD
-	t_anim_old  *ammo;                  // ADDED OLD
-	t_anim_old  *health;                // ADDED OLD
-	t_anim_old  *pill;                  // ADDED OLD
-	t_anim_old  *city;                  // ADDED OLD
-	t_gun   gun;                    // ADDED OLD
-}   t_hud;                           // ADDED OLD
-
 typedef struct  s_audio             // ADDED OLD
 {                                   // ADDED OLD
 	Mix_Chunk   *no_ammo;           // ADDED OLD
@@ -177,35 +164,20 @@ typedef struct s_game
 	t_mat8      map;
 	t_vec2      mouse_pos;
 	t_entity    player;
+	t_gun		gun;                    // ADDED OLD
 	t_block     blocks[NUM_BLOCKS]; // World, Ceil/Floor, Doors, etc...
 	size_t      key;
+	size_t		key_down;
+	size_t      key_up;
 	t_cfg       cfg;
 	t_assets	assets;
 
 
 	// ADDED OLD >>>>>
-	t_hud       hud;                // ADDED OLD
 	t_time      time;               // ADDED OLD
 	t_audio     audio;              // ADDED OLD
-	// TMP KEY INPUTS >>>
-	bool    w;                    // ADDED OLD
-	bool    a;                    // ADDED OLD
-	bool    s;                    // ADDED OLD
-	bool    d;                    // ADDED OLD
-	bool    r;                    // ADDED OLD
-	bool    p;                    // ADDED OLD
-	bool    shift;                // ADDED OLD
 	bool    mouse_l;              // ADDED OLD
 	bool    pause;                // ADDED OLD
-	bool    w_up;                    // ADDED OLD
-	bool    a_up;                    // ADDED OLD
-	bool    s_up;                    // ADDED OLD
-	bool    d_up;                    // ADDED OLD
-	bool    r_up;                    // ADDED OLD
-	bool    p_up;                    // ADDED OLD
-	bool    shift_up;                // ADDED OLD
-	t_img       frame;              // ADDED OLD
-	int32_t     frame_endian;       // ADDED OLD
 	// <<< TMP KEY INPUTS
 	// <<<<< ADDED OLD
 }   t_game;
