@@ -37,7 +37,7 @@ t_ray	stt_raycast_init(float camera_x, t_view *cam)
 }
 
 static inline
-t_rayhit	stt_rayhit_info(t_ray *ray, uint8_t side, t_block *block, t_view *cam)
+t_rayhit	stt_rayhit_info(t_ray *ray, uint8_t side, size_t block_index, t_view *cam)
 {
 	t_rayhit	hit;
 	float		x_pos_texture;
@@ -45,28 +45,22 @@ t_rayhit	stt_rayhit_info(t_ray *ray, uint8_t side, t_block *block, t_view *cam)
 	if (side == 0)
 	{
 		hit.perp_dist = (ray->map_pos.x.i - cam->pos.x.f + (1 - ray->step.x.i) / 2) / ray->ray_dir.x.f;
-		if (ray->step.x.i > 0)
-			hit.texture = block->west;
-		else
-			hit.texture = block->east;
+		hit.tex_dir = 1 + ((ray->step.x.i > 0) << 1);
 		x_pos_texture = cam->pos.y.f + hit.perp_dist * ray->ray_dir.y.f;
 	}
 	else
 	{
 		hit.perp_dist = (ray->map_pos.y.i - cam->pos.y.f + (1 - ray->step.y.i) / 2) / ray->ray_dir.y.f;
-		if (ray->step.y.i > 0)
-			hit.texture = block->north;
-		else
-			hit.texture = block->south;
+		hit.tex_dir = (ray->step.y.i > 0) << 1;
 		x_pos_texture = cam->pos.x.f + hit.perp_dist * ray->ray_dir.x.f;
 	}
-	x_pos_texture -= floorf(x_pos_texture);
-	hit.texture.ptr += (size_t)(x_pos_texture * hit.texture.width) * hit.texture.stride;
-	hit.line_height = (float) RENDER_HEIGHT / hit.perp_dist;
+	hit.tex_offset = (x_pos_texture - floorf(x_pos_texture)) * TEX_HEIGHT;	// TODO: TEMPORARY, textures aren't necessarily square
+	hit.tex_index = block_index;
 	return (hit);
 }
 
-t_rayhit	raycast(float camera_x, t_view *cam, t_mat8 *map, t_block *blocks)
+static
+t_rayhit	stt_raycast(float camera_x, t_view *cam, t_mat8 *map)
 {
 	t_ray		ray;
 	uint8_t		block_index;
@@ -92,5 +86,21 @@ t_rayhit	raycast(float camera_x, t_view *cam, t_mat8 *map, t_block *blocks)
 			break ;
 		block_index = map->ptr[ray.map_pos.y.i * map->stride + ray.map_pos.x.i];
 	}
-	return (stt_rayhit_info(&ray, side, blocks + block_index, cam));
+	return (stt_rayhit_info(&ray, side, block_index, cam));
+}
+
+void	raycast(t_view *cam, t_mat8 *map, t_frame *frame)
+{
+	size_t		x;
+	float		camera_x;
+	const float	dx = 2.0 / (double) RENDER_WIDTH;
+
+	x = 0;
+	camera_x = -1.0f;
+	while (x < RENDER_WIDTH)
+	{
+		frame->rays[x] = stt_raycast(camera_x, cam, map);	// if block_index is a specific number, do not render
+		camera_x += dx;
+		x++;
+	}
 }

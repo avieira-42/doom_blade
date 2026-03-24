@@ -10,7 +10,7 @@
 // Draw and Render
 int			ft_transpose(t_mat32 *src);
 int			cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner);
-t_rayhit	raycast(float camera_x, t_view *cam, t_mat8 *map, t_block *blocks);
+void		raycast(t_view *cam, t_mat8 *map, t_frame *frame);
 void		render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_frame *frame);
 t_img		*read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr);
 

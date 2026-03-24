@@ -89,15 +89,16 @@ typedef struct s_ray
 
 typedef struct s_rayhit
 {
-	t_mat32		texture;
+	uint8_t		tex_index;
+	uint8_t		tex_dir;
+	uint16_t	tex_offset;
 	float		perp_dist;
-	int32_t		line_height;
 }	t_rayhit;
 
 typedef struct s_memory
 {
 	uint32_t	render_frame[RENDER_WIDTH][RENDER_HEIGHT];
-	float		zbuffer[RENDER_WIDTH];
+	t_rayhit	rays[RENDER_WIDTH];
 	uint32_t	empty_line[TEX_HEIGHT];
 }	t_memory;
 
@@ -136,10 +137,10 @@ typedef struct s_assets
 
 typedef struct s_frame
 {
-	t_mat32	display;
-	t_mat32	render;
-	float	*zbuffer;
-	t_img	*img;
+	t_mat32		display;
+	t_mat32		render;
+	t_img		*img;
+	t_rayhit	*rays;
 }	t_frame;
 
 typedef struct s_game

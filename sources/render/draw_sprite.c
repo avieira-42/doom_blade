@@ -11,12 +11,6 @@
 // With this area defined, we step through X and Y with normalized ranges from 0 to 1 floats to be used in bilerp
 // But only if the column being drawn has a wall perp_dist (zbuffer) higher than the enemy perp_dist
 
-// 1) How will you determine clipping?
-// 2) How will you determine where to draw? 
-// One alternative is to choose a center position, scale the rectangle, and just clip to screen
-
-#define NEAR_RADIUS 0.1f
-
 static inline
 float	stt_dist(t_form *form, t_mat32 *frame, t_view player, t_vec2 enemy_pos)
 {
@@ -67,7 +61,7 @@ float	stt_init(t_form *form, t_mat32 *frame, t_entity *player, t_entity *enemy)
 
 // TODO: Merge bilinear scailing with cub draw relative, they're both the same function except
 // in the way they save the result. 
-void	cub_draw_relative(t_mat32 frame, float *zbuffer, t_entity *player, t_entity *enemy)
+void	cub_draw_relative(t_mat32 frame, t_rayhit *rays, t_entity *player, t_entity *enemy)
 {
 	uint32_t	x;
 	uint32_t	y;
@@ -83,7 +77,7 @@ void	cub_draw_relative(t_mat32 frame, float *zbuffer, t_entity *player, t_entity
 	norm_pos.x.f = form.norm_offset.x.f;
 	while (x < form.right)
 	{
-		if (enemy_dist < zbuffer[x])	// Do not draw if wall column is ahead of enemy
+		if (enemy_dist < rays[x].perp_dist)	// Do not draw if wall column is ahead of enemy
 		{
 			y = form.top;
 			norm_pos.y.f = form.norm_offset.y.f;
@@ -96,6 +90,46 @@ void	cub_draw_relative(t_mat32 frame, float *zbuffer, t_entity *player, t_entity
 				norm_pos.y.f += form.delta.y.f;
 				y++;
 			}
+		}
+		norm_pos.x.f += form.delta.x.f;
+		x++;
+	}
+}
+
+// TODO: Assumption used to be scale to fit, review algorithm accordingly and add pos draw
+void	ft_bilinear_scaling(const t_mat32 *src, t_mat32 *dst, t_vec2 scale, t_vec2 draw_pos)
+{
+	t_form		form;
+	t_vec2		new_size;
+	int32_t		unclipped_left;
+	int32_t		unclipped_top;
+	uint32_t	x;
+	uint32_t	y;
+	t_vec2		norm_pos;
+
+	new_size.x.i = src->width * scale.x.f;
+	new_size.y.i = src->height * scale.y.f;
+	form.delta.x.f = 1.0 / new_size.x.i;
+	form.delta.y.f = 1.0 / new_size.y.i;
+	unclipped_left = (int)draw_pos.x.i;
+	unclipped_top = (int)draw_pos.y.i;
+	form.left = ft_iclamp(unclipped_left, 0, dst->width);
+	form.top = ft_iclamp(unclipped_top, 0, dst->height);
+	form.right = ft_iclamp((int)draw_pos.x.i + (int)new_size.x.i, 0, dst->width);
+	form.bottom = ft_iclamp((int)draw_pos.y.i + (int)new_size.y.i, 0, dst->height);
+	form.norm_offset.x.f = ((int)form.left - unclipped_left) * form.delta.x.f;		// Clipped start
+	form.norm_offset.y.f = ((int)form.top - unclipped_top) * form.delta.y.f;		// Clipped start
+	x = form.left;
+	norm_pos.x.f = form.norm_offset.x.f;
+	while (x < form.right)
+	{
+		y = form.top;
+		norm_pos.y.f = form.norm_offset.y.f;
+		while (y < form.bottom)
+		{
+			dst->ptr[y * dst->stride + x] = ft_bilerp_argb(src, norm_pos);	// Bilerp takes a normalized range to sample from
+			norm_pos.y.f += form.delta.y.f;
+			y++;
 		}
 		norm_pos.x.f += form.delta.x.f;
 		x++;

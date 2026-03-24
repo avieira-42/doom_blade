@@ -14,6 +14,7 @@
 
 # define SPRINT_SPEED 0.5f
 # define MOVE_SPEED 0.033f
+# define NEAR_RADIUS 0.1f // Determines how near for texture culling
 
 // Keys
 enum e_keys
