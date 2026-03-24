@@ -30,6 +30,7 @@ enum e_keys
 	key_lmb = 1u << 8,
 	key_rmb = 1u << 9,
 	key_r = 1u << 10,
+	key_p = 1u << 11,
 };
 
 // Colors

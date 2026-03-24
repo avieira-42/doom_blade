@@ -13,6 +13,11 @@ int			cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner)
 void		raycast(t_view *cam, t_mat8 *map, t_frame *frame);
 void		render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_frame *frame);
 t_img		*read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr);
+void		animate(t_game *game);
+void		window_clear(t_img *frame, int32_t color);
+// TMP >>>>>>>>
+void		animate_hud(t_game *game);
+// <<<<<<<< TMP
 
 // Scaling
 uint32_t	ft_bilerp_argb(const t_mat32 *src, t_vec2 norm_pos);
@@ -28,6 +33,7 @@ int		cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game);
 int		cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game);
 int		cmlx_mousemove(t_game *game);
 int		cmlx_loop(t_game *game);
+void	input_handler(t_game *game);
 
 // init
 int		cub_init(const char *filename, t_game *game, t_memory *memory);
@@ -35,11 +41,13 @@ int		cub_cleanup(t_game *game);
 int		cub_read_textures(t_xvar *mlx, const char *str, const char **str_ptr, t_block *blocks);
 int		cub_read_map(const char *str, t_mat8 *map, t_entity *player);
 void	sprites_init(t_game *game);
+void	audio_init(t_game *game);
 
 // Physics
 void	cub_update_pos(t_game *game);
 
 // Utils
+void	time_delta_get(t_game *game);
 long	get_time(void);
 uint32_t	ft_strtoargb(const char *str, const char **str_ptr);
 void		*ft_read_all(const char *filename, size_t *file_size);
@@ -80,7 +88,7 @@ ssize_t		ft_putnbr_fd(int64_t number, int fd);
 void		ft_putchar_fd(char c, int fd);
 void		ft_putendl_fd(char *s, int fd);
 // Prototypes: Strings -------------------------------------------------------
-size_t		ft_strlen(const char *str);
+size_t		ft_strlen(const char *s);
 int32_t		ft_strncmp(const char *str1, const char *str2, size_t length);
 size_t		ft_strlcpy(char *dst, const char *src, size_t dst_size);
 size_t		ft_strlcat(char *dst, const char *src, size_t dst_size);

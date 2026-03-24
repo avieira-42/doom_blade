@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:50:30 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/17 11:43:29 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/22 15:30:57 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 #include <stddef.h>
 #include <threads.h>
 
-size_t		ft_strlen(const char *str);
+//size_t		ft_strlen(const char *str);
 void		*ft_memset(void *vdst, const uint8_t byte, size_t length);
 
 // To do: set errno on overflow
-int64_t	ft_strtol(const char *str)
+/*int64_t	ft_strtol(const char *str)
 {
 	int64_t	number;
 	int64_t	sign;
@@ -31,7 +31,7 @@ int64_t	ft_strtol(const char *str)
 	while (*str >= '0' && *str <= '9')
 		number = number * 10 - (*str++ - '0');
 	return (sign * number);
-}
+}*/
 
 int64_t	ft_strntol(const char *str, size_t length)
 {
