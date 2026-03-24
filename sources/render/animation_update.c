@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   animation_update.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/24 23:17:10 by avieira-          #+#    #+#             */
+/*   Updated: 2026/03/24 23:17:27 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub_types.h"
 #include "cub_structs.h"
 #include "cub_utils.h"
@@ -156,27 +168,23 @@ void  stt_cards_render(t_game *game)
     frame_size = game->assets.ammo.texture.cols * game->assets.ammo.texture.rows;
     texture = game->assets.ammo.texture;
     texture.ptr += frame_size * (game->assets.ammo.texture.depth - game->gun.ammo - 1);
-	pos = (t_vec2){.x = {.i = 0}, .y = {.i = 0}};
+	pos = (t_vec2){.x = {.i = 15}, .y = {.i = 15}};
     cub_draw_texture(game->display_frame, texture, pos, 1);
 
     texture = game->assets.health.texture;
-	pos = (t_vec2){.x = {.i = 90}, .y = {.i = 0}};
+	pos = (t_vec2){.x = {.i = 90 + 15}, .y = {.i = 15}};
     cub_draw_texture(game->display_frame, texture, pos, 1);
 
     texture = game->assets.pill.texture;
-	pos = (t_vec2){.x = {.i = 180}, .y = {.i = 0}};
+	pos = (t_vec2){.x = {.i = 180 + 15}, .y = {.i = 15}};
     cub_draw_texture(game->display_frame, texture, pos, 1);
 }
 
 //static
 void	stt_radar_render(t_game *game)
 {
-    t_mat32 texture;
-	t_vec2	pos;
-
-    texture = game->assets.pill.texture;
-	pos = (t_vec2){.x = {.i = 0}, .y = {.i = SCREEN_HEIGHT / 4}};
-    cub_draw_texture(game->display_frame, texture, pos, 1);
+	cub_sprite_sheet_animate(game->display_frame, &game->assets.radar,
+			(t_vec2){.x = {.i = SCREEN_WIDTH - 265}, .y = {.i = 15}});
 }
 
 //static
