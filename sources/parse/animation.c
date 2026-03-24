@@ -130,6 +130,9 @@ void    sprites_init(t_game *game)
     game->assets.city = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/tiles/city", 4);
     game->assets.city.end = true;
 	game->assets.city.loops_per_sprite = 0;
+	game->assets.radar = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_radar/radar", 1);
+	game->assets.radar.end = true;
+	game->assets.radar.start = false;
 
 	//bools
 	game->assets.reload.start = false;

@@ -159,14 +159,23 @@ void  stt_cards_render(t_game *game)
 	pos = (t_vec2){.x = {.i = 0}, .y = {.i = 0}};
     cub_draw_texture(game->display_frame, texture, pos, 1);
 
-    frame_size = game->assets.health.texture.cols * game->assets.health.texture.rows;
     texture = game->assets.health.texture;
 	pos = (t_vec2){.x = {.i = 90}, .y = {.i = 0}};
     cub_draw_texture(game->display_frame, texture, pos, 1);
 
-    frame_size = game->assets.pill.texture.cols * game->assets.pill.texture.rows;
     texture = game->assets.pill.texture;
 	pos = (t_vec2){.x = {.i = 180}, .y = {.i = 0}};
+    cub_draw_texture(game->display_frame, texture, pos, 1);
+}
+
+//static
+void	stt_radar_render(t_game *game)
+{
+    t_mat32 texture;
+	t_vec2	pos;
+
+    texture = game->assets.pill.texture;
+	pos = (t_vec2){.x = {.i = 0}, .y = {.i = SCREEN_HEIGHT / 4}};
     cub_draw_texture(game->display_frame, texture, pos, 1);
 }
 
@@ -175,6 +184,7 @@ void    stt_animate(t_game *game)
 {
     stt_hands_render(game);
     stt_cards_render(game);
+	stt_radar_render(game);
 }
 
 void    animate_hud(t_game *game)
