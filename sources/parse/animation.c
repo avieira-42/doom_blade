@@ -130,5 +130,10 @@ void    sprites_init(t_game *game)
     game->assets.city = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/tiles/city", 4);
     game->assets.city.end = true;
 	game->assets.city.loops_per_sprite = 0;
+
+	//bools
+	game->assets.reload.start = false;
+	game->assets.shoot.start = false;
+	game->assets.shoot.sound = false;
 }
 

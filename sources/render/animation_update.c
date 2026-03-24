@@ -98,7 +98,7 @@ void    stt_reload_handler(t_game *game)
     }
     if (game->hud.gun.ammo == game->hud.gun.max_ammo)
     {
-        game->hud.hands_reload = false;
+        game->assets.reload.start = false;
         game->hud.gun.first_iterator = -1;
         game->assets.reload.iterator = 0;
     }
@@ -107,22 +107,22 @@ void    stt_reload_handler(t_game *game)
 // static
 void    stt_shooting_handler(t_game *game)
 {
-	game->hud.hands_reload = false;
+	game->assets.reload.start = false;
     game->assets.walk.iterator = 0;
     game->hud.gun.first_iterator = -1;
-    if (game->hud.shoot_sound == true)
+    if (game->assets.shoot.sound == true)
     {
         Mix_PlayChannel(1, game->audio.gun_shot, 0);
-        game->hud.shoot_sound = false;
+        game->assets.shoot.sound = false;
     }
     cub_sprite_sheet_animate(game->display_frame, &game->assets.shoot,
             (t_vec2){.x = { .i = SCREEN_WIDTH / 5 }, .y = {.i = SCREEN_HEIGHT / 2.5}});
     if (game->assets.shoot.end == true)
     {
-        game->hud.shoot_sound = false;
+        game->assets.shoot.sound = false;
         game->assets.shoot.end = false;
         game->assets.shoot.iterator = 0;
-        game->hud.hands_shoot = false;
+        game->assets.shoot.start = false;
 		game->assets.shoot.end = false;
     }
 }
@@ -148,11 +148,11 @@ void    stt_walking_handler(t_game *game)
 // static
 void    stt_hands_render(t_game *game)
 {
-    if (game->hud.hands_reload == true && game->hud.hands_shoot == false)
+    if (game->assets.reload.start == true && game->assets.shoot.start == false)
         stt_reload_handler(game);
     else
     {
-        if (game->hud.hands_shoot == true)
+        if (game->assets.shoot.start == true)
             stt_shooting_handler(game);
         else
             stt_walking_handler(game);
@@ -168,7 +168,7 @@ void  stt_cards_render(t_game *game)
 
     frame_size = game->assets.ammo.texture.cols * game->assets.ammo.texture.rows;
     texture = game->assets.ammo.texture;
-    texture.ptr += frame_size * (game->hud.ammo->size - game->hud.gun.ammo - 1);
+    texture.ptr += frame_size * (game->assets.ammo.texture.depth - game->hud.gun.ammo - 1);
 	pos = (t_vec2){.x = {.i = 0}, .y = {.i = 0}};
     cub_draw_texture(game->display_frame, texture, pos, 1);
 

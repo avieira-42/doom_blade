@@ -91,7 +91,6 @@ int cub_init(const char *filename, t_game *game, t_memory *memory)
 
     //  ALEX SOEIRO INITS >>>
 	sprites_init(game);
-    hud_init(game);                       // ADDED OLD
     audio_init(game);                     // ADDED OLD
     game->frame.image = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);   // ADDED OLD
     game->frame.data = mlx_get_data_addr(                                     // ADDED OLD

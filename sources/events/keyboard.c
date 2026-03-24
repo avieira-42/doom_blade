@@ -65,26 +65,25 @@ void	input_handler(t_game *game)
 		else
 			game->pause = false;
 	}
-	if (game->r == true && game->hud.hands_shoot == false)
+	if (game->r == true && game->assets.shoot.start == false)
 	{
 		if (game->hud.gun.ammo < game->hud.gun.max_ammo)
 		{
-			game->hud.hands_reload = true;
+			game->assets.reload.start = true;
 			game->hud.gun.first_iterator = -1;
 			game->r = false;
 		}
 	}
-	if (game->mouse_l == true && game->hud.hands_shoot == false)
+	if (game->mouse_l == true && game->assets.shoot.start == false)
 	{
-		printf("ammo:%i\n", game->hud.gun.ammo);
 		if (game->hud.gun.ammo == 0)
 			Mix_PlayChannel(3, game->audio.no_ammo, 0);
 		else
 		{
 			game->hud.gun.ammo--;
-			game->hud.hands_shoot = true;
-			game->hud.shoot_sound = true;
-			game->hud.hands_reload = false;
+			game->assets.shoot.start = true;
+			game->assets.shoot.sound = true;
+			game->assets.reload.start = false;
 		}
 		game->mouse_l = false;
 	}

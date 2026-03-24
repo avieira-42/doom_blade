@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cub_structs.h                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/23 15:20:28 by avieira-          #+#    #+#             */
-/*   Updated: 2026/03/23 15:27:56 by avieira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef CUB_STRUCTS_H
 # define CUB_STRUCTS_H
 
@@ -43,7 +31,9 @@ typedef struct s_sheet
 	uint32_t	*first;
 	uint16_t	loops_per_sprite;
 	float		delta;
+	bool		start;
 	bool		end;
+	bool		sound;
 }	t_sheet;
 
 typedef struct s_assets
@@ -164,9 +154,6 @@ typedef struct s_hud                // ADDED OLD
 	t_anim_old  *pill;                  // ADDED OLD
 	t_anim_old  *city;                  // ADDED OLD
 	t_gun   gun;                    // ADDED OLD
-	bool    hands_reload;           // ADDED OLD
-	bool    hands_shoot;            // ADDED OLD
-	bool    shoot_sound;            // ADDED OLD
 }   t_hud;                           // ADDED OLD
 
 typedef struct  s_audio             // ADDED OLD

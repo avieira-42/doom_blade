@@ -37,7 +37,6 @@ int		cub_cleanup(t_game *game);
 int		cub_read_textures(t_xvar *mlx, const char *str, const char **str_ptr, t_block *blocks);
 int		cub_read_map(const char *str, t_mat8 *map, t_entity *player);
 void	sprites_init(t_game *game);
-void	hud_init(t_game *game);
 void	audio_init(t_game *game);
 
 // Physics
