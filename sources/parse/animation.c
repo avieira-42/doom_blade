@@ -23,14 +23,13 @@ t_img   *stt_load_img(t_xvar *mlx, t_str path, size_t count)
 }
 
 static
-<<<<<<< HEAD
 int	stt_load_sheet(t_xvar *mlx, t_mat32 sprite, t_str path, size_t count)
 {
 	size_t			i;
 	t_img			*img;
 	const size_t	depth_stride = sprite.height * sprite.width;
 
-	i = 2;	// TODO: Review image indexing
+	i = 1;	// TODO: Review image indexing
 	sprite.ptr += depth_stride;
 	while (i < count)
 	{
@@ -104,50 +103,6 @@ void	sprites_init(t_game *game)
 	game->sprites.pill = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_pill/pill", 2);
 	// BACKGROUND
 	game->sprites.city = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/tiles/city", 4);
-=======
-int stt_load_sheet(t_xvar *mlx, t_mat32 sprite, t_str path, size_t count)
-{
-    size_t          i;
-    t_img           *img;
-    const size_t    stride = sprite.rows * sprite.cols;
-
-    i = 1;  // TODO: Review image indexing
-    sprite.ptr += stride;
-    while (i < count)
-    {
-        img = stt_load_img(mlx, path, i);
-        if (img == NULL)
-            return (-1);
-        if (img->width != sprite.cols || img->height != sprite.rows)
-            return (mlx_destroy_image(mlx, img), -1);
-
-        ft_memcpy(sprite.ptr, img->data, stride * sizeof(uint32_t));
-
-		// transpose after loading
-        //ft_transpose(&(t_mat32){ sprite.ptr, sprite.rows, sprite.cols, 1, 0 });
-
-        mlx_destroy_image(mlx, img);
-        sprite.ptr += stride;
-        i++;
-    }
-    return (0);
-}
-
-#define SENTINEL_VALUE 0xFF000000
-
-void    stt_clean_texture(t_mat32 texture)
-{
-    size_t          i;
-    const size_t    length = texture.rows * texture.cols * texture.depth;
-
-    i = 0;
-    while (i < length)
-    {
-        if (texture.ptr[i] == SENTINEL_VALUE)
-            texture.ptr[i] = 0;
-        i++;
-    }
->>>>>>> soeiro
 }
 
 t_sheet cub_read_spritesheet(t_xvar *mlx, const char *base_path, size_t count)

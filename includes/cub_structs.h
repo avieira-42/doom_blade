@@ -10,22 +10,6 @@
 # include "cub_defines.h"
 # include "cub_types.h"
 
-/* struct that holds the variables
- * need to scroll each spritesheet */
-<<<<<<< HEAD
-// typedef struct	s_anim
-// {
-// 	int32_t		loops_per_sprite; // aprox time for each sprite to be rendered
-// 	int32_t		iterator; // iterator for the spritesheet scrolling
-// 	int32_t		size;	// number of sprites in sheet
-// 	int32_t		endian; // endian
-// 	t_img		*sheet; // spritesheet
-// 	float		counter; // counter to compare with loops per sprite
-// 	long		*dt; // delta time (TO REMOVE)
-// 	char		*base_path; // broader path name of sprite "sprite" -> "sprite1 sprite2 sprite3"
-// 	char		*file_type; // file type of the sprite "sprite1" -> "sprite1.xpm"
-// 	bool		end; // animation reached its end check
-// }	t_anim;
 typedef struct s_sides
 {
 	int32_t	top;
@@ -56,17 +40,6 @@ typedef union u_block
 	};
 	t_mat32	index[4];
 }	t_block;
-=======
-
-
-/*typedef struct s_mat32
-{
-	uint32_t	*ptr;
-	uint16_t	rows;
-	uint16_t	cols;
-	uint16_t	depth;
-	uint16_t	flags;
-}	t_mat32;*/
 
 typedef struct s_sheet
 {
@@ -81,42 +54,6 @@ typedef struct s_sheet
 	bool		sound;
 }	t_sheet;
 
-typedef struct s_assets
-{
-	t_sheet	reload;
-	t_sheet	shoot;
-	t_sheet	walk;
-	t_sheet	ammo;
-	t_sheet	health;
-	t_sheet	pill;
-	t_sheet	city;
-	t_sheet	radar;
-}	t_assets;
-
-
-typedef struct   s_anim_old
-{
-	int32_t     loops_per_sprite; // aprox time for each sprite to be rendered        // ADDED OLD
-	int32_t     iterator; // iterator for the spritesheet scrolling                 // ADDED OLD
-	int32_t     size;   // number of sprites in sheet                                // ADDED OLD
-	int32_t     endian; // endian                                                     // ADDED OLD
-	t_img       *sheet; // spritesheet                                                // ADDED OLD
-	float       counter; // counter to compare with loops per sprite                  // ADDED OLD
-	float        *dt; // delta time (TO REMOVE)                                       // ADDED OLD
-	char        *base_path; // broader path name of sprite "sprite" -> "sprite1..."   // ADDED OLD
-	char        *file_type; // file type of the sprite "sprite1" -> "sprite1.xpm"     // ADDED OLD
-	bool        end; // animation reached its end check                              // ADDED OLD
-}    t_anim_old;
-
-typedef struct s_block
-{
-	t_mat32 north;
-	t_mat32 east;
-	t_mat32 south;
-	t_mat32 west;
-}   t_block;
->>>>>>> soeiro
-
 typedef struct s_view
 {
 	t_vec2  pos;
@@ -130,22 +67,16 @@ typedef struct s_speed
 {
 	t_vec3  speed;  // 3d vector representing current speed
 	t_vec3  accel;  // 3d vector representing current accel
-					// float    base_accel;
-					// float    max_speed;
+	// float    base_accel;
+	// float    max_speed;
 }   t_speed;
 
 typedef struct s_entity
 {
-<<<<<<< HEAD
 	t_view	cam;
 	t_speed	move;
 	t_mat32	texture;
 }	t_entity;
-=======
-	t_view  cam;
-	t_speed move;
-}   t_entity;
->>>>>>> soeiro
 
 typedef struct s_ray
 {
@@ -158,7 +89,6 @@ typedef struct s_ray
 
 typedef struct s_rayhit
 {
-<<<<<<< HEAD
 	uint8_t		tex_index;
 	uint8_t		tex_dir;
 	uint16_t	tex_offset;
@@ -177,23 +107,6 @@ typedef struct s_gstate
 	bool	paused;
 	long	time;
 	size_t	key;
-=======
-	t_mat32     texture;
-	float       perp_dist;
-	int32_t     line_height;
-}   t_rayhit;
-
-typedef struct s_memory
-{
-	uint32_t    render_frame[RENDER_WIDTH][RENDER_HEIGHT];
-	uint32_t    empty_line[TEX_HEIGHT];
-}   t_memory;
-
-typedef struct s_gstate
-{
-	bool    paused;
-	long    time;
->>>>>>> soeiro
 	// ...
 }   t_gstate;
 
@@ -228,15 +141,13 @@ typedef struct  s_audio             // ADDED OLD
 	Mix_Chunk   *current_step;      // ADDED OLD
 }   t_audio;                          // ADDED OLD
 
-// <<<<< ADDED OLD
-
-typedef struct s_sheet
+typedef struct s_frame
 {
-	t_mat32		texture;
-	float		counter;
-	uint16_t	iterator;
-	uint16_t	loops_per_sprite;
-}	t_sheet;
+	t_mat32		display;
+	t_mat32		render;
+	t_img		*img;
+	t_rayhit	*rays;
+}	t_frame;
 
 typedef struct s_assets
 {
@@ -247,19 +158,12 @@ typedef struct s_assets
 	t_sheet	health;
 	t_sheet	pill;
 	t_sheet	city;
+	t_sheet	radar;
+	t_audio	audio;	// CHANGE TO ASSETS
 }	t_assets;
-
-typedef struct s_frame
-{
-	t_mat32		display;
-	t_mat32		render;
-	t_img		*img;
-	t_rayhit	*rays;
-}	t_frame;
 
 typedef struct s_game
 {
-<<<<<<< HEAD
 	t_xvar		*mlx;
 	t_frame		frame;
 	t_gstate	state;
@@ -269,32 +173,21 @@ typedef struct s_game
 	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
 	t_cfg		cfg;
 	t_assets	assets;
+	// NEW
+	t_gun		gun;	// CHANGE TO PLAYER
 }	t_game;
-=======
-	t_xvar      *mlx;
-	t_img       *img;
-	t_mat32     display_frame;
-	t_mat32     render_frame;
-	t_mat8      map;
-	t_vec2      mouse_pos;
-	t_entity    player;
-	t_gun		gun;                    // ADDED OLD
-	t_block     blocks[NUM_BLOCKS]; // World, Ceil/Floor, Doors, etc...
-	size_t      key;
-	size_t		key_down;
-	size_t      key_up;
-	t_cfg       cfg;
-	t_assets	assets;
 
+// 	size_t      key;
+// 	size_t		key_down;
+// 	size_t      key_up;
 
-	// ADDED OLD >>>>>
-	t_time      time;               // ADDED OLD
-	t_audio     audio;              // ADDED OLD
-	bool    mouse_l;              // ADDED OLD
-	bool    pause;                // ADDED OLD
-	// <<< TMP KEY INPUTS
-	// <<<<< ADDED OLD
-}   t_game;
->>>>>>> soeiro
+// 	// ADDED OLD >>>>>
+// 	t_time      time;               // ADDED OLD
+
+// 	bool    mouse_l;              // ADDED OLD
+// 	bool    pause;                // ADDED OLD
+// 	// <<< TMP KEY INPUTS
+// 	// <<<<< ADDED OLD
+// }   t_game;
 
 #endif

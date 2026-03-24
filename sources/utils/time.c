@@ -47,7 +47,7 @@ long	get_time_v2(void)
 	return (dt);
 }
 
-void	time_delta_get(t_game *game)
+void	time_delta_get(t_game *game)	//
 {
 	game->time.delta = (get_time() - game->time.prev) / 1000000.0f;
 	game->time.prev = get_time();

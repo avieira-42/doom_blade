@@ -4,11 +4,7 @@ VPATH = sources sources/utils sources/parse sources/physics sources/math sources
 SRCS = main.c cleanup.c init.c \
 raycast.c draw_image.c draw_sprite.c render_image.c \
 time.c io_basic.c read_rgb.c memory.c char_ascii.c transpose.c int_limits.c float_limits.c vec2.c \
-<<<<<<< HEAD
-map.c textures.c str_search.c\
-=======
-map.c textures.c animation.c audio_init.c animation_update.c convert.c string.c\
->>>>>>> soeiro
+map.c textures.c animation.c audio_init.c animation_update.c convert.c str_search.c\
 movement.c \
 bilinear_interp.c integer_scaling.c\
 mouse.c keyboard.c
