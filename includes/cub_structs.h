@@ -49,20 +49,6 @@ typedef struct s_assets
 }	t_assets;
 
 
-typedef struct   s_anim_old
-{
-	int32_t     loops_per_sprite; // aprox time for each sprite to be rendered        // ADDED OLD
-	int32_t     iterator; // iterator for the spritesheet scrolling                 // ADDED OLD
-	int32_t     size;   // number of sprites in sheet                                // ADDED OLD
-	int32_t     endian; // endian                                                     // ADDED OLD
-	t_img       *sheet; // spritesheet                                                // ADDED OLD
-	float       counter; // counter to compare with loops per sprite                  // ADDED OLD
-	float        *dt; // delta time (TO REMOVE)                                       // ADDED OLD
-	char        *base_path; // broader path name of sprite "sprite" -> "sprite1..."   // ADDED OLD
-	char        *file_type; // file type of the sprite "sprite1" -> "sprite1.xpm"     // ADDED OLD
-	bool        end; // animation reached its end check                              // ADDED OLD
-}    t_anim_old;
-
 typedef struct s_block
 {
 	t_mat32 north;
