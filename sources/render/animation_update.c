@@ -6,7 +6,7 @@
 /*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 23:17:10 by avieira-          #+#    #+#             */
-/*   Updated: 2026/03/24 23:17:27 by avieira-         ###   ########.fr       */
+/*   Updated: 2026/03/24 23:20:51 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ void  stt_cards_render(t_game *game)
 void	stt_radar_render(t_game *game)
 {
 	cub_sprite_sheet_animate(game->display_frame, &game->assets.radar,
-			(t_vec2){.x = {.i = SCREEN_WIDTH - 265}, .y = {.i = 15}});
+			(t_vec2){.x = {.i = SCREEN_WIDTH - 255}, .y = {.i = 5}});
 }
 
 //static
