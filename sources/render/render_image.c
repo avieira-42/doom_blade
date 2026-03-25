@@ -25,10 +25,11 @@ void	stt_texture_lerp(t_mat32 texture, int32_t line_height, uint32_t *render_col
 	}
 }
 
+// CHANGE: commented so it doesnt draw on top of the already drawn texture of the floor/ceiling
 static inline
 void	stt_draw_tmp(uint32_t *render_col, int32_t draw_start, int32_t draw_end)
 {
-	size_t	x;
+	/*size_t	x;
 
 	x = 0;
 	while (x < draw_start)
@@ -41,7 +42,7 @@ void	stt_draw_tmp(uint32_t *render_col, int32_t draw_start, int32_t draw_end)
 	{
 		render_col[x] = rgb_brown;
 		x++;
-	}
+	}*/
 }
 
 static inline

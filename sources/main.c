@@ -22,6 +22,7 @@ int	cmlx_loop(t_game *game)
 		}
 		ft_memset(game->frame.display.ptr, 0, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(uint32_t));
 		ft_memset(game->frame.render.ptr, 0, RENDER_HEIGHT * RENDER_WIDTH * sizeof(uint32_t));
+		planes_cast(game->frame.render, game->blocks[0].south, game->blocks[0].north, game->player.cam);
 		render_image(&game->player.cam, &game->map, game->blocks, &game->frame);
 		cub_draw_relative(game->frame.render, game->frame.rays, &game->player, game->enemies);
 		ft_integer_scaling_t(game->frame.render, game->frame.display, UPSCALING_FACTOR);

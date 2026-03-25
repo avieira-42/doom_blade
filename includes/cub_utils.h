@@ -13,7 +13,7 @@ int			cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner)
 void		raycast(t_view *cam, t_mat8 *map, t_frame *frame);
 void		render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_frame *frame);
 t_img		*read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr);
-
+void		planes_cast(t_mat32 frame, t_mat32 floor, t_mat32 ceiling, t_view cam);
 void		animate(t_game *game);
 void		animate_hud(t_game *game);
 

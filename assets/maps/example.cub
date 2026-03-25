@@ -2,8 +2,8 @@ NO assets/sprites/xpm/tiles/lab0.xpm
 SO assets/sprites/xpm/tiles/lab1.xpm
 WE assets/sprites/xpm/tiles/lab2.xpm
 EA assets/sprites/xpm/tiles/lab3.xpm
-F 220,100,0
-C 225,30,0
+F assets/sprites/xpm/tiles/floor0.xpm
+C assets/sprites/xpm/tiles/ceiling0.xpm
 1111111111111111111111111
 1000000000110000000000001
 1011000001110000000000001
