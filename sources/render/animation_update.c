@@ -25,9 +25,9 @@ void	cub_draw_texture(t_mat32 frame, t_mat32 image, t_vec2 pos, float scale)
 		x = 0;
 		while (x < image.width)
 		{
-			color = image.ptr[x + image.width * y];
-			if (color != 2228223 && color != 1441791)
-				stt_frame_pixel_put(frame, pos.x.i + x, pos.y.i + y, color);
+			color = image.ptr[x + image.width * y];	// REVIEW: here you index manually but below use a helper to index
+			if (color != 2228223 && color != 1441791)	// REVIEW: colors are hex coded normally
+				stt_frame_pixel_put(frame, pos.x.i + x, pos.y.i + y, color);	// REVIEW: signed and unsigned integers mixing
 			x++;
 		}
 		y++;
@@ -72,7 +72,7 @@ void	stt_reload_handler(t_game *game)
 		game->gun.first_iterator = game->assets.reload.iterator;
 	}
 	cub_sprite_sheet_animate(game->frame.display, &game->assets.reload,
-			(t_vec2){.x = { .i = SCREEN_WIDTH / 5 }, .y = {.i = SCREEN_HEIGHT / 2.5}});
+			(t_vec2){.x = { .i = SCREEN_WIDTH / 5 }, .y = {.i = SCREEN_HEIGHT / 2.5}});	// REVIEW: magic numbers
 	if (game->assets.reload.iterator - game->gun.first_iterator == 4
 			|| game->assets.reload.iterator >= game->assets.reload.texture.depth - 1)
 	{
@@ -100,7 +100,7 @@ void	stt_shooting_handler(t_game *game)
 		game->assets.shoot.sound = false;
 	}
 	cub_sprite_sheet_animate(game->frame.display, &game->assets.shoot,
-			(t_vec2){.x = { .i = SCREEN_WIDTH / 5 }, .y = {.i = SCREEN_HEIGHT / 2.5}});
+			(t_vec2){.x = { .i = SCREEN_WIDTH / 5 }, .y = {.i = SCREEN_HEIGHT / 2.5}});	// REVIEW: magic numbers, should be defines
 	if (game->assets.shoot.end == true)
 	{
 		game->assets.shoot.sound = false;
@@ -111,20 +111,23 @@ void	stt_shooting_handler(t_game *game)
 	}
 }
 
-// static
+// REVIEW: Normally state changes are tracked, like player moving, shooting, etc
+// And then animation plays depending on the state the player is in. State transitions make sure that
+// this only happens once instead of every tick
+static
 void	stt_walking_handler(t_game *game)
 {
 	if (game->state.key & (key_w | key_a | key_s | key_d))	// TODO: Review
 	{
-		Mix_PlayChannel(-1, game->assets.audio.current_step, 0);
-		cub_sprite_sheet_animate(game->frame.display, &game->assets.walk,
-			(t_vec2){.x = { .i = SCREEN_WIDTH / 5 }, .y = {.i = SCREEN_HEIGHT / 2.5}});
+		Mix_PlayChannel(-1, game->assets.audio.current_step, 0);					// REVIEW: this spams the footstep audio every render tick
+		cub_sprite_sheet_animate(game->frame.display, &game->assets.walk,				
+			(t_vec2){.x = { .i = SCREEN_WIDTH / 5 }, .y = {.i = SCREEN_HEIGHT / 2.5}});	// REVIEW: magic numbers, should be defines
 	}
 	else
 	{
 		game->assets.walk.iterator = 0;
 		cub_draw_texture(game->frame.display, game->assets.walk.texture,
-			(t_vec2){.x = { .i = SCREEN_WIDTH / 5 }, .y = {.i = SCREEN_HEIGHT / 2.5}}, 1);
+			(t_vec2){.x = { .i = SCREEN_WIDTH / 5 }, .y = {.i = SCREEN_HEIGHT / 2.5}}, 1);	// REVIEW: magic numbers, should be defines
 	}
 }
 
@@ -151,12 +154,12 @@ void  stt_cards_render(t_game *game)
 
 	frame_size = game->assets.ammo.texture.width * game->assets.ammo.texture.height;
 	texture = game->assets.ammo.texture;
-	texture.ptr += frame_size * (game->assets.ammo.texture.depth - game->gun.ammo - 1);
-	pos = (t_vec2){.x = {.i = 0}, .y = {.i = 0}};
+	texture.ptr += frame_size * (game->assets.ammo.texture.depth - game->gun.ammo - 1);	// REVIEW: Unsafe indexing pattern. Max ammo exists, why is tex depth being used
+	pos = (t_vec2){.x = {.i = 0}, .y = {.i = 0}};										// REVIEW: could count bullets_shot instead to simplify indexing and compare against max ammo
 	cub_draw_texture(game->frame.display, texture, pos, 1);
 
 	texture = game->assets.health.texture;
-	pos = (t_vec2){.x = {.i = 90}, .y = {.i = 0}};
+	pos = (t_vec2){.x = {.i = 90}, .y = {.i = 0}};		// REVIEW: these should be unsigned numbers, that way you can avoid < 0 checks in putpixel
 	cub_draw_texture(game->frame.display, texture, pos, 1);
 
 	texture = game->assets.pill.texture;
@@ -170,8 +173,8 @@ void	stt_radar_render(t_game *game)
 	t_mat32 texture;
 	t_vec2	pos;
 
-	texture = game->assets.pill.texture;
-	pos = (t_vec2){.x = {.i = 0}, .y = {.i = SCREEN_HEIGHT / 4}};
+	texture = game->assets.pill.texture;		// REVIEW: radar render loads pill texture
+	pos = (t_vec2){.x = {.i = 0}, .y = {.i = SCREEN_HEIGHT / 4}};	// REVIEW: Magic numbers
 	cub_draw_texture(game->frame.display, texture, pos, 1);
 }
 

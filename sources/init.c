@@ -68,7 +68,7 @@ void	stt_tmp(t_game *game, t_memory *memory)
 static
 void	stt_sprites_init(t_game *game)
 {
-	game->assets.shoot = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_shooting", 5);
+	game->assets.shoot = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_shooting", 5);	// REVIEW: all of these values were wrong. this is supposed to be count, not index where it ends
 	game->assets.shoot.end = false;
 	game->assets.shoot.loops_per_sprite = 5;
 	game->assets.shoot.iterator = 0;
@@ -102,7 +102,6 @@ void	stt_sprites_init(t_game *game)
 	game->assets.shoot.start = false;
 	game->assets.shoot.sound = false;
 }
-
 
 static
 void	stt_params_init(t_game *game, t_memory *memory)
