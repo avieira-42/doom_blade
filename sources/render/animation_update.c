@@ -1,22 +1,9 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   animation_update.c                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/24 23:17:10 by avieira-          #+#    #+#             */
-/*   Updated: 2026/03/24 23:20:51 by avieira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "cub_types.h"
 #include "cub_structs.h"
 #include "cub_utils.h"
 #include "cmlx.h"
 
-static
-void    stt_frame_pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
+void    frame_pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
 {
     uint32_t    *dst;
     if (x < 0 || x >= frame.cols || y < 0 || y >= frame.rows)
@@ -41,7 +28,7 @@ void    cub_draw_texture(t_mat32 frame, t_mat32 image, t_vec2 pos, float scale)
         {
             color = image.ptr[x + image.cols * y];
             if (color != 2228223 && color != 1441791)
-                stt_frame_pixel_put(frame, pos.x.i + x, pos.y.i + y, color);
+                frame_pixel_put(frame, pos.x.i + x, pos.y.i + y, color);
             x++;
         }
         y++;
@@ -51,7 +38,6 @@ void    cub_draw_texture(t_mat32 frame, t_mat32 image, t_vec2 pos, float scale)
 void cub_sprite_sheet_update(t_sheet *sheet)
 {
     sheet->counter++;
-    printf("loops:%i\n", sheet->loops_per_sprite);
     if (sheet->counter >= sheet->loops_per_sprite)
     {
         sheet->counter = 0;
@@ -180,11 +166,88 @@ void  stt_cards_render(t_game *game)
     cub_draw_texture(game->display_frame, texture, pos, 1);
 }
 
+
+        /*y = 0;
+        while (y < map.rows)
+        {
+                x = 0;
+                while(x < map.cols)
+                {
+                        block = map.ptr[x + map.cols * y];
+                        if ((x == 0 || x == map.cols - 1 || y == 0 || y == map.rows - 1)
+                                        && block != '1')
+                                return (-1);
+                        x++;
+                }
+                y++;
+        }*/
+
 //static
-void	stt_radar_render(t_game *game)
+void	stt_quad_draw(t_game *game, t_vec2 pos, t_vec2 size)
 {
-	cub_sprite_sheet_animate(game->display_frame, &game->assets.radar,
-			(t_vec2){.x = {.i = SCREEN_WIDTH - 255}, .y = {.i = 5}});
+	const t_vec2	pos2 = (t_vec2){.x = {.i = pos.x.i + size.x.i}, .y = {.i = pos.y.i}};
+	const t_vec2	pos3 = (t_vec2){.x = {.i = pos.x.i}, .y = {.i = pos.y.i + size.y.i}};
+	const t_vec2	pos4 = (t_vec2){.x = {.i = pos.x.i + size.x.i}, .y = {.i =pos.y.i + size.y.i}};
+
+	line_draw_bresenham((t_vecf32){pos.x.i, pos.y.i}, (t_vecf32){pos2.x.i, pos2.y.i}, game, 0xFF00FF);
+	line_draw_bresenham((t_vecf32){pos.x.i, pos.y.i}, (t_vecf32){pos3.x.i, pos3.y.i}, game, 0xFF00FF);
+	line_draw_bresenham((t_vecf32){pos2.x.i, pos2.y.i}, (t_vecf32){pos4.x.i, pos4.y.i}, game, 0xFF00FF);
+	line_draw_bresenham((t_vecf32){pos3.x.i, pos3.y.i}, (t_vecf32){pos4.x.i, pos4.y.i}, game, 0xFF00FF);
+}
+
+//static
+void	stt_blocks_render(t_game *game, t_vec2 pos)
+{
+	const t_vec2	size = (t_vec2){.x = {.i = game->assets.radar.texture.cols / 12},
+									.y = {.i = game->assets.radar.texture.rows / 12}};
+	t_vec2			map_pos;
+	int32_t			x;
+	int32_t			y;
+	t_vec2			draw_pos;
+
+	y = game->player.cam.pos.y.f - 6;
+	while (y <= game->player.cam.pos.y.f + 6)
+	{
+		x = game->player.cam.pos.x.f - 6;
+		while (x <= game->player.cam.pos.x.f + 6)
+		{
+			if (y >= 0 && y < game->map.rows
+					&& x >= 0 && x < game->map.cols)
+			{
+				printf("X: %i\n", x);
+				printf("Y: %i\n", y);
+				printf("here\n");
+				printf("pos.x: %i\npos.y: %i\n", pos.x.i, pos.y.i);
+				draw_pos = (t_vec2){.x = {.i = x - game->player.cam.pos.x.f + 6}, .y = {.i = y - game->player.cam.pos.y.f + 6}};
+				map_pos = (t_vec2){.x = {.i = pos.x.i + draw_pos.x.i * size.x.i}, .y = {.i = pos.y.i + draw_pos.y.i * size.y.i}};
+				printf("map_pos.x: %i\nmap_pos.y: %i\n", map_pos.x.i, map_pos.y.i);
+				if (game->map.ptr[x + game->map.cols * y] == 1)
+				stt_quad_draw(game, map_pos, size);
+			}
+			x++;
+		}
+		y++;
+	}
+}
+
+//static
+void	stt_map_render(t_game *game)
+{
+	const t_vec2	pos = (t_vec2){.x = {.i = SCREEN_WIDTH - 255}, .y = {.i = 5}};
+	const t_vec2	pos2 = (t_vec2){.x = {.i = pos.x.i + game->assets.radar.texture.cols}, .y = {.i = pos.y.i}};
+	const t_vec2	pos3 = (t_vec2){.x = {.i = pos.x.i}, .y = {.i = pos.y.i + game->assets.radar.texture.rows}};
+	const t_vec2	pos4 = (t_vec2){.x = {.i = pos.x.i + game->assets.radar.texture.cols}, .y = {.i = pos.y.i + game->assets.radar.texture.rows}};
+
+	/* render radar (spritesheet to be fragmented into 2 seperate layers
+	that are rendered one befor the map and the other after)*/
+	cub_sprite_sheet_animate(game->display_frame, &game->assets.radar, pos);
+
+	/* render map */
+	line_draw_bresenham((t_vecf32){pos.x.i, pos.y.i}, (t_vecf32){pos2.x.i, pos2.y.i}, game, 0xFF00FF);
+	line_draw_bresenham((t_vecf32){pos.x.i, pos.y.i}, (t_vecf32){pos3.x.i, pos3.y.i}, game, 0xFF00FF);
+	line_draw_bresenham((t_vecf32){pos2.x.i, pos2.y.i}, (t_vecf32){pos4.x.i, pos4.y.i}, game, 0xFF00FF);
+	line_draw_bresenham((t_vecf32){pos3.x.i, pos3.y.i}, (t_vecf32){pos4.x.i, pos4.y.i}, game, 0xFF00FF);
+	stt_blocks_render(game, pos);
 }
 
 //static
@@ -192,7 +255,7 @@ void    stt_animate(t_game *game)
 {
     stt_hands_render(game);
     stt_cards_render(game);
-	stt_radar_render(game);
+	stt_map_render(game);
 }
 
 void    animate_hud(t_game *game)

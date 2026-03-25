@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include "cub_structs.h"
+#include "libft_math.h"
 
 // Draw and Render
 void		ft_bilinear_scaling(t_mat32 *src, t_mat32 *dst);
@@ -18,9 +19,11 @@ void		render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_mat32 render_fra
 t_img		*read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr);
 void		animate(t_game *game);
 void		window_clear(t_img *frame, int32_t color);
-// TMP >>>>>>>>
 void		animate_hud(t_game *game);
-// <<<<<<<< TMP
+void		frame_pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color);
+// TMP >>>>
+void	line_draw_bresenham(t_vecf32 a, t_vecf32 b, t_game *game, int color);
+// <<<< TMP
 
 // Events
 int		cmlx_keydown(int keycode, t_game *game);
