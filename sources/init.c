@@ -68,17 +68,17 @@ void	stt_tmp(t_game *game, t_memory *memory)
 static
 void	stt_sprites_init(t_game *game)
 {
-	game->assets.shoot = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_shooting", 6);
+	game->assets.shoot = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_shooting", 5);
 	game->assets.shoot.end = false;
 	game->assets.shoot.loops_per_sprite = 5;
 	game->assets.shoot.iterator = 0;
 	game->assets.shoot.counter = 0;
 	if (game->assets.shoot.texture.ptr == NULL)
 		return ;
-	game->assets.walk = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_walking", 8);
+	game->assets.walk = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_walking", 9);
 	game->assets.walk.end = false;
 	game->assets.walk.loops_per_sprite = 5;
-	game->assets.reload = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_reloading", 34);
+	game->assets.reload = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_reloading", 33);
 	game->assets.reload.end = false;
 	game->assets.reload.loops_per_sprite = 5;
 	game->assets.ammo = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_ammo/ammo", 10);

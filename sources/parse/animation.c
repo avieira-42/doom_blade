@@ -75,10 +75,10 @@ t_sheet cub_read_spritesheet(t_xvar *mlx, const char *base_path, size_t count)
 	if (path.length + 32 > sizeof(buffer))
 		return (sprite);
 	ft_memcpy(buffer, base_path, path.length + 1);
-	img = stt_load_img(mlx, path, 1);
+	img = stt_load_img(mlx, path, 0);
 	if (img == NULL)
 		return (sprite);
-	texture = (t_mat32){0, img->height, img->width, count, 0};
+	texture = (t_mat32){0, img->width, img->height, count, 0};
 	texture.ptr = malloc((size_t)(img->height * img->width) * count * sizeof(uint32_t));
 	if (texture.ptr == NULL)
 		return (mlx_destroy_image(mlx, img), sprite);

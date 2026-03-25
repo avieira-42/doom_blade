@@ -15,9 +15,9 @@ void	stt_frame_pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
 
 void	cub_draw_texture(t_mat32 frame, t_mat32 image, t_vec2 pos, float scale)
 {
-	size_t	  x;
-	size_t	  y;
-	uint32_t	color;  
+	size_t		x;
+	size_t		y;
+	uint32_t	color;
 
 	y = 0;
 	while (y < image.height)
