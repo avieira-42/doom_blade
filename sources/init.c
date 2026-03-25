@@ -73,7 +73,7 @@ void	stt_sprites_init(t_game *game)
 	game->assets.shoot.loops_per_sprite = 5;
 	game->assets.shoot.iterator = 0;
 	game->assets.shoot.counter = 0;
-	if (game->assets.shoot.texture.ptr == NULL)
+	if (game->assets.shoot.texture.ptr == NULL)		// REVIEW: this should have a return for every initialized sheet
 		return ;
 	game->assets.walk = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_walking", 9);
 	game->assets.walk.end = false;

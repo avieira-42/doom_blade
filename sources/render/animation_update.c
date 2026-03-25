@@ -3,6 +3,8 @@
 #include "cub_utils.h"
 #include "cmlx.h"
 
+
+// REVIEW: One file containing 13 functions is cancer for merge. please split
 static
 void	stt_frame_pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
 {
@@ -13,7 +15,7 @@ void	stt_frame_pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
 	*(unsigned int *)dst = color;
 }
 
-void	cub_draw_texture(t_mat32 frame, t_mat32 image, t_vec2 pos, float scale)
+void	cub_draw_texture(t_mat32 frame, t_mat32 image, t_vec2 pos, float scale)	// REVIEW: scale is unused
 {
 	size_t		x;
 	size_t		y;
@@ -27,7 +29,7 @@ void	cub_draw_texture(t_mat32 frame, t_mat32 image, t_vec2 pos, float scale)
 		{
 			color = image.ptr[x + image.width * y];	// REVIEW: here you index manually but below use a helper to index
 			if (color != 2228223 && color != 1441791)	// REVIEW: colors are hex coded normally
-				stt_frame_pixel_put(frame, pos.x.i + x, pos.y.i + y, color);	// REVIEW: signed and unsigned integers mixing
+				stt_frame_pixel_put(frame, pos.x.i + x, pos.y.i + y, color);	// REVIEW: signed and unsigned integers mixing, potential giga bug
 			x++;
 		}
 		y++;
@@ -49,7 +51,8 @@ void cub_sprite_sheet_update(t_sheet *sheet)
 	}
 }
 
-// TODO: Add Scale to cub_draw_texture
+// REVIEW: design bug makes it so rendering mutates animation state. 
+// Animation state should occur regardless of rendering, because things that aren't visible aren't rendered but still loop
 void cub_sprite_sheet_animate(t_mat32 frame, t_sheet *sheet, t_vec2 pos)
 {
 	size_t  frame_size;
@@ -103,7 +106,7 @@ void	stt_shooting_handler(t_game *game)
 	if (game->assets.shoot.end == true)
 	{
 		game->assets.shoot.sound = false;
-		game->assets.shoot.end = false;
+		game->assets.shoot.end = false;	// REVIEW: end is set twice
 		game->assets.shoot.iterator = 0;
 		game->assets.shoot.start = false;
 		game->assets.shoot.end = false;
@@ -118,7 +121,7 @@ void	stt_walking_handler(t_game *game)
 {
 	if (game->state.key & (key_w | key_a | key_s | key_d))	// TODO: Review
 	{
-		Mix_PlayChannel(-1, game->assets.audio.current_step, 0);					// REVIEW: this spams the footstep audio every render tick
+		Mix_PlayChannel(-1, game->assets.audio.current_step, 0);	// REVIEW: this spams the footstep audio every render tick, which makes it so high fps has bad audio
 		cub_sprite_sheet_animate(game->frame.display, &game->assets.walk,				
 			(t_vec2){.x = { .i = SCREEN_WIDTH / 5 }, .y = {.i = SCREEN_HEIGHT / 2.5}});	// REVIEW: magic numbers, should be defines
 	}
@@ -175,10 +178,10 @@ void	stt_quad_draw(t_game *game, t_vec2 pos, t_vec2 size, int32_t color, int32_t
 	int32_t			y;
 
 	y = pos.y.i;
-	while (y <= limit.y.i)
+	while (y <= limit.y.i)	// REVIEW: off by one limits
 	{
 		x = pos.x.i;
-		while (x <= limit.x.i)
+		while (x <= limit.x.i)	// REVIEW: off by one limits
 		{
 			if ((x == pos.x.i || x == limit.x.i
 					|| y == pos.y.i || y == limit.y.i)
@@ -200,8 +203,8 @@ void	stt_blocks_render(t_game *game, t_vec2 pos, int32_t bound, t_vec2 map_cente
 	int32_t			y;
 	t_vec2			draw_pos;
 
-	y = game->player.cam.pos.y.f - 6;		// REVIEW: Magic numbers
-	while (y <= game->player.cam.pos.y.f + 6)
+	y = game->player.cam.pos.y.f - 6;			// REVIEW: Magic numbers and mixing floats with integers unsafely
+	while (y <= game->player.cam.pos.y.f + 6)	// REVIEW: this will guaranteed cause off by one hard bugs
 	{
 		x = game->player.cam.pos.x.f - 6;
 		while (x <= game->player.cam.pos.x.f + 6)

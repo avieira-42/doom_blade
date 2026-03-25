@@ -41,6 +41,8 @@ typedef union u_block
 	t_mat32	index[4];
 }	t_block;
 
+// REVIEW: bad names, like wtf is first? why is delta stored? iterator and counter mean the same thing but one is size_t and other is float
+// how is loops per sprite used? 
 typedef struct s_sheet
 {
 	t_mat32		texture;
