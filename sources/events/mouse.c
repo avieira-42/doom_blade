@@ -14,26 +14,30 @@ int	cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game)
 // 5 ButtonRelease
 int	cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game)
 {
-	if (game->pause == false)
+	if (button == 1 && game->assets.shoot.start == false)
 	{
-		if (button == 1)
-			game->mouse_l = true;
+		if (game->gun.ammo == 0)
+			Mix_PlayChannel(3, game->assets.audio.no_ammo, 0);
+		else
+		{
+			game->gun.ammo--;
+			game->assets.shoot.start = true;
+			game->assets.shoot.sound = true;
+			game->assets.reload.start = false;
+		}
 	}
 	return (0);
 }
 
 int	cmlx_mousemove(t_game *game)
 {
-	int x1, y1;
+	int		x1, y1;
 	float	dx;
 
-	if (game->pause == false)
-	{
-		mlx_mouse_get_pos(game->mlx, game->mlx->win_list, &x1, &y1);
-		dx = (float)(x1 - ((float)SCREEN_WIDTH / 2)) * game->cfg.sens;
-		game->player.cam.dir = vec2_rotate(game->player.cam.dir, dx);
-		game->player.cam.plane = vec2_rotate(game->player.cam.plane, dx);
-		mlx_mouse_move(game->mlx, game->mlx->win_list, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-	}
+	mlx_mouse_get_pos(game->mlx, game->mlx->win_list, &x1, &y1);
+	dx = (float)(x1 - ((float)SCREEN_WIDTH / 2)) * game->cfg.sens;
+	game->player.cam.dir = vec2_rotate(game->player.cam.dir, dx);
+	game->player.cam.plane = vec2_rotate(game->player.cam.plane, dx);
+	mlx_mouse_move(game->mlx, game->mlx->win_list, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	return (0);
 }

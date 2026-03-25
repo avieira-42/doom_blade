@@ -28,7 +28,6 @@ int	cmlx_loop(t_game *game)
 		animate_hud(game);
 		mlx_put_image_to_window(game->mlx, game->mlx->win_list, game->frame.img, 0, 0);
 		cmlx_mousemove(game);
-		input_handler(game);
 	}
 	return (1);
 }

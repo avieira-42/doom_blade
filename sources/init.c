@@ -7,6 +7,20 @@
 #include "cub_utils.h"
 
 static
+void	stt_audio_init(t_game *game)
+{
+	SDL_Init(SDL_INIT_AUDIO);
+	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+	Mix_AllocateChannels(10);
+	game->assets.audio.gun_shot = Mix_LoadWAV("assets/audio/gun_shot.wav");
+	game->assets.audio.gun_reload = Mix_LoadWAV("assets/audio/gun_reload.wav");
+	game->assets.audio.step = Mix_LoadWAV("assets/audio/step.wav");
+	game->assets.audio.step_fast = Mix_LoadWAV("assets/audio/step_fast.wav");
+	game->assets.audio.no_ammo = Mix_LoadWAV("assets/audio/no_ammo.wav");
+	game->assets.audio.current_step = game->assets.audio.step;
+}
+
+static
 int stt_mlx_init(t_game *game)
 {
 	t_win_list *window;
@@ -50,6 +64,45 @@ void	stt_tmp(t_game *game, t_memory *memory)
 	cub_read_texture(game->mlx, &texture, "assets/ghost_tmp.xpm", NULL);
 	game->enemies[0].texture = texture;
 }
+
+static
+void	stt_sprites_init(t_game *game)
+{
+	game->assets.shoot = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_shooting", 6);
+	game->assets.shoot.end = false;
+	game->assets.shoot.loops_per_sprite = 5;
+	game->assets.shoot.iterator = 0;
+	game->assets.shoot.counter = 0;
+	if (game->assets.shoot.texture.ptr == NULL)
+		return ;
+	game->assets.walk = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_walking", 8);
+	game->assets.walk.end = false;
+	game->assets.walk.loops_per_sprite = 5;
+	game->assets.reload = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_reloading", 34);
+	game->assets.reload.end = false;
+	game->assets.reload.loops_per_sprite = 5;
+	game->assets.ammo = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_ammo/ammo", 10);
+	game->assets.ammo.end = false;
+	game->assets.ammo.loops_per_sprite = 0;
+	game->assets.health = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_health/health", 10);
+	game->assets.health.end = true;
+	game->assets.health.loops_per_sprite = 0;
+	game->assets.pill = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_pill/pill", 2);
+	game->assets.pill.end = true;
+	game->assets.pill.loops_per_sprite = 0;
+	game->assets.city = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/tiles/city", 4);
+	game->assets.city.end = true;
+	game->assets.city.loops_per_sprite = 0;
+	game->assets.radar = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_radar/radar", 1);
+	game->assets.radar.end = true;
+	game->assets.radar.start = false;
+
+	//bools
+	game->assets.reload.start = false;
+	game->assets.shoot.start = false;
+	game->assets.shoot.sound = false;
+}
+
 
 static
 void	stt_params_init(t_game *game, t_memory *memory)
@@ -103,8 +156,8 @@ int cub_init(const char *filename, t_game *game, t_memory *memory)
 	//  return (-1);
 	stt_params_init(game, memory);
 	// NEW
-	sprites_init(game);
-	audio_init(game);
+	stt_sprites_init(game);
+	stt_audio_init(game);
 	game->state.paused = false;
 	game->gun.ammo = 8;
 	game->gun.max_ammo = 8;

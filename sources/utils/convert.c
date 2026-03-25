@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:50:30 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/24 20:27:13 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/25 11:24:04 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ size_t		ft_strlen(const char *str);
 void		*ft_memset(void *vdst, const uint8_t byte, size_t length);
 
 // To do: set errno on overflow
-int64_t	ft_strtol(const char *str)
+int64_t	ft_strtol(const char *str, const char **str_ptr)
 {
 	int64_t	number;
 	int64_t	sign;
@@ -30,6 +30,8 @@ int64_t	ft_strtol(const char *str)
 	str += (sign == 1) || (*str == '+');
 	while (*str >= '0' && *str <= '9')
 		number = number * 10 - (*str++ - '0');
+	if (str_ptr != NULL)
+		*str_ptr = str;
 	return (sign * number);
 }
 
@@ -77,4 +79,28 @@ size_t	ft_itoa_r(int64_t number, char *ptr)
 		length--;
 	}
 	return ((size_t)(ptr - optr) - 1);
+}
+
+uint32_t	ft_strtoargb(const char *str, const char **str_ptr)
+{
+	size_t		i;
+	uint32_t	argb_value;
+	int64_t		number;
+
+	i = 0;
+	argb_value = 0;
+	while (i < 4)
+	{
+		number = (uint8_t)ft_strtol(str, &str);
+		argb_value = (argb_value << 8) + (uint32_t) number;
+		i++;
+		if (*str != ',')
+			break ;
+		str++;
+	}
+	if (i < 3)
+		str = NULL;
+	if (str_ptr != NULL)
+		*str_ptr = str;
+	return (argb_value);
 }
