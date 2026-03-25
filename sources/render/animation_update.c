@@ -172,7 +172,7 @@ void  stt_cards_render(t_game *game)
 static
 void	stt_quad_draw(t_game *game, t_vec2 pos, t_vec2 size, int32_t color, int32_t bound, t_vec2 map_center)
 {
-	const t_vec2	limit = (t_vec2){.x = {.i = pos.x.i + size.x.i},
+	const t_vec2	limit = (t_vec2){.x = {.i = pos.x.i + size.x.i},	// REVIEW: you can do (t_vec2){.x.i = pos.x.i, ..} instead
 									.y = {.i =pos.y.i + size.y.i}};
 	int32_t			x;
 	int32_t			y;
@@ -244,7 +244,7 @@ void	stt_map_render(t_game *game)
 	cub_sprite_sheet_animate(game->frame.display, &game->assets.radar_l1, pos);
 }
 
-void	animate_hud(t_game *game)
+void	animate_hud(t_game *game)	// REVIEW: all functions take the game god struct, no encapsulation and separation of concerns is even attempted
 {
 	stt_hands_render(game);
 	stt_cards_render(game);
