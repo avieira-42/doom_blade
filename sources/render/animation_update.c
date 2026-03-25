@@ -207,8 +207,8 @@ void	stt_quad_draw(t_game *game, t_vec2 pos, t_vec2 size, int32_t color, int32_t
 //static
 void	stt_blocks_render(t_game *game, t_vec2 pos, int32_t bound, t_vec2 map_center)
 {
-	const t_vec2	size = (t_vec2){.x = {.i = game->assets.radar.texture.cols / 12},
-									.y = {.i = game->assets.radar.texture.rows / 12}};
+	const t_vec2	size = (t_vec2){.x = {.i = game->assets.radar_l0.texture.cols / 12},
+									.y = {.i = game->assets.radar_l0.texture.rows / 12}};
 	t_vec2			map_pos;
 	int32_t			x;
 	int32_t			y;
@@ -231,7 +231,7 @@ void	stt_blocks_render(t_game *game, t_vec2 pos, int32_t bound, t_vec2 map_cente
 				map_pos = (t_vec2){.x = {.i = pos.x.i + draw_pos.x.i * size.x.i}, .y = {.i = pos.y.i + draw_pos.y.i * size.y.i}};
 				printf("map_pos.x: %i\nmap_pos.y: %i\n", map_pos.x.i, map_pos.y.i);
 				if (game->map.ptr[x + game->map.cols * y] == 1)
-				stt_quad_draw(game, map_pos, size, 0xFF00FF, bound, map_center);
+				stt_quad_draw(game, map_pos, size, 0x440044, bound, map_center);
 			}
 			x++;
 		}
@@ -243,17 +243,21 @@ void	stt_blocks_render(t_game *game, t_vec2 pos, int32_t bound, t_vec2 map_cente
 void	stt_map_render(t_game *game)
 {
 	const t_vec2	pos = (t_vec2){.x = {.i = SCREEN_WIDTH - 255}, .y = {.i = 5}};
-	const t_vec2	pos4 = (t_vec2){.x = {.i = pos.x.i + game->assets.radar.texture.cols}, .y = {.i = pos.y.i + game->assets.radar.texture.rows}};
+	const t_vec2	pos4 = (t_vec2){.x = {.i = pos.x.i + game->assets.radar_l0.texture.cols}, .y = {.i = pos.y.i + game->assets.radar_l0.texture.rows}};
 	const t_vec2	bound = (t_vec2){.x = {.i = (pos4.x.i - pos.x.i) / 2}, .y = {.i = (pos4.y.i - pos.y.i) / 2}};
 	const t_vec2	map_center = (t_vec2){.x = {.i = pos.x.i + bound.x.i}, .y = {.i = pos.y.i + bound.y.i}};
 	const t_vec2	p_pos = (t_vec2){.x = {.i = pos.x.i + bound.x.i - 10}, .y = {.i = pos.y.i + bound.y.i - 10}};
 
 	/* render radar (spritesheet to be fragmented into 2 seperate layers
 	that are rendered one befor the map and the other after)*/
-	cub_sprite_sheet_animate(game->display_frame, &game->assets.radar, pos);
+	cub_sprite_sheet_animate(game->display_frame, &game->assets.radar_l0, pos);
 
+	/* render blocks */
 	stt_blocks_render(game, pos, bound.x.i, map_center);
-	stt_quad_draw(game, p_pos, (t_vec2){.x = {.i = 10}, .y = {.i = 10}}, 0x00FF00, bound.x.i, map_center);
+	stt_quad_draw(game, p_pos, (t_vec2){.x = {.i = 10}, .y = {.i = 10}}, 0x003300, bound.x.i, map_center);
+
+	/* render second layer */
+	cub_sprite_sheet_animate(game->display_frame, &game->assets.radar_l1, pos);
 }
 
 //static

@@ -45,7 +45,8 @@ typedef struct s_assets
 	t_sheet	health;
 	t_sheet	pill;
 	t_sheet	city;
-	t_sheet	radar;
+	t_sheet	radar_l0;
+	t_sheet	radar_l1;
 }	t_assets;
 
 
