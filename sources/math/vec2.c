@@ -4,7 +4,7 @@
 #include <math.h>
 #include "cub_types.h"
 
-float	vec2_dot_product(t_vec2 a, t_vec2 b)
+float	vec2_dot(t_vec2 a, t_vec2 b)
 {
 	return (a.x.f * b.x.f + a.y.f * b.y.f);
 }
@@ -34,17 +34,13 @@ t_vec2	vec2_norm(t_vec2 vec)
 	return (vec);
 }
 
-t_vec2	vec2_sub(t_vec2 a, t_vec2 b)
-{
-	return ((t_vec2){.x = {.i = b.x.i - a.x.i}, .y = {.i = b.y.i - a.y.i}});
-}
-
-int32_t	vec2_mag_sqd(t_vec2 vec)
-{
-	return (vec.x.i * vec.x.i + vec.y.i * vec.y.i );
-}
-
 int32_t	vec2_dist(t_vec2 a, t_vec2 b)
 {
-	return (vec2_mag_sqd(vec2_sub(a, b)));
+	int32_t	dist;
+	t_vec2	delta;
+
+	delta.x.f = a.x.f - b.x.f;
+	delta.y.f = a.y.f - b.y.f;
+	dist = delta.x.f * delta.x.f + delta.y.f * delta.y.f;
+	return (dist);
 }
