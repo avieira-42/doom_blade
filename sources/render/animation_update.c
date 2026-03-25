@@ -183,16 +183,16 @@ void  stt_cards_render(t_game *game)
         }*/
 
 //static
-void	stt_quad_draw(t_game *game, t_vec2 pos, t_vec2 size)
+void	stt_quad_draw(t_game *game, t_vec2 pos, t_vec2 size, int32_t color)
 {
 	const t_vec2	pos2 = (t_vec2){.x = {.i = pos.x.i + size.x.i}, .y = {.i = pos.y.i}};
 	const t_vec2	pos3 = (t_vec2){.x = {.i = pos.x.i}, .y = {.i = pos.y.i + size.y.i}};
 	const t_vec2	pos4 = (t_vec2){.x = {.i = pos.x.i + size.x.i}, .y = {.i =pos.y.i + size.y.i}};
 
-	line_draw_bresenham((t_vecf32){pos.x.i, pos.y.i}, (t_vecf32){pos2.x.i, pos2.y.i}, game, 0xFF00FF);
-	line_draw_bresenham((t_vecf32){pos.x.i, pos.y.i}, (t_vecf32){pos3.x.i, pos3.y.i}, game, 0xFF00FF);
-	line_draw_bresenham((t_vecf32){pos2.x.i, pos2.y.i}, (t_vecf32){pos4.x.i, pos4.y.i}, game, 0xFF00FF);
-	line_draw_bresenham((t_vecf32){pos3.x.i, pos3.y.i}, (t_vecf32){pos4.x.i, pos4.y.i}, game, 0xFF00FF);
+	line_draw_bresenham((t_vecf32){pos.x.i, pos.y.i}, (t_vecf32){pos2.x.i, pos2.y.i}, game, color);
+	line_draw_bresenham((t_vecf32){pos.x.i, pos.y.i}, (t_vecf32){pos3.x.i, pos3.y.i}, game, color);
+	line_draw_bresenham((t_vecf32){pos2.x.i, pos2.y.i}, (t_vecf32){pos4.x.i, pos4.y.i}, game, color);
+	line_draw_bresenham((t_vecf32){pos3.x.i, pos3.y.i}, (t_vecf32){pos4.x.i, pos4.y.i}, game, color);
 }
 
 //static
@@ -222,7 +222,7 @@ void	stt_blocks_render(t_game *game, t_vec2 pos)
 				map_pos = (t_vec2){.x = {.i = pos.x.i + draw_pos.x.i * size.x.i}, .y = {.i = pos.y.i + draw_pos.y.i * size.y.i}};
 				printf("map_pos.x: %i\nmap_pos.y: %i\n", map_pos.x.i, map_pos.y.i);
 				if (game->map.ptr[x + game->map.cols * y] == 1)
-				stt_quad_draw(game, map_pos, size);
+				stt_quad_draw(game, map_pos, size, 0xFF00FF);
 			}
 			x++;
 		}
@@ -237,6 +237,7 @@ void	stt_map_render(t_game *game)
 	const t_vec2	pos2 = (t_vec2){.x = {.i = pos.x.i + game->assets.radar.texture.cols}, .y = {.i = pos.y.i}};
 	const t_vec2	pos3 = (t_vec2){.x = {.i = pos.x.i}, .y = {.i = pos.y.i + game->assets.radar.texture.rows}};
 	const t_vec2	pos4 = (t_vec2){.x = {.i = pos.x.i + game->assets.radar.texture.cols}, .y = {.i = pos.y.i + game->assets.radar.texture.rows}};
+	const t_vec2	p_pos = (t_vec2){.x = {.i = pos.x.i + (pos4.x.i - pos.x.i) / 2 - 10}, .y = {.i = pos.y.i + (pos4.y.i - pos.y.i) / 2 - 10}};
 
 	/* render radar (spritesheet to be fragmented into 2 seperate layers
 	that are rendered one befor the map and the other after)*/
@@ -248,6 +249,7 @@ void	stt_map_render(t_game *game)
 	line_draw_bresenham((t_vecf32){pos2.x.i, pos2.y.i}, (t_vecf32){pos4.x.i, pos4.y.i}, game, 0xFF00FF);
 	line_draw_bresenham((t_vecf32){pos3.x.i, pos3.y.i}, (t_vecf32){pos4.x.i, pos4.y.i}, game, 0xFF00FF);
 	stt_blocks_render(game, pos);
+	stt_quad_draw(game, p_pos, (t_vec2){.x = {.i = 10}, .y = {.i = 10}}, 0x00FF00);
 }
 
 //static
