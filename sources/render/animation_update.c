@@ -223,13 +223,8 @@ void	stt_blocks_render(t_game *game, t_vec2 pos, int32_t bound, t_vec2 map_cente
 			if (y >= 0 && y < game->map.rows
 					&& x >= 0 && x < game->map.cols)
 			{
-				printf("X: %i\n", x);
-				printf("Y: %i\n", y);
-				printf("here\n");
-				printf("pos.x: %i\npos.y: %i\n", pos.x.i, pos.y.i);
 				draw_pos = (t_vec2){.x = {.i = x - game->player.cam.pos.x.f + 6}, .y = {.i = y - game->player.cam.pos.y.f + 6}};
 				map_pos = (t_vec2){.x = {.i = pos.x.i + draw_pos.x.i * size.x.i}, .y = {.i = pos.y.i + draw_pos.y.i * size.y.i}};
-				printf("map_pos.x: %i\nmap_pos.y: %i\n", map_pos.x.i, map_pos.y.i);
 				if (game->map.ptr[x + game->map.cols * y] == 1)
 				stt_quad_draw(game, map_pos, size, 0x440044, bound, map_center);
 			}
