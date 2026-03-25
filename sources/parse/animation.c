@@ -89,3 +89,46 @@ t_sheet cub_read_spritesheet(t_xvar *mlx, const char *base_path, size_t count)
 	sprite.texture = texture;
 	return (sprite);
 }
+
+void    sprites_init(t_game *game)
+{
+    game->assets.shoot = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_shooting", 6);
+    game->assets.shoot.end = false;
+	game->assets.shoot.loops_per_sprite = 5;
+	game->assets.shoot.iterator = 0;
+	game->assets.shoot.counter = 0;
+    if (game->assets.shoot.texture.ptr == NULL)
+        return ;
+    game->assets.walk = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_walking", 8);
+    game->assets.walk.end = false;
+	game->assets.walk.loops_per_sprite = 5;
+    game->assets.reload = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_reloading", 34);
+    game->assets.reload.end = false;
+	game->assets.reload.loops_per_sprite = 5;
+    game->assets.ammo = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_ammo/ammo", 10);
+    game->assets.ammo.end = false;
+	game->assets.ammo.loops_per_sprite = 0;
+    game->assets.health = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_health/health", 10);
+    game->assets.health.end = true;
+	game->assets.health.loops_per_sprite = 0;
+    game->assets.pill = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_pill/pill", 2);
+    game->assets.pill.end = true;
+	game->assets.pill.loops_per_sprite = 0;
+    game->assets.city = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/tiles/city", 4);
+    game->assets.city.end = true;
+	game->assets.city.loops_per_sprite = 0;
+	game->assets.radar_l0 = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_radar/layer_0/layer0_", 56);
+	game->assets.radar_l0.end = true;
+	game->assets.radar_l0.start = false;
+	game->assets.radar_l0.loops_per_sprite = 3;
+	game->assets.radar_l1 = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_radar/layer_1/layer1_", 56);
+	game->assets.radar_l1.end = true;
+	game->assets.radar_l1.start = false;
+	game->assets.radar_l1.loops_per_sprite = 3;
+
+	//bools
+	game->assets.reload.start = false;
+	game->assets.shoot.start = false;
+	game->assets.shoot.sound = false;
+}
+

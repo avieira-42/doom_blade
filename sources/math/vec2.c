@@ -33,3 +33,18 @@ t_vec2	vec2_norm(t_vec2 vec)
 	vec.y.f *= inv_sqrt.f;
 	return (vec);
 }
+
+t_vec2	vec2_sub(t_vec2 a, t_vec2 b)
+{
+	return ((t_vec2){.x = {.i = b.x.i - a.x.i}, .y = {.i = b.y.i - a.y.i}});
+}
+
+int32_t	vec2_mag_sqd(t_vec2 vec)
+{
+	return (vec.x.i * vec.x.i + vec.y.i * vec.y.i );
+}
+
+int32_t	vec2_dist(t_vec2 a, t_vec2 b)
+{
+	return (vec2_mag_sqd(vec2_sub(a, b)));
+}

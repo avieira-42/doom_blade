@@ -3,8 +3,7 @@
 #include "cub_utils.h"
 #include "cmlx.h"
 
-static
-void	stt_frame_pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
+void    frame_pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
 {
 	uint32_t	*dst;
 	if (x < 0 || x >= frame.width || y < 0 || y >= frame.height)
@@ -15,39 +14,38 @@ void	stt_frame_pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
 
 void	cub_draw_texture(t_mat32 frame, t_mat32 image, t_vec2 pos, float scale)
 {
-	size_t		x;
-	size_t		y;
-	uint32_t	color;
+    size_t      x;
+    size_t      y;
+    uint32_t    color;  
 
-	y = 0;
-	while (y < image.height)
-	{
-		x = 0;
-		while (x < image.width)
-		{
-			color = image.ptr[x + image.width * y];	// REVIEW: here you index manually but below use a helper to index
-			if (color != 2228223 && color != 1441791)	// REVIEW: colors are hex coded normally
-				stt_frame_pixel_put(frame, pos.x.i + x, pos.y.i + y, color);	// REVIEW: signed and unsigned integers mixing
-			x++;
-		}
-		y++;
-	}
+    y = 0;
+    while (y < image.rows)
+    {
+        x = 0;
+        while (x < image.cols)
+        {
+            color = image.ptr[x + image.cols * y];
+            if (color != 2228223 && color != 1441791)
+                frame_pixel_put(frame, pos.x.i + x, pos.y.i + y, color);
+            x++;
+        }
+        y++;
+    }
 }
 
 void cub_sprite_sheet_update(t_sheet *sheet)
 {
-	sheet->counter++;
-	// printf("loops:%i\n", sheet->loops_per_sprite);
-	if (sheet->counter >= sheet->loops_per_sprite)
-	{
-		sheet->counter = 0;
-		sheet->iterator++;
-		if (sheet->iterator >= sheet->texture.depth)
-		{
-			sheet->iterator = 0;
-			sheet->end = true;
-		}
-	}
+    sheet->counter++;
+    if (sheet->counter >= sheet->loops_per_sprite)
+    {
+        sheet->counter = 0;
+        sheet->iterator++;
+        if (sheet->iterator >= sheet->texture.depth)
+        {
+            sheet->iterator = 0;
+            sheet->end = true;
+        }
+    }
 }
 
 // TODO: Add Scale to cub_draw_texture
@@ -152,37 +150,118 @@ void  stt_cards_render(t_game *game)
 	t_mat32 texture;
 	t_vec2	pos;
 
-	frame_size = game->assets.ammo.texture.width * game->assets.ammo.texture.height;
-	texture = game->assets.ammo.texture;
-	texture.ptr += frame_size * (game->assets.ammo.texture.depth - game->gun.ammo - 1);	// REVIEW: Unsafe indexing pattern. Max ammo exists, why is tex depth being used
-	pos = (t_vec2){.x = {.i = 0}, .y = {.i = 0}};										// REVIEW: could count bullets_shot instead to simplify indexing and compare against max ammo
-	cub_draw_texture(game->frame.display, texture, pos, 1);
+    frame_size = game->assets.ammo.texture.cols * game->assets.ammo.texture.rows;
+    texture = game->assets.ammo.texture;
+    texture.ptr += frame_size * (game->assets.ammo.texture.depth - game->gun.ammo - 1);
+	pos = (t_vec2){.x = {.i = 15}, .y = {.i = 15}};
+    cub_draw_texture(game->display_frame, texture, pos, 1);
 
-	texture = game->assets.health.texture;
-	pos = (t_vec2){.x = {.i = 90}, .y = {.i = 0}};		// REVIEW: these should be unsigned numbers, that way you can avoid < 0 checks in putpixel
-	cub_draw_texture(game->frame.display, texture, pos, 1);
+    texture = game->assets.health.texture;
+	pos = (t_vec2){.x = {.i = 90 + 15}, .y = {.i = 15}};
+    cub_draw_texture(game->display_frame, texture, pos, 1);
 
-	texture = game->assets.pill.texture;
-	pos = (t_vec2){.x = {.i = 180}, .y = {.i = 0}};
-	cub_draw_texture(game->frame.display, texture, pos, 1);
+    texture = game->assets.pill.texture;
+	pos = (t_vec2){.x = {.i = 180 + 15}, .y = {.i = 15}};
+    cub_draw_texture(game->display_frame, texture, pos, 1);
+}
+
+
+        /*y = 0;
+        while (y < map.rows)
+        {
+                x = 0;
+                while(x < map.cols)
+                {
+                        block = map.ptr[x + map.cols * y];
+                        if ((x == 0 || x == map.cols - 1 || y == 0 || y == map.rows - 1)
+                                        && block != '1')
+                                return (-1);
+                        x++;
+                }
+                y++;
+        }*/
+
+//static
+void	stt_quad_draw(t_game *game, t_vec2 pos, t_vec2 size, int32_t color, int32_t bound, t_vec2 map_center)
+{
+	const t_vec2	limit = (t_vec2){.x = {.i = pos.x.i + size.x.i},
+									.y = {.i =pos.y.i + size.y.i}};
+	int32_t			x;
+	int32_t			y;
+
+	y = pos.y.i;
+	while (y <= limit.y.i)
+	{
+		x = pos.x.i;
+		while (x <= limit.x.i)
+		{
+			if ((x == pos.x.i || x == limit.x.i
+					|| y == pos.y.i || y == limit.y.i)
+					&& vec2_dist(map_center, (t_vec2){.x = {.i = x}, .y = {.i = y}}) <= bound * bound)
+				frame_pixel_put(game->display_frame, x, y, color);
+			x++;
+		}
+		y++;
+	}
 }
 
 //static
-void	stt_radar_render(t_game *game)
+void	stt_blocks_render(t_game *game, t_vec2 pos, int32_t bound, t_vec2 map_center)
 {
-	t_mat32 texture;
-	t_vec2	pos;
+	const t_vec2	size = (t_vec2){.x = {.i = game->assets.radar_l0.texture.cols / 12},
+									.y = {.i = game->assets.radar_l0.texture.rows / 12}};
+	t_vec2			map_pos;
+	int32_t			x;
+	int32_t			y;
+	t_vec2			draw_pos;
 
-	texture = game->assets.pill.texture;		// REVIEW: radar render loads pill texture
-	pos = (t_vec2){.x = {.i = 0}, .y = {.i = SCREEN_HEIGHT / 4}};	// REVIEW: Magic numbers
-	cub_draw_texture(game->frame.display, texture, pos, 1);
+	y = game->player.cam.pos.y.f - 6;
+	while (y <= game->player.cam.pos.y.f + 6)
+	{
+		x = game->player.cam.pos.x.f - 6;
+		while (x <= game->player.cam.pos.x.f + 6)
+		{
+			if (y >= 0 && y < game->map.rows
+					&& x >= 0 && x < game->map.cols)
+			{
+				draw_pos = (t_vec2){.x = {.i = x - game->player.cam.pos.x.f + 6}, .y = {.i = y - game->player.cam.pos.y.f + 6}};
+				map_pos = (t_vec2){.x = {.i = pos.x.i + draw_pos.x.i * size.x.i}, .y = {.i = pos.y.i + draw_pos.y.i * size.y.i}};
+				if (game->map.ptr[x + game->map.cols * y] == 1)
+				stt_quad_draw(game, map_pos, size, 0x440044, bound, map_center);
+			}
+			x++;
+		}
+		y++;
+	}
+}
+
+//static
+void	stt_map_render(t_game *game)
+{
+	const t_vec2	pos = (t_vec2){.x = {.i = SCREEN_WIDTH - 255}, .y = {.i = 5}};
+	const t_vec2	pos4 = (t_vec2){.x = {.i = pos.x.i + game->assets.radar_l0.texture.cols}, .y = {.i = pos.y.i + game->assets.radar_l0.texture.rows}};
+	const t_vec2	bound = (t_vec2){.x = {.i = (pos4.x.i - pos.x.i) / 2}, .y = {.i = (pos4.y.i - pos.y.i) / 2}};
+	const t_vec2	map_center = (t_vec2){.x = {.i = pos.x.i + bound.x.i}, .y = {.i = pos.y.i + bound.y.i}};
+	const t_vec2	p_pos = (t_vec2){.x = {.i = pos.x.i + bound.x.i - 10}, .y = {.i = pos.y.i + bound.y.i - 10}};
+
+	/* render radar (spritesheet to be fragmented into 2 seperate layers
+	that are rendered one befor the map and the other after)*/
+	cub_sprite_sheet_animate(game->display_frame, &game->assets.radar_l0, pos);
+
+	/* render blocks */
+	stt_blocks_render(game, pos, bound.x.i, map_center);
+	stt_quad_draw(game, p_pos, (t_vec2){.x = {.i = 10}, .y = {.i = 10}}, 0x003300, bound.x.i, map_center);
+
+	/* render second layer */
+	cub_sprite_sheet_animate(game->display_frame, &game->assets.radar_l1, pos);
 }
 
 void	animate_hud(t_game *game)
 {
-	stt_hands_render(game);
-	stt_cards_render(game);
-	stt_radar_render(game);
+    stt_hands_render(game);
+    stt_cards_render(game);
+	stt_map_render(game);
+}
 
 	// debug >>>>>>
 	//cub_draw_texture(game->frame.display, game->assets.walk.texture, (t_vec2){.x = {.i = 0}, .y = {.i = 0}}, 1.3);
