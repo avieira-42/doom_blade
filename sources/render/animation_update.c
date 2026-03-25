@@ -14,8 +14,6 @@ void    frame_pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
 
 void    cub_draw_texture(t_mat32 frame, t_mat32 image, t_vec2 pos, float scale)
 {
-    (void)scale;
-
     size_t      x;
     size_t      y;
     uint32_t    color;  
@@ -183,20 +181,31 @@ void  stt_cards_render(t_game *game)
         }*/
 
 //static
-void	stt_quad_draw(t_game *game, t_vec2 pos, t_vec2 size, int32_t color)
+void	stt_quad_draw(t_game *game, t_vec2 pos, t_vec2 size, int32_t color, int32_t bound, t_vec2 map_center)
 {
-	const t_vec2	pos2 = (t_vec2){.x = {.i = pos.x.i + size.x.i}, .y = {.i = pos.y.i}};
-	const t_vec2	pos3 = (t_vec2){.x = {.i = pos.x.i}, .y = {.i = pos.y.i + size.y.i}};
-	const t_vec2	pos4 = (t_vec2){.x = {.i = pos.x.i + size.x.i}, .y = {.i =pos.y.i + size.y.i}};
+	const t_vec2	limit = (t_vec2){.x = {.i = pos.x.i + size.x.i},
+									.y = {.i =pos.y.i + size.y.i}};
+	int32_t			x;
+	int32_t			y;
 
-	line_draw_bresenham((t_vecf32){pos.x.i, pos.y.i}, (t_vecf32){pos2.x.i, pos2.y.i}, game, color);
-	line_draw_bresenham((t_vecf32){pos.x.i, pos.y.i}, (t_vecf32){pos3.x.i, pos3.y.i}, game, color);
-	line_draw_bresenham((t_vecf32){pos2.x.i, pos2.y.i}, (t_vecf32){pos4.x.i, pos4.y.i}, game, color);
-	line_draw_bresenham((t_vecf32){pos3.x.i, pos3.y.i}, (t_vecf32){pos4.x.i, pos4.y.i}, game, color);
+	y = pos.y.i;
+	while (y <= limit.y.i)
+	{
+		x = pos.x.i;
+		while (x <= limit.x.i)
+		{
+			if ((x == pos.x.i || x == limit.x.i
+					|| y == pos.y.i || y == limit.y.i)
+					&& vec2_dist(map_center, (t_vec2){.x = {.i = x}, .y = {.i = y}}) <= bound * bound)
+				frame_pixel_put(game->display_frame, x, y, color);
+			x++;
+		}
+		y++;
+	}
 }
 
 //static
-void	stt_blocks_render(t_game *game, t_vec2 pos)
+void	stt_blocks_render(t_game *game, t_vec2 pos, int32_t bound, t_vec2 map_center)
 {
 	const t_vec2	size = (t_vec2){.x = {.i = game->assets.radar.texture.cols / 12},
 									.y = {.i = game->assets.radar.texture.rows / 12}};
@@ -222,7 +231,7 @@ void	stt_blocks_render(t_game *game, t_vec2 pos)
 				map_pos = (t_vec2){.x = {.i = pos.x.i + draw_pos.x.i * size.x.i}, .y = {.i = pos.y.i + draw_pos.y.i * size.y.i}};
 				printf("map_pos.x: %i\nmap_pos.y: %i\n", map_pos.x.i, map_pos.y.i);
 				if (game->map.ptr[x + game->map.cols * y] == 1)
-				stt_quad_draw(game, map_pos, size, 0xFF00FF);
+				stt_quad_draw(game, map_pos, size, 0xFF00FF, bound, map_center);
 			}
 			x++;
 		}
@@ -234,22 +243,17 @@ void	stt_blocks_render(t_game *game, t_vec2 pos)
 void	stt_map_render(t_game *game)
 {
 	const t_vec2	pos = (t_vec2){.x = {.i = SCREEN_WIDTH - 255}, .y = {.i = 5}};
-	const t_vec2	pos2 = (t_vec2){.x = {.i = pos.x.i + game->assets.radar.texture.cols}, .y = {.i = pos.y.i}};
-	const t_vec2	pos3 = (t_vec2){.x = {.i = pos.x.i}, .y = {.i = pos.y.i + game->assets.radar.texture.rows}};
 	const t_vec2	pos4 = (t_vec2){.x = {.i = pos.x.i + game->assets.radar.texture.cols}, .y = {.i = pos.y.i + game->assets.radar.texture.rows}};
-	const t_vec2	p_pos = (t_vec2){.x = {.i = pos.x.i + (pos4.x.i - pos.x.i) / 2 - 10}, .y = {.i = pos.y.i + (pos4.y.i - pos.y.i) / 2 - 10}};
+	const t_vec2	bound = (t_vec2){.x = {.i = (pos4.x.i - pos.x.i) / 2}, .y = {.i = (pos4.y.i - pos.y.i) / 2}};
+	const t_vec2	map_center = (t_vec2){.x = {.i = pos.x.i + bound.x.i}, .y = {.i = pos.y.i + bound.y.i}};
+	const t_vec2	p_pos = (t_vec2){.x = {.i = pos.x.i + bound.x.i - 10}, .y = {.i = pos.y.i + bound.y.i - 10}};
 
 	/* render radar (spritesheet to be fragmented into 2 seperate layers
 	that are rendered one befor the map and the other after)*/
 	cub_sprite_sheet_animate(game->display_frame, &game->assets.radar, pos);
 
-	/* render map */
-	line_draw_bresenham((t_vecf32){pos.x.i, pos.y.i}, (t_vecf32){pos2.x.i, pos2.y.i}, game, 0xFF00FF);
-	line_draw_bresenham((t_vecf32){pos.x.i, pos.y.i}, (t_vecf32){pos3.x.i, pos3.y.i}, game, 0xFF00FF);
-	line_draw_bresenham((t_vecf32){pos2.x.i, pos2.y.i}, (t_vecf32){pos4.x.i, pos4.y.i}, game, 0xFF00FF);
-	line_draw_bresenham((t_vecf32){pos3.x.i, pos3.y.i}, (t_vecf32){pos4.x.i, pos4.y.i}, game, 0xFF00FF);
-	stt_blocks_render(game, pos);
-	stt_quad_draw(game, p_pos, (t_vec2){.x = {.i = 10}, .y = {.i = 10}}, 0x00FF00);
+	stt_blocks_render(game, pos, bound.x.i, map_center);
+	stt_quad_draw(game, p_pos, (t_vec2){.x = {.i = 10}, .y = {.i = 10}}, 0x00FF00, bound.x.i, map_center);
 }
 
 //static
