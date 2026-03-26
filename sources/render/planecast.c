@@ -4,72 +4,106 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
-void		planes_cast(t_mat32 frame, t_mat32 floor, t_mat32 ceiling, t_view cam)
+//  compute per pixel value
+static
+void	stt_calculate_pixel(t_mat32 frame, t_plane *plane, t_view cam, int32_t y)
 {
-    int         y;
-    int         x;
-    float       rayDirX0;
-    float       rayDirY0;
-    float       rayDirX1;
-    float       rayDirY1;
-    int         p;
-    float       posZ;
-    float       rowDist;
-    float       stepX;
-    float       stepY;
-    float       floorX;
-    float       floorY;
-    int         tx;
-    int         ty;
-    uint32_t    floor_color;
-    uint32_t    ceil_color;
-    uint32_t    *col_ptr;
-    int         ceil_y;
+	// calc direction of left edfe of cam view
+	plane->raydir_left.x.f = cam.dir.x.f - cam.plane.x.f;
+	plane->raydir_left.y.f = cam.dir.y.f - cam.plane.y.f;
 
+	// calc direction of right edfe of cam view
+	plane->raydir_right.x.f = cam.dir.x.f + cam.plane.x.f;
+	plane->raydir_right.y.f = cam.dir.y.f + cam.plane.y.f;
 
-    y = frame.height / 2;
-    while (y < frame.height)
-    {
-        rayDirX0 = cam.dir.x.f - cam.plane.x.f;
-        rayDirY0 = cam.dir.y.f - cam.plane.y.f;
-        rayDirX1 = cam.dir.x.f + cam.plane.x.f;
-        rayDirY1 = cam.dir.y.f + cam.plane.y.f;
+	// vert dist from center of screen to current row
+	plane->vert_dist = y - frame.height / 2;
 
-        p = y - frame.height / 2;
-        posZ = 0.5f * frame.height;
-        rowDist = posZ / p;
+	// cam height in screen units (half)
+	plane->pos_z = 0.5f * frame.height;
 
-        stepX = rowDist * (rayDirX1 - rayDirX0) / frame.width;
-        stepY = rowDist * (rayDirY1 - rayDirY0) / frame.width;
+	// dist from cam to horizontal plane at current row
+	plane->row_dist = plane->pos_z / plane->vert_dist;
 
-        floorX = cam.pos.x.f + rowDist * rayDirX0;
-        floorY = cam.pos.y.f + rowDist * rayDirY0;
+	// horiz step in world space per screen pixel (x)
+	plane->floor_step.x.f = plane->row_dist * (plane->raydir_right.x.f
+			- plane->raydir_left.x.f) / frame.width;
 
-        x = 0;
-        while (x < frame.width)
-        {
-            tx = (int)(floor.width * (floorX - (int)floorX));
-            ty = (int)(floor.height * (floorY - (int)floorY));
+	// horizontal floor_step in world space per screen pixel (y)
+	plane->floor_step.y.f = plane->row_dist * (plane->raydir_right.y.f
+			- plane->raydir_left.y.f) / frame.width;
 
-            tx = tx & (floor.width - 1);
-            ty = ty & (floor.height - 1);
+	// world x coord of plane under leftmost pixel of current row
+	plane->floor_pos.x.f = cam.pos.x.f + plane->row_dist
+		* plane->raydir_left.x.f;
 
-            floor_color = floor.ptr[ty * floor.width + tx];
-            ceil_color = ceiling.ptr[ty * ceiling.width + tx];
+	// world y coord of plane under leftmost pixel of current row
+	plane->floor_pos.y.f = cam.pos.y.f + plane->row_dist
+		* plane->raydir_left.y.f;
+}
 
-            col_ptr = frame.ptr + (x * frame.stride);
+// compute per row value
+static
+void	stt_render_row(t_mat32 frame, t_plane *plane, int32_t x, int32_t y)
+{
+	uint32_t	floor_color;
+	uint32_t	ceil_color;
 
-            /* FLOOR */
-            col_ptr[y] = floor_color;
+	// calc text x coord from fract part of world x
+	plane->texture.x.i = (int)(plane->floor_tex.width
+			* (plane->floor_pos.x.f - (int)plane->floor_pos.x.f));
 
-            /* CEILING */
-            ceil_y = frame.height - y - 1;
-            col_ptr[ceil_y] = ceil_color;
+	// calc text y coord from fract part of world y
+	plane->texture.y.i = (int)(plane->floor_tex.height
+			* (plane->floor_pos.y.f - (int)plane->floor_pos.y.f));
 
-            floorX += stepX;
-            floorY += stepY;
-            x++;
-        }
-        y++;
-    }
+	// wrap text coords
+	plane->texture.x.i = plane->texture.x.i & (plane->floor_tex.width - 1);
+	plane->texture.y.i = plane->texture.y.i & (plane->floor_tex.height - 1);
+
+	// sample floor text pixel
+	floor_color = plane->floor_tex.ptr[plane->texture.y.i
+		* plane->floor_tex.width + plane->texture.x.i];
+
+	// sample ceil text pixel
+	ceil_color = plane->ceil_tex.ptr[plane->texture.y.i
+		* plane->ceil_tex.width + plane->texture.x.i];
+
+	// pointer to start of col x in framebuff
+	plane->col_ptr = frame.ptr + (x * frame.stride);
+
+	// draw floor pixel at row y
+	plane->col_ptr[y] = floor_color;
+
+	// calc mirrored row for ceiling
+	plane->ceil_y = frame.height - y - 1;
+
+	// draw ceiling pixel at mirrored row
+	plane->col_ptr[plane->ceil_y] = ceil_color;
+
+	// move world pos forward for next pixel in curr row
+	plane->floor_pos.x.f += plane->floor_step.x.f;
+	plane->floor_pos.y.f += plane->floor_step.y.f;
+}
+
+void	planes_cast(t_mat32 frame, t_mat32 floor, t_mat32 ceiling, t_view cam)
+{
+	int		y;
+	int		x;
+	t_plane	plane;
+
+	y = frame.height / 2;
+	plane.floor_tex = floor;
+	plane.ceil_tex = ceiling;
+	while (y < frame.height)
+	{
+		stt_calculate_pixel(frame, &plane, cam, y);
+		x = 0;
+		while (x < frame.width)
+		{
+			stt_render_row(frame, &plane, x, y);
+			x++;
+		}
+		y++;
+	}
 }
