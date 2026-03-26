@@ -44,3 +44,14 @@ int32_t	vec2_dist(t_vec2 a, t_vec2 b)
 	dist = delta.x.f * delta.x.f + delta.y.f * delta.y.f;
 	return (dist);
 }
+
+int32_t	vec2_idist(t_vec2 a, t_vec2 b)
+{
+	int32_t	dist;
+	t_vec2	delta;
+
+	delta.x.i = a.x.i - b.x.i;
+	delta.y.i = a.y.i - b.y.i;
+	dist = delta.x.i * delta.x.i + delta.y.i * delta.y.i;
+	return (dist);
+}

@@ -53,6 +53,7 @@ float	vec2_dot_product(t_vec2 a, t_vec2 b);
 t_vec2	vec2_rotate(t_vec2 vec, float angle);
 t_vec2	vec2_norm(t_vec2 vec);
 int32_t	vec2_dist(t_vec2 a, t_vec2 b);
+int32_t	vec2_idist(t_vec2 a, t_vec2 b);
 int		cub_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr);
 void	ft_error(const char *prefix, const char *suffix);
 // ------------------------------
