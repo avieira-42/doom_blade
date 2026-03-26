@@ -89,6 +89,22 @@ typedef struct s_ray
 	t_vec2  step;       // Integer
 }   t_ray;
 
+typedef struct s_plane
+{
+	t_mat32		floor_tex;
+	t_mat32		ceil_tex;
+	t_vec2		raydir_left;
+	t_vec2		raydir_right;
+	t_vec2		floor_step;
+	t_vec2		floor_pos;
+	t_vec2		texture;
+	uint32_t	*col_ptr;
+	int			ceil_y;
+	int32_t		vert_dist;
+	float		pos_z;
+	float		row_dist;
+}	t_plane;
+
 typedef struct s_rayhit
 {
 	uint8_t		tex_index;

@@ -3,7 +3,7 @@ NAME = main
 VPATH = sources sources/utils sources/parse sources/physics sources/math sources/events sources/render
 SRCS = main.c cleanup.c init.c \
 raycast.c draw_image.c draw_sprite.c render_image.c \
-time.c io_basic.c memory.c char_ascii.c transpose.c int_limits.c float_limits.c vec2.c \
+time.c io_basic.c memory.c char_ascii.c transpose.c int_limits.c float_limits.c vec2.c planecast.c \
 map.c textures.c animation.c animation_update.c convert.c str_search.c\
 movement.c \
 bilinear_interp.c integer_scaling.c\
