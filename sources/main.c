@@ -5,7 +5,22 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
-void	cub_draw_relative(t_mat32 frame, t_rayhit *rays, t_entity *player, t_entity *enemy);
+bool	cub_draw_relative(t_mat32 frame, t_rayhit *rays, t_entity *player, t_entity *enemy);
+
+static
+void	stt_draw_enemies(t_game *game)
+{
+	size_t		i;
+	t_entity	*enemy;
+
+	i = 0;
+	while (i < NUM_ENEMIES)
+	{
+		enemy = game->enemies + i;
+		enemy->stats.hit = cub_draw_relative(game->frame.render, game->frame.rays, &game->player, game->enemies);
+		i++;
+	}
+}
 
 int	cmlx_loop(t_game *game)
 {
@@ -24,7 +39,7 @@ int	cmlx_loop(t_game *game)
 		ft_memset(game->frame.render.ptr, 0, RENDER_HEIGHT * RENDER_WIDTH * sizeof(uint32_t));
 		planes_cast(game->frame.render, game->blocks[0].south, game->blocks[0].north, game->player.cam);
 		render_image(&game->player.cam, &game->map, game->blocks, &game->frame);
-		cub_draw_relative(game->frame.render, game->frame.rays, &game->player, game->enemies);
+		stt_draw_enemies(game);
 		ft_integer_scaling_t(game->frame.render, game->frame.display, UPSCALING_FACTOR);
 		animate_hud(game);
 		mlx_put_image_to_window(game->mlx, game->mlx->win_list, game->frame.img, 0, 0);

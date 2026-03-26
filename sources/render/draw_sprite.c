@@ -59,9 +59,22 @@ float	stt_init(t_form *form, t_mat32 *frame, t_entity *player, t_entity *enemy)
 	return (enemy_dist);
 }
 
+// Returns true if the enemy is within a NxN pixel grid on the center of the screen
+static inline
+bool	stt_hitreg(t_form *form)
+{
+	bool	value;
+
+	value = form->left < ((RENDER_WIDTH + HITREG_AREA) / 2)
+		&& form->right > ((RENDER_WIDTH - HITREG_AREA) / 2)
+		&& form->top < ((RENDER_HEIGHT + HITREG_AREA) / 2)
+		&& form->bottom > ((RENDER_HEIGHT - HITREG_AREA) / 2);
+	return (value);
+}
+
 // TODO: Merge bilinear scailing with cub draw relative, they're both the same function except
-// in the way they save the result. 
-void	cub_draw_relative(t_mat32 frame, t_rayhit *rays, t_entity *player, t_entity *enemy)
+// in the way they save the result
+bool	cub_draw_relative(t_mat32 frame, t_rayhit *rays, t_entity *player, t_entity *enemy)
 {
 	uint32_t	x;
 	uint32_t	y;
@@ -72,7 +85,7 @@ void	cub_draw_relative(t_mat32 frame, t_rayhit *rays, t_entity *player, t_entity
 	uint32_t	c;
 
 	if (enemy_dist <= NEAR_RADIUS)
-		return ;
+		return (false);
 	x = form.left;
 	norm_pos.x.f = form.norm_offset.x.f;
 	while (x < form.right)
@@ -94,6 +107,7 @@ void	cub_draw_relative(t_mat32 frame, t_rayhit *rays, t_entity *player, t_entity
 		norm_pos.x.f += form.delta.x.f;
 		x++;
 	}
+	return (stt_hitreg(&form));
 }
 
 // TODO: Assumption used to be scale to fit, review algorithm accordingly and add pos draw

@@ -5,7 +5,7 @@
       "label": "build",
       "type": "shell",
       "command": "bear",
-      "args": ["--output", "build/compile_commands.json", "--","make", "fclean", "debug"],
+      "args": ["--output", "build/compile_commands.json", "--","make", "fclean", "asan"],
       "group": { "kind": "build", "isDefault": true },
     }
   ]

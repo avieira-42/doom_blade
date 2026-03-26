@@ -71,11 +71,21 @@ typedef struct s_speed
 	t_vec3	accel;  // 3d vector representing current accel
 }	t_speed;
 
+typedef struct s_stats
+{
+	int32_t	health;
+	long	respawn_timer;
+	uint8_t	hit;
+	uint8_t	id;
+	//..
+}	t_stats;
+
 typedef struct s_entity
 {
 	t_view	cam;
 	t_speed	move;
 	t_mat32	texture;
+	t_stats	stats;
 }	t_entity;
 
 typedef struct s_ray
