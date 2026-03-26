@@ -189,7 +189,7 @@ typedef struct s_game
 	t_gstate	state;
 	t_mat8		map;
 	t_entity	player;
-	t_entity	enemies[4];
+	t_entity	enemies[NUM_ENEMIES];
 	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
 	t_cfg		cfg;
 	t_assets	assets;

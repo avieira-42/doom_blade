@@ -10,13 +10,13 @@
 // TODO: fix diagonal movement being faster
 
 static inline
-bool	stt_box_collision(t_mat8 *map, t_vec2 pos, float radius)
+bool	stt_box_collision(t_mat8 *map, float x, float y, float radius)
 {
 	bool		rvalue;
-	const int	left = (int)floorf(pos.x.f - radius);
-	const int	right = (int)floorf(pos.x.f + radius);
-	const int	top = (int)floorf(pos.y.f - radius);
-	const int	bottom = (int)floorf(pos.y.f + radius);
+	const int	left = (int)floorf(x - radius);
+	const int	right = (int)floorf(x + radius);
+	const int	top = (int)floorf(y - radius);
+	const int	bottom = (int)floorf(y + radius);
 
 	if (left < 0 || right < 0 || left >= map->width || right >= map->width
 		|| top < 0 || bottom < 0 || top >= map->height || bottom >= map->height)
@@ -25,28 +25,48 @@ bool	stt_box_collision(t_mat8 *map, t_vec2 pos, float radius)
 		|| map->ptr[bottom * map->stride + right]
 		|| map->ptr[top * map->stride + left]
 		|| map->ptr[top * map->stride + right];
-	if (rvalue == 1)
-		return (rvalue);	// Debugging purposes
 	return (rvalue);
 }
 
 static
-t_vec2	stt_collision(t_mat8 *map, t_vec2 delta, t_entity *entity)
+t_vec2	stt_collision(t_mat8 *map, t_vec2 delta, t_vec2 pos)
 {
-	t_vec2	pos;
-
-	pos = entity->cam.pos;
-	pos.x.f += delta.x.f;
-	if (stt_box_collision(map, pos, PLAYER_RADIUS))
+	if (stt_box_collision(map, pos.x.f + delta.x.f, pos.y.f, PLAYER_RADIUS))
 		delta.x.f = 0.0f;
-	pos = entity->cam.pos;
-	pos.y.f += delta.y.f;
-	if (stt_box_collision(map, pos, PLAYER_RADIUS))
+	if (stt_box_collision(map, pos.x.f, pos.y.f + delta.y.f, PLAYER_RADIUS))
 		delta.y.f = 0.0f;
 	return (delta);
 }
 
-void	cub_update_pos(t_game *game)
+static
+t_vec2	stt_move_toward(t_mat8 *map, t_vec2 pos, t_entity *enemy)
+{
+	t_vec2	to_player;
+	float	mag_dist;
+	t_vec2	delta;
+
+	to_player.x.f = pos.x.f - enemy->cam.pos.x.f;
+	to_player.y.f = pos.y.f - enemy->cam.pos.y.f;
+	enemy->cam.dir = vec2_norm(to_player);
+	mag_dist = to_player.x.f * to_player.x.f + to_player.y.f * to_player.y.f;
+	if (mag_dist < 2.0f)
+		enemy->move.speed.y.f *= 0.75f;
+	else
+	{
+		enemy->move.speed.y.f += mag_dist * (1.0f / 128);
+		enemy->move.speed.y.f = ft_absclamp(enemy->move.speed.y.f, MOVE_SPEED);	// TODO: add base accel and move speed values
+	}
+	enemy->move.speed.x.f = 0.0f;
+	delta.x.f = enemy->cam.dir.x.f * enemy->move.speed.y.f;	// forward
+	delta.y.f = enemy->cam.dir.y.f * enemy->move.speed.y.f;
+	delta.x.f -= enemy->cam.dir.y.f * enemy->move.speed.x.f; // lateral
+	delta.y.f += enemy->cam.dir.x.f * enemy->move.speed.x.f;
+	delta = stt_collision(map, delta, enemy->cam.pos);	// Clamps value to prevent going through walls
+	return (delta);
+}
+
+static
+t_vec2	stt_player_move(t_game *game)
 {
 	t_vec2		norm_dir;
 	t_vec2		delta;
@@ -54,7 +74,7 @@ void	cub_update_pos(t_game *game)
 	const float right = !!(game->state.key & key_d) - !!(game->state.key & key_a);
 	const float	move_speed = MOVE_SPEED * (1.0f + SPRINT_SPEED * !!(game->state.key & key_shift));
 
-	game->player.move.speed.x.f += right * (1.0f / 128);
+	game->player.move.speed.x.f += right * (1.0f / 128);	// base accel, dt dependant
 	game->player.move.speed.y.f += forward * (1.0f / 128);
 	game->player.move.speed.x.f = ft_absclamp(game->player.move.speed.x.f, move_speed);
 	game->player.move.speed.y.f = ft_absclamp(game->player.move.speed.y.f, move_speed);
@@ -67,7 +87,24 @@ void	cub_update_pos(t_game *game)
 	delta.y.f = norm_dir.y.f * game->player.move.speed.y.f;
 	delta.x.f -= norm_dir.y.f * game->player.move.speed.x.f; // lateral
 	delta.y.f += norm_dir.x.f * game->player.move.speed.x.f;
-	delta = stt_collision(&game->map, delta, &game->player);
+	delta = stt_collision(&game->map, delta, game->player.cam.pos);	// Clamps value to prevent going through walls
+	return (delta);
+}
+
+void	cub_update_pos(t_game *game)
+{
+	size_t	i;
+	t_vec2	delta;
+
+	delta = stt_player_move(game);
 	game->player.cam.pos.x.f += delta.x.f;
 	game->player.cam.pos.y.f += delta.y.f;
+	i = 0;
+	while (i < NUM_ENEMIES)
+	{
+		delta = stt_move_toward(&game->map, game->player.cam.pos, game->enemies + i);
+		game->enemies[i].cam.pos.x.f += delta.x.f;
+		game->enemies[i].cam.pos.y.f += delta.y.f;
+		i++;
+	}
 }
