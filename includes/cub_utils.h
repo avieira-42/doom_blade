@@ -16,9 +16,13 @@ t_img		*read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr);
 void		planes_cast(t_mat32 frame, t_mat32 floor, t_mat32 ceiling, t_view cam);
 void		animate(t_game *game);
 void		animate_hud(t_game *game);
+void		frame_pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color);
+void		cub_draw_texture(t_mat32 frame, t_mat32 image, t_vec2 pos);
+void		cub_sprite_sheet_update(t_sheet *sheet);
+void		cub_sprite_sheet_animate(t_mat32 frame, t_sheet *sheet, t_vec2 pos);
+void		cards_render(t_game *game);
+void		hands_render(t_game *game);
 
-
-// Scaling
 uint32_t	ft_bilerp_argb(const t_mat32 *src, t_vec2 norm_pos);
 uint32_t	ft_bilerp_argb_t(const t_mat32 *src, t_vec2 norm_pos);
 void		ft_bilinear_scaling(const t_mat32 *src, t_mat32 *dst, t_vec2 scale, t_vec2 pos);
