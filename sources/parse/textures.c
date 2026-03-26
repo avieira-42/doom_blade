@@ -76,7 +76,10 @@ int	stt_read_color(t_xvar *mlx, t_mat32 *texture, const char *filename, const ch
 		return (-1);	// TODO: Print error
 	while (ft_isspace(*filename))
 		filename++;
-	if (filename[0] == '.' && filename[1] == '/')
+	i = 0;
+	while (filename[i] >= '0' && filename[i] <= '9')
+		i++;
+	if (filename[i] != ',')
 		return (cub_read_texture(mlx, texture, filename, filename_ptr));
 	color = ft_strtoargb(filename, filename_ptr);
 	texture->ptr = malloc(TEX_HEIGHT * sizeof(uint32_t));		// Creates a column of colors
@@ -107,10 +110,10 @@ int	stt_match_texture(t_xvar *mlx, const char *str, t_block *blocks, const char 
 		rvalue = cub_read_texture(mlx, &blocks[1].south, str + 2, str_ptr);
 	else if (str[0] == 'W' && str[1] == 'E')
 		rvalue = cub_read_texture(mlx, &blocks[1].west, str + 2,  str_ptr);
-	else if (str[0] == 'C')
-		rvalue = cub_read_texture(mlx, &blocks[0].north, str + 2, str_ptr);
 	else if (str[0] == 'F')
-		rvalue = cub_read_texture(mlx, &blocks[0].south, str + 2, str_ptr);
+		rvalue = stt_read_color(mlx, &blocks[0].south, str + 1, str_ptr);
+	else if (str[0] == 'C')
+		rvalue = stt_read_color(mlx, &blocks[0].north, str + 1, str_ptr);
 		// Continue here for more textures
 	return (rvalue);
 }

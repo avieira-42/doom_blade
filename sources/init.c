@@ -59,6 +59,7 @@ void	stt_tmp(t_game *game, t_memory *memory)
 
 	ft_memset(&cam, 0, sizeof(cam));
 	ft_memset(&speed, 0, sizeof(speed));
+	ft_memset(&texture, 0, sizeof(texture));
 	game->enemies[0].cam = cam;
 	game->enemies[0].move = speed;
 	cub_read_texture(game->mlx, &texture, "assets/ghost_tmp.xpm", NULL);
