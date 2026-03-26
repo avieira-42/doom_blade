@@ -17,7 +17,7 @@ int	cmlx_loop(t_game *game)
 		last_frame += dt;
 		if (last_frame > 10000)
 		{
-			cub_update_pos(game);
+			cub_update_pos(game, (double)dt * 0.000001);	// tmp
 			last_frame = 0;
 		}
 		ft_memset(game->frame.display.ptr, 0, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(uint32_t));

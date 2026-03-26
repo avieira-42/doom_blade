@@ -45,7 +45,7 @@ int		cub_read_map(const char *str, t_mat8 *map, t_entity *player);
 t_sheet cub_read_spritesheet(t_xvar *mlx, const char *base_path, size_t count);
 
 // Physics
-void	cub_update_pos(t_game *game);
+void	cub_update_pos(t_game *game, float dt);
 
 // Utils
 void	time_delta_get(t_game *game);

@@ -67,11 +67,9 @@ typedef struct s_view
 // And every physics loop, speed vector is updated with values from accel vector
 typedef struct s_speed
 {
-	t_vec3  speed;  // 3d vector representing current speed
-	t_vec3  accel;  // 3d vector representing current accel
-	// float    base_accel;
-	// float    max_speed;
-}   t_speed;
+	t_vec3	speed;  // 3d vector representing current speed
+	t_vec3	accel;  // 3d vector representing current accel
+}	t_speed;
 
 typedef struct s_entity
 {
@@ -87,7 +85,7 @@ typedef struct s_ray
 	t_vec2  delta_dist;
 	t_vec2  side_dist;
 	t_vec2  step;       // Integer
-}   t_ray;
+}	t_ray;
 
 typedef struct s_plane
 {
@@ -126,13 +124,13 @@ typedef struct s_gstate
 	long	time;
 	size_t	key;
 	// ...
-}   t_gstate;
+}	t_gstate;
 
 typedef struct s_cfg
 {
 	float   sens;
 	float   speed;
-}   t_cfg;
+}	t_cfg;
 
 // ADDED OLD >>>>>
 
@@ -177,7 +175,7 @@ typedef struct s_assets
 	t_sheet	pill;
 	t_sheet	city;
 	t_sheet	radar;
-	t_audio	audio;	// CHANGE TO ASSETS
+	t_audio	audio;
 	t_sheet	radar_l0;
 	t_sheet	radar_l1;
 }	t_assets;

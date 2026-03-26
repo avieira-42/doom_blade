@@ -13,9 +13,15 @@
 # define EPS 0.00000011920929f
 # define PI 3.141592653589793238462643383279502884L
 
+
+// Game Vars
 # define SPRINT_SPEED 0.5f
-# define MOVE_SPEED 0.033f
+# define PLAYER_SPEED 3.0f
+# define PLAYER_ACCEL 0.5f
+# define ENEMY_SPEED 2.5f
+# define ENEMY_ACCEL 0.5f
 # define NEAR_RADIUS 0.1f // Determines how near for texture culling
+# define MELEE_RANGE 0.25f
 
 // Keys
 enum e_keys
