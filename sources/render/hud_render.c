@@ -15,9 +15,9 @@ void	stt_quad_draw(t_game *game, t_vec2 pos, t_vec2 size, int32_t color, int32_t
 		x = pos.x.i;
 		while (x <= limit.x.i)	// REVIEW: off by one limits
 		{
-			if ((x == pos.x.i || x == limit.x.i
+			if (/*(x == pos.x.i || x == limit.x.i
 						|| y == pos.y.i || y == limit.y.i)
-					&& vec2_idist(map_center, (t_vec2){.x.i = x, .y.i = y})
+					&& */ vec2_idist(map_center, (t_vec2){.x.i = x, .y.i = y})
 						<= bound * bound)
 				frame_pixel_put(game->frame.display, x, y, color);
 			x++;
@@ -50,7 +50,7 @@ void	stt_blocks_render(t_game *game, t_vec2 pos, int32_t bound, t_vec2 map_cente
 					.y.i = y - game->player.cam.pos.y.f + 6};
 				map_pos = (t_vec2){.x.i = pos.x.i + draw_pos.x.i * size.x.i,
 					.y.i = pos.y.i + draw_pos.y.i * size.y.i};
-				if (game->map.ptr[x + game->map.width * y] == 1)
+				if (game->map.ptr[x + game->map.width * y] == 0)
 				stt_quad_draw(game, map_pos, size, 0x440044, bound, map_center);	// REVIEW: magic numbers for colors despite having enums for RGBS
 			}
 			x++;

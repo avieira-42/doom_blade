@@ -2,6 +2,9 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
+#define hands_pos_x SCREEN_WIDTH / 4
+#define hands_pos_y SCREEN_HEIGHT / 2.5
+
 static
 void	stt_reload_handler(t_game *game)
 {
@@ -11,7 +14,7 @@ void	stt_reload_handler(t_game *game)
 		game->gun.first_iterator = game->assets.reload.iterator;
 	}
 	cub_sprite_sheet_animate(game->frame.display, &game->assets.reload,
-			(t_vec2){.x.i = SCREEN_WIDTH / 5, .y.i = SCREEN_HEIGHT / 2.5});	// REVIEW: magic numbers
+			(t_vec2){.x.i = hands_pos_x, .y.i = hands_pos_y});	// REVIEW: magic numbers
 	if (game->assets.reload.iterator - game->gun.first_iterator == 4	// REVIEW: magic number comparison
 			|| game->assets.reload.iterator
 			>= game->assets.reload.texture.depth - 1)
@@ -40,7 +43,7 @@ void	stt_shooting_handler(t_game *game)
 		game->assets.shoot.sound = false;
 	}
 	cub_sprite_sheet_animate(game->frame.display, &game->assets.shoot,
-			(t_vec2){.x.i = SCREEN_WIDTH / 5, .y.i = SCREEN_HEIGHT / 2.5});	// REVIEW: magic numbers, should be defines
+			(t_vec2){.x.i = hands_pos_x, .y.i = hands_pos_y});	// REVIEW: magic numbers, should be defines
 	if (game->assets.shoot.end == true)
 	{
 		game->assets.shoot.sound = false;
@@ -60,13 +63,13 @@ void	stt_walking_handler(t_game *game)
 	{
 		Mix_PlayChannel(-1, game->assets.audio.current_step, 0);	// REVIEW: this spams the footstep audio every render tick, which makes it so high fps has bad audio
 		cub_sprite_sheet_animate(game->frame.display, &game->assets.walk,				
-			(t_vec2){.x.i = SCREEN_WIDTH / 5, .y.i = SCREEN_HEIGHT / 2.5});	// REVIEW: magic numbers, should be defines
+			(t_vec2){.x.i = hands_pos_x, .y.i = hands_pos_y});	// REVIEW: magic numbers, should be defines
 	}
 	else
 	{
 		game->assets.walk.iterator = 0;
 		cub_draw_texture(game->frame.display, game->assets.walk.texture,
-			(t_vec2){.x.i = SCREEN_WIDTH / 5, .y.i = SCREEN_HEIGHT / 2.5});	// REVIEW: magic numbers, should be defines
+			(t_vec2){.x.i = hands_pos_x, .y.i = hands_pos_y});	// REVIEW: magic numbers, should be defines
 	}
 }
 
