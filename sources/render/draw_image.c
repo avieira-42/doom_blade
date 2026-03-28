@@ -65,4 +65,3 @@ void	cub_draw_texture(t_mat32 frame, t_mat32 image, t_vec2 pos)
 		y++;
 	}
 }
-

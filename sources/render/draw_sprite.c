@@ -32,7 +32,7 @@ float	stt_dist(t_form *form, t_mat32 *frame, t_view player, t_vec2 enemy_pos)
 }
 
 static inline
-float	stt_init(t_form *form, t_mat32 *frame, t_entity *player, t_entity *enemy)
+float	stt_init(t_form *form, t_mat32 *frame, t_player *player, t_enemy *enemy)
 {
 	t_vec2			new_size;
 	int32_t			unclipped;
@@ -74,7 +74,7 @@ bool	stt_hitreg(t_form *form)
 
 // TODO: Merge bilinear scailing with cub draw relative, they're both the same function except
 // in the way they save the result
-bool	cub_draw_relative(t_mat32 frame, t_rayhit *rays, t_entity *player, t_entity *enemy)
+bool	cub_draw_relative(t_mat32 frame, t_rayhit *rays, t_player *player, t_enemy *enemy)
 {
 	uint32_t	x;
 	uint32_t	y;

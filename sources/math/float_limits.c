@@ -6,11 +6,11 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 12:06:26 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/16 16:23:16 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/03/28 12:38:37 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub_types.h"
+#include "cmlx_base.h"
 
 float	ft_min(float number1, float number2)
 {

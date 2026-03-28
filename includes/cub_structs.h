@@ -4,64 +4,9 @@
 # include <stdint.h>
 # include <stddef.h>
 # include <stdbool.h>
-# include <SDL2/SDL.h>
-# include <SDL2/SDL_mixer.h>
-# include "cmlx.h"
+# include "cmlx_base.h"
+# include "cmlx_draw.h"
 # include "cub_defines.h"
-# include "cub_types.h"
-
-typedef struct s_sides
-{
-	int32_t	top;
-	int32_t	bottom;
-	int32_t	left;
-	int32_t	right;
-}	t_sides;
-
-typedef struct s_transform
-{
-	t_vec2		draw_pos;
-	t_vec2		delta;
-	t_vec2		norm_offset;	// Clip start to normalized range
-	uint32_t	top;
-	uint32_t	bottom;
-	uint32_t	left;
-	uint32_t	right;
-}	t_form;
-
-typedef union u_block
-{
-	struct
-	{
-		t_mat32	north;
-		t_mat32	east;
-		t_mat32	south;
-		t_mat32	west;
-	};
-	t_mat32	index[4];
-}	t_block;
-
-// REVIEW: bad names, like wtf is first? why is delta stored? iterator and counter mean the same thing but one is size_t and other is float
-// how is loops per sprite used? 
-typedef struct s_sheet
-{
-	t_mat32		texture;
-	size_t		iterator;
-	float		counter;
-	uint32_t	*first;
-	uint16_t	loops_per_sprite;
-	float		delta;
-	bool		start;
-	bool		end;
-	bool		sound;
-}	t_sheet;
-
-typedef struct s_view
-{
-	t_vec2  pos;
-	t_vec2  dir;
-	t_vec2  plane;
-}   t_view;
 
 // Every physics loop, positions are updated taking into account the speed vector
 // And every physics loop, speed vector is updated with values from accel vector
@@ -71,55 +16,26 @@ typedef struct s_speed
 	t_vec3	accel;  // 3d vector representing current accel
 }	t_speed;
 
-typedef struct s_stats
+typedef struct s_player
 {
-	int32_t	health;
-	long	respawn_timer;
-	uint8_t	hit;
-	uint8_t	id;
-	//..
-}	t_stats;
+	t_view		cam;
+	t_speed		move;
+	uint32_t	state;	// Defined by player_state enum
+	int32_t		health;
+	int32_t		ammo;
+	int32_t		pill_count;
+}	t_player;
 
-typedef struct s_entity
+typedef struct s_enemy
 {
 	t_view	cam;
 	t_speed	move;
 	t_mat32	texture;
-	t_stats	stats;
-}	t_entity;
-
-typedef struct s_ray
-{
-	t_vec2  ray_dir;
-	t_vec2  map_pos;    // Integer
-	t_vec2  delta_dist;
-	t_vec2  side_dist;
-	t_vec2  step;       // Integer
-}	t_ray;
-
-typedef struct s_plane
-{
-	t_mat32		floor_tex;
-	t_mat32		ceil_tex;
-	t_vec2		raydir_left;
-	t_vec2		raydir_right;
-	t_vec2		floor_step;
-	t_vec2		floor_pos;
-	t_vec2		texture;
-	uint32_t	*col_ptr;
-	int			ceil_y;
-	int32_t		vert_dist;
-	float		pos_z;
-	float		row_dist;
-}	t_plane;
-
-typedef struct s_rayhit
-{
-	uint8_t		tex_index;
-	uint8_t		tex_dir;
-	uint16_t	tex_offset;
-	float		perp_dist;
-}	t_rayhit;
+	int32_t	health;
+	bool	hit;
+	long	respawn_timer;
+	uint8_t	id;
+}	t_enemy;
 
 typedef struct s_memory
 {
@@ -142,38 +58,14 @@ typedef struct s_cfg
 	float   speed;
 }	t_cfg;
 
-// ADDED OLD >>>>>
-
-typedef struct s_time               // ADDED OLD
-{                                   // ADDED OLD
-	float    delta;                  // ADDED OLD
-	long    prev;                   // ADDED OLD
-}   t_time;                         // ADDED OLD
-
-typedef struct  s_gun               // ADDED OLD
-{                                   // ADDED OLD
-	int32_t ammo;                   // ADDED OLD
-	int32_t max_ammo;               // ADDED OLD
-	int32_t first_iterator;         // ADDED OLD
-}   t_gun;                           // ADDED OLD
-
-typedef struct  s_audio             // ADDED OLD
-{                                   // ADDED OLD
-	Mix_Chunk   *no_ammo;           // ADDED OLD
-	Mix_Chunk   *gun_shot;          // ADDED OLD
-	Mix_Chunk   *gun_reload;        // ADDED OLD
-	Mix_Chunk   *step;              // ADDED OLD
-	Mix_Chunk   *step_fast;         // ADDED OLD
-	Mix_Chunk   *current_step;      // ADDED OLD
-}   t_audio;                          // ADDED OLD
-
-typedef struct s_frame
+typedef struct s_audio
 {
-	t_mat32		display;
-	t_mat32		render;
-	t_img		*img;
-	t_rayhit	*rays;
-}	t_frame;
+	Mix_Chunk	*no_ammo;
+	Mix_Chunk	*shot;
+	Mix_Chunk	*reload;
+	Mix_Chunk	*step;
+	Mix_Chunk	*step_fast;
+}	t_audio;
 
 typedef struct s_assets
 {
@@ -196,26 +88,12 @@ typedef struct s_game
 	t_frame		frame;
 	t_gstate	state;
 	t_mat8		map;
-	t_entity	player;
-	t_entity	enemies[NUM_ENEMIES];
+	t_player	player;
+	t_enemy		enemies[NUM_ENEMIES];
 	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
 	t_cfg		cfg;
 	t_assets	assets;
-	// NEW
-	t_gun		gun;	// CHANGE TO PLAYER
+	t_drawbuf	drawbuf;
 }	t_game;
-
-// 	size_t      key;
-// 	size_t		key_down;
-// 	size_t      key_up;
-
-// 	// ADDED OLD >>>>>
-// 	t_time      time;               // ADDED OLD
-
-// 	bool    mouse_l;              // ADDED OLD
-// 	bool    pause;                // ADDED OLD
-// 	// <<< TMP KEY INPUTS
-// 	// <<<<< ADDED OLD
-// }   t_game;
 
 #endif

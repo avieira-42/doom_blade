@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "cub_utils.h"
-#include "cmlx.h"
+#include "cmlx_base.h"
 
 #define SENTINEL_VALUE 0xFF000000 // Color value that should be transparent
 
@@ -63,29 +63,34 @@ void	stt_clean_texture(t_mat32 texture)
 }
 
 // Saves images sequentially in memory, in a row x col x depth matrix
-t_sheet cub_read_spritesheet(t_xvar *mlx, const char *base_path, size_t count)
+// TODO: Change this to receive a sheet pointer and return error
+t_sheet cub_read_spritesheet(t_xvar *mlx, const char *base_path, size_t count, long frame_time)
 {
-	t_sheet		sprite;
+	t_sheet		sheet;
 	t_mat32		texture;
 	t_img		*img;
 	char		buffer[256];
 	const t_str	path = {buffer, ft_strlen(base_path)};
 
-	ft_memset(&sprite, 0, sizeof(sprite));
+	ft_memset(&sheet, 0, sizeof(sheet));
 	if (path.length + 32 > sizeof(buffer))
-		return (sprite);
+		return (sheet);
 	ft_memcpy(buffer, base_path, path.length + 1);
 	img = stt_load_img(mlx, path, 0);
 	if (img == NULL)
-		return (sprite);
+		return (sheet);
 	texture = (t_mat32){0, img->width, img->height, count, 0};
 	texture.ptr = malloc((size_t)(img->height * img->width) * count * sizeof(uint32_t));
 	if (texture.ptr == NULL)
-		return (mlx_destroy_image(mlx, img), sprite);
+		return (mlx_destroy_image(mlx, img), sheet);
 	ft_memcpy(texture.ptr, img->data, texture.width * texture.height * sizeof(uint32_t));
 	mlx_destroy_image(mlx, img);
 	if (stt_load_sheet(mlx, texture, path, count) == -1)
-		return (free(texture.ptr), sprite);
-	sprite.texture = texture;
-	return (sprite);
+		return (free(texture.ptr), sheet);
+	sheet.texture = texture;
+	sheet.count = count;
+	sheet.frame_size = texture.width * texture.height;
+	sheet.frame_time = frame_time;
+	sheet.index = 0;
+	return (sheet);
 }

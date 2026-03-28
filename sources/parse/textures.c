@@ -7,7 +7,7 @@
 #include "cub_defines.h"
 #include "cub_structs.h"
 #include "cub_utils.h"
-#include "cmlx.h"
+#include "cmlx_base.h"
 #include "mlx.h"
 
 // Reads a string until it finds a null terminator, space or length > 255

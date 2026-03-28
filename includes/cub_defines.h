@@ -22,6 +22,33 @@
 # define PLAYER_ACCEL 0.33f
 # define ENEMY_SPEED 2.5f
 # define ENEMY_ACCEL 0.5f
+# define SPEED_THR 0.5f		// Speed threshold where animation goes from normal to fast
+# define HALT_THR 0.05f		// 
+# define ANIM_TIME 60000	// Time between anim frames
+
+# define AMMO_COUNT 8
+# define PLAYER_HEALTH 128
+# define RELOAD_CYCLE 4
+# define PILL_COUNT 1
+
+enum e_audio_channel
+{
+	ch_steps = 1,
+	ch_shot = 2,
+	ch_reload = 3,
+	ch_no_ammo = 4,
+};
+
+// first call of 
+enum e_player_state
+{
+	st_idle = 0,
+	st_run = 1 << 0,
+	st_sprint = 1 << 1,
+	st_reloading = 1 << 2,
+	st_shooting = 1 << 3,
+	st_interacting = 1 << 4
+};
 
 // Keys
 enum e_keys

@@ -39,7 +39,7 @@ t_vec2	stt_collision(t_mat8 *map, t_vec2 delta, t_vec2 pos)
 }
 
 static
-t_vec2	stt_move_toward(t_mat8 *map, t_vec2 pos, t_entity *enemy, float dt)
+t_vec2	stt_move_toward(t_mat8 *map, t_vec2 pos, t_enemy *enemy, float dt)
 {
 	t_vec2	to_player;
 	float	mag_dist;
@@ -47,8 +47,10 @@ t_vec2	stt_move_toward(t_mat8 *map, t_vec2 pos, t_entity *enemy, float dt)
 
 	to_player.x.f = pos.x.f - enemy->cam.pos.x.f;
 	to_player.y.f = pos.y.f - enemy->cam.pos.y.f;
-	enemy->cam.dir = vec2_norm(to_player);
 	mag_dist = to_player.x.f * to_player.x.f + to_player.y.f * to_player.y.f;
+	// if (mag_dist >= 10.0f)							// Follows the player only at a specific distance
+	// 	return ((t_vec2){.x.f = 0.0f, .y.f = 0.0f});
+	enemy->cam.dir = vec2_norm(to_player);				// TODO: Review if cam dir needs to change when stopping
 	if (mag_dist < MELEE_RANGE)
 		enemy->move.speed.y.f *= 0.9f;
 	else

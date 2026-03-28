@@ -25,11 +25,10 @@ void	stt_texture_lerp(t_mat32 texture, int32_t line_height, uint32_t *render_col
 	}
 }
 
-// CHANGE: commented so it doesnt draw on top of the already drawn texture of the floor/ceiling
 static inline
 void	stt_draw_tmp(uint32_t *render_col, int32_t draw_start, int32_t draw_end)
 {
-	/*size_t	x;
+	size_t	x;
 
 	x = 0;
 	while (x < draw_start)
@@ -42,7 +41,7 @@ void	stt_draw_tmp(uint32_t *render_col, int32_t draw_start, int32_t draw_end)
 	{
 		render_col[x] = rgb_brown;
 		x++;
-	}*/
+	}
 }
 
 static inline
@@ -59,7 +58,6 @@ void	stt_column_render(t_rayhit hit, uint32_t *render_col, t_block *blocks)
 	draw_start = ft_imax(0, (RENDER_HEIGHT / 2) - (line_height / 2));
 	draw_end = ft_imin(RENDER_HEIGHT, (RENDER_HEIGHT / 2) + (line_height / 2));
 	stt_texture_lerp(texture, line_height, render_col, draw_start, draw_end);
-	stt_draw_tmp(render_col, draw_start, draw_end);	// TODO: floor and ceiling texture mapping
 }
 
 // Aliasing is caused by differing line heights. This will reduce the effect
@@ -88,6 +86,7 @@ void	render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_frame *frame)
 
 	x = 0;
 	ptr = frame->render.ptr;
+	planecast(frame->render, blocks[0].south, blocks[0].north, *cam);
 	raycast(cam, map, frame);
 	// stt_filter(frame->rays);
 	while (x < RENDER_WIDTH)

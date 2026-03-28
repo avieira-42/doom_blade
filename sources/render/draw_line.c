@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "cmlx.h"
+#include "cmlx_base.h"
 #include "cub_structs.h"
 #include "cub_utils.h"
 

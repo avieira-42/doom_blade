@@ -70,7 +70,7 @@ void	stt_render_row(t_mat32 frame, t_plane *plane, int32_t x, int32_t y)
 	plane->floor_pos.y.f += plane->floor_step.y.f;
 }
 
-void	planes_cast(t_mat32 frame, t_mat32 floor, t_mat32 ceiling, t_view cam)
+void	planecast(t_mat32 frame, t_mat32 floor, t_mat32 ceiling, t_view cam)
 {
 	int		y;
 	int		x;

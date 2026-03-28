@@ -5,6 +5,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include "cmlx_base.h"
+#include "cmlx_draw.h"
 #include "cub_structs.h"
 
 // Draw and Render
@@ -13,7 +15,7 @@ int			cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner)
 void		raycast(t_view *cam, t_mat8 *map, t_frame *frame);
 void		render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_frame *frame);
 t_img		*read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr);
-void		planes_cast(t_mat32 frame, t_mat32 floor, t_mat32 ceiling, t_view cam);
+void		planecast(t_mat32 frame, t_mat32 floor, t_mat32 ceiling, t_view cam);
 void		animate(t_game *game);
 void		animate_hud(t_game *game);
 void		frame_pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color);
@@ -41,8 +43,8 @@ int		cmlx_loop(t_game *game);
 int		cub_init(const char *filename, t_game *game, t_memory *memory);
 int		cub_cleanup(t_game *game);
 int		cub_read_textures(t_xvar *mlx, const char *str, const char **str_ptr, t_block *blocks);
-int		cub_read_map(const char *str, t_mat8 *map, t_entity *player);
-t_sheet cub_read_spritesheet(t_xvar *mlx, const char *base_path, size_t count);
+int		cub_read_map(const char *str, t_mat8 *map, t_player *player);
+t_sheet cub_read_spritesheet(t_xvar *mlx, const char *base_path, size_t count, long frame_time);
 
 // Physics
 void	cub_update_pos(t_game *game, float dt);

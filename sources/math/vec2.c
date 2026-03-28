@@ -2,7 +2,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <math.h>
-#include "cub_types.h"
+#include "cmlx_base.h"
 
 float	vec2_dot(t_vec2 a, t_vec2 b)
 {
