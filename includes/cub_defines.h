@@ -22,8 +22,8 @@
 # define PLAYER_ACCEL 0.33f
 # define ENEMY_SPEED 2.5f
 # define ENEMY_ACCEL 0.5f
-# define SPEED_THR 0.5f		// Speed threshold where animation goes from normal to fast
-# define HALT_THR 0.05f		// 
+# define SPEED_THR 4.1f		// Speed threshold where animation goes from normal to fast
+# define HALT_THR 0.5f		// 
 # define ANIM_TIME 60000	// Time between anim frames
 
 # define AMMO_COUNT 8

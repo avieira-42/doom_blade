@@ -9,17 +9,10 @@
 # include "cub_defines.h"
 
 // Every physics loop, positions are updated taking into account the speed vector
-// And every physics loop, speed vector is updated with values from accel vector
-typedef struct s_speed
-{
-	t_vec3	speed;  // 3d vector representing current speed
-	t_vec3	accel;  // 3d vector representing current accel
-}	t_speed;
-
 typedef struct s_player
 {
 	t_view		cam;
-	t_speed		move;
+	t_vec2		speed;
 	uint32_t	state;	// Defined by player_state enum
 	int32_t		health;
 	int32_t		ammo;
@@ -29,7 +22,7 @@ typedef struct s_player
 typedef struct s_enemy
 {
 	t_view	cam;
-	t_speed	move;
+	t_vec2	speed;
 	t_mat32	texture;
 	int32_t	health;
 	bool	hit;

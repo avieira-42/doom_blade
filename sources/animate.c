@@ -72,27 +72,27 @@ void	stt_update_hud(t_player *player, t_assets *assets, t_drawbuf *drawbuf, long
 
 void	cub_update_state(t_player *player, t_audio *audio, t_game *game, long dt)
 {
-	static float	prev_speed = 0.0f;
+	static void		*prev_state = NULL;
 	static int32_t	prev_ammo = AMMO_COUNT;
-	const float		new_speed = fabsf(player->move.speed.x.f) + fabsf(player->move.speed.y.f);
+	void			*new_state;
+	const float		new_speed = fmaxf(fabsf(player->speed.x.f), fabsf(player->speed.y.f));
 
 	stt_update_hud(player, &game->assets, &game->drawbuf, dt);
+	if (new_speed < HALT_THR)
+		new_state = NULL;
+	else if (new_speed > SPEED_THR)
+		new_state = game->assets.audio.step_fast;
+	else
+		new_state = game->assets.audio.step;
 	if (player->ammo < prev_ammo)
 		Mix_PlayChannel(ch_shot, audio->shot, 0);
 	else if (player->ammo > prev_ammo)
 		Mix_PlayChannel(ch_reload, audio->reload, 0);
-	if (prev_speed > HALT_THR && new_speed < HALT_THR)
-		Mix_HaltChannel(ch_steps);
-	else if (prev_speed < SPEED_THR && new_speed > SPEED_THR)
+	if (new_state != prev_state)
 	{
 		Mix_HaltChannel(ch_steps);
-		Mix_PlayChannel(ch_steps, audio->step_fast, -1);
+		Mix_PlayChannel(ch_steps, new_state, -1);
 	}
-	else if (prev_speed > SPEED_THR && new_speed < SPEED_THR)
-	{
-		Mix_HaltChannel(ch_steps);
-		Mix_PlayChannel(ch_steps, audio->step, -1);
-	}
-	prev_speed = new_speed;
+	prev_state = new_state;
 	prev_ammo = player->ammo;
 }

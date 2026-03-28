@@ -52,16 +52,16 @@ t_vec2	stt_move_toward(t_mat8 *map, t_vec2 pos, t_enemy *enemy, float dt)
 	// 	return ((t_vec2){.x.f = 0.0f, .y.f = 0.0f});
 	enemy->cam.dir = vec2_norm(to_player);				// TODO: Review if cam dir needs to change when stopping
 	if (mag_dist < MELEE_RANGE)
-		enemy->move.speed.y.f *= 0.9f;
+		enemy->speed.y.f *= 0.9f;
 	else
 	{
-		enemy->move.speed.y.f += mag_dist * dt * ENEMY_ACCEL;
-		enemy->move.speed.y.f = ft_absclamp(enemy->move.speed.y.f, ENEMY_SPEED * dt);
+		enemy->speed.y.f += mag_dist * ENEMY_ACCEL;
+		enemy->speed.y.f = ft_absclamp(enemy->speed.y.f, ENEMY_SPEED);
 	}
-	delta.x.f = enemy->cam.dir.x.f * enemy->move.speed.y.f;	// forward
-	delta.y.f = enemy->cam.dir.y.f * enemy->move.speed.y.f;
-	// delta.x.f -= enemy->cam.dir.y.f * enemy->move.speed.x.f; // lateral
-	// delta.y.f += enemy->cam.dir.x.f * enemy->move.speed.x.f;
+	delta.x.f = enemy->cam.dir.x.f * enemy->speed.y.f * dt;	// forward
+	delta.y.f = enemy->cam.dir.y.f * enemy->speed.y.f * dt;
+	// delta.x.f -= enemy->cam.dir.y.f * enemy->speed.x.f; // lateral
+	// delta.y.f += enemy->cam.dir.x.f * enemy->speed.x.f;
 	delta = stt_collision(map, delta, enemy->cam.pos);	// Clamps value to prevent going through walls
 	return (delta);
 }
@@ -73,26 +73,26 @@ t_vec2	stt_player_move(t_game *game, float dt)
 	t_vec2		delta;
 	const float	forward = !!(game->state.key & key_w) - !!(game->state.key & key_s);
 	const float	right = !!(game->state.key & key_d) - !!(game->state.key & key_a);
-	const float	move_speed = PLAYER_SPEED * dt * (1.0f + SPRINT_SPEED * !!(game->state.key & key_shift));
+	const float	move_speed = PLAYER_SPEED * (1.0f + SPRINT_SPEED * !!(game->state.key & key_shift));
 
-	game->player.move.speed.x.f += right * dt * PLAYER_ACCEL;	// base accel, dt dependant
-	game->player.move.speed.y.f += forward * dt * PLAYER_ACCEL;
-	game->player.move.speed.x.f = ft_absclamp(game->player.move.speed.x.f, move_speed);
-	game->player.move.speed.y.f = ft_absclamp(game->player.move.speed.y.f, move_speed);
+	game->player.speed.x.f += right * PLAYER_ACCEL;	// base accel, dt dependant
+	game->player.speed.y.f += forward * PLAYER_ACCEL;
+	game->player.speed.x.f = ft_absclamp(game->player.speed.x.f, move_speed);
+	game->player.speed.y.f = ft_absclamp(game->player.speed.y.f, move_speed);
 	if (right == 0.0f)
-		game->player.move.speed.x.f *= 0.9f;
+		game->player.speed.x.f *= 0.9f;
 	if (forward == 0.0f)
-		game->player.move.speed.y.f *= 0.9f;
+		game->player.speed.y.f *= 0.9f;
 	norm_dir = vec2_norm(game->player.cam.dir);
 	if (forward != 0.0f && right != 0.0f)
 	{
 		norm_dir.x.f *= 0.70710678118654752440;	// fixes speed boost on diagonals
 		norm_dir.y.f *= 0.70710678118654752440;
 	}
-	delta.x.f = norm_dir.x.f * game->player.move.speed.y.f;	// forward
-	delta.y.f = norm_dir.y.f * game->player.move.speed.y.f;
-	delta.x.f -= norm_dir.y.f * game->player.move.speed.x.f; // lateral
-	delta.y.f += norm_dir.x.f * game->player.move.speed.x.f;
+	delta.x.f = norm_dir.x.f * game->player.speed.y.f * dt;	// forward
+	delta.y.f = norm_dir.y.f * game->player.speed.y.f * dt;
+	delta.x.f -= norm_dir.y.f * game->player.speed.x.f * dt; // lateral
+	delta.y.f += norm_dir.x.f * game->player.speed.x.f * dt;
 	delta = stt_collision(&game->map, delta, game->player.cam.pos);	// Clamps value to prevent going through walls
 	return (delta);
 }

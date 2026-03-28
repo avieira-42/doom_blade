@@ -53,14 +53,14 @@ static
 void	stt_tmp(t_game *game, t_memory *memory)
 {
 	t_view	cam;
-	t_speed	speed;
+	t_vec2	speed;
 	t_mat32	texture;
 
 	ft_memset(&cam, 0, sizeof(cam));
 	ft_memset(&speed, 0, sizeof(speed));
 	ft_memset(&texture, 0, sizeof(texture));
 	game->enemies[0].cam = cam;
-	game->enemies[0].move = speed;
+	game->enemies[0].speed = speed;
 	cub_read_texture(game->mlx, &texture, "assets/ghost_tmp.xpm", NULL);
 	game->enemies[0].texture = texture;
 }
@@ -74,6 +74,7 @@ void	stt_sprites_init(t_game *game)
 		return ;
 	game->assets.walk = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_walking", 9, ANIM_TIME);
 	game->assets.reload = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_reloading", 32, ANIM_TIME);	// Changed from 33 to 32
+
 	game->assets.ammo = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_ammo/ammo", 10, ANIM_TIME);
 	game->assets.health = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_health/health", 10, ANIM_TIME);
 	game->assets.pill = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_pill/pill", 2, ANIM_TIME);
@@ -114,8 +115,8 @@ void	stt_params_init(t_game *game, t_memory *memory)
 	ft_memset(memory->empty_line, 0, sizeof(memory->empty_line));
 	game->blocks[0].east = empty;
 	game->blocks[0].west = empty;
-	game->player.move.speed.x.f = 0.0f;
-	game->player.move.speed.y.f = 0.0f;
+	game->player.speed.x.f = 0.0f;
+	game->player.speed.y.f = 0.0f;
 	game->cfg = stt_config();
 	game->state.paused = false;
 	stt_tmp(game, memory);

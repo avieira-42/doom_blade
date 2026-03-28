@@ -26,12 +26,11 @@ int	cmlx_keydown(int keycode, t_game *game)
 			game->state.key |= (size_t)key_shift;
 		if (keycode == XK_Control_L)
 			game->state.key |= (size_t)key_ctrl;
-		if (keycode == XK_r && game->player.state != st_shooting && game->player.ammo < AMMO_COUNT)
+		if (keycode == XK_r && !(game->player.state & (st_reloading | st_shooting)) && game->player.ammo < AMMO_COUNT)
 		{
 			game->player.state = st_reloading;
 			game->drawbuf.hands = game->assets.reload;
-			// game->drawbuf.hands.index = game->player.ammo * RELOAD_CYCLE;
-			game->drawbuf.hands.index = ft_imax(0, game->player.ammo - 1) * RELOAD_CYCLE;
+			game->drawbuf.hands.index = game->player.ammo * RELOAD_CYCLE;
 			game->state.key |= (size_t)key_r;
 		}
 	}
@@ -76,7 +75,7 @@ int	cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game)
 	if (button == 1 && game->player.state != st_shooting)
 	{
 		if (game->player.ammo == 0)
-			Mix_PlayChannel(ch_no_ammo, game->assets.audio.no_ammo, 0);	// 
+			Mix_PlayChannel(ch_no_ammo, game->assets.audio.no_ammo, 0);	// This should be done outside here
 		else
 		{
 			game->player.ammo--;
