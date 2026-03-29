@@ -1,7 +1,7 @@
-NO assets/sprites/xpm/tiles/lab1.xpm
-SO assets/sprites/xpm/tiles/lab2.xpm
-WE assets/sprites/xpm/tiles/lab3.xpm
-EA assets/sprites/xpm/tiles/lab4.xpm
+NO assets/sprites/xpm/tofinish/walls/wall0.xpm
+SO assets/sprites/xpm/tofinish/walls/wallad1.xpm
+WE assets/sprites/xpm/tofinish/walls/wallad2.xpm
+EA assets/sprites/xpm/tofinish/walls/wall1.xpm
 F assets/sprites/xpm/tofinish/floors/metal0.xpm
 C assets/sprites/xpm/tofinish/ceilings/lamp0.xpm
 
