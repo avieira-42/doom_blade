@@ -1,4 +1,3 @@
-#include "cub_types.h"
 #include "cub_structs.h"
 #include "cub_utils.h"
 

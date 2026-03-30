@@ -79,14 +79,15 @@ void	stt_sprites_init(t_game *game)
 	game->assets.health = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_health/health", 10, ANIM_TIME);
 	game->assets.pill = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_pill/pill", 2, ANIM_TIME);
 	game->assets.city = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/tiles/city", 4, ANIM_TIME);
-	game->assets.radar_l0 = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_radar/layer_0/layer0_", 56, ANIM_TIME);
+	game->assets.radar = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/", 1, ANIM_TIME);
+	game->assets.radar_l0 = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_radar/layer_0/layer0_", 1, ANIM_TIME);
 	game->assets.radar_l1 = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_radar/layer_1/layer1_", 56, ANIM_TIME);
 
 	game->drawbuf.ammo = game->assets.ammo;
 	game->drawbuf.health = game->assets.health;
 	game->drawbuf.pill = game->assets.pill;
 	game->drawbuf.hands = game->assets.walk;
-	// game->drawbuf.radar = game->assets.radar;
+	game->drawbuf.radar = game->assets.radar;
 	game->player.ammo = AMMO_COUNT;
 	game->player.health = PLAYER_HEALTH;
 	game->player.pill_count = PILL_COUNT;
@@ -102,8 +103,7 @@ void	stt_params_init(t_game *game, t_memory *memory)
 	game->player.cam.plane = (t_vec2){
 		.x.f = -game->player.cam.dir.y.f * 0.66f,
 		.y.f =  game->player.cam.dir.x.f * 0.66f
-	};
-	game->frame.display.ptr = (uint32_t*)game->frame.img->data;
+	}; game->frame.display.ptr = (uint32_t*)game->frame.img->data;
 	game->frame.display.height = game->frame.img->height;
 	game->frame.display.width = game->frame.img->width;
 	game->frame.display.stride = game->frame.img->width;
