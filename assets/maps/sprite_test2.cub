@@ -1,7 +1,7 @@
-NO assets/sprites/xpm/tofinish/walls/wall0.xpm
-SO assets/sprites/xpm/tofinish/walls/wallad1.xpm
-WE assets/sprites/xpm/tofinish/walls/wallad2.xpm
-EA assets/sprites/xpm/tofinish/walls/wall1.xpm
+NO assets/sprites/xpm/tofinish/walls/wallGoreAd2_0.xpm
+SO assets/sprites/xpm/tofinish/walls/wallGore0.xpm
+WE assets/sprites/xpm/tofinish/walls/wallGore1.xpm
+EA assets/sprites/xpm/tofinish/walls/wallGoreAd1_0.xpm
 F assets/sprites/xpm/tofinish/floors/stoneGore0.xpm
 C assets/sprites/xpm/tofinish/ceilings/lampGore0.xpm
 
