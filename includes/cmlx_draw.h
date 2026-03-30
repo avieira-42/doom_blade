@@ -12,6 +12,22 @@ typedef struct s_ray
 	t_vec2  step;       // Integer
 }	t_ray;
 
+// typedef struct s_rayhit
+// {
+// 	uint8_t		tex_index;
+// 	uint8_t		tex_dir;
+// 	uint16_t	tex_offset;
+// 	float		perp_dist;
+// }	t_rayhit;
+
+typedef struct s_rayhit
+{
+	uint8_t	tex_index;
+	uint8_t	tex_dir;
+	float	x_pos;		// THIS IS UGLY
+	float	perp_dist;
+}	t_rayhit;
+
 typedef struct s_plane
 {
 	t_mat32		floor_tex;
@@ -27,14 +43,6 @@ typedef struct s_plane
 	float		pos_z;
 	float		row_dist;
 }	t_plane;
-
-typedef struct s_rayhit
-{
-	uint8_t		tex_index;
-	uint8_t		tex_dir;
-	uint16_t	tex_offset;
-	float		perp_dist;
-}	t_rayhit;
 
 typedef struct s_sides
 {

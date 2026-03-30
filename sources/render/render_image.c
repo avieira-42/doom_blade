@@ -53,7 +53,7 @@ void	stt_column_render(t_rayhit hit, uint32_t *render_col, t_block *blocks)
 	int32_t	draw_end;
 
 	texture = blocks[hit.tex_index].index[hit.tex_dir];
-	texture.ptr += (size_t)(hit.tex_offset) * texture.stride;
+	texture.ptr += (size_t)(hit.x_pos * texture.width) * texture.stride;	// REVIEW
 	line_height = (float) RENDER_HEIGHT / hit.perp_dist;
 	draw_start = ft_imax(0, (RENDER_HEIGHT / 2) - (line_height / 2));
 	draw_end = ft_imin(RENDER_HEIGHT, (RENDER_HEIGHT / 2) + (line_height / 2));

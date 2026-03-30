@@ -54,7 +54,7 @@ t_rayhit	stt_rayhit_info(t_ray *ray, uint8_t side, size_t block_index, t_vec2 po
 		hit.tex_dir = (ray->step.y.i > 0) << 1;
 		x_pos_texture = pos.x.f + hit.perp_dist * ray->ray_dir.x.f;
 	}
-	hit.tex_offset = (x_pos_texture - floorf(x_pos_texture)) * TEX_HEIGHT;	// TODO: TEMPORARY, textures aren't necessarily square
+	hit.x_pos = (x_pos_texture - floorf(x_pos_texture));	// REVIEW
 	hit.tex_index = block_index;
 	return (hit);
 }
