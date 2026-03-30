@@ -5,7 +5,7 @@
 # define SCREEN_HEIGHT 720
 # define RENDER_WIDTH 640
 # define RENDER_HEIGHT 360
-# define UPSCALING_FACTOR 1
+# define UPSCALING_FACTOR 2
 
 # define TEX_HEIGHT 256
 # define NUM_BLOCKS 4

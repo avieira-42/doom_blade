@@ -60,7 +60,7 @@ int	cmlx_loop(t_game *game)
 		ft_memset(game->frame.render.ptr, 0, RENDER_HEIGHT * RENDER_WIDTH * sizeof(uint32_t));
 		render_image(&game->player.cam, &game->map, game->blocks, &game->frame);
 		stt_draw_enemies(game);
-		// stt_draw_hud(game->frame.render, &game->drawbuf);
+		stt_draw_hud(game->frame.render, &game->drawbuf);
 		ft_integer_scaling_t(game->frame.render, game->frame.display, UPSCALING_FACTOR);
 		mlx_put_image_to_window(game->mlx, game->mlx->win_list, game->frame.img, 0, 0);
 		cmlx_mousemove(game);
