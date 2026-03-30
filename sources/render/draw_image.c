@@ -39,17 +39,18 @@
 void	frame_pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
 {
 	uint32_t	*dst;
+
 	if (x < 0 || x >= frame.width || y < 0 || y >= frame.height)
 		return ;
-	dst = frame.ptr + x + frame.width * y;
-	*(unsigned int *)dst = color;
+	dst = frame.ptr + x * frame.stride + y;
+	*dst = color;
 }
 
-void	cub_draw_texture(t_mat32 frame, t_mat32 image, t_vec2 pos)
+void	cub_draw_texture(t_mat32 frame, t_mat32 image, size_t x_corner, size_t y_corner)
 {
 	size_t		x;
 	size_t		y;
-	int32_t		color;
+	uint32_t	color;
 
 	y = 0;
 	while (y < image.height)
@@ -57,9 +58,9 @@ void	cub_draw_texture(t_mat32 frame, t_mat32 image, t_vec2 pos)
 		x = 0;
 		while (x < image.width)
 		{
-			color = image.ptr[x + image.width * y];	// REVIEW: here you index manually but below use a helper to index
+			color = image.ptr[x * image.stride + y];
 			if (color != 2228223 && color != 1441791)	// REVIEW: colors are hex coded normally
-				frame_pixel_put(frame, pos.x.i + x, pos.y.i + y, color);
+				frame_pixel_put(frame, x + x_corner, y + y_corner, color);
 			x++;
 		}
 		y++;

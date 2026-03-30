@@ -11,6 +11,7 @@
 
 // Draw and Render
 int			ft_transpose(t_mat32 *src);
+int		ft_transpose_img(uint32_t *ptr, size_t width, size_t height);	// TMP
 int			cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner);
 void		raycast(t_view *cam, t_mat8 *map, t_frame *frame);
 void		render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_frame *frame);
@@ -19,7 +20,7 @@ void		planecast(t_mat32 frame, t_mat32 floor, t_mat32 ceiling, t_view cam);
 void		animate(t_game *game);
 void		animate_hud(t_game *game);
 void		frame_pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color);
-void		cub_draw_texture(t_mat32 frame, t_mat32 image, t_vec2 pos);
+void		cub_draw_texture(t_mat32 frame, t_mat32 image, size_t x_corner, size_t y_corner);
 void		cub_sprite_sheet_update(t_sheet *sheet);
 void		cub_sprite_sheet_animate(t_mat32 frame, t_sheet *sheet, t_vec2 pos);
 void		cards_render(t_game *game);
