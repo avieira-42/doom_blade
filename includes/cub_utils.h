@@ -11,7 +11,7 @@
 
 // Draw and Render
 int			ft_transpose(t_mat32 *src);
-int		ft_transpose_img(uint32_t *ptr, size_t width, size_t height);	// TMP
+int			ft_transpose_img(uint32_t *ptr, size_t width, size_t height);	// TMP
 int			cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner);
 void		raycast(t_view *cam, t_mat8 *map, t_frame *frame);
 void		render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_frame *frame);
@@ -29,6 +29,7 @@ void		hands_render(t_game *game);
 uint32_t	ft_bilerp_argb(const t_mat32 *src, t_vec2 norm_pos);
 uint32_t	ft_bilerp_argb_t(const t_mat32 *src, t_vec2 norm_pos);
 void		ft_bilinear_scaling(const t_mat32 *src, t_mat32 *dst, t_vec2 scale, t_vec2 pos);
+void		ft_bilinear_scaling_t(const t_mat32 *src, t_mat32 *dst);
 void		ft_integer_scaling(t_mat32 src, t_mat32 dst, size_t factor);
 void		ft_integer_scaling_t(t_mat32 src, t_mat32 dst, size_t factor);
 
