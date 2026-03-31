@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "cmlx_base.h"
 #include "cmlx_draw.h"
+#include "cub_defines.h"
 #include "cub_structs.h"
 #include "cub_utils.h"
 
@@ -29,15 +30,6 @@ void	stt_draw_hud(t_mat32 frame, t_drawbuf *drawbuf)
 {
 	t_mat32	texture;
 
-	texture = drawbuf->ammo.texture;
-	texture.ptr += drawbuf->ammo.index * drawbuf->ammo.frame_size;
-	cub_draw_texture(frame, texture, 15, 15);		// Ammo
-	texture = drawbuf->health.texture;
-	texture.ptr += drawbuf->health.index * drawbuf->health.frame_size;
-	cub_draw_texture(frame, texture, 90 + 15, 15);	// Health
-	texture = drawbuf->pill.texture;
-	texture.ptr += drawbuf->pill.index * drawbuf->pill.frame_size;
-	cub_draw_texture(frame, texture, 180 + 15, 15);	// Pill
 	texture = drawbuf->hands.texture;
 	texture.ptr += drawbuf->hands.index * drawbuf->hands.frame_size;		// Hands
 	size_t	x_tmp = (RENDER_WIDTH - texture.width) / 2;
@@ -57,6 +49,54 @@ void	stt_draw_hud(t_mat32 frame, t_drawbuf *drawbuf)
 	// <<<< TMP RADAR
 }
 
+size_t	stt_first_neighbor(t_vec2 pos, t_vec2 dir, t_map *map)
+{
+	int		cx;
+	int		cy;
+	float	tx;
+	float	ty;
+
+	cx = (int)floorf(pos.x.f);
+	cy = (int)floorf(pos.y.f);
+	tx = FLT_MAX;
+	ty = FLT_MAX;
+	if (dir.x.f > 0.0f)
+		tx = ((cx + 1.0f) - pos.x.f) / dir.x.f;
+	else if (dir.x.f < 0.0f)
+		tx = (cx - pos.x.f) / dir.x.f;
+	if (dir.y.f > 0.0f)
+		ty = ((cy + 1.0f) - pos.y.f) / dir.y.f;
+	else if (dir.y.f < 0.0f)
+		ty = (cy - pos.y.f) / dir.y.f;
+	if (tx < ty)
+		cx += (dir.x.f > 0.0f ? 1 : -1);
+	else
+		cy += (dir.y.f > 0.0f ? 1 : -1);
+	return (cy * map->width + cx);
+}
+
+int	cub_actions(t_game *game)
+{
+	size_t	index;
+
+	if (game->player.state & st_interacting)
+	{
+		index = stt_first_neighbor(game->player.cam.pos, game->player.cam.dir, &game->map);
+		if (game->map.tex_index[index] == 130)
+		{
+			game->map.tex_index[index] &= 127;
+			game->map.state[index] = 0;
+		}
+		else if (game->map.tex_index[index] == 2)
+		{
+			game->map.tex_index[index] |= 128;
+			game->map.state[index] = 255;
+		}
+		game->player.state = st_idle;
+	}
+	return (0);
+}
+
 int	cmlx_loop(t_game *game)
 {
 	static long	last_frame = 0;
@@ -66,10 +106,11 @@ int	cmlx_loop(t_game *game)
 	{
 		last_frame += dt;
 		cub_update_pos(game, (double)dt * 0.000001);	// tmp	
+		cub_actions(game);
 		cub_update_state(&game->player, &game->assets.audio, game, dt);
 		ft_memset(game->frame.display.ptr, 0, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(uint32_t));
 		ft_memset(game->frame.render.ptr, 0, RENDER_HEIGHT * RENDER_WIDTH * sizeof(uint32_t));
-		render_image(&game->player.cam, &game->map, game->blocks, &game->frame);
+		render_image(game);
 		stt_draw_enemies(game);
 		stt_draw_hud(game->frame.render, &game->drawbuf);
 		// TMP RADAR >>>

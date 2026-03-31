@@ -16,8 +16,15 @@ typedef struct s_player
 	uint32_t	state;	// Defined by player_state enum
 	int32_t		health;
 	int32_t		ammo;
-	int32_t		pill_count;
 }	t_player;
+
+typedef struct s_map
+{
+	uint8_t		*tex_index;
+	uint8_t		*state;	// 0: nothing is drawn, 255: everything is drawn (left to right)
+	uint32_t	width;
+	uint32_t	height;
+}	t_map;
 
 typedef struct s_enemy
 {
@@ -65,9 +72,6 @@ typedef struct s_assets
 	t_sheet	reload;
 	t_sheet	shoot;
 	t_sheet	walk;
-	t_sheet	ammo;
-	t_sheet	health;
-	t_sheet	pill;
 	t_sheet	city;
 	t_sheet	radar;
 	t_audio	audio;
@@ -80,7 +84,7 @@ typedef struct s_game
 	t_xvar		*mlx;
 	t_frame		frame;
 	t_gstate	state;
-	t_mat8		map;
+	t_map		map;
 	t_player	player;
 	t_enemy		enemies[NUM_ENEMIES];
 	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...

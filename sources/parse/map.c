@@ -15,7 +15,7 @@
 
 // Returns: >0) Ok, -1) Invalid value (P), -2) Two Player Positions (P)
 static
-ssize_t	stt_parse_line(const char *line, t_mat8 *map, t_player *player)
+ssize_t	stt_parse_line(const char *line, t_map *map, t_player *player)
 {
 	char		c;
 	const char	*oline = line;
@@ -24,7 +24,7 @@ ssize_t	stt_parse_line(const char *line, t_mat8 *map, t_player *player)
 	while (*line != '\n' && *line != 0)
 	{
 		c = *line;
-		if (c == '0' || c == '1' || ft_isspace(c))
+		if (c == '0' || c == '1' || c == '2' || ft_isspace(c))
 			line++;
 		else if (c == 'N' || c == 'E' || c == 'S' || c == 'W')
 		{
@@ -45,18 +45,18 @@ ssize_t	stt_parse_line(const char *line, t_mat8 *map, t_player *player)
 }
 
 static
-void	stt_filtercpy(const char *str, t_mat8 *map)
+void	stt_filtercpy(const char *str, t_map *map)
 {
 	uint8_t					*dst;
 	size_t					y;
 	static const uint8_t	lut[256] = {
 		['\t'] = 1, ['\n'] = 1, ['\v'] = 1, ['\f'] = 1, ['\r'] = 1, [' '] = 1,
-		['0'] = 0, ['1'] = 1};
+		['0'] = 0, ['1'] = 1, ['2'] = 2};
 
 	y = 0;
 	while (*str != 0)
 	{
-		dst = (uint8_t *) map->ptr + y * map->stride;
+		dst = (uint8_t *) map->tex_index + y * map->width;
 		while (*str != 0 && *str != '\n')
 		{
 			*dst = lut[(uint8_t)*str];
@@ -69,7 +69,7 @@ void	stt_filtercpy(const char *str, t_mat8 *map)
 }
 
 static
-int	stt_validate_map(t_mat8 *map)
+int	stt_validate_map(t_map *map)
 {
 	size_t			i;
 	uint8_t			*ptr1;
@@ -77,15 +77,15 @@ int	stt_validate_map(t_mat8 *map)
 	const size_t	total_length = map->height * map->width;
 
 	i = 0;	// Horizontal line check
-	ptr1 = map->ptr;
-	ptr2 = map->ptr + total_length - map->width;
+	ptr1 = map->tex_index;
+	ptr2 = map->tex_index + total_length - map->width;
 	while (i < map->width && ptr1[i] == 1 && ptr2[i] == 1)
 		i++;
 	if (i != map->width)
 		return (-1);	// TODO: Print error
 	i = 0;	// Vertical line check
-	ptr1 = map->ptr;
-	ptr2 = map->ptr + map->width - 1;
+	ptr1 = map->tex_index;
+	ptr2 = map->tex_index + map->width - 1;
 	while (i < total_length && ptr1[i] == 1 && ptr2[i] == 1)
 		i += map->width;
 	if (i != total_length)
@@ -93,7 +93,22 @@ int	stt_validate_map(t_mat8 *map)
 	return (0);
 }
 
-int	cub_read_map(const char *str, t_mat8 *map, t_player *player)
+static
+void	stt_init_map(t_map *map)
+{
+	size_t			i;
+	const size_t	length = map->width * map->height;
+
+	i = 0;
+	while (i < length)
+	{
+		if (map->tex_index[i] > 0)
+			map->tex_index[i] |= 128;	// Sets the collision bit
+		i++;
+	}
+}
+
+int	cub_read_map(const char *str, t_map *map, t_player *player)
 {
 	ssize_t		offset;
 	const char	*ostr = str;
@@ -106,13 +121,15 @@ int	cub_read_map(const char *str, t_mat8 *map, t_player *player)
 		str += offset;
 		map->height++;
 	}
-	map->stride = map->width;
-	map->ptr = malloc(map->height * map->width);
-	if (map->ptr == NULL)
+	map->tex_index = malloc(map->height * map->width * 2);
+	if (map->tex_index == NULL)
 		return (-1);
-	ft_memset(map->ptr, 1, map->height * map->width);
+	map->state = map->tex_index + map->height * map->width;
+	ft_memset(map->tex_index, 1, map->height * map->width);
+	ft_memset(map->state, 255, map->height * map->width);
 	stt_filtercpy(ostr, map);
-	if (stt_validate_map(map) == -1)
-		return (-1);	// TODO: free and print
+	// if (stt_validate_map(map) == -1)
+	// 	return (-1);	// TODO: free and print
+	stt_init_map(map);
 	return (0);
 }

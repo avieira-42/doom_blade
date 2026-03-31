@@ -40,13 +40,13 @@ uint8_t	stt_render_animation(t_sheet *sheet, long dt)
 	return (rvalue);
 }
 
+// Map needs to hold the collision state of each block
+// It is not possible to encode this info in sheet, otherwise all doors would move
+// Player interacts with a door, function saves a pointer to the 
 void	stt_update_hud(t_player *player, t_assets *assets, t_drawbuf *drawbuf, long dt)
 {
 	uint8_t	rvalue;
 
-	drawbuf->health.index = ft_imax(0, drawbuf->health.count - drawbuf->health.count * ((float)player->health / PLAYER_HEALTH));
-	drawbuf->ammo.index = ft_imax(0, drawbuf->ammo.count - drawbuf->ammo.count * ((float)player->ammo / AMMO_COUNT) - 1);			// Ammo frame count is 10, but max ammo count is 8
-	drawbuf->pill.index = 0;
 	rvalue = stt_render_animation(&drawbuf->hands, dt);
 	if (player->state == st_reloading && rvalue >= 2 && (drawbuf->hands.index % RELOAD_CYCLE == 0))
 		player->ammo++;

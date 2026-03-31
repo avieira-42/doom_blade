@@ -32,15 +32,6 @@ typedef struct s_mat
 	uint8_t		flags;	// MSB -> LSB: float, transposed, 
 }	t_mat;
 
-typedef struct s_mat8
-{
-	uint8_t		*ptr;
-	uint16_t	width;
-	uint16_t	height;
-	uint16_t	depth;
-	uint16_t	stride;
-}	t_mat8;
-
 typedef struct s_mat32
 {
 	uint32_t	*ptr;

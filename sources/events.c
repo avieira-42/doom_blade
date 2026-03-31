@@ -26,6 +26,11 @@ int	cmlx_keydown(int keycode, t_game *game)
 			game->state.key |= (size_t)key_shift;
 		if (keycode == XK_Control_L)
 			game->state.key |= (size_t)key_ctrl;
+		if (keycode == XK_e && !(game->player.state & (st_reloading | st_shooting)))
+		{
+			game->player.state = st_interacting;
+			// game->drawbuf.hands = game->assets.interact;
+		}
 		if (keycode == XK_r && !(game->player.state & (st_reloading | st_shooting)) && game->player.ammo < AMMO_COUNT)
 		{
 			game->player.state = st_reloading;

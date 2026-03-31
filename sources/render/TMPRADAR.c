@@ -129,7 +129,7 @@ void stt_blocks_render(t_game *game, t_vec2 pos, int32_t bound, t_vec2 map_cente
                     .y.i = pos.y.i + draw_pos.y.i * size.y.i
                 };
 
-                if (game->map.ptr[x + game->map.width * y] == 0)
+                if (game->map.tex_index[x + game->map.width * y] == 0)
                     stt_quad_draw(game, map_pos, size, 0x440044, bound, map_center);
             }
         }

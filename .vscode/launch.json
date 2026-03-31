@@ -7,7 +7,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/build/main",
       "cwd": "${workspaceFolder}",
-      "args": ["assets/maps/sprite_test2.cub"],
+      "args": ["assets/maps/example.cub"],
       "env": { "LSAN_OPTIONS": "detect_leaks=0" },
       "stopOnEntry": false,
       "preLaunchTask": "build"

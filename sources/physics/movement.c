@@ -10,7 +10,7 @@
 // TODO: fix diagonal movement being faster
 
 static inline
-bool	stt_box_collision(t_mat8 *map, float x, float y, float radius)
+bool	stt_box_collision(t_map *map, float x, float y, float radius)
 {
 	bool		rvalue;
 	const int	left = (int)floorf(x - radius);
@@ -21,15 +21,15 @@ bool	stt_box_collision(t_mat8 *map, float x, float y, float radius)
 	if (left < 0 || right < 0 || left >= map->width || right >= map->width
 		|| top < 0 || bottom < 0 || top >= map->height || bottom >= map->height)
 		return (1);
-	rvalue = map->ptr[bottom * map->stride + left]
-		|| map->ptr[bottom * map->stride + right]
-		|| map->ptr[top * map->stride + left]
-		|| map->ptr[top * map->stride + right];
+	rvalue = (map->tex_index[bottom * map->width + left] & 128)
+		|| (map->tex_index[bottom * map->width + right] & 128)
+		|| (map->tex_index[top * map->width + left] & 128)
+		|| (map->tex_index[top * map->width + right] & 128);
 	return (rvalue);
 }
 
 static
-t_vec2	stt_collision(t_mat8 *map, t_vec2 delta, t_vec2 pos)
+t_vec2	stt_collision(t_map *map, t_vec2 delta, t_vec2 pos)
 {
 	if (stt_box_collision(map, pos.x.f + delta.x.f, pos.y.f, PLAYER_RADIUS))
 		delta.x.f = 0.0f;
@@ -39,7 +39,7 @@ t_vec2	stt_collision(t_mat8 *map, t_vec2 delta, t_vec2 pos)
 }
 
 static
-t_vec2	stt_move_toward(t_mat8 *map, t_vec2 pos, t_enemy *enemy, float dt)
+t_vec2	stt_move_toward(t_map *map, t_vec2 pos, t_enemy *enemy, float dt)
 {
 	t_vec2	to_player;
 	float	mag_dist;

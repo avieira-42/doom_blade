@@ -74,18 +74,12 @@ void	stt_sprites_init(t_game *game)
 		return ;
 	game->assets.walk = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_walking", 9, ANIM_TIME);
 	game->assets.reload = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_reloading", 32, ANIM_TIME);	// Changed from 33 to 32
-
-	game->assets.ammo = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_ammo/ammo", 10, ANIM_TIME);
-	game->assets.health = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_health/health", 10, ANIM_TIME);
-	game->assets.pill = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_pill/pill", 2, ANIM_TIME);
 	game->assets.city = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/tiles/city", 4, ANIM_TIME);
+
 	game->assets.radar = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_radar", 1, ANIM_TIME);
 	game->assets.radar_l0 = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_radar/layer0_", 1, ANIM_TIME);
 	game->assets.radar_l1 = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_radar/layer1_", 56, ANIM_TIME / 3);
 
-	game->drawbuf.ammo = game->assets.ammo;
-	game->drawbuf.health = game->assets.health;
-	game->drawbuf.pill = game->assets.pill;
 	game->drawbuf.hands = game->assets.walk;
 	game->drawbuf.radar = game->assets.radar;
 	// TMP RADAR >>>
@@ -94,7 +88,6 @@ void	stt_sprites_init(t_game *game)
 	// <<< TMP RADAR
 	game->player.ammo = AMMO_COUNT;
 	game->player.health = PLAYER_HEALTH;
-	game->player.pill_count = PILL_COUNT;
 	game->player.state = st_idle;
 }
 
@@ -138,7 +131,7 @@ int cub_init(const char *filename, t_game *game, t_memory *memory)
 	game->mlx = mlx_init();
 	if (game->mlx == NULL)
 		return (-1);	// TODO: Print Error
-	if (cub_read_textures(game->mlx, str, &str, game->blocks) == -1)	// Double check: sending by value wont affect the struct
+	if (cub_parse_textures(game->mlx, str, &str, game->blocks) == -1)	// Double check: sending by value wont affect the struct
 		return (free(file), -1);
 	if (cub_read_map(str, &game->map, &game->player) == -1)
 		return (free(file), -1);

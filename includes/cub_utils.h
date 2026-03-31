@@ -10,21 +10,18 @@
 #include "cub_structs.h"
 
 // Draw and Render
+void	raycast(t_view *cam, t_map *map, t_rayhit *rays);
+void	planecast(t_mat32 frame, t_mat32 floor, t_mat32 ceiling, t_view cam);
+void	render_image(t_game *game);
+
 int			ft_transpose(t_mat32 *src);
 int			ft_transpose_img(uint32_t *ptr, size_t width, size_t height);	// TMP
 int			cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner);
-void		raycast(t_view *cam, t_mat8 *map, t_frame *frame);
-void		render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_frame *frame);
 t_img		*read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr);
-void		planecast(t_mat32 frame, t_mat32 floor, t_mat32 ceiling, t_view cam);
 void		animate(t_game *game);
 void		animate_hud(t_game *game);
 void		frame_pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color);
 void		cub_draw_texture(t_mat32 frame, t_mat32 image, size_t x_corner, size_t y_corner);
-void		cub_sprite_sheet_update(t_sheet *sheet);
-void		cub_sprite_sheet_animate(t_mat32 frame, t_sheet *sheet, t_vec2 pos);
-void		cards_render(t_game *game);
-void		hands_render(t_game *game);
 
 uint32_t	ft_bilerp_argb(const t_mat32 *src, t_vec2 norm_pos);
 uint32_t	ft_bilerp_argb_t(const t_mat32 *src, t_vec2 norm_pos);
@@ -44,8 +41,8 @@ int		cmlx_loop(t_game *game);
 // init
 int		cub_init(const char *filename, t_game *game, t_memory *memory);
 int		cub_cleanup(t_game *game);
-int		cub_read_textures(t_xvar *mlx, const char *str, const char **str_ptr, t_block *blocks);
-int		cub_read_map(const char *str, t_mat8 *map, t_player *player);
+int		cub_parse_textures(t_xvar *mlx, const char *str, const char **str_ptr, t_block *blocks);
+int		cub_read_map(const char *str, t_map *map, t_player *player);
 t_sheet cub_read_spritesheet(t_xvar *mlx, const char *base_path, size_t count, long frame_time);
 
 // Physics
@@ -56,7 +53,7 @@ void	time_delta_get(t_game *game);
 long	get_time(void);
 uint32_t	ft_strtoargb(const char *str, const char **str_ptr);
 void		*ft_read_all(const char *filename, size_t *file_size);
-int		cub_is_map_enclosed(t_mat8 map);
+int		cub_is_map_enclosed(t_map map);
 float	vec2_dot_product(t_vec2 a, t_vec2 b);
 t_vec2	vec2_rotate(t_vec2 vec, float angle);
 t_vec2	vec2_norm(t_vec2 vec);

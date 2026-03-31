@@ -111,16 +111,23 @@ int	stt_match_texture(t_xvar *mlx, const char *str, t_block *blocks, const char 
 		rvalue = stt_read_color(mlx, &blocks[0].south, str + 1, str_ptr);
 	else if (str[0] == 'C')
 		rvalue = stt_read_color(mlx, &blocks[0].north, str + 1, str_ptr);
+	else if (str[0] == 'D')
+	{
+		rvalue = cub_read_texture(mlx, &blocks[2].north, str + 1, str_ptr);
+		blocks[2].south = blocks[2].north;
+		blocks[2].west = blocks[2].north;
+		blocks[2].east = blocks[2].north;
+	}
 		// Continue here for more textures
 	return (rvalue);
 }
 
-int	cub_read_textures(t_xvar *mlx, const char *str, const char **str_ptr, t_block *blocks)
+int	cub_parse_textures(t_xvar *mlx, const char *str, const char **str_ptr, t_block *blocks)
 {
 	int		rvalue;
 	size_t	match_target;
 
-	match_target = 6;	// If DOOR is found, then match_target needs to be increased
+	match_target = 7;	// If DOOR is found, then match_target needs to be increased
 	while (*str != 0 && match_target > 0)
 	{
 		rvalue = stt_match_texture(mlx, str, blocks, &str);

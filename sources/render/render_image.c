@@ -6,60 +6,6 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
-// See if FLTO inlines
-// Convert textures to power of two
-static inline
-void	stt_texture_lerp(t_mat32 texture, int32_t line_height, uint32_t *render_col, int32_t draw_start, int32_t draw_end)
-{
-	int32_t			y;
-	float			tex_pos;
-	const float		dy = (double)texture.height / (double)line_height;
-
-	tex_pos = dy * (draw_start - (RENDER_HEIGHT / 2) + (line_height / 2));
-	y = draw_start;
-	while (y < draw_end)
-	{
-		render_col[y] = texture.ptr[(size_t)tex_pos];
-		tex_pos += dy;
-		y++;
-	}
-}
-
-static inline
-void	stt_draw_tmp(uint32_t *render_col, int32_t draw_start, int32_t draw_end)
-{
-	size_t	x;
-
-	x = 0;
-	while (x < draw_start)
-	{
-		render_col[x] = rgb_gray;
-		x++;
-	}
-	x = draw_end;
-	while (x < RENDER_HEIGHT)
-	{
-		render_col[x] = rgb_brown;
-		x++;
-	}
-}
-
-static inline
-void	stt_column_render(t_rayhit hit, uint32_t *render_col, t_block *blocks)
-{
-	t_mat32	texture;
-	int32_t	line_height;
-	int32_t	draw_start;
-	int32_t	draw_end;
-
-	texture = blocks[hit.tex_index].index[hit.tex_dir];
-	texture.ptr += (size_t)(hit.x_pos * texture.width) * texture.stride;	// REVIEW
-	line_height = (float) RENDER_HEIGHT / hit.perp_dist;
-	draw_start = ft_imax(0, (RENDER_HEIGHT / 2) - (line_height / 2));
-	draw_end = ft_imin(RENDER_HEIGHT, (RENDER_HEIGHT / 2) + (line_height / 2));
-	stt_texture_lerp(texture, line_height, render_col, draw_start, draw_end);
-}
-
 // Aliasing is caused by differing line heights. This will reduce the effect
 static inline
 void	stt_filter(t_rayhit *rays)
@@ -77,22 +23,59 @@ void	stt_filter(t_rayhit *rays)
 	}
 }
 
+static inline
+void	stt_texture_sample(t_mat32 texture, double line_height, uint32_t *render_col, int32_t draw_start, int32_t draw_end)
+{
+	int32_t			y;
+	float			tex_pos;
+	const float		dy = (double)texture.height / line_height;
+
+	tex_pos = dy * (draw_start - ((double)RENDER_HEIGHT / 2) + (line_height / 2));
+	y = draw_start;
+	while (y < draw_end)
+	{
+		render_col[y] = texture.ptr[(size_t)tex_pos];
+		tex_pos += dy;
+		y++;
+	}
+}
+
+static inline
+void	stt_column_render(t_rayhit hit, uint32_t *render_col, t_block *blocks)
+{
+	t_mat32	texture;
+	double	line_height;
+	int32_t	draw_start;
+	int32_t	draw_end;
+
+	texture = blocks[hit.tex_index].index[hit.tex_dir];		// THIS NEEDS TO CHECK IF TEX_INDEX > 0
+	texture.ptr += (size_t)(hit.x_pos * texture.width) * texture.stride;	// REVIEW
+	line_height = fmax(1.0, (double) RENDER_HEIGHT / hit.perp_dist);
+	draw_start = 0.5 * ((double)RENDER_HEIGHT - line_height);
+	draw_end = 0.5 * ((double)RENDER_HEIGHT + line_height);
+	draw_start = ft_imax(0, draw_start);
+	draw_end = ft_imin(RENDER_HEIGHT, draw_end);
+	// draw_start = ft_imax(0, (RENDER_HEIGHT / 2) - (line_height / 2));
+	// draw_end = ft_imin(RENDER_HEIGHT, (RENDER_HEIGHT / 2) + (line_height / 2));
+	stt_texture_sample(texture, line_height, render_col, draw_start, draw_end);
+}
+
 // Blocks contains transposed rows for sequential memory access
 // Everything is done in cols by rows, and then tranposed for the rendering
-void	render_image(t_view *cam, t_mat8 *map, t_block *blocks, t_frame *frame)
+void	render_image(t_game *game)
 {
 	size_t		x;
 	uint32_t	*ptr;
 
 	x = 0;
-	ptr = frame->render.ptr;
-	planecast(frame->render, blocks[0].south, blocks[0].north, *cam);
-	raycast(cam, map, frame);
+	ptr = game->frame.render.ptr;
+	planecast(game->frame.render, game->blocks[0].south, game->blocks[0].north, game->player.cam);
+	raycast(&game->player.cam, &game->map, game->frame.rays);
 	// stt_filter(frame->rays);
 	while (x < RENDER_WIDTH)
 	{
-		stt_column_render(frame->rays[x], ptr, blocks);
-		ptr += frame->render.stride;
+		stt_column_render(game->frame.rays[x], ptr, game->blocks);
+		ptr += game->frame.render.stride;
 		x++;
 	}
 }
