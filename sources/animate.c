@@ -55,6 +55,9 @@ void	stt_update_hud(t_player *player, t_assets *assets, t_drawbuf *drawbuf, long
 		drawbuf->hands = assets->walk;
 		player->state = st_idle;
 	}
+	// RADAR TMP >>>
+	stt_render_animation(&drawbuf->radar, dt);
+	// <<< RADAR TMP
 }
 
 void	cub_update_state(t_player *player, t_audio *audio, t_game *game, long dt)

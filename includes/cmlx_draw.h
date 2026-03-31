@@ -92,6 +92,10 @@ typedef struct s_drawbuf
 	t_sheet	ammo;
 	t_sheet	pill;
 	t_sheet	radar;
+	// TMP >>>
+	t_sheet	radar_l0;
+	t_sheet	radar_l1;
+	// <<< TMP
 }	t_drawbuf;
 
 typedef struct s_view

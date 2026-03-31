@@ -72,11 +72,11 @@ void	stt_map_render(t_game *game)
 	const t_vec2	p_pos = (t_vec2){.x.i = pos.x.i + bound.x.i - 20,
 		.y.i = pos.y.i + bound.y.i - 15};
 
-	cub_sprite_sheet_animate(game->frame.display, &game->assets.radar_l0, pos);
+	//cub_sprite_sheet_animate(game->frame.display, &game->assets.radar_l0, pos);
 	stt_blocks_render(game, pos, bound.x.i, map_center);
 	stt_quad_draw(game, p_pos, (t_vec2){.x.i = 10, .y.i = 10},
 			0x003300, bound.x.i, map_center);
-	cub_sprite_sheet_animate(game->frame.display, &game->assets.radar_l1, pos);
+	//cub_sprite_sheet_animate(game->frame.display, &game->assets.radar_l1, pos);
 }
 
 

@@ -47,7 +47,8 @@ enum e_player_state
 	st_sprint = 1 << 1,
 	st_reloading = 1 << 2,
 	st_shooting = 1 << 3,
-	st_interacting = 1 << 4
+	st_interacting = 1 << 4,
+	st_radar = 1 << 5,
 };
 
 // Keys

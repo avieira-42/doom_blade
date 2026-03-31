@@ -4,7 +4,7 @@ VPATH = sources sources/utils sources/parse sources/physics sources/math sources
 SRCS = main.c cleanup.c init.c \
 raycast.c draw_image.c draw_sprite.c render_image.c planecast.c \
 time.c io_basic.c memory.c char_ascii.c transpose.c int_limits.c float_limits.c float_abs.c vec2.c \
-map.c textures.c animation.c \
+map.c textures.c animation.c  TMPRADAR.c \
 convert.c str_search.c animate.c \
 movement.c \
 bilinear_interp.c integer_scaling.c\
