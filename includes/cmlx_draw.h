@@ -33,8 +33,8 @@ typedef struct s_plane
 	t_mat32		sprite;
 	t_vec2		raydir_left;
 	t_vec2		raydir_right;
-	t_vec2		floor_step;
-	t_vec2		floor_pos;
+	t_vec2		step;
+	t_vec2		pos;
 	t_vec2		texture;
 	uint32_t	*col_ptr;
 	int32_t		ceil_y;

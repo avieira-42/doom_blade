@@ -127,7 +127,7 @@ int	cub_parse_textures(t_xvar *mlx, const char *str, const char **str_ptr, t_blo
 	int		rvalue;
 	size_t	match_target;
 
-	match_target = 7;	// If DOOR is found, then match_target needs to be increased
+	match_target = 6;	// If DOOR is found, then match_target needs to be increased
 	while (*str != 0 && match_target > 0)
 	{
 		rvalue = stt_match_texture(mlx, str, blocks, &str);
