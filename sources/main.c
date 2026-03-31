@@ -48,12 +48,12 @@ void	stt_draw_hud(t_mat32 frame, t_drawbuf *drawbuf)
 	texture = drawbuf->radar.texture;
 	texture.ptr += drawbuf->radar_l0.index * drawbuf->radar.frame_size;
 	cub_draw_texture(frame, texture, 0, 195);
-	texture = drawbuf->radar_l0.texture;
+	/*texture = drawbuf->radar_l0.texture;
 	texture.ptr += drawbuf->radar.index * drawbuf->radar_l0.frame_size;
 	cub_draw_texture(frame, texture, 110, 240);
 	texture = drawbuf->radar_l1.texture;
 	texture.ptr += drawbuf->radar.index * drawbuf->radar_l1.frame_size;
-	cub_draw_texture(frame, texture, 110, 240);
+	cub_draw_texture(frame, texture, 110, 240);*/
 	// <<<< TMP RADAR
 }
 
@@ -72,6 +72,9 @@ int	cmlx_loop(t_game *game)
 		render_image(&game->player.cam, &game->map, game->blocks, &game->frame);
 		stt_draw_enemies(game);
 		stt_draw_hud(game->frame.render, &game->drawbuf);
+		// TMP RADAR >>>
+		animate_hud(game);
+		// <<< TMP RADAR
 		ft_integer_scaling_t(game->frame.render, game->frame.display, UPSCALING_FACTOR);
 		mlx_put_image_to_window(game->mlx, game->mlx->win_list, game->frame.img, 0, 0);
 		cmlx_mousemove(game);

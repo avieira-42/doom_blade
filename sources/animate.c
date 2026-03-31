@@ -57,6 +57,8 @@ void	stt_update_hud(t_player *player, t_assets *assets, t_drawbuf *drawbuf, long
 	}
 	// RADAR TMP >>>
 	stt_render_animation(&drawbuf->radar, dt);
+	stt_render_animation(&drawbuf->radar_l0, dt);
+	stt_render_animation(&drawbuf->radar_l1, dt);
 	// <<< RADAR TMP
 }
 

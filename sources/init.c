@@ -81,7 +81,7 @@ void	stt_sprites_init(t_game *game)
 	game->assets.city = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/tiles/city", 4, ANIM_TIME);
 	game->assets.radar = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_radar", 1, ANIM_TIME);
 	game->assets.radar_l0 = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_radar/layer0_", 1, ANIM_TIME);
-	game->assets.radar_l1 = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_radar/layer1_", 56, ANIM_TIME);
+	game->assets.radar_l1 = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hud_radar/layer1_", 56, ANIM_TIME / 3);
 
 	game->drawbuf.ammo = game->assets.ammo;
 	game->drawbuf.health = game->assets.health;
