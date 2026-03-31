@@ -109,6 +109,7 @@ void	stt_params_init(t_game *game, t_memory *memory)
 	game->frame.render.width = RENDER_WIDTH;
 	game->frame.render.stride = RENDER_HEIGHT;
 	game->frame.rays = memory->rays;
+	game->frame.offset = 0;
 	ft_memset(memory->empty_line, 0, sizeof(memory->empty_line));
 	game->blocks[0].east = empty;
 	game->blocks[0].west = empty;

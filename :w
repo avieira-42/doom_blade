@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   planecast.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/31 19:29:03 by avieira-          #+#    #+#             */
+/*   Updated: 2026/03/31 19:30:00 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -8,7 +20,7 @@
 	//plane->texture.y.i = plane->texture.y.i & (plane->floor_tex.height - 1);
 //  compute per pixel value
 static
-void	stt_calculate_pixel_floor(t_frame frame, t_plane *plane,
+void	stt_calculate_pixel(t_frame frame, t_plane *plane,
 			t_view cam, int32_t y)
 {
 	const t_mat32	render_frame = frame.render;
@@ -20,7 +32,7 @@ void	stt_calculate_pixel_floor(t_frame frame, t_plane *plane,
 	plane->raydir_right.x.f = cam.dir.x.f + cam.plane.x.f;
 	plane->raydir_right.y.f = cam.dir.y.f + cam.plane.y.f;
 	// vert dist from center of screen to current row
-	plane->vert_dist = y - ((float)render_frame.height / 2 - frame.offset);
+	plane->vert_dist = y - (float)render_frame.height / 2 + frame.offset;
 	// cam height in screen units (half)
 	plane->pos_z = 0.5f * render_frame.height;
 	// dist from cam to horizontal plane at current row
@@ -44,31 +56,31 @@ static
 void	stt_render_row(t_mat32 frame, t_plane *plane, int32_t x, int32_t y)
 {
 	uint32_t	floor_color;
-	//uint32_t	ceil_color;
+	uint32_t	ceil_color;
 
 	// calc text x coord from fract part of world x
-	plane->texture.x.i = (int)(plane->sprite.width
+	plane->texture.x.i = (int)(plane->floor_tex.width
 			* (plane->floor_pos.x.f - (int)plane->floor_pos.x.f));
 	// calc text y coord from fract part of world y
-	plane->texture.y.i = (int)(plane->sprite.height
+	plane->texture.y.i = (int)(plane->floor_tex.height
 			* (plane->floor_pos.y.f - (int)plane->floor_pos.y.f));
 	// wrap text coords
-	plane->texture.x.i = plane->texture.x.i & (plane->sprite.width - 1);
-	plane->texture.y.i = plane->texture.y.i & (plane->sprite.height - 1);
+	plane->texture.x.i = plane->texture.x.i & (plane->floor_tex.width - 1);
+	plane->texture.y.i = plane->texture.y.i & (plane->floor_tex.height - 1);
 	// sample floor text pixel
-	floor_color = plane->sprite.ptr[plane->texture.y.i
-		* plane->sprite.width + plane->texture.x.i];
+	floor_color = plane->floor_tex.ptr[plane->texture.y.i
+		* plane->floor_tex.width + plane->texture.x.i];
 	// sample ceil text pixel
-	//ceil_color = plane->sprite.ptr[plane->texture.y.i
-		//* plane->sprite.width + plane->texture.x.i];
+	ceil_color = plane->ceil_tex.ptr[plane->texture.y.i
+		* plane->ceil_tex.width + plane->texture.x.i];
 	// pointer to start of col x in framebuff
 	plane->col_ptr = frame.ptr + (x * frame.stride);
 	// draw floor pixel at row y
 	plane->col_ptr[y] = floor_color;
 	// calc mirrored row for ceiling
-	//plane->ceil_y = frame.height - y - 1;
+	plane->ceil_y = frame.height - y - 1;
 	// draw ceiling pixel at mirrored row
-	//plane->col_ptr[plane->ceil_y] = ceil_color;
+	plane->col_ptr[plane->ceil_y] = ceil_color;
 	// move world pos forward for next pixel in curr row
 	plane->floor_pos.x.f += plane->floor_step.x.f;
 	plane->floor_pos.y.f += plane->floor_step.y.f;
@@ -88,12 +100,12 @@ void	planecast(t_frame frame, t_mat32 floor_mat, t_mat32 ceil_mat, t_view cam)
 	while (y < render_frame.height)
 	{
 		stt_calculate_pixel_floor(frame, &floor, cam, y);
-		//stt_calculate_pixel_ceiling(frame, &ceil, cam, y);
+		stt_calculate_pixel_ceiling(frame, &ceil, cam, y);
 		x = 0;
 		while (x < render_frame.width)
 		{
 			stt_render_row(render_frame, &floor, x, y);
-			//stt_render_row(render_frame, &ceil, x, y);
+			stt_render_row(render_frame, &ceil, x, y);
 			x++;
 		}
 		y++;
