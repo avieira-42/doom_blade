@@ -73,7 +73,6 @@ static
 void	stt_render_row_floor(t_mat32 frame, t_plane *plane, int32_t x, int32_t y)
 {
 	uint32_t	floor_color;
-	uint32_t	ceil_color;
 
 	// calc text x coord from fract part of world x
 	plane->texture.x.i = (int)(plane->sprite.width
@@ -101,7 +100,6 @@ void	stt_render_row_floor(t_mat32 frame, t_plane *plane, int32_t x, int32_t y)
 static
 void	stt_render_row_ceil(t_mat32 frame, t_plane *plane, int32_t x, int32_t y)
 {
-	uint32_t	floor_color;
 	uint32_t	ceil_color;
 
 	// calc text x coord from fract part of world x
@@ -113,16 +111,11 @@ void	stt_render_row_ceil(t_mat32 frame, t_plane *plane, int32_t x, int32_t y)
 	// wrap text coords
 	plane->texture.x.i = plane->texture.x.i & (plane->sprite.width - 1);
 	plane->texture.y.i = plane->texture.y.i & (plane->sprite.height - 1);
-	// sample floor text pixel
-	floor_color = plane->sprite.ptr[plane->texture.y.i
-		* plane->sprite.width + plane->texture.x.i];
 	// sample ceil text pixel
 	ceil_color = plane->sprite.ptr[plane->texture.y.i
 		* plane->sprite.width + plane->texture.x.i];
 	// pointer to start of col x in framebuff
 	plane->col_ptr = frame.ptr + (x * frame.stride);
-	// draw floor pixel at row y
-	//plane->col_ptr[y] = floor_color;
 	// calc mirrored row for ceiling
 	plane->ceil_y = frame.height - y - 1;
 	// draw ceiling pixel at mirrored row
@@ -141,6 +134,8 @@ void	stt_floorcast(t_frame frame, t_mat32 floor_mat, t_view cam)
 	const t_mat32	render_frame = frame.render;
 
 	y = (float)render_frame.height / 2 - frame.offset;
+	if (y < 0)
+		y = 0;
 	floor.sprite = floor_mat;
 	while (y < render_frame.height)
 	{
@@ -164,6 +159,8 @@ void	stt_ceilingcast(t_frame frame, t_mat32 ceil_mat, t_view cam)
 	const t_mat32	render_frame = frame.render;
 
 	y = (float)render_frame.height / 2 + frame.offset;
+	if (y < 0)
+		y = 0;
 	ceil.sprite = ceil_mat;
 	while (y < render_frame.height)
 	{

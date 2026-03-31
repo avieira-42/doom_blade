@@ -34,6 +34,8 @@
 
 // Mouse Movement
 # define OFFSET_MULTIPLIER 100
+# define OFFSET_MAX 650.0f
+# define OFFSET_MIN -650.0f
 
 enum e_audio_channel
 {
