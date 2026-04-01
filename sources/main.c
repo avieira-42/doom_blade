@@ -38,7 +38,7 @@ void	stt_draw_hud(t_mat32 frame, t_drawbuf *drawbuf)
 	// .. Radar
 	// TMP RADAR >>>>
 	texture = drawbuf->radar.texture;
-	texture.ptr += drawbuf->radar_l0.index * drawbuf->radar.frame_size;
+	texture.ptr += drawbuf->radar.index * drawbuf->radar.frame_size;
 	cub_draw_texture(frame, texture, 0, 195);
 	/*texture = drawbuf->radar_l0.texture;
 	texture.ptr += drawbuf->radar.index * drawbuf->radar_l0.frame_size;

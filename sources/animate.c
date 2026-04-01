@@ -11,7 +11,6 @@
 // 1) Input is processed, and player states are determined (shooting, reloading, etc). This also changes the animation sheet to be loaded.
 // 2) The animation render takes care of the frame advancing, and returns whether the animation is done or not
 // 3) The return is processed, and player states are determined accordingly.
-
 // Example: 
 // 1) R is pressed, and if the player isnt shooting and is below max ammo, he goes into the reloading state. Reloading hands are loaded into hands
 // 2) Animation gets rendered, and returns that it was the first rendered frame of a reload cycle
