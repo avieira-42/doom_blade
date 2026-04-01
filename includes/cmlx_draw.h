@@ -43,6 +43,26 @@ typedef struct s_plane
 	float		row_dist;
 }	t_plane;
 
+typedef	struct s_grid
+{
+    t_vec2  size;
+	t_vec2	i;
+    t_vec2  draw_pos;
+    t_vec2  map_pos;
+	t_vec2	map_center;
+	t_vec2	pos;
+	int32_t	bound;
+}	t_grid;
+
+typedef struct s_quad
+{
+	t_vec2	pos;
+	t_vec2	size;
+	int32_t	color;
+	int32_t	bound;
+	t_vec2	map_center;
+}	t_quad;
+
 typedef struct s_sides
 {
 	int32_t	top;
