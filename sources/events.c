@@ -33,7 +33,7 @@ int	cmlx_keydown(int keycode, t_game *game)
 		}
 		if (keycode == XK_r && !(game->player.state & (st_reloading | st_shooting)) && game->player.ammo < AMMO_COUNT)
 		{
-			game->player.state = st_reloading;
+			game->player.state = (st_reloading);
 			game->drawbuf.hands = game->assets.reload;
 			game->drawbuf.hands.index = game->player.ammo * RELOAD_CYCLE;
 			game->state.key |= (size_t)key_r;
@@ -85,7 +85,7 @@ int	cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game)
 		{
 			game->player.ammo--;
 			game->drawbuf.hands = game->assets.shoot;
-			game->player.state = st_shooting;
+			game->player.state = (st_shooting | st_shot);
 		}
 	}
 	return (0);
@@ -103,7 +103,7 @@ int	cmlx_mousemove(t_game *game)
 	float	dx;
 
 	mlx_mouse_get_pos(game->mlx, game->mlx->win_list, &x1, &y1);
-	dx = (float)(x1 - ((float)SCREEN_WIDTH / 2)) * game->cfg.sens;
+	dx = (float)(x1 - ((float)SCREEN_WIDTH / 2)) * (1.0f / 512.0f);
 	game->player.cam.dir = vec2_rotate(game->player.cam.dir, dx);
 	game->player.cam.plane = vec2_rotate(game->player.cam.plane, dx);
 	mlx_mouse_move(game->mlx, game->mlx->win_list, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);

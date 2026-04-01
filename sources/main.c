@@ -12,18 +12,35 @@ bool	cub_draw_relative(t_mat32 frame, t_rayhit *rays, t_player *player, t_enemy 
 void	cub_update_state(t_player *player, t_audio *audio, t_game *game, long dt);
 
 static
-void	stt_draw_enemies(t_game *game)
+void	stt_draw_enemies(t_game *game, long dt)
 {
 	size_t	i;
+	bool	hit;
 	t_enemy	*enemy;
 
 	i = 0;
 	while (i < NUM_ENEMIES)
 	{
 		enemy = game->enemies + i;
-		enemy->hit = cub_draw_relative(game->frame.render, game->frame.rays, &game->player, game->enemies);
+		if (enemy->health > 0)
+		{
+			hit = cub_draw_relative(game->frame.render, game->frame.rays, &game->player, enemy);
+			if ((game->player.state & st_shot) && hit == true)
+				enemy->health -= 26;
+		}
+		else
+		{
+			enemy->respawn_timer += dt;
+			if (enemy->respawn_timer > RESPAWN_TIMER)
+			{
+				enemy->respawn_timer = 0;
+				enemy->cam.pos = random_valid_pos(&game->map);
+				enemy->health = 100;
+			}
+		}
 		i++;
 	}
+	game->player.state &= ~(size_t)st_shot;	// Clears the just shot flag
 }
 
 void	stt_draw_hud(t_mat32 frame, t_drawbuf *drawbuf)
@@ -111,7 +128,7 @@ int	cmlx_loop(t_game *game)
 		ft_memset(game->frame.display.ptr, 0, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(uint32_t));
 		ft_memset(game->frame.render.ptr, 0, RENDER_HEIGHT * RENDER_WIDTH * sizeof(uint32_t));
 		render_image(game);
-		stt_draw_enemies(game);
+		stt_draw_enemies(game, dt);
 		stt_draw_hud(game->frame.render, &game->drawbuf);
 		// TMP RADAR >>>
 		animate_hud(game);
@@ -133,6 +150,5 @@ int	main(int argc, char **argv)
 		return (1);
 	if (cub_init(argv[1], &game, &memory) == -1)
 		return (1);
-	game.enemies[0].cam.pos = game.player.cam.pos;
 	mlx_loop(game.mlx);
 }

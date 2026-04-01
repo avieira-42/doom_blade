@@ -1,7 +1,10 @@
+#include <bits/types/struct_timeval.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <sys/time.h>
+#include "cmlx_base.h"
 #include "cub_defines.h"
 #include "cub_structs.h"
 #include "cub_utils.h"
@@ -41,28 +44,19 @@ int stt_mlx_init(t_game *game)
 }
 
 static
-t_cfg   stt_config(void)
+void	stt_enemy_init(t_game *game, t_memory *memory)
 {
-	t_cfg   cfg;
+	size_t	i;
 
-	cfg.sens = 1.0f / 512.0f;
-	return (cfg);
-}
-
-static
-void	stt_tmp(t_game *game, t_memory *memory)
-{
-	t_view	cam;
-	t_vec2	speed;
-	t_mat32	texture;
-
-	ft_memset(&cam, 0, sizeof(cam));
-	ft_memset(&speed, 0, sizeof(speed));
-	ft_memset(&texture, 0, sizeof(texture));
-	game->enemies[0].cam = cam;
-	game->enemies[0].speed = speed;
-	cub_read_texture(game->mlx, &texture, "assets/ghost_tmp.xpm", NULL);
-	game->enemies[0].texture = texture;
+	i = 0;
+	ft_memset(game->enemies, 0, sizeof(t_enemy) * NUM_ENEMIES);
+	while (i < NUM_ENEMIES)
+	{
+		cub_read_texture(game->mlx, &game->enemies[i].texture, "assets/ghost_tmp.xpm", NULL);
+		game->enemies[i].health = 100;
+		game->enemies[i].cam.pos = random_valid_pos(&game->map);
+		i++;
+	}
 }
 
 static
@@ -114,9 +108,16 @@ void	stt_params_init(t_game *game, t_memory *memory)
 	game->blocks[0].west = empty;
 	game->player.speed.x.f = 0.0f;
 	game->player.speed.y.f = 0.0f;
-	game->cfg = stt_config();
 	game->state.paused = false;
-	stt_tmp(game, memory);
+}
+
+static
+void	stt_rng_init(void)
+{
+	struct timeval	seed;
+
+	gettimeofday(&seed, NULL);
+	ft_rngseed((uint64_t)(seed.tv_sec ^ seed.tv_usec));
 }
 
 int cub_init(const char *filename, t_game *game, t_memory *memory)
@@ -143,6 +144,8 @@ int cub_init(const char *filename, t_game *game, t_memory *memory)
 	stt_params_init(game, memory);
 	stt_sprites_init(game);
 	stt_audio_init(game);
+	stt_enemy_init(game, memory);
+	stt_rng_init();
 	get_time();
 	return (0);
 }

@@ -32,7 +32,6 @@ typedef struct s_enemy
 	t_vec2	speed;
 	t_mat32	texture;
 	int32_t	health;
-	bool	hit;
 	long	respawn_timer;
 	uint8_t	id;
 }	t_enemy;
@@ -51,12 +50,6 @@ typedef struct s_gstate
 	size_t	key;
 	// ...
 }	t_gstate;
-
-typedef struct s_cfg
-{
-	float   sens;
-	float   speed;
-}	t_cfg;
 
 typedef struct s_audio
 {
@@ -88,7 +81,6 @@ typedef struct s_game
 	t_player	player;
 	t_enemy		enemies[NUM_ENEMIES];
 	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
-	t_cfg		cfg;
 	t_assets	assets;
 	t_drawbuf	drawbuf;
 }	t_game;

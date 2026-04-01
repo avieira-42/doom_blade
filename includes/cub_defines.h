@@ -10,7 +10,7 @@
 
 # define TEX_HEIGHT 256
 # define NUM_BLOCKS 4
-# define NUM_ENEMIES 1
+# define NUM_ENEMIES 8
 # define EPS 0.00000011920929f
 # define PI 3.141592653589793238462643383279502884L
 
@@ -27,6 +27,8 @@
 # define HALT_THR 0.5f		// 
 # define ANIM_TIME 60000	// Time between anim frames
 
+# define MOUSE_SENS 0.001953125f	// 	1/512
+# define RESPAWN_TIMER 8000000
 # define AMMO_COUNT 8
 # define PLAYER_HEALTH 128
 # define RELOAD_CYCLE 4
@@ -50,6 +52,7 @@ enum e_player_state
 	st_shooting = 1 << 3,
 	st_interacting = 1 << 4,
 	st_radar = 1 << 5,
+	st_shot = 1 << 6,
 };
 
 // Keys

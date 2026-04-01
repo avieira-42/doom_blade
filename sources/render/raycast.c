@@ -80,8 +80,7 @@ t_rayhit	stt_dda(t_ray *ray, t_vec2 pos, t_map *map)
 			ray->map_pos.y.i += ray->step.y.i;
 			side = 1;
 		}
-		if ((uint32_t)(ray->map_pos.x.i) >= map->width
-			|| (uint32_t)(ray->map_pos.y.i) >= map->height)
+		if ((uint32_t)(ray->map_pos.x.i) >= map->width || (uint32_t)(ray->map_pos.y.i) >= map->height)
 			break ;
 		block_index = map->tex_index[ray->map_pos.y.i * map->width + ray->map_pos.x.i];
 	}

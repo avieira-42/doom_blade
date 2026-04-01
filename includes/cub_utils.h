@@ -49,8 +49,12 @@ t_sheet cub_read_spritesheet(t_xvar *mlx, const char *base_path, size_t count, l
 void	cub_update_pos(t_game *game, float dt);
 
 // Utils
-void	time_delta_get(t_game *game);
-long	get_time(void);
+t_vec2	random_valid_pos(t_map *map);
+void		ft_rngseed(uint64_t seed);
+uint64_t	ft_rand(void);
+float		ft_randf(void);
+
+long		get_time(void);
 uint32_t	ft_strtoargb(const char *str, const char **str_ptr);
 void		*ft_read_all(const char *filename, size_t *file_size);
 int		cub_is_map_enclosed(t_map map);

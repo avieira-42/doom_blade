@@ -21,10 +21,10 @@ bool	stt_box_collision(t_map *map, float x, float y, float radius)
 	if (left < 0 || right < 0 || left >= map->width || right >= map->width
 		|| top < 0 || bottom < 0 || top >= map->height || bottom >= map->height)
 		return (1);
-	rvalue = (map->tex_index[bottom * map->width + left] & 128)
-		|| (map->tex_index[bottom * map->width + right] & 128)
-		|| (map->tex_index[top * map->width + left] & 128)
-		|| (map->tex_index[top * map->width + right] & 128);
+	rvalue = (map->tex_index[bottom * map->width + left] > 127)
+		|| (map->tex_index[bottom * map->width + right] > 127)
+		|| (map->tex_index[top * map->width + left] > 127)
+		|| (map->tex_index[top * map->width + right] > 127);
 	return (rvalue);
 }
 
@@ -108,9 +108,12 @@ void	cub_update_pos(t_game *game, float dt)
 	i = 0;
 	while (i < NUM_ENEMIES)
 	{
-		delta = stt_move_toward(&game->map, game->player.cam.pos, game->enemies + i, dt);
-		game->enemies[i].cam.pos.x.f += delta.x.f;
-		game->enemies[i].cam.pos.y.f += delta.y.f;
+		if (game->enemies[i].health > 0)
+		{
+			delta = stt_move_toward(&game->map, game->player.cam.pos, game->enemies + i, dt);
+			game->enemies[i].cam.pos.x.f += delta.x.f;
+			game->enemies[i].cam.pos.y.f += delta.y.f;
+		}
 		i++;
 	}
 }
