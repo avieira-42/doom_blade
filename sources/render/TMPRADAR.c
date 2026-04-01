@@ -9,21 +9,22 @@ void    stt_pixel_swap(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
     if (x < 0 || x >= frame.width || y < 0 || y >= frame.height)
         return ;
     dst = frame.ptr + x * frame.stride + y;
+	printf("*dst: %i\n", *dst);
     if (color == 0x000000)
     {
-        if (*dst == 9906388)
+        if (*dst == 2693401)
             color = 0xd5213f;
-        else if (*dst == 7807488)
+        else if (*dst == 2299157)
             color = 0xd72a55;
     }
     else if (color == 0xFFFFFF)
     {
-        if (*dst == 9906388)
+        if (*dst == 2693401)
             color = 0xe6c84b;
     }
     else if (color == 0x00FF00)
     {
-        if (*dst == 9906388)
+        if (*dst == 2299157)
             color = 0x115533;
     }
     *dst = color;

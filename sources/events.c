@@ -113,7 +113,6 @@ int	cmlx_mousemove(t_game *game)
 	offset = game->frame.offset;
 	offset += dy;
 	offset = ft_absclamp(offset, OFFSET_MAX);
-	printf("offset: %f\n", offset);
 	game->frame.offset = offset;
 	mlx_mouse_move(game->mlx, game->mlx->win_list, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	return (0);
