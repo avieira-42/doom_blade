@@ -10,9 +10,11 @@
 #include "cub_structs.h"
 
 // Draw and Render
-void	raycast(t_view *cam, t_map *map, t_rayhit *rays);
-void	planecast(t_frame frame, t_mat32 floor, t_mat32 ceiling, t_view cam);
-void	render_image(t_game *game);
+void		raycast(t_view *cam, t_map *map, t_rayhit *rays);
+void		planecast(t_frame frame, t_mat32 floor, t_mat32 ceiling, t_view cam);
+void		render_image(t_game *game);
+bool		cub_draw_enemy(t_frame *frame, t_rayhit *rays, t_player *player, t_enemy *enemy);
+void		cub_update_state(t_player *player, t_audio *audio, t_game *game, long dt);
 
 int			ft_transpose(t_mat32 *src);
 int			ft_transpose_img(uint32_t *ptr, size_t width, size_t height);	// TMP
@@ -25,8 +27,6 @@ void		cub_draw_texture(t_mat32 frame, t_mat32 image, size_t x_corner, size_t y_c
 
 uint32_t	ft_bilerp_argb(const t_mat32 *src, t_vec2 norm_pos);
 uint32_t	ft_bilerp_argb_t(const t_mat32 *src, t_vec2 norm_pos);
-void		ft_bilinear_scaling(const t_mat32 *src, t_mat32 *dst, t_vec2 scale, t_vec2 pos);
-void		ft_bilinear_scaling_t(const t_mat32 *src, t_mat32 *dst);
 void		ft_integer_scaling(t_mat32 src, t_mat32 dst, size_t factor);
 void		ft_integer_scaling_t(t_mat32 src, t_mat32 dst, size_t factor);
 
@@ -49,7 +49,7 @@ t_sheet cub_read_spritesheet(t_xvar *mlx, const char *base_path, size_t count, l
 void	cub_update_pos(t_game *game, float dt);
 
 // Utils
-t_vec2	random_valid_pos(t_map *map);
+t_vec2		random_valid_pos(t_map *map);
 void		ft_rng_init(void);
 uint64_t	ft_rand(void);
 float		ft_randf(void);

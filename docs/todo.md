@@ -6,4 +6,9 @@ I think gates might be a system where, when its a gate, you calculate two rayhit
 	This however assumes that behind the gate there won't be another gate. If it does, it's actually N rayhits
 	For deferred rendering, this is cancer -->
 
-1. Polish draw sprites function to take y offset parameter
+<!-- 1. Polish draw sprites function to take y offset parameter -->
+
+TO REMEMBER:
+- Map width and height must be greater than 3x3
+- Screen width and height must be greater than render height/width
+- 
