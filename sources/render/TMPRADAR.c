@@ -130,7 +130,7 @@ void stt_blocks_render(t_game *game, t_vec2 pos, int32_t bound, t_vec2 map_cente
                 };
 
                 if (game->map.tex_index[x + game->map.width * y] == 0)
-                    stt_quad_draw(game, map_pos, size, 0x440044, bound, map_center);
+                    stt_quad_draw(game, map_pos, size, 0x772200, bound, map_center);
             }
         }
     }
@@ -174,7 +174,7 @@ void stt_map_render(t_game *game)
         .y.i = map_center.y.i - 8
     };
 
-    stt_quad_draw(game, p_pos, (t_vec2){ .x.i = 5, .y.i = 5 }, 0x003300, bound.x.i, map_center);
+    stt_quad_draw(game, p_pos, (t_vec2){ .x.i = 5, .y.i = 5 }, 0x551100, bound.x.i, map_center);
 
     // --- Draw Radar Sweep (Layer 1) ---
     {
