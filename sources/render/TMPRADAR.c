@@ -22,11 +22,6 @@ void    stt_pixel_swap(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
         if (*dst == 2693401)
             color = 0xe6c84b;
     }
-    else if (color == 0x00FF00)
-    {
-        if (*dst == 2299157)
-            color = 0x115533;
-    }
     *dst = color;
 }
 
@@ -135,7 +130,7 @@ void    stt_draw_player_circle(t_game *game, t_vec2 p_pos,
 				if (vec2_idist(map_center,
 							(t_vec2){.x.i = px, .y.i = py})
 						<= bound * bound)
-					stt_pixel_swap(game->frame.render, px, py, 0x00FF00);
+					frame_pixel_put(game->frame.render, px, py, 0x440088);
 			}
 			dx++;
 		}
