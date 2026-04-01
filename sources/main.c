@@ -114,6 +114,33 @@ int	cub_actions(t_game *game)
 	return (0);
 }
 
+static
+void	stt_draw_crosshair(uint32_t *ptr)
+{
+	size_t	index;
+
+	index = (SCREEN_HEIGHT / 2 - 1) * SCREEN_WIDTH + (SCREEN_WIDTH / 2 - 1);
+	ptr[index] = 0;
+	ptr[index + 1] = 0;
+	ptr[index + 2] = 0;
+	ptr[index + 3] = 0;
+	index += SCREEN_WIDTH;
+	ptr[index] = 0;
+	ptr[index + 1] = 0xFFFFFFFF;
+	ptr[index + 2] = 0xFFFFFFFF;
+	ptr[index + 3] = 0;
+	index += SCREEN_WIDTH;
+	ptr[index] = 0;
+	ptr[index + 1] = 0xFFFFFFFF;
+	ptr[index + 2] = 0xFFFFFFFF;
+	ptr[index + 3] = 0;
+	index += SCREEN_WIDTH;
+	ptr[index] = 0;
+	ptr[index + 1] = 0;
+	ptr[index + 2] = 0;
+	ptr[index + 3] = 0;
+}
+
 int	cmlx_loop(t_game *game)
 {
 	static long	last_frame = 0;
@@ -134,6 +161,7 @@ int	cmlx_loop(t_game *game)
 		animate_hud(game);
 		// <<< TMP RADAR
 		ft_integer_scaling_t(game->frame.render, game->frame.display, UPSCALING_FACTOR);
+		stt_draw_crosshair(game->frame.display.ptr);
 		mlx_put_image_to_window(game->mlx, game->mlx->win_list, game->frame.img, 0, 0);
 		cmlx_mousemove(game);
 		last_frame = 0;
