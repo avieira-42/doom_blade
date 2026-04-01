@@ -11,7 +11,7 @@
 
 // Draw and Render
 void	raycast(t_view *cam, t_map *map, t_rayhit *rays);
-void	planecast(t_mat32 frame, t_mat32 floor, t_mat32 ceiling, t_view cam);
+void	planecast(t_frame frame, t_mat32 floor, t_mat32 ceiling, t_view cam);
 void	render_image(t_game *game);
 
 int			ft_transpose(t_mat32 *src);

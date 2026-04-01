@@ -24,13 +24,13 @@ void	stt_filter(t_rayhit *rays)
 }
 
 static inline
-void	stt_texture_sample(t_mat32 texture, double line_height, uint32_t *render_col, int32_t draw_start, int32_t draw_end)
+void	stt_texture_sample(t_mat32 texture, double line_height, uint32_t *render_col, int32_t draw_start, int32_t draw_end, int32_t unclamped_start)
 {
 	int32_t			y;
 	float			tex_pos;
 	const float		dy = (double)texture.height / line_height;
 
-	tex_pos = dy * (draw_start - ((double)RENDER_HEIGHT / 2) + (line_height / 2));
+	tex_pos = dy * (draw_start - unclamped_start);
 	y = draw_start;
 	while (y < draw_end)
 	{
@@ -41,23 +41,27 @@ void	stt_texture_sample(t_mat32 texture, double line_height, uint32_t *render_co
 }
 
 static inline
-void	stt_column_render(t_rayhit hit, uint32_t *render_col, t_block *blocks)
+void	stt_column_render(t_rayhit hit, uint32_t *render_col, t_block *blocks, float offset)
 {
 	t_mat32	texture;
 	double	line_height;
+	double	unclamped_start;
+	double	unclamped_end;
 	int32_t	draw_start;
 	int32_t	draw_end;
 
 	texture = blocks[hit.tex_index].index[hit.tex_dir];		// THIS NEEDS TO CHECK IF TEX_INDEX > 0
 	texture.ptr += (size_t)(hit.x_pos * texture.width) * texture.stride;	// REVIEW
 	line_height = fmax(1.0, (double) RENDER_HEIGHT / hit.perp_dist);
-	draw_start = 0.5 * ((double)RENDER_HEIGHT - line_height);
-	draw_end = 0.5 * ((double)RENDER_HEIGHT + line_height);
-	draw_start = ft_imax(0, draw_start);
-	draw_end = ft_imin(RENDER_HEIGHT, draw_end);
+	unclamped_start = 0.5 * ((double)RENDER_HEIGHT - line_height) - offset;
+	unclamped_end = 0.5 * ((double)RENDER_HEIGHT + line_height) - offset;
+	//draw_start = 0.5 * ((double)RENDER_HEIGHT - line_height);
+	//draw_end = 0.5 * ((double)RENDER_HEIGHT + line_height);
+	draw_start = ft_imax(0, unclamped_start);
+	draw_end = ft_imin(RENDER_HEIGHT, unclamped_end);
 	// draw_start = ft_imax(0, (RENDER_HEIGHT / 2) - (line_height / 2));
 	// draw_end = ft_imin(RENDER_HEIGHT, (RENDER_HEIGHT / 2) + (line_height / 2));
-	stt_texture_sample(texture, line_height, render_col, draw_start, draw_end);
+	stt_texture_sample(texture, line_height, render_col, draw_start, draw_end, (int32_t)unclamped_start);
 }
 
 // Blocks contains transposed rows for sequential memory access
@@ -69,12 +73,12 @@ void	render_image(t_game *game)
 
 	x = 0;
 	ptr = game->frame.render.ptr;
-	planecast(game->frame.render, game->blocks[0].south, game->blocks[0].north, game->player.cam);
+	planecast(game->frame, game->blocks[0].south, game->blocks[0].north, game->player.cam);
 	raycast(&game->player.cam, &game->map, game->frame.rays);
 	// stt_filter(frame->rays);
 	while (x < RENDER_WIDTH)
 	{
-		stt_column_render(game->frame.rays[x], ptr, game->blocks);
+		stt_column_render(game->frame.rays[x], ptr, game->blocks, game->frame.offset);
 		ptr += game->frame.render.stride;
 		x++;
 	}
