@@ -50,7 +50,7 @@ void	cub_update_pos(t_game *game, float dt);
 
 // Utils
 t_vec2	random_valid_pos(t_map *map);
-void		ft_rngseed(uint64_t seed);
+void		ft_rng_init(void);
 uint64_t	ft_rand(void);
 float		ft_randf(void);
 

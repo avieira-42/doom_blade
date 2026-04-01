@@ -31,6 +31,7 @@ void	stt_texture_sample(t_mat32 texture, double line_height, uint32_t *render_co
 	const float		dy = (double)texture.height / line_height;
 
 	tex_pos = dy * (draw_start - unclamped_start);
+	// tex_pos = dy * (draw_start - ((double)RENDER_HEIGHT / 2) + (line_height / 2));
 	y = draw_start;
 	while (y < draw_end)
 	{

@@ -1,9 +1,7 @@
-#include <bits/types/struct_timeval.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <sys/time.h>
 #include "cmlx_base.h"
 #include "cub_defines.h"
 #include "cub_structs.h"
@@ -111,15 +109,6 @@ void	stt_params_init(t_game *game, t_memory *memory)
 	game->state.paused = false;
 }
 
-static
-void	stt_rng_init(void)
-{
-	struct timeval	seed;
-
-	gettimeofday(&seed, NULL);
-	ft_rngseed((uint64_t)(seed.tv_sec ^ seed.tv_usec));
-}
-
 int cub_init(const char *filename, t_game *game, t_memory *memory)
 {
 	size_t		file_size;
@@ -145,7 +134,7 @@ int cub_init(const char *filename, t_game *game, t_memory *memory)
 	stt_sprites_init(game);
 	stt_audio_init(game);
 	stt_enemy_init(game, memory);
-	stt_rng_init();
+	ft_rng_init();
 	get_time();
 	return (0);
 }

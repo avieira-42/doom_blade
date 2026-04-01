@@ -8,7 +8,7 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
-bool	cub_draw_relative(t_mat32 frame, t_rayhit *rays, t_player *player, t_enemy *enemy);
+bool	cub_draw_relative(t_frame *frame, t_rayhit *rays, t_player *player, t_enemy *enemy);
 void	cub_update_state(t_player *player, t_audio *audio, t_game *game, long dt);
 
 static
@@ -24,7 +24,7 @@ void	stt_draw_enemies(t_game *game, long dt)
 		enemy = game->enemies + i;
 		if (enemy->health > 0)
 		{
-			hit = cub_draw_relative(game->frame.render, game->frame.rays, &game->player, enemy);
+			hit = cub_draw_relative(&game->frame, game->frame.rays, &game->player, enemy);
 			if ((game->player.state & st_shot) && hit == true)
 				enemy->health -= 26;
 		}
