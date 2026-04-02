@@ -17,37 +17,38 @@ void	stt_clip(t_form *form, t_vec2 new_size)
 	int32_t	unclipped_x;
 	int32_t	unclipped_y;
 
-	unclipped_x = (int)form->draw_pos.x.i - (int)new_size.x.i / 2;
+	unclipped_x = form->draw_pos.x.i - new_size.x.i / 2;
+	unclipped_y = form->draw_pos.y.i - new_size.y.i / 2;
 	form->left = ft_iclamp(unclipped_x, 0, RENDER_WIDTH);
-	form->norm_offset.x.f = ((int)form->left - unclipped_x) * form->delta.x.f;	// Clipped start
-	form->right = ft_iclamp((int)form->draw_pos.x.i + (int)new_size.x.i / 2, 0, RENDER_WIDTH);
-	unclipped_y = (int)form->draw_pos.y.i - (int)new_size.y.i / 2;
+	form->right = ft_iclamp(form->draw_pos.x.i + new_size.x.i / 2, 0, RENDER_WIDTH);
 	form->top = ft_iclamp(unclipped_y, 0, RENDER_HEIGHT);
-	form->norm_offset.y.f = ((int)form->top - unclipped_y) * form->delta.y.f;		// Clipped start
-	form->bottom = ft_iclamp((int)form->draw_pos.y.i + (int)new_size.y.i / 2, 0, RENDER_HEIGHT);
+	form->bottom = ft_iclamp(form->draw_pos.y.i + new_size.y.i / 2, 0, RENDER_HEIGHT);
+	form->norm_offset.x.f = ((int)form->left - unclipped_x) * form->delta.x.f;
+	form->norm_offset.y.f = ((int)form->top - unclipped_y) * form->delta.y.f;
 }
 
 static inline
-float	stt_init(t_form *form, t_frame *frame, t_view *pcam, t_enemy *enemy)
+float	stt_init(t_form *form, t_frame *frame, t_view *p, t_enemy *enemy)
 {
 	t_vec2	new_size;
 	float	enemy_dist;
 	float	horz_dist;
 	t_vec2	rel_pos;
-	float	inv_det;
+	float	invd;
 
-	inv_det = 1.0f / (pcam->plane.x.f * pcam->dir.y.f - pcam->dir.x.f * pcam->plane.y.f);
-	rel_pos.x.f = enemy->cam.pos.x.f - pcam->pos.x.f;
-	rel_pos.y.f = enemy->cam.pos.y.f - pcam->pos.y.f;
-	enemy_dist = inv_det * (-pcam->plane.y.f * rel_pos.x.f + pcam->plane.x.f * rel_pos.y.f);
+	invd = 1.0f / (p->plane.x.f * p->dir.y.f - p->dir.x.f * p->plane.y.f);
+	rel_pos.x.f = enemy->cam.pos.x.f - p->pos.x.f;
+	rel_pos.y.f = enemy->cam.pos.y.f - p->pos.y.f;
+	enemy_dist = (-p->plane.y.f * rel_pos.x.f + p->plane.x.f * rel_pos.y.f);
+	enemy_dist *= invd;
 	if (enemy_dist <= NEAR_RADIUS)
 		return (enemy_dist);
-	horz_dist = inv_det * (pcam->dir.y.f * rel_pos.x.f - pcam->dir.x.f * rel_pos.y.f);
-	inv_det = 1.0f / enemy_dist;	// Scale
-	form->draw_pos.x.i = (RENDER_WIDTH * 0.5f) * (1.0f + horz_dist * inv_det);
+	horz_dist = invd * (p->dir.y.f * rel_pos.x.f - p->dir.x.f * rel_pos.y.f);
+	invd = 1.0f / enemy_dist;	// Scale
+	form->draw_pos.x.i = (RENDER_WIDTH * 0.5f) * (1.0f + horz_dist * invd);
 	form->draw_pos.y.i = RENDER_HEIGHT * 0.5f - frame->offset;
-	new_size.x.i = enemy->texture.width * inv_det;
-	new_size.y.i = enemy->texture.height * inv_det;
+	new_size.x.i = enemy->texture.width * invd;
+	new_size.y.i = enemy->texture.height * invd;
 	form->delta.x.f = 1.0 / new_size.x.i;
 	form->delta.y.f = 1.0 / new_size.y.i;
 	stt_clip(form, new_size);

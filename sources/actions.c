@@ -4,6 +4,7 @@
 #include "cmlx_base.h"
 #include "cub_structs.h"
 
+static
 size_t	stt_first_neighbor(t_vec2 pos, t_vec2 dir, t_map *map)
 {
 	int		cx;
