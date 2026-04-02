@@ -81,6 +81,7 @@ void	stt_sprites_init(t_game *game)
 	game->player.ammo = AMMO_COUNT;
 	game->player.health = PLAYER_HEALTH;
 	game->player.state = st_idle;
+	game->player.map = st_off;
 }
 
 static

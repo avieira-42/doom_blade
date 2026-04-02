@@ -175,9 +175,13 @@ void    stt_map_render(t_game *game)
 
 void    animate_hud(t_game *game)
 {
-	if (game->player.state & st_minimap_checking)
+	input_handler(game);
+	if (game->player.map & st_checking)
 		stt_map_render(game);
-	/*else
+	if (game->player.map & st_raising
+			&& !(game->player.map & st_checking))
 	{
-	}*/
+		printf("hello\n");
+		game->player.map |= st_checking;
+	}
 }
