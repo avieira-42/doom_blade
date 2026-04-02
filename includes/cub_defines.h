@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub_defines.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/02 01:10:48 by avieira-          #+#    #+#             */
+/*   Updated: 2026/04/02 01:23:26 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB_DEFINES_H
 # define CUB_DEFINES_H
 
@@ -55,7 +67,8 @@ enum e_player_state
 	st_reloading = 1 << 2,
 	st_shooting = 1 << 3,
 	st_interacting = 1 << 4,
-	st_radar = 1 << 5,
+	st_minimap_raising = 1 << 5,
+	st_minimap_checking = 1 << 6,
 	st_shot = 1 << 6,
 };
 
@@ -74,6 +87,7 @@ enum e_keys
 	key_rmb = 1u << 9,
 	key_r = 1u << 10,
 	key_p = 1u << 11,
+	key_tab = 1u << 12,
 };
 
 // Colors

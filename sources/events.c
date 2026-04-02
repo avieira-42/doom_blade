@@ -38,6 +38,8 @@ int	cmlx_keydown(int keycode, t_game *game)
 			game->drawbuf.hands.index = game->player.ammo * RELOAD_CYCLE;
 			game->state.key |= (size_t)key_r;
 		}
+		if (keycode == XK_Tab && !(game->player.state & (st_reloading | st_shooting | st_minimap_raising | st_minimap_checking)))
+			game->player.state |= (size_t)st_minimap_checking;
 	}
 	if (keycode == XK_p)
 	{
@@ -69,6 +71,12 @@ int	cmlx_keyup(int keycode, t_game *game)
 		game->state.key &= ~(size_t)key_ctrl;
 	if (keycode == XK_r)
 		game->state.key &= ~(size_t)key_r;
+	if (keycode == XK_Tab)
+	{
+		game->state.key &= ~(size_t)key_tab;
+		game->player.state &= ~(size_t)st_minimap_raising;
+		game->player.state &= ~(size_t)st_minimap_checking;
+	}
 	return (0);
 }
 
