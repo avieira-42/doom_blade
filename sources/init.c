@@ -74,6 +74,9 @@ int	stt_sprites_init(t_game *game)
 	game->drawbuf.radar = game->assets.radar;
 	game->drawbuf.radar_l0 = game->assets.radar_l0;
 	game->drawbuf.radar_l1 = game->assets.radar_l1;
+	// segredo >>>
+	enemy_init(game);
+	// <<< segredo
 	return (0);
 }
 

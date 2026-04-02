@@ -9,6 +9,9 @@
 #include "cmlx_draw.h"
 #include "cub_structs.h"
 
+// segredo
+void	enemy_init(t_game *game);
+
 // Draw and Render
 void		raycast(t_view *cam, t_map *map, t_rayhit *rays);
 void		planecast(t_frame frame, t_mat32 floor, t_mat32 ceiling, t_view cam);

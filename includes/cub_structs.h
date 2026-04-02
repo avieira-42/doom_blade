@@ -32,6 +32,10 @@ typedef struct s_enemy
 	t_view	cam;
 	t_vec2	speed;
 	t_mat32	texture;
+	t_sheet	running; // segredo
+	t_sheet	shooting; // segredo
+	t_sheet	dying; // segredo
+	uint32_t	state; // segredo
 	int32_t	health;
 	long	respawn_timer;
 	uint8_t	id;
