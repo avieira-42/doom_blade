@@ -37,6 +37,8 @@ int	cmlx_keydown(int keycode, t_game *game)
 			game->drawbuf.hands = game->assets.reload;
 			game->drawbuf.hands.index = game->player.ammo * RELOAD_CYCLE;
 			game->state.key |= (size_t)key_r;
+			game->player.map &= ~(size_t)st_raising;
+			game->player.map &= ~(size_t)st_checking;
 		}
 		if (keycode == XK_Tab)
 			game->state.key |= (size_t)key_tab;

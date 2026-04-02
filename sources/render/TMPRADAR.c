@@ -9,7 +9,6 @@ void    stt_pixel_swap(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
     if (x < 0 || x >= frame.width || y < 0 || y >= frame.height)
         return ;
     dst = frame.ptr + x * frame.stride + y;
-	printf("*dst: %i\n", *dst);
     if (color == 0x000000)
     {
         if (*dst == 2693401)
