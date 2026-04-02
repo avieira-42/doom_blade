@@ -13,9 +13,13 @@
 void		raycast(t_view *cam, t_map *map, t_rayhit *rays);
 void		planecast(t_frame frame, t_mat32 floor, t_mat32 ceiling, t_view cam);
 void		render_image(t_game *game);
-bool		cub_draw_enemy(t_frame *frame, t_rayhit *rays, t_player *player, t_enemy *enemy);
 void		cub_update_state(t_player *player, t_audio *audio, t_game *game, long dt);
+int			cub_actions(t_game *game);
 
+// Draw
+void		cub_draw_crosshair(uint32_t *ptr);
+void		cub_draw_enemies(t_game *game, long dt);
+void		cub_draw_hud(t_mat32 frame, t_drawbuf *drawbuf);
 int			ft_transpose(t_mat32 *src);
 int			ft_transpose_img(uint32_t *ptr, size_t width, size_t height);	// TMP
 int			cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner);
@@ -41,10 +45,10 @@ void	input_handler(t_game *game);
 
 // init
 int		cub_init(const char *filename, t_game *game, t_memory *memory);
-int		cub_cleanup(t_game *game);
-int		cub_parse_textures(t_xvar *mlx, const char *str, const char **str_ptr, t_block *blocks);
-int		cub_read_map(const char *str, t_map *map, t_player *player);
-t_sheet cub_read_spritesheet(t_xvar *mlx, const char *base_path, size_t count, long frame_time);
+int		cub_cleanup(t_game *game, const char *msg);
+int		cub_parse_textures(t_game *game, const char *str, const char **str_ptr, t_block *blocks);
+int		cub_read_map(t_game *game, const char *str, t_map *map, t_player *player);
+t_sheet cub_read_spritesheet(t_game *game, const char *base_path, size_t count, long frame_time);
 
 // Physics
 void	cub_update_pos(t_game *game, float dt);
@@ -65,7 +69,6 @@ t_vec2	vec2_norm(t_vec2 vec);
 int32_t	vec2_dist(t_vec2 a, t_vec2 b);
 int32_t	vec2_idist(t_vec2 a, t_vec2 b);
 int		cub_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr);
-void	ft_error(const char *prefix, const char *suffix);
 // ------------------------------
 
 void		**ft_free_array(void *array, size_t length);

@@ -15,7 +15,7 @@
 
 // Returns: >0) Ok, -1) Invalid value (P), -2) Two Player Positions (P)
 static
-ssize_t	stt_parse_line(const char *line, t_map *map, t_player *player)
+ssize_t	stt_parse_line(t_game *game, const char *line, t_map *map, t_player *player)
 {
 	char		c;
 	const char	*oline = line;
@@ -29,14 +29,14 @@ ssize_t	stt_parse_line(const char *line, t_map *map, t_player *player)
 		else if (c == 'N' || c == 'E' || c == 'S' || c == 'W')
 		{
 			if (player->cam.pos.x.f != 0.0f)
-				return (-2);	// TODO: PRINT Two player positions (check for no player)
+				return (cub_cleanup(game, "Two player positions"));
 			player->cam.pos.x.f = (line++ - oline) + 0.5f;
 			player->cam.pos.y.f = map->height + 0.5f;
 			player->cam.dir.y.f = (c == 'N') - (c == 'S');
 			player->cam.dir.x.f = (c == 'W') - (c == 'E');
 		}
 		else
-			return (-1);	// Not NESW, space or 01 (TODO: Doors will change this, will have to use LUT)
+			return (cub_cleanup(game, "Invalid map index"));
 	}
 	width = (size_t)(line - oline);
 	if (width > map->width)
@@ -108,28 +108,30 @@ void	stt_init_map(t_map *map)
 	}
 }
 
-int	cub_read_map(const char *str, t_map *map, t_player *player)
+int	cub_read_map(t_game *game, const char *str, t_map *map, t_player *player)
 {
 	ssize_t		offset;
 	const char	*ostr = str;
 
 	while (*str != 0)
 	{
-		offset = stt_parse_line(str, map, player);
-		if (offset <= 0)
-			return (offset);
+		offset = stt_parse_line(game, str, map, player);
 		str += offset;
 		map->height++;
 	}
+	if (map->height < 3 && map->width < 3)
+		return (cub_cleanup(game, "Invalid map configuration"));	// REVIEW
 	map->tex_index = malloc(map->height * map->width * 2);
 	if (map->tex_index == NULL)
-		return (-1);
+		return (cub_cleanup(game, "Malloc failure"));
 	map->state = map->tex_index + map->height * map->width;
 	ft_memset(map->tex_index, 1, map->height * map->width);
 	ft_memset(map->state, 255, map->height * map->width);
 	stt_filtercpy(ostr, map);
-	// if (stt_validate_map(map) == -1)
-	// 	return (-1);	// TODO: free and print
+	if (game->player.cam.dir.x.f == 0.0f && game->player.cam.dir.y.f == 0.0f)
+		return (cub_cleanup(game, "Player was not found in the map"));
+	if (stt_validate_map(map) == -1)
+		return (cub_cleanup(game, "Invalid map configuration"));	// TODO: free and print
 	stt_init_map(map);
 	return (0);
 }

@@ -122,7 +122,7 @@ int	stt_match_texture(t_xvar *mlx, const char *str, t_block *blocks, const char 
 	return (rvalue);
 }
 
-int	cub_parse_textures(t_xvar *mlx, const char *str, const char **str_ptr, t_block *blocks)
+int	cub_parse_textures(t_game *game, const char *str, const char **str_ptr, t_block *blocks)
 {
 	int		rvalue;
 	size_t	match_target;
@@ -130,21 +130,23 @@ int	cub_parse_textures(t_xvar *mlx, const char *str, const char **str_ptr, t_blo
 	match_target = 7;	// If DOOR is found, then match_target needs to be increased
 	while (*str != 0 && match_target > 0)
 	{
-		rvalue = stt_match_texture(mlx, str, blocks, &str);
+		rvalue = stt_match_texture(game->mlx, str, blocks, &str);
 		if (rvalue < 0)
-			return (-1);	// Future exit cleanup
+			return (cub_cleanup(game, "Failed to parse texture"));
 		else if (rvalue == 0)
 			match_target--;
 		else
 			str++;
 	}
 	if (match_target != 0)
-		return (-1);
+		return (cub_cleanup(game, "Fewer textures than expected"));
 	while (*str != 0 && *str != '1')	// Skips until the map portion
 	{
 		if (*str == '\n')
 			*str_ptr = str + 1;
 		str++;
 	}
-	return (-(*str == 0));
+	if (*str == 0)
+		return (cub_cleanup(game, "Map in incorrect format"));
+	return (0);
 }

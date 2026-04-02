@@ -81,8 +81,8 @@ void	stt_grid_render(t_game *game, t_grid grid, int32_t x, int32_t y)
 void    stt_blocks_render(t_game *game, t_vec2 pos,
 		int32_t bound, t_vec2 map_center)
 {
-	int32_t y;
-	int32_t x;
+	int32_t	y;
+	int32_t	x;
 	t_grid	grid;
 
 	grid.map_center = map_center;
@@ -105,15 +105,15 @@ void    stt_blocks_render(t_game *game, t_vec2 pos,
 	}
 }
 
-	static
-void    stt_draw_player_circle(t_game *game, t_vec2 p_pos,
+static
+void	stt_draw_player_circle(t_game *game, t_vec2 p_pos,
 		t_vec2 map_center, int bound)
 {
-	int32_t radius;
-	int32_t dy;
-	int32_t dx;
-	int32_t px;
-	int32_t py;
+	int32_t	radius;
+	int32_t	dy;
+	int32_t	dx;
+	int32_t	px;
+	int32_t	py;
 
 	radius = 2;
 	dy = -radius;
@@ -137,7 +137,7 @@ void    stt_draw_player_circle(t_game *game, t_vec2 p_pos,
 	}
 }
 
-	static
+static
 void	stt_draw_layer(t_mat32 frame, t_sheet layer, t_vec2 first_pixel_pos)
 {
 	layer.texture.ptr += layer.index * layer.frame_size;
@@ -145,14 +145,14 @@ void	stt_draw_layer(t_mat32 frame, t_sheet layer, t_vec2 first_pixel_pos)
 			first_pixel_pos.y.i);
 }
 
-	static
-void    stt_map_render(t_game *game)
+static
+void	stt_map_render(t_game *game)
 {
-	t_vec2  first_pixel_pos;
-	t_vec2  last_pixel_pos;
-	t_vec2  bound;
-	t_vec2  map_center;
-	t_vec2  p_pos;
+	t_vec2	first_pixel_pos;
+	t_vec2	last_pixel_pos;
+	t_vec2	bound;
+	t_vec2	map_center;
+	t_vec2	p_pos;
 
 	first_pixel_pos.x.i = 110;
 	first_pixel_pos.y.i = 240;

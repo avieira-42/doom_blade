@@ -13,6 +13,7 @@
 # define NUM_ENEMIES 8
 # define EPS 0.00000011920929f
 # define PI 3.141592653589793238462643383279502884L
+# define PI_1DEG 0.01745329251994329576923690768488612713439L
 
 // Game Vars
 # define HITREG_AREA 2		// Number of pixels to check in center grid, must be even

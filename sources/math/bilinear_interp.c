@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 15:13:28 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/24 19:23:22 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/02 15:37:25 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,6 @@ uint32_t	stt_lerp_argb(uint32_t p0, uint32_t p1, uint8_t alpha)
 	ga += ((((p1 >> 8) & 0x00FF00FF) - ga) * alpha) >> 8;
 	return (rb & 0x00FF00FF) | ((ga & 0x00FF00FF) << 8);
 }
-
-// row1 = stt_lerp_argb(sample.x.u, sample.y.u, u);
-// row2 = stt_lerp_argb(sample.z.u, sample.w.u, u);
-// result = stt_lerp_argb(row1, row2, v);
-// return (result);
-
-// static inline
-// uint32_t	stt_bilerp_argb(t_vec4 sample, uint8_t u, uint8_t v)
-// {
-
-// }
 
 static inline
 uint32_t	stt_bilerp_argb(t_vec4 sample, uint8_t u, uint8_t v)

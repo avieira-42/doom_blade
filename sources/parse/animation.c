@@ -65,7 +65,7 @@ void	stt_clean_texture(t_mat32 texture)
 
 // Saves images sequentially in memory, in a row x col x depth matrix
 // TODO: Change this to receive a sheet pointer and return error
-t_sheet cub_read_spritesheet(t_xvar *mlx, const char *base_path, size_t count, long frame_time)
+t_sheet cub_read_spritesheet(t_game *game, const char *base_path, size_t count, long frame_time)
 {
 	t_sheet		sheet;
 	t_mat32		texture;
@@ -75,20 +75,20 @@ t_sheet cub_read_spritesheet(t_xvar *mlx, const char *base_path, size_t count, l
 
 	ft_memset(&sheet, 0, sizeof(sheet));
 	if (path.length + 32 > sizeof(buffer))
-		return (sheet);
+		return (cub_cleanup(game, "Texture path is too long"), sheet);
 	ft_memcpy(buffer, base_path, path.length + 1);
-	img = stt_load_img(mlx, path, 0);
+	img = stt_load_img(game->mlx, path, 0);
 	if (img == NULL)
-		return (sheet);
+		return (cub_cleanup(game, "Failed to load MLX image"), sheet);
 	texture = (t_mat32){0, img->width, img->height, count, img->width};
 	texture.ptr = malloc((size_t)(img->height * img->width) * count * sizeof(uint32_t));
 	if (texture.ptr == NULL)
-		return (mlx_destroy_image(mlx, img), sheet);
+		return (mlx_destroy_image(game->mlx, img), cub_cleanup(game, "Malloc failure"), sheet);
 	ft_memcpy(texture.ptr, img->data, texture.width * texture.height * sizeof(uint32_t));
 	ft_transpose(&texture);
-	mlx_destroy_image(mlx, img);
-	if (stt_load_sheet(mlx, texture, path, count) == -1)
-		return (free(texture.ptr), sheet);
+	mlx_destroy_image(game->mlx, img);
+	if (stt_load_sheet(game->mlx, texture, path, count) == -1)
+		return (free(texture.ptr), cub_cleanup(game, "Failed to load sheet"), sheet);
 	sheet.texture = texture;
 	sheet.count = count;
 	sheet.frame_size = texture.width * texture.height;

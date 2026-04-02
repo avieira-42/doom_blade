@@ -5,6 +5,7 @@
 
 int	mlx_mouse_get_pos(void *mlx, void *win_ptr, int *x, int *y);
 
+
 // TODO: Make the functions take another smaller struct that only relates to keybinds 
 // Keymap
 // 2 KeyRelease
@@ -13,7 +14,7 @@ int	cmlx_keydown(int keycode, t_game *game)
 	if (game->state.paused == false)
 	{
 		if (keycode == XK_Escape)
-			return (cub_cleanup(game));
+			return (mlx_loop_end(game->mlx));
 		if (keycode == XK_w)
 			game->state.key |= (size_t)key_w;
 		if (keycode == XK_a)
@@ -47,6 +48,16 @@ int	cmlx_keydown(int keycode, t_game *game)
 	{
 		game->state.key = (size_t)key_p;	// Clears other keys
 		game->state.paused = true;
+	}
+	if (keycode == XK_Left)
+	{
+		game->player.cam.dir = vec2_rotate(game->player.cam.dir, -PI_1DEG);
+		game->player.cam.plane = vec2_rotate(game->player.cam.plane, -PI_1DEG);
+	}
+	if (keycode == XK_Right)
+	{
+		game->player.cam.dir = vec2_rotate(game->player.cam.dir, PI_1DEG);
+		game->player.cam.plane = vec2_rotate(game->player.cam.plane, PI_1DEG);
 	}
 	return (0);
 }

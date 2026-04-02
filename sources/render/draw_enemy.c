@@ -87,7 +87,8 @@ bool	stt_hitreg(t_form *form)
 	return (value);
 }
 
-bool	cub_draw_enemy(t_frame *frame, t_rayhit *rays, t_player *player, t_enemy *enemy)
+static
+bool	stt_draw_enemy(t_frame *frame, t_rayhit *rays, t_player *player, t_enemy *enemy)
 {
 	uint32_t	x;
 	t_form		form;
@@ -110,4 +111,35 @@ bool	cub_draw_enemy(t_frame *frame, t_rayhit *rays, t_player *player, t_enemy *e
 		x++;
 	}
 	return (stt_hitreg(&form));
+}
+
+void	cub_draw_enemies(t_game *game, long dt)
+{
+	size_t	i;
+	bool	hit;
+	t_enemy	*enemy;
+
+	i = 0;
+	while (i < NUM_ENEMIES)
+	{
+		enemy = game->enemies + i;
+		if (enemy->health > 0)
+		{
+			hit = stt_draw_enemy(&game->frame, game->frame.rays, &game->player, enemy);
+			if ((game->player.state & st_shot) && hit == true)
+				enemy->health -= 50;
+		}
+		else
+		{
+			enemy->respawn_timer += dt;
+			if (enemy->respawn_timer > RESPAWN_TIMER)
+			{
+				enemy->respawn_timer = 0;
+				enemy->cam.pos = random_valid_pos(&game->map);
+				enemy->health = 100;
+			}
+		}
+		i++;
+	}
+	game->player.state &= ~(size_t)st_shot;	// Clears the just shot flag
 }

@@ -41,7 +41,6 @@ typedef struct s_memory
 {
 	uint32_t	render_frame[RENDER_WIDTH][RENDER_HEIGHT];
 	t_rayhit	rays[RENDER_WIDTH];
-	uint32_t	empty_line[TEX_HEIGHT];
 }	t_memory;
 
 typedef struct s_gstate
@@ -49,6 +48,7 @@ typedef struct s_gstate
 	bool	paused;
 	long	time;
 	size_t	key;
+
 	// ...
 }	t_gstate;
 
@@ -61,14 +61,15 @@ typedef struct s_audio
 	Mix_Chunk	*step_fast;
 }	t_audio;
 
+// If adding to assets, remember to add to the free list
 typedef struct s_assets
 {
+	t_audio	audio;
 	t_sheet	reload;
 	t_sheet	shoot;
 	t_sheet	walk;
 	t_sheet	city;
 	t_sheet	radar;
-	t_audio	audio;
 	t_sheet	radar_l0;
 	t_sheet	radar_l1;
 }	t_assets;
@@ -84,6 +85,7 @@ typedef struct s_game
 	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
 	t_assets	assets;
 	t_drawbuf	drawbuf;
+	const char	*file;
 }	t_game;
 
 #endif
