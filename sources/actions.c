@@ -24,10 +24,10 @@ size_t	stt_first_neighbor(t_vec2 pos, t_vec2 dir, t_map *map)
 	else if (dir.y.f < 0.0f)
 		ty = (cy - pos.y.f) / dir.y.f;
 	if (tx < ty)
-		cx += (dir.x.f > 0.0f ? 1 : -1);
+		cx += ((dir.x.f > 0.0f) << 1) - 1;
 	else
-		cy += (dir.y.f > 0.0f ? 1 : -1);
-	return (cy * map->width + cx);
+		cy += ((dir.y.f > 0.0f) << 1) - 1;
+	return ((uint32_t)cy * map->width + (uint32_t)cx);
 }
 
 void	input_handler(t_game *game)

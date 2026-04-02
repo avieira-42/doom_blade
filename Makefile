@@ -23,7 +23,7 @@ OBJS = $(addprefix $(OBJ_PATH)/, $(SRCS:.c=.o))
 # Flags --------------------------------------- #
 CC = clang
 CPPFLAGS = $(addprefix -I,$(INC_PATH))
-CFLAGS = -Wall -Wextra -march=native -std=c11
+CFLAGS = -Wall -Wextra -std=c11
 SDLFLAGS = -lSDL2 -lSDL2_mixer -lSDL2main
 LDFLAGS = -lXext -lX11 -lm -lz $(SDLFLAGS)
 DEBUG = -g -Wpedantic -Wcast-qual -Wfloat-equal -Wswitch-default -Wsign-conversion

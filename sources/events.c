@@ -5,7 +5,6 @@
 
 int	mlx_mouse_get_pos(void *mlx, void *win_ptr, int *x, int *y);
 
-
 // TODO: Make the functions take another smaller struct that only relates to keybinds 
 // Keymap
 // 2 KeyRelease
@@ -82,6 +81,8 @@ int	cmlx_keyup(int keycode, t_game *game)
 // TODO: The X Y could be relevant for hitreg
 int	cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game)
 {
+	(void) x;
+	(void) y;
 	if (button == 1 && game->player.state != st_shooting)
 	{
 		if (game->player.ammo == 0)
@@ -93,12 +94,6 @@ int	cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game)
 			game->player.state = (st_shooting | st_shot);
 		}
 	}
-	return (0);
-}
-
-// 5 ButtonRelease
-int	cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game)
-{
 	return (0);
 }
 

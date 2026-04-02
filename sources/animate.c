@@ -67,12 +67,12 @@ void	cub_update_state(t_player *player, t_audio *audio, t_game *game, long dt)
 	static void		*prev_move_state = NULL;
 	static int32_t	prev_ammo = AMMO_COUNT;
 	void			*new_move_state;
-	const float		new_speed = fmaxf(fabsf(player->speed.x.f), fabsf(player->speed.y.f));
+	const float		new_spd = fmaxf(fabsf(player->speed.x.f), fabsf(player->speed.y.f));
 
 	stt_update_hud(player, &game->assets, &game->drawbuf, dt);
-	if (new_speed < HALT_THR)
+	if (new_spd < HALT_THR)
 		new_move_state = NULL;
-	else if (new_speed > SPEED_THR)
+	else if (new_spd > SPEED_THR)
 		new_move_state = game->assets.audio.step_fast;
 	else
 		new_move_state = game->assets.audio.step;

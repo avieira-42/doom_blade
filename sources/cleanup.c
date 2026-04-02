@@ -49,7 +49,7 @@ int	cub_cleanup(t_game *game, const char *msg)
 	const int	rvalue = msg == NULL;
 
 	if (msg != NULL && *msg != 0)
-		stt_error("msg");
+		stt_error(msg);
 	free(game->file);
 	free(game->map.tex_index);
 	if (game->mlx != NULL && game->mlx->win_list != NULL)
