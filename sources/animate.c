@@ -55,7 +55,8 @@ void	stt_update_hud(t_player *player, t_assets *assets, t_drawbuf *drawbuf, long
 		player->state = st_idle;
 	}
 	// RADAR TMP >>>
-	stt_render_animation(&drawbuf->radar, dt);
+	if (player->map & st_raising)
+		stt_render_animation(&drawbuf->radar, dt);
 	stt_render_animation(&drawbuf->radar_l0, dt);
 	stt_render_animation(&drawbuf->radar_l1, dt);
 	// <<< RADAR TMP

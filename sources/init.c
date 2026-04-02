@@ -68,7 +68,7 @@ void	stt_sprites_init(t_game *game)
 	game->assets.reload = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_reloading", 32, ANIM_TIME);	// Changed from 33 to 32
 	game->assets.city = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/tiles/city", 4, ANIM_TIME);
 
-	game->assets.radar = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_radar", 1, ANIM_TIME);
+	game->assets.radar = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/hands_radar", 4, ANIM_TIME * 3);
 	game->assets.radar_l0 = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/map/layer0_", 13, ANIM_TIME / 3);
 	game->assets.radar_l1 = cub_read_spritesheet(game->mlx, "assets/sprites/xpm/hud/hands/map/layer1_", 1, ANIM_TIME);
 

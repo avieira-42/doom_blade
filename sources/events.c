@@ -59,6 +59,7 @@ void	input_handler(t_game *game)
 	}
 	else if (!(game->state.key & key_tab))
 	{
+		game->drawbuf.radar.index = 0;
 		game->player.map &= ~(size_t)st_raising;
 		game->player.map &= ~(size_t)st_checking;
 	}
