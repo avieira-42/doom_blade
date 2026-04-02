@@ -30,6 +30,22 @@ size_t	stt_first_neighbor(t_vec2 pos, t_vec2 dir, t_map *map)
 	return (cy * map->width + cx);
 }
 
+void	input_handler(t_game *game)
+{
+	if (game->state.key & key_tab)
+	{
+		if (!(game->player.state & (st_reloading | st_shooting))
+				&& !(game->player.map & (st_raising | st_checking)))
+			game->player.map |= (size_t)st_raising;
+	}
+	else if (!(game->state.key & key_tab))
+	{
+		game->drawbuf.radar.index = 0;
+		game->player.map &= ~(size_t)st_raising;
+		game->player.map &= ~(size_t)st_checking;
+	}
+}
+
 int	cub_actions(t_game *game)
 {
 	size_t	index;

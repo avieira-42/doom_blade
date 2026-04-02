@@ -9,7 +9,4 @@ I think gates might be a system where, when its a gate, you calculate two rayhit
 <!-- 1. Polish draw sprites function to take y offset parameter -->
 
 TO REMEMBER:
-- Map width and height must be greater than 3x3
 - Screen width and height must be greater than render height/width
-- The left and right arrow keys of the keyboard must allow you to look left and right in the maze
-- Clicking on the red cross on the window’s frame must close the window and quit the program cleanly.

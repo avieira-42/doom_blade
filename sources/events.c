@@ -11,81 +11,53 @@ int	mlx_mouse_get_pos(void *mlx, void *win_ptr, int *x, int *y);
 // 2 KeyRelease
 int	cmlx_keydown(int keycode, t_game *game)
 {
-	if (game->state.paused == false)
-	{
-		if (keycode == XK_Escape)
-			return (mlx_loop_end(game->mlx));
-		if (keycode == XK_w)
-			game->state.key |= (size_t)key_w;
-		if (keycode == XK_a)
-			game->state.key |= (size_t)key_a;
-		if (keycode == XK_s)
-			game->state.key |= (size_t)key_s;
-		if (keycode == XK_d)
-			game->state.key |= (size_t)key_d;
-		if (keycode == XK_Shift_L)
-			game->state.key |= (size_t)key_shift;
-		if (keycode == XK_Control_L)
-			game->state.key |= (size_t)key_ctrl;
-		if (keycode == XK_e && !(game->player.state & (st_reloading | st_shooting)))
-		{
-			game->player.state = st_interacting;
-			// game->drawbuf.hands = game->assets.interact;
-		}
-		if (keycode == XK_r && !(game->player.state & (st_reloading | st_shooting)) && game->player.ammo < AMMO_COUNT)
-		{
-			game->player.state = (st_reloading);
-			game->drawbuf.hands = game->assets.reload;
-			game->drawbuf.hands.index = game->player.ammo * RELOAD_CYCLE;
-			game->state.key |= (size_t)key_r;
-			game->player.map &= ~(size_t)st_raising;
-			game->player.map &= ~(size_t)st_checking;
-		}
-		if (keycode == XK_Tab)
-			game->state.key |= (size_t)key_tab;
-	}
+	if (keycode == XK_Escape)
+		return (mlx_loop_end(game->mlx));
 	if (keycode == XK_p)
+		game->state.paused ^= 1;
+	if (game->state.paused == true)
+		return (0);
+	if (keycode == XK_w)
+		game->state.key |= (size_t)key_w;
+	if (keycode == XK_a)
+		game->state.key |= (size_t)key_a;
+	if (keycode == XK_s)
+		game->state.key |= (size_t)key_s;
+	if (keycode == XK_d)
+		game->state.key |= (size_t)key_d;
+	if (keycode == XK_Shift_L)
+		game->state.key |= (size_t)key_shift;
+	if (keycode == XK_Control_L)
+		game->state.key |= (size_t)key_ctrl;
+	if (keycode == XK_e && !(game->player.state & (st_reloading | st_shooting)))
+		game->player.state = st_interacting;
+	if (keycode == XK_r && !(game->player.state & (st_reloading | st_shooting)) && game->player.ammo < AMMO_COUNT)
 	{
-		game->state.key = (size_t)key_p;	// Clears other keys
-		game->state.paused = true;
-	}
-	if (keycode == XK_Left)
-	{
-		game->player.cam.dir = vec2_rotate(game->player.cam.dir, -PI_1DEG);
-		game->player.cam.plane = vec2_rotate(game->player.cam.plane, -PI_1DEG);
-	}
-	if (keycode == XK_Right)
-	{
-		game->player.cam.dir = vec2_rotate(game->player.cam.dir, PI_1DEG);
-		game->player.cam.plane = vec2_rotate(game->player.cam.plane, PI_1DEG);
-	}
-	return (0);
-}
-
-void	input_handler(t_game *game)
-{
-	if (game->state.key & key_tab)
-	{
-		if (!(game->player.state & (st_reloading | st_shooting))
-				&& !(game->player.map & (st_raising | st_checking)))
-			game->player.map |= (size_t)st_raising;
-	}
-	else if (!(game->state.key & key_tab))
-	{
-		game->drawbuf.radar.index = 0;
+		game->player.state = (st_reloading);
+		game->drawbuf.hands = game->assets.reload;
+		game->drawbuf.hands.index = game->player.ammo * RELOAD_CYCLE;
+		game->state.key |= (size_t)key_r;
 		game->player.map &= ~(size_t)st_raising;
 		game->player.map &= ~(size_t)st_checking;
 	}
+	if (keycode == XK_Tab)
+		game->state.key |= (size_t)key_tab;
+	if (keycode == XK_Left)
+	{
+		game->player.cam.dir = vec2_rotate(game->player.cam.dir, -PI_DEG);
+		game->player.cam.plane = vec2_rotate(game->player.cam.plane, -PI_DEG);
+	}
+	if (keycode == XK_Right)
+	{
+		game->player.cam.dir = vec2_rotate(game->player.cam.dir, PI_DEG);
+		game->player.cam.plane = vec2_rotate(game->player.cam.plane, PI_DEG);
+	}
+	return (0);
 }
 
 // 3 KeyPress
 int	cmlx_keyup(int keycode, t_game *game)
 {
-	if (keycode == XK_p)
-	{
-		game->state.key = 0;
-		game->state.paused = false;
-	}
 	if (keycode == XK_w)
 		game->state.key &= ~(size_t)key_w;
 	if (keycode == XK_a)
