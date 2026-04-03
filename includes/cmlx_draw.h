@@ -127,7 +127,7 @@ typedef struct s_frame
 	t_mat32		render;
 	t_img		*img;
 	t_rayhit	*rays;
-	float		offset;
+	int32_t		offset;
 }	t_frame;
 
 #endif

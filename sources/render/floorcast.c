@@ -54,7 +54,7 @@ void	floorcast(t_frame frame, t_mat32 floor_mat, t_view cam)
 	t_plane			floor;
 	const t_mat32	render_frame = frame.render;
 
-	y = (float)render_frame.height / 2 - frame.offset;
+	y = render_frame.height / 2 - frame.offset;
 	if (y < 0)
 		y = 0;
 	floor.sprite = floor_mat;

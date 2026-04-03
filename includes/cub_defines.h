@@ -36,8 +36,7 @@
 # define PILL_COUNT 1
 
 // Mouse Movement
-# define OFFSET_MULTIPLIER 100
-# define OFFSET_MAX 650.0f
+# define OFFSET_MAX 650
 
 enum e_audio_channel
 {

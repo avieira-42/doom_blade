@@ -45,8 +45,7 @@ void	stt_texture_sample(t_mat32 texture, double line_height,
 }
 
 static inline
-void	stt_column_render(t_rayhit hit, uint32_t *render_col,
-		t_block *blocks, float offset)
+void	stt_column_render(t_rayhit hit, uint32_t *render_col, t_block *blocks, int32_t offset)
 {
 	t_mat32	texture;
 	double	line_height;

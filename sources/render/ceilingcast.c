@@ -14,7 +14,7 @@ void	stt_calculate_pixel_ceiling(t_frame frame, t_plane *plane,
 	plane->raydir_left.y.f = cam.dir.y.f - cam.plane.y.f;
 	plane->raydir_right.x.f = cam.dir.x.f + cam.plane.x.f;
 	plane->raydir_right.y.f = cam.dir.y.f + cam.plane.y.f;
-	plane->vert_dist = y - ((float)render_frame.height / 2 + frame.offset);
+	plane->vert_dist = y - (render_frame.height / 2 + frame.offset);
 	plane->pos_z = 0.5f * render_frame.height;
 	plane->row_dist = plane->pos_z / plane->vert_dist;
 	plane->step.x.f = plane->row_dist * (plane->raydir_right.x.f
@@ -55,7 +55,7 @@ void	ceilingcast(t_frame frame, t_mat32 ceil_mat, t_view cam)
 	t_plane			ceil;
 	const t_mat32	render_frame = frame.render;
 
-	y = (float)render_frame.height / 2 + frame.offset;
+	y = render_frame.height / 2 + frame.offset;
 	if (y < 0)
 		y = 0;
 	ceil.sprite = ceil_mat;

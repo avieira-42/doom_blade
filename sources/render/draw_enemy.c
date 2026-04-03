@@ -123,7 +123,7 @@ float	stt_init(t_form *form, t_frame *frame, t_view *p, t_enemy *enemy)
 	horz_dist = invd * (p->dir.y.f * rel_pos.x.f - p->dir.x.f * rel_pos.y.f);
 	invd = 1.0f / enemy_dist; // Scale
 	form->draw_pos.x.i = (RENDER_WIDTH * 0.5f) * (1.0f + horz_dist * invd);
-	form->draw_pos.y.i = RENDER_HEIGHT * 0.5f - frame->offset + 15;
+	form->draw_pos.y.i = RENDER_HEIGHT * 0.5f - frame->offset;
 	new_size.x.i = tex.width * invd;
 	new_size.y.i = tex.height * invd;
 	form->delta.x.f = 1.0 / new_size.x.i;
