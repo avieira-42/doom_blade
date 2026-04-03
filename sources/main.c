@@ -16,6 +16,7 @@ int	cmlx_loop(t_game *game)
 	if (game->state.paused == false)
 	{
 		last_frame += dt;
+		input_handler(game);
 		cub_update_pos(game, (double)dt * 0.000001);	// tmp	
 		cub_actions(game);
 		cub_update_state(&game->player, &game->assets.audio, game, dt);

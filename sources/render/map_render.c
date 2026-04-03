@@ -8,7 +8,6 @@ void	animate_hud(t_game *game)
 {
 	t_mat32	texture;
 
-	input_handler(game);
 	if (game->player.map & st_checking)
 	{
 		game->drawbuf.radar.index = 0;

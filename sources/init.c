@@ -37,6 +37,7 @@ int stt_mlx_init(t_game *game)
 	mlx_hook(window, KeyPress, KeyPressMask, cmlx_keydown, game);
 	mlx_hook(window, KeyRelease, KeyReleaseMask, cmlx_keyup, game);
 	mlx_hook(window, ButtonPress, ButtonPressMask, cmlx_mousedown, game);
+	mlx_hook(window, ButtonRelease, ButtonReleaseMask, cmlx_mouseup, game);
 	mlx_hook(window, DestroyNotify, 0, mlx_loop_end, game->mlx);
 	mlx_mouse_hide(game->mlx, window);
 	mlx_loop_hook(game->mlx, cmlx_loop, game);

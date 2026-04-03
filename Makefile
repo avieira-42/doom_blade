@@ -1,6 +1,6 @@
 # Configuration ------------------------------- #
 NAME = main
-VPATH = sources sources/utils sources/parse sources/physics sources/math sources/render
+VPATH = sources sources/utils sources/events sources/parse sources/physics sources/math sources/render
 SRCS = main.c cleanup.c init.c rng.c actions.c draw_hud.c rng_utils.c \
 raycast.c draw_image.c draw_enemy.c render_image.c planecast.c floorcast.c ceilingcast.c \
 time.c io_basic.c memory.c char_ascii.c transpose.c int_limits.c float_limits.c float_abs.c vec2.c\
@@ -8,7 +8,7 @@ map.c textures.c animation.c map_update.c map_render.c \
 convert.c str_search.c animate.c \
 movement.c \
 bilinear_interp.c integer_scaling.c\
-events.c
+keyboard.c mouse.c input.c
 LDLIBS = libraries/mlx/libmlx_Linux.a
 ASM = $(OBJS:.o=.s)
 

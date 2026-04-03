@@ -62,6 +62,7 @@ void	stt_update_hud(t_player *player, t_assets *assets, t_drawbuf *drawbuf, long
 	// <<< RADAR TMP
 }
 
+// Todo: add state change function with hysteresis for audio
 void	cub_update_state(t_player *player, t_audio *audio, t_game *game, long dt)
 {
 	static void		*prev_move_state = NULL;

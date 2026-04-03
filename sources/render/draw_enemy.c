@@ -52,7 +52,7 @@ void	enemy_update_anim(t_enemy *e, long dt, t_player *player)
 		r = stt_render_animation(&e->shot, dt);
 		if (r & (1 << 2))
 		{
-			e->state &= ~e_hit;
+			e->state &= ~(size_t) e_hit;
 			e->state |= e_running;
 		}
 		return ;
@@ -62,7 +62,7 @@ void	enemy_update_anim(t_enemy *e, long dt, t_player *player)
 		r = stt_render_animation(&e->shooting, dt);
 		if (r & (1 << 2))
 		{
-			e->state &= ~e_shooting;
+			e->state &= ~(size_t)e_shooting;
 			e->state |= e_running;
 			e->shooting.index = 0;
 			e->shooting.frame_dt = 0;
@@ -79,7 +79,7 @@ void	enemy_update_anim(t_enemy *e, long dt, t_player *player)
 	stt_render_animation(&e->running, dt);
 	if (is_enemy_shooting())
 	{
-		e->state &= ~e_running;
+		e->state &= ~(size_t)e_running;
 		e->state |= e_shooting;
 		e->shooting.index = 0;
 		e->shooting.frame_dt = 0;
@@ -162,6 +162,11 @@ bool	stt_hitreg(t_form *form)
 		&& form->bottom > ((RENDER_HEIGHT - HITREG_AREA) / 2));
 }
 
+
+// Here we have the check that later we can use
+// to validat the enemy shot, maybe add a flag to
+// the enemy struct that then is checked when the
+// random number generation is checked
 static
 bool	stt_draw_enemy(t_frame *frame, t_rayhit *rays,
 		t_player *player, t_enemy *enemy)
@@ -180,11 +185,7 @@ bool	stt_draw_enemy(t_frame *frame, t_rayhit *rays,
 	norm_pos.x.f = form.norm_offset.x.f;
 	while (x < form.right)
 	{
-		if (enemy_dist < rays[x].perp_dist) // Do not draw if wall column is ahead of enemy
-											// Here we have the check that later we can use
-											// to validat the enemy shot, maybe add a flag to
-											// the enemy struct that then is checked when the
-											// random number generation is checked
+		if (enemy_dist < rays[x].perp_dist)	// Do not draw if wall column is ahead of enemy
 		{
 			ptr = frame->render.ptr + frame->render.stride * x;
 			stt_draw_col(norm_pos, &form, ptr, &tex);

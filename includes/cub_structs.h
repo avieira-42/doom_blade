@@ -15,6 +15,9 @@ typedef struct s_player
 	t_vec2		speed;
 	uint32_t	state;	// Defined by player_state enum
 	uint32_t	map;
+	float		spd_forward;
+	float		spd_sideway;
+	float		spd_max;
 	int32_t		health;
 	int32_t		ammo;
 }	t_player;

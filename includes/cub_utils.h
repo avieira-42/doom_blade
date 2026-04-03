@@ -47,6 +47,7 @@ void		ft_integer_scaling_t(t_mat32 src, t_mat32 dst, size_t factor);
 int		cmlx_keydown(int keycode, t_game *game);
 int		cmlx_keyup(int keycode, t_game *game);
 int		cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game);
+int		cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game);
 int		cmlx_mousemove(t_game *game);
 int		cmlx_loop(t_game *game);
 void	input_handler(t_game *game);

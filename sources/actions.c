@@ -4,7 +4,6 @@
 #include "cmlx_base.h"
 #include "cub_structs.h"
 
-static
 size_t	stt_first_neighbor(t_vec2 pos, t_vec2 dir, t_map *map)
 {
 	int		cx;
@@ -14,37 +13,19 @@ size_t	stt_first_neighbor(t_vec2 pos, t_vec2 dir, t_map *map)
 
 	cx = (int)floorf(pos.x.f);
 	cy = (int)floorf(pos.y.f);
-	tx = FLT_MAX;
-	ty = FLT_MAX;
 	if (dir.x.f > 0.0f)
-		tx = ((cx + 1.0f) - pos.x.f) / dir.x.f;
-	else if (dir.x.f < 0.0f)
-		tx = (cx - pos.x.f) / dir.x.f;
+		tx = (cx + 1.0f - pos.x.f) * fabsf(dir.y.f);
+	else
+		tx = (pos.x.f - cx) * fabsf(dir.y.f);
 	if (dir.y.f > 0.0f)
-		ty = ((cy + 1.0f) - pos.y.f) / dir.y.f;
-	else if (dir.y.f < 0.0f)
-		ty = (cy - pos.y.f) / dir.y.f;
+		ty = (cy + 1.0f - pos.y.f) * fabsf(dir.x.f);
+	else
+		ty = (pos.y.f - cy) * fabsf(dir.x.f);
 	if (tx < ty)
 		cx += ((dir.x.f > 0.0f) << 1) - 1;
 	else
 		cy += ((dir.y.f > 0.0f) << 1) - 1;
 	return ((uint32_t)cy * map->width + (uint32_t)cx);
-}
-
-void	input_handler(t_game *game)
-{
-	if (game->state.key & key_tab)
-	{
-		if (!(game->player.state & (st_reloading | st_shooting))
-				&& !(game->player.map & (st_raising | st_checking)))
-			game->player.map |= (size_t)st_raising;
-	}
-	else if (!(game->state.key & key_tab))
-	{
-		game->drawbuf.radar.index = 0;
-		game->player.map &= ~(size_t)st_raising;
-		game->player.map &= ~(size_t)st_checking;
-	}
 }
 
 int	cub_actions(t_game *game)

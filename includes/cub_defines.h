@@ -19,8 +19,8 @@
 # define HITREG_AREA 2		// Number of pixels to check in center grid, must be even
 # define NEAR_RADIUS 0.1f	// Determines how near for texture culling
 # define MELEE_RANGE 0.25f	// Determines range enemy will approach the player and hit
-# define SPRINT_SPEED 0.3f
-# define PLAYER_SPEED 4.0f
+# define PLAYER_WALK_SPEED 1.6f
+# define PLAYER_RUN_SPEED 3.2f
 # define PLAYER_ACCEL 0.33f
 # define ENEMY_SPEED 2.5f
 # define ENEMY_ACCEL 0.5f
@@ -91,8 +91,10 @@ enum e_keys
 	key_lmb = 1u << 8,
 	key_rmb = 1u << 9,
 	key_r = 1u << 10,
-	key_p = 1u << 11,
+	key_e = 1u << 11,
 	key_tab = 1u << 12,
+	key_left = 1u << 13,
+	key_right = 1u << 14
 };
 
 // Colors
