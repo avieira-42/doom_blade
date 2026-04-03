@@ -106,12 +106,11 @@ void	stt_clip(t_form *form, t_vec2 new_size)
 static inline
 float	stt_init(t_form *form, t_frame *frame, t_view *p, t_enemy *enemy)
 {
-	t_vec2	new_size;
-	float	enemy_dist;
-	float	horz_dist;
-	t_vec2	rel_pos;
-	float	invd;
-	// need to remove this one variable
+	t_vec2			new_size;
+	float			enemy_dist;
+	float			horz_dist;
+	t_vec2			rel_pos;
+	float			invd;
 	const t_mat32	tex = enemy_get_frame(enemy);
 
 	invd = 1.0f / (p->plane.x.f * p->dir.y.f - p->dir.x.f * p->plane.y.f);
@@ -142,7 +141,7 @@ void	stt_draw_col(t_vec2 norm_pos, t_form *form, uint32_t *ptr, t_mat32 *texture
 	y = form->top;
 	norm_pos.y.f = form->norm_offset.y.f;
 	while (y < form->bottom)
-    {
+	{
 		c = ft_bilerp_argb_t(texture, norm_pos);
 		if (c != 0xFF000000 && c != 2228223 && c != 1441791)
 			ptr[y] = c;
@@ -154,10 +153,10 @@ void	stt_draw_col(t_vec2 norm_pos, t_form *form, uint32_t *ptr, t_mat32 *texture
 static inline
 bool	stt_hitreg(t_form *form)
 {
-	return (form->left < ((RENDER_WIDTH  + HITREG_AREA) / 2) &&
-			form->right > ((RENDER_WIDTH  - HITREG_AREA) / 2) &&
-			form->top < ((RENDER_HEIGHT + HITREG_AREA) / 2) &&
-			form->bottom > ((RENDER_HEIGHT - HITREG_AREA) / 2));
+	return (form->left < ((RENDER_WIDTH  + HITREG_AREA) / 2)
+		&& form->right > ((RENDER_WIDTH  - HITREG_AREA) / 2)
+		&& form->top < ((RENDER_HEIGHT + HITREG_AREA) / 2)
+		&& form->bottom > ((RENDER_HEIGHT - HITREG_AREA) / 2));
 }
 
 static
@@ -168,15 +167,15 @@ bool	stt_draw_enemy(t_frame *frame, t_rayhit *rays,
 	t_vec2		norm_pos;
 	uint32_t	*ptr;
 	uint32_t	x;
-    t_mat32		tex;
-    float		enemy_dist;
+	t_mat32		tex;
+	float		enemy_dist;
 
 	tex = enemy_get_frame(enemy);
 	enemy_dist = stt_init(&form, frame, &player->cam, enemy);
-    if (enemy_dist <= NEAR_RADIUS)
+	if (enemy_dist <= NEAR_RADIUS)
 		return (false);
-    x = form.left;
-    norm_pos.x.f = form.norm_offset.x.f;
+	x = form.left;
+	norm_pos.x.f = form.norm_offset.x.f;
 	while (x < form.right)
 	{
 		if (enemy_dist < rays[x].perp_dist)
@@ -198,12 +197,11 @@ void	cub_draw_enemies(t_game *game, long dt)
 
 	i = 0;
 	while (i < NUM_ENEMIES)
-    {
+	{
 		enemy = &game->enemies[i];
 		enemy_update_anim(enemy, dt, &game->player);
 		if (!(enemy->state & e_dead))
 		{
-			// to separate from this function >>>
 			hit = stt_draw_enemy(&game->frame, game->frame.rays,
 					&game->player, enemy);
 			if ((game->player.state & st_shot) && hit)
@@ -225,7 +223,6 @@ void	cub_draw_enemies(t_game *game, long dt)
 					}
 				}
 			}
-			// <<< to separate from this function
 		}
 		i++;
 	}
