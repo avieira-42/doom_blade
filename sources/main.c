@@ -16,18 +16,15 @@ int	cmlx_loop(t_game *game)
 	if (game->state.paused == false)
 	{
 		last_frame += dt;
-		input_handler(game);
-		cub_update_pos(game, (double)dt * 0.000001);	// tmp	
-		cub_actions(game);
-		cub_update_state(&game->player, &game->assets.audio, game, dt);
 		ft_memset(game->frame.display.ptr, 0, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(uint32_t));
 		ft_memset(game->frame.render.ptr, 0, RENDER_HEIGHT * RENDER_WIDTH * sizeof(uint32_t));
-		render_image(game);
+		input_handler(game);
+		cub_update_pos(game, (double)dt * 0.000001);
+		cub_actions(game);
+		cub_update_state(&game->player, &game->assets.audio, game, dt);
+		cub_draw_world(game);
 		cub_draw_enemies(game, dt);
-		// TMP RADAR >>>
-		animate_hud(game);
-		// <<< TMP RADAR
-		cub_draw_hud(game->frame.render, &game->drawbuf, game->player.health, game->assets.blood);
+		cub_draw_hud(game->frame.render, &game->drawbuf, game);
 		ft_integer_scaling_t(game->frame.render, game->frame.display, UPSCALING_FACTOR);
 		cub_draw_crosshair(game->frame.display.ptr);
 		mlx_put_image_to_window(game->mlx, game->mlx->win_list, game->frame.img, 0, 0);

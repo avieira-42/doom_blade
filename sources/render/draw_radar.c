@@ -98,7 +98,7 @@ void	stt_blocks_render(t_game *game, t_vec2 pos,
 	}
 }
 
-void	map_render(t_game *game)
+void	draw_radar(t_game *game)
 {
 	t_vec2	first_pixel_pos;
 	t_vec2	last_pixel_pos;

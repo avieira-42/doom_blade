@@ -48,7 +48,7 @@ void	stt_render_row_ceil(t_mat32 frame, t_plane *plane, int32_t x, int32_t y)
 	plane->pos.y.f += plane->step.y.f;
 }
 
-void	ceilingcast(t_frame frame, t_mat32 ceil_mat, t_view cam)
+void	ceilcast(t_frame frame, t_mat32 ceil_mat, t_view cam)
 {
 	int				y;
 	int				x;

@@ -70,7 +70,7 @@ void	stt_column_render(t_rayhit hit, uint32_t *render_col, t_block *blocks, int3
 
 // Blocks contains transposed rows for sequential memory access
 // Everything is done in cols by rows, and then tranposed for the rendering
-void	render_image(t_game *game)
+void	cub_draw_world(t_game *game)
 {
 	size_t		x;
 	uint32_t	*ptr;

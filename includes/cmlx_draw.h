@@ -30,17 +30,11 @@ typedef struct s_rayhit
 
 typedef struct s_plane
 {
-	t_mat32		sprite;
-	t_vec2		raydir_left;
-	t_vec2		raydir_right;
-	t_vec2		step;
-	t_vec2		pos;
-	t_vec2		texture;
-	uint32_t	*col_ptr;
-	int32_t		ceil_y;
-	int32_t		vert_dist;
-	float		pos_z;
-	float		row_dist;
+	t_mat32	texture;
+	t_vec2	ray_left;
+	t_vec2	ray_right;
+	t_vec2	pos;
+	t_vec2	step;
 }	t_plane;
 
 typedef	struct s_grid
