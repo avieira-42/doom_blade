@@ -40,6 +40,7 @@ typedef struct s_enemy
 	int32_t	health;
 	long	respawn_timer;
 	uint8_t	id;
+	bool	is_visible;
 }	t_enemy;
 
 typedef struct s_memory

@@ -90,17 +90,17 @@ void	enemy_update_anim(t_enemy *e, long dt, t_player *player)
 static inline
 void	stt_clip(t_form *form, t_vec2 new_size)
 {
-	const int32_t	ux = form->draw_pos.x.i - new_size.x.i / 2;
-	const int32_t	uy = form->draw_pos.y.i - new_size.y.i / 2;
+	const int32_t	unclipped_x = form->draw_pos.x.i - new_size.x.i / 2;
+	const int32_t	unclipped_y = form->draw_pos.y.i - new_size.y.i / 2;
 
-	form->left = ft_iclamp(ux, 0, RENDER_WIDTH);
+	form->left = ft_iclamp(unclipped_x, 0, RENDER_WIDTH);
 	form->right = ft_iclamp(form->draw_pos.x.i + new_size.x.i / 2, 0,
 			RENDER_WIDTH);
-	form->top = ft_iclamp(uy, 0, RENDER_HEIGHT);
+	form->top = ft_iclamp(unclipped_y, 0, RENDER_HEIGHT);
 	form->bottom = ft_iclamp(form->draw_pos.y.i + new_size.y.i / 2, 0,
 			RENDER_HEIGHT);
-	form->norm_offset.x.f = ((int)form->left - ux) * form->delta.x.f;
-	form->norm_offset.y.f = ((int)form->top - uy) * form->delta.y.f;
+	form->norm_offset.x.f = ((int)form->left - unclipped_x) * form->delta.x.f;
+	form->norm_offset.y.f = ((int)form->top - unclipped_y) * form->delta.y.f;
 }
 
 static inline
@@ -121,7 +121,7 @@ float	stt_init(t_form *form, t_frame *frame, t_view *p, t_enemy *enemy)
 	if (enemy_dist <= NEAR_RADIUS)
 		return (enemy_dist);
 	horz_dist = invd * (p->dir.y.f * rel_pos.x.f - p->dir.x.f * rel_pos.y.f);
-	invd = 1.0f / enemy_dist;
+	invd = 1.0f / enemy_dist; // Scale
 	form->draw_pos.x.i = (RENDER_WIDTH * 0.5f) * (1.0f + horz_dist * invd);
 	form->draw_pos.y.i = RENDER_HEIGHT * 0.5f - frame->offset + 15;
 	new_size.x.i = tex.width * invd;
@@ -142,14 +142,17 @@ void	stt_draw_col(t_vec2 norm_pos, t_form *form, uint32_t *ptr, t_mat32 *texture
 	norm_pos.y.f = form->norm_offset.y.f;
 	while (y < form->bottom)
 	{
-		c = ft_bilerp_argb_t(texture, norm_pos);
-		if (c != 0xFF000000 && c != 2228223 && c != 1441791)
+		c = ft_bilerp_argb_t(texture, norm_pos); // Bilerp takes a normalized range to sample from
+		if (c != 0xFF000000 && c != 2228223 && c != 1441791) // TODO: Proper alpha blend
 			ptr[y] = c;
 		norm_pos.y.f += form->delta.y.f;
 		y++;
 	}
 }
 
+// Returns true if the enemy is within a NxN pixel grid on the center of the screen
+// Could add a check to see if the pixels belong to ignored alpha color, but id need to map screen space coordinate
+// to texture space, and that sounds like too much work. its not a bug its a feature
 static inline
 bool	stt_hitreg(t_form *form)
 {
@@ -168,17 +171,20 @@ bool	stt_draw_enemy(t_frame *frame, t_rayhit *rays,
 	uint32_t	*ptr;
 	uint32_t	x;
 	t_mat32		tex;
-	float		enemy_dist;
+	float		enemy_dist = stt_init(&form, frame, &player->cam, enemy); // Could be dist
 
 	tex = enemy_get_frame(enemy);
-	enemy_dist = stt_init(&form, frame, &player->cam, enemy);
 	if (enemy_dist <= NEAR_RADIUS)
 		return (false);
 	x = form.left;
 	norm_pos.x.f = form.norm_offset.x.f;
 	while (x < form.right)
 	{
-		if (enemy_dist < rays[x].perp_dist)
+		if (enemy_dist < rays[x].perp_dist) // Do not draw if wall column is ahead of enemy
+											// Here we have the check that later we can use
+											// to validat the enemy shot, maybe add a flag to
+											// the enemy struct that then is checked when the
+											// random number generation is checked
 		{
 			ptr = frame->render.ptr + frame->render.stride * x;
 			stt_draw_col(norm_pos, &form, ptr, &tex);
@@ -226,5 +232,5 @@ void	cub_draw_enemies(t_game *game, long dt)
 		}
 		i++;
 	}
-	game->player.state &= ~(size_t)st_shot;
+	game->player.state &= ~(size_t)st_shot; // Clears the just shot flag
 }
