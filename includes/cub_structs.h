@@ -32,9 +32,15 @@ typedef struct s_enemy
 	t_view	cam;
 	t_vec2	speed;
 	t_mat32	texture;
+	t_sheet	running; // segredo
+	t_sheet	shooting; // segredo
+	t_sheet	dying; // segredo
+	t_sheet	shot; // segredo
+	uint32_t	state; // segredo
 	int32_t	health;
 	long	respawn_timer;
 	uint8_t	id;
+	bool	is_visible;
 }	t_enemy;
 
 typedef struct s_memory
@@ -72,6 +78,7 @@ typedef struct s_assets
 	t_sheet	radar;
 	t_sheet	radar_l0;
 	t_sheet	radar_l1;
+	t_sheet	blood;
 }	t_assets;
 
 typedef struct s_game

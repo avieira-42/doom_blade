@@ -11,12 +11,14 @@ static inline
 void	stt_filter(t_rayhit *rays)
 {
 	size_t	x;
+	float	next;
+	float	cur;
 
 	x = 0;
 	while (x < RENDER_WIDTH - 1)
 	{
-		float next = rays[x + 1].perp_dist;
-		float cur = rays[x].perp_dist;
+		next = rays[x + 1].perp_dist;
+		cur = rays[x].perp_dist;
 		if (fabsf(next) - fabsf(cur) < 0.25f)
 			next = cur;
 		x++;
@@ -24,7 +26,8 @@ void	stt_filter(t_rayhit *rays)
 }
 
 static inline
-void	stt_texture_sample(t_mat32 texture, double line_height, uint32_t *render_col, int32_t draw_start, int32_t draw_end, int32_t unclamped_start)
+void	stt_texture_sample(t_mat32 texture, double line_height,
+		uint32_t *render_col, int32_t draw_start, int32_t draw_end, int32_t unclamped_start)
 {
 	int32_t			y;
 	float			tex_pos;
@@ -42,7 +45,8 @@ void	stt_texture_sample(t_mat32 texture, double line_height, uint32_t *render_co
 }
 
 static inline
-void	stt_column_render(t_rayhit hit, uint32_t *render_col, t_block *blocks, float offset)
+void	stt_column_render(t_rayhit hit, uint32_t *render_col,
+		t_block *blocks, float offset)
 {
 	t_mat32	texture;
 	double	line_height;

@@ -59,6 +59,17 @@ enum e_player_state
 	st_shot = 1 << 6,
 };
 
+//segredo
+enum e_enemy_state
+{
+	e_idle = 0,
+	e_running = 1 << 0,
+	e_shooting = 1 << 1,
+	e_hit = 1 << 2,
+	e_dying = 1 << 3,
+	e_dead = 1 << 4,
+};
+
 enum e_minimap_state
 {
 	st_off = 0,
