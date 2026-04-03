@@ -8,6 +8,16 @@
 # include "cmlx_draw.h"
 # include "cub_defines.h"
 
+typedef struct s_hands
+{
+	t_sheet	reload;
+	t_sheet	shoot;
+	t_sheet	walk;
+	t_sheet	radar;
+	t_sheet	radar_l0;
+	t_sheet	radar_l1;
+}	t_hands;
+
 // Every physics loop, positions are updated taking into account the speed vector
 typedef struct s_player
 {
@@ -15,6 +25,7 @@ typedef struct s_player
 	t_vec2		speed;
 	uint32_t	state;	// Defined by player_state enum
 	uint32_t	map;
+	t_hands		hands;
 	float		spd_forward;
 	float		spd_sideway;
 	float		spd_max;
@@ -74,14 +85,9 @@ typedef struct s_audio
 typedef struct s_assets
 {
 	t_audio	audio;
-	t_sheet	reload;
-	t_sheet	shoot;
-	t_sheet	walk;
-	t_sheet	city;
-	t_sheet	radar;
-	t_sheet	radar_l0;
-	t_sheet	radar_l1;
-	t_sheet	blood;
+
+	t_sheet	hud_blood;
+	// t_sheet	city;	// Isnt being used
 }	t_assets;
 
 typedef struct s_game
@@ -94,7 +100,6 @@ typedef struct s_game
 	t_enemy		enemies[NUM_ENEMIES];
 	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
 	t_assets	assets;
-	t_drawbuf	drawbuf;
 	const char	*file;
 }	t_game;
 

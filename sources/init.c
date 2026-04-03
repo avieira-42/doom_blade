@@ -3,7 +3,6 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <time.h>
 #include "cmlx_base.h"
 #include "cub_defines.h"
 #include "cub_structs.h"
@@ -61,28 +60,22 @@ void	stt_enemy_init(t_game *game, t_memory *memory)
 		game->enemies[i].state = e_idle;
 		game->enemies[i].health = 100;
 		game->enemies[i].cam.pos = random_valid_pos(&game->map);
-		srand(time(NULL));
 		i++;
 	}
 }
 
-// All of these need error printing
 static
 int	stt_sprites_init(t_game *game)
 {
 	ft_memset(&game->assets, 0, sizeof(game->assets));
-	game->assets.shoot = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/hands_shooting", 5, ANIM_TIME);	// REVIEW: all of these values were wrong. this is supposed to be count, not index where it ends
-	game->assets.walk = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/hands_walking", 9, ANIM_TIME);
-	game->assets.reload = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/hands_reloading", 32, ANIM_TIME);	// Changed from 33 to 32
-	game->assets.city = cub_read_spritesheet(game, "assets/sprites/xpm/tiles/city", 4, ANIM_TIME);
-	game->assets.radar = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/hands_radar", 4, ANIM_TIME * 3);
-	game->assets.radar_l0 = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/map/layer0_", 13, ANIM_TIME / 3);
-	game->assets.radar_l1 = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/map/layer1_", 1, ANIM_TIME);
-	game->assets.blood = cub_read_spritesheet(game, "assets/sprites/xpm/hud/damage/damage", 3, ANIM_TIME);
-	game->drawbuf.hands = game->assets.walk;
-	game->drawbuf.radar = game->assets.radar;
-	game->drawbuf.radar_l0 = game->assets.radar_l0;
-	game->drawbuf.radar_l1 = game->assets.radar_l1;
+	game->player.hands.shoot = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/hands_shooting", 5, ANIM_TIME);	// REVIEW: all of these values were wrong. this is supposed to be count, not index where it ends
+	game->player.hands.walk = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/hands_walking", 9, ANIM_TIME);
+	game->player.hands.reload = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/hands_reloading", 32, ANIM_TIME);	// Changed from 33 to 32
+	// game->assets.city = cub_read_spritesheet(game, "assets/sprites/xpm/tiles/city", 4, ANIM_TIME);
+	game->player.hands.radar = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/hands_radar", 4, ANIM_TIME * 3);
+	game->player.hands.radar_l0 = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/map/layer0_", 13, ANIM_TIME / 3);
+	game->player.hands.radar_l1 = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/map/layer1_", 1, ANIM_TIME);
+	game->assets.hud_blood = cub_read_spritesheet(game, "assets/sprites/xpm/hud/damage/damage", 3, ANIM_TIME);
 	return (0);
 }
 

@@ -4,21 +4,6 @@
 #include <stdbool.h>
 #include "cub_structs.h"
 
-// uint64_t 	time_get()
-// {
-// 	struct timeval	tv;
-
-// 	if (gettimeofday(&tv, NULL) == -1)
-// 		free_displays();
-// 	return ((uint64_t)(tv.tv_sec * 1000000) + (tv.tv_usec));
-// }
-
-// void	time_delta_get(t_game *game)
-// {
-// 	game->dt = (time_get() - game->t0) / 1000000.0f;
-// 	game->t0 = time_get();
-// }
-
 long	get_time(void)
 {
 	static long		prev_time = 0;

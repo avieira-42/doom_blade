@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include "cmlx_base.h"
 #include "cub_structs.h"
+#include "cub_utils.h"
 
 size_t	stt_first_neighbor(t_vec2 pos, t_vec2 dir, t_map *map)
 {
@@ -28,24 +29,44 @@ size_t	stt_first_neighbor(t_vec2 pos, t_vec2 dir, t_map *map)
 	return ((uint32_t)cy * map->width + (uint32_t)cx);
 }
 
-int	cub_actions(t_game *game)
+t_sheet	*cub_actions(t_player *player, t_map *map, long dt)
 {
 	size_t	index;
+	int		rvalue;
+	t_sheet	*sheet;
 
-	if (game->player.state & st_interacting)
+	if (player->state & st_interacting)
 	{
-		index = stt_first_neighbor(game->player.cam.pos, game->player.cam.dir, &game->map);
-		if (game->map.tex_index[index] == 130)
+		index = stt_first_neighbor(player->cam.pos, player->cam.dir, map);
+		if (map->tex_index[index] == 130)
 		{
-			game->map.tex_index[index] &= 127;
-			game->map.state[index] = 0;
+			map->tex_index[index] &= 127;
+			map->state[index] = 0;
 		}
-		else if (game->map.tex_index[index] == 2)
+		else if (map->tex_index[index] == 2)
 		{
-			game->map.tex_index[index] |= 128;
-			game->map.state[index] = 255;
+			map->tex_index[index] |= 128;
+			map->state[index] = 255;
 		}
-		game->player.state = st_idle;
 	}
-	return (0);
+	else if (player->state & st_reloading)
+	{
+		sheet = &player->hands.reload;
+		rvalue = cub_advance_animation(sheet, dt);
+		if (rvalue >= 2 && (sheet->index % RELOAD_CYCLE == 0))
+			player->ammo++;
+		if (rvalue < 4)
+			return (sheet);
+	}
+	else if (player->state & st_shooting)
+	{
+		sheet = &player->hands.shoot;
+		rvalue = cub_advance_animation(sheet, dt);
+		if (rvalue < 4)
+			return (sheet);
+	}
+	else
+		cub_advance_animation(&player->hands.walk, dt);
+	player->state = st_idle;
+	return (&player->hands.walk);
 }

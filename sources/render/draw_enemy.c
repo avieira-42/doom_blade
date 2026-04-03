@@ -40,7 +40,7 @@ void	enemy_update_anim(t_enemy *e, long dt, t_player *player)
 
 	if (e->state & e_dying)
 	{
-		r = stt_render_animation(&e->dying, dt);
+		r = cub_advance_animation(&e->dying, dt);
 		if (r & (1 << 2))
 			e->state = e_dead;
 		return ;
@@ -49,7 +49,7 @@ void	enemy_update_anim(t_enemy *e, long dt, t_player *player)
 		return ;
 	if (e->state & e_hit)
 	{
-		r = stt_render_animation(&e->shot, dt);
+		r = cub_advance_animation(&e->shot, dt);
 		if (r & (1 << 2))
 		{
 			e->state &= ~(size_t) e_hit;
@@ -59,7 +59,7 @@ void	enemy_update_anim(t_enemy *e, long dt, t_player *player)
 	}
 	if (e->state & e_shooting)
 	{
-		r = stt_render_animation(&e->shooting, dt);
+		r = cub_advance_animation(&e->shooting, dt);
 		if (r & (1 << 2))
 		{
 			e->state &= ~(size_t)e_shooting;
@@ -76,7 +76,7 @@ void	enemy_update_anim(t_enemy *e, long dt, t_player *player)
 		e->dying.frame_dt = 0;
 		return ;
 	}
-	stt_render_animation(&e->running, dt);
+	cub_advance_animation(&e->running, dt);
 	if (is_enemy_shooting())
 	{
 		e->state &= ~(size_t)e_running;
@@ -162,14 +162,12 @@ bool	stt_hitreg(t_form *form)
 		&& form->bottom > ((RENDER_HEIGHT - HITREG_AREA) / 2));
 }
 
-
 // Here we have the check that later we can use
 // to validat the enemy shot, maybe add a flag to
 // the enemy struct that then is checked when the
 // random number generation is checked
 static
-bool	stt_draw_enemy(t_frame *frame, t_rayhit *rays,
-		t_player *player, t_enemy *enemy)
+bool	stt_draw_enemy(t_frame *frame, t_rayhit *rays, t_player *player, t_enemy *enemy)
 {
 	t_form		form;
 	t_vec2		norm_pos;
@@ -233,5 +231,4 @@ void	cub_draw_enemies(t_game *game, long dt)
 		}
 		i++;
 	}
-	game->player.state &= ~(size_t)st_shot; // Clears the just shot flag
 }

@@ -9,29 +9,25 @@
 #include "cmlx_draw.h"
 #include "cub_structs.h"
 
-// segredo
-void	enemy_init(t_game *game);
-
 // Draw and Render
 void		raycast(t_view *cam, t_map *map, t_rayhit *rays);
 void		planecast(t_frame *frame, t_mat32 floor, t_mat32 ceil, t_view *cam);
 void		cub_draw_world(t_game *game);
 void		cub_update_state(t_player *player, t_audio *audio, t_game *game, long dt);
-int			cub_actions(t_game *game);
-uint8_t		stt_render_animation(t_sheet *sheet, long dt);
+t_sheet		*cub_actions(t_player *player, t_map *map, long dt);
+void		cub_play_audio(t_player *player, t_audio *audio, t_game *game, long dt);
+uint8_t		cub_advance_animation(t_sheet *sheet, long dt);
 void		draw_radar(t_game *game);
 void		pixel_swap(t_mat32 frame, int32_t x, int32_t y, uint32_t color);
 void		quad_draw(t_game *game, t_quad q);
 
 // Draw
+void		cub_draw_hands(t_mat32 frame, t_game *game, long dt);
 void		cub_draw_crosshair(uint32_t *ptr);
 void		cub_draw_enemies(t_game *game, long dt);
-void		cub_draw_hud(t_mat32 frame, t_drawbuf *drawbuf,	t_game *game);
 int			ft_transpose(t_mat32 *src);
 int			ft_transpose_img(uint32_t *ptr, size_t width, size_t height);	// TMP
 int			cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner);
-t_img		*read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr);
-void		animate(t_game *game);
 void		pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color);
 void		cub_draw_texture(t_mat32 frame, t_mat32 image, size_t x_corner, size_t y_corner);
 
@@ -47,7 +43,7 @@ int		cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game);
 int		cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game);
 int		cmlx_mousemove(t_game *game);
 int		cmlx_loop(t_game *game);
-void	input_handler(t_game *game);
+void	input_handler(t_game *game, t_player *player);
 
 // init
 int		cub_init(const char *filename, t_game *game, t_memory *memory);
@@ -68,13 +64,12 @@ float		ft_randf(void);
 long		get_time(void);
 uint32_t	ft_strtoargb(const char *str, const char **str_ptr);
 void		*ft_read_all(const char *filename, size_t *file_size);
-int		cub_is_map_enclosed(t_map map);
-float	vec2_dot_product(t_vec2 a, t_vec2 b);
-t_vec2	vec2_rotate(t_vec2 vec, float angle);
-t_vec2	vec2_norm(t_vec2 vec);
-int32_t	vec2_dist(t_vec2 a, t_vec2 b);
-int32_t	vec2_idist(t_vec2 a, t_vec2 b);
-int		cub_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr);
+float		vec2_dot(t_vec2 a, t_vec2 b);
+t_vec2		vec2_rotate(t_vec2 vec, float angle);
+t_vec2		vec2_norm(t_vec2 vec);
+int32_t		vec2_dist(t_vec2 a, t_vec2 b);
+int32_t		vec2_idist(t_vec2 a, t_vec2 b);
+int			cub_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr);
 // ------------------------------
 
 void		**ft_free_array(void *array, size_t length);

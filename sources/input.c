@@ -29,46 +29,37 @@ void	stt_move(t_game *game)
 	}
 }
 
-void	input_handler(t_game *game)
+void	input_handler(t_game *game, t_player *player)
 {
-	if ((game->state.key & key_rmb) && game->player.state != st_shooting)
+	if ((game->state.key & key_rmb) && !(player->state & st_shooting) && player->ammo > 0)
 	{
-		if (game->player.ammo == 0)
-		{
-			Mix_PlayChannel(ch_no_ammo, game->assets.audio.no_ammo, 0);
-			game->state.key &= ~(size_t)key_rmb;
-		}
-		else
-		{
-			game->player.ammo--;
-			game->drawbuf.hands = game->assets.shoot;
-			game->player.state = (st_shooting | st_shot);
-		}
+		player->ammo--;
+		player->state = (st_shooting | st_shot);
 	}
-	if ((game->state.key & key_r) && !(game->player.state & (st_reloading | st_shooting)) && game->player.ammo < AMMO_COUNT)
+	if ((game->state.key & key_r) && !(player->state & (st_reloading | st_shooting)) && player->ammo < AMMO_COUNT)
 	{
-		game->player.state = (st_reloading);
-		game->drawbuf.hands = game->assets.reload;
-		game->drawbuf.hands.index = game->player.ammo * RELOAD_CYCLE;
-		game->player.map &= ~(size_t)st_raising;
-		game->player.map &= ~(size_t)st_checking;
+		player->state = (st_reloading);
+		player->hands.reload.index = player->ammo * RELOAD_CYCLE;
+		player->map &= ~(size_t)st_raising;
+		player->map &= ~(size_t)st_checking;
 	}
-	if ((game->state.key & key_e) && !(game->player.state & (st_reloading | st_shooting)))
+	if ((game->state.key & key_e) && !(player->state & (st_reloading | st_shooting)))
 	{
-		game->player.state = st_interacting;
+		player->state = st_interacting;
 		game->state.key &= ~(size_t) key_e;
-	}
-	if (game->state.key & key_tab)
-	{
-		if (!(game->player.state & (st_reloading | st_shooting))
-				&& !(game->player.map & (st_raising | st_checking)))
-			game->player.map |= (size_t)st_raising;
-	}
-	else if (!(game->state.key & key_tab))
-	{
-		game->drawbuf.radar.index = 0;
-		game->player.map &= ~(size_t)st_raising;
-		game->player.map &= ~(size_t)st_checking;
 	}
 	stt_move(game);
 }
+
+// if (game->state.key & key_tab)
+// {
+// 	if (!(player->state & (st_reloading | st_shooting))
+// 			&& !(player->map & (st_raising | st_checking)))
+// 		player->map |= (size_t)st_raising;
+// }
+// else if (!(game->state.key & key_tab))
+// {
+// 	game->player.hands.radar.index = 0;
+// 	player->map &= ~(size_t)st_raising;
+// 	player->map &= ~(size_t)st_checking;
+// }

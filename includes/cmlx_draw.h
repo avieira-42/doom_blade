@@ -79,8 +79,8 @@ typedef struct s_transform
 typedef struct s_sheet
 {
 	t_mat32		texture;
-	long		frame_time;		// When frame_dt exceeds frame_time, go to next frame
-	long		frame_dt;		// Counts how much time has passed in the current frame
+	int32_t		frame_time;		// When frame_dt exceeds frame_time, go to next frame
+	int32_t		frame_dt;		// Counts how much time has passed in the current frame
 	uint32_t	frame_size;
 	uint16_t	index;
 	uint16_t	count;
@@ -97,16 +97,6 @@ typedef union u_block
 	};
 	t_mat32	index[4];
 }	t_block;
-
-typedef struct s_drawbuf
-{
-	t_sheet	hands;
-	t_sheet	radar;
-	// TMP >>>
-	t_sheet	radar_l0;
-	t_sheet	radar_l1;
-	// <<< TMP
-}	t_drawbuf;
 
 typedef struct s_view
 {

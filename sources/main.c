@@ -18,18 +18,18 @@ int	cmlx_loop(t_game *game)
 		last_frame += dt;
 		ft_memset(game->frame.display.ptr, 0, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(uint32_t));
 		ft_memset(game->frame.render.ptr, 0, RENDER_HEIGHT * RENDER_WIDTH * sizeof(uint32_t));
-		input_handler(game);
+		input_handler(game, &game->player);
 		cub_update_pos(game, (double)dt * 0.000001);
-		cub_actions(game);
-		cub_update_state(&game->player, &game->assets.audio, game, dt);
+		cub_play_audio(&game->player, &game->assets.audio, game, dt);
 		cub_draw_world(game);
 		cub_draw_enemies(game, dt);
-		cub_draw_hud(game->frame.render, &game->drawbuf, game);
+		cub_draw_hands(game->frame.render, game, dt);
 		ft_integer_scaling_t(game->frame.render, game->frame.display, UPSCALING_FACTOR);
 		cub_draw_crosshair(game->frame.display.ptr);
 		mlx_put_image_to_window(game->mlx, game->mlx->win_list, game->frame.img, 0, 0);
 		cmlx_mousemove(game);
 		last_frame = 0;
+		game->player.state &= ~(size_t) (st_shot);	// Clears the (just X animation)
 	}
 	return (1);
 }

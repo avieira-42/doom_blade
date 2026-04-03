@@ -81,8 +81,8 @@ void	stt_blocks_render(t_game *game, t_vec2 pos,
 	grid.map_center = map_center;
 	grid.bound = bound;
 	grid.pos = pos;
-	grid.size.x.i = game->assets.radar_l0.texture.width / 12;
-	grid.size.y.i = game->assets.radar_l0.texture.height / 12;
+	grid.size.x.i = game->player.hands.radar_l0.texture.width / 12;
+	grid.size.y.i = game->player.hands.radar_l0.texture.height / 12;
 	y = game->player.cam.pos.y.f - 6.f;
 	while (y <= game->player.cam.pos.y.f + 6.f)
 	{
@@ -98,7 +98,8 @@ void	stt_blocks_render(t_game *game, t_vec2 pos,
 	}
 }
 
-void	draw_radar(t_game *game)
+static
+void	stt_draw_radar(t_game *game)
 {
 	t_vec2	first_pixel_pos;
 	t_vec2	last_pixel_pos;
@@ -109,19 +110,50 @@ void	draw_radar(t_game *game)
 	first_pixel_pos.x.i = 110;
 	first_pixel_pos.y.i = 240;
 	stt_draw_layer(game->frame.render,
-		game->drawbuf.radar_l0, first_pixel_pos);
+		game->player.hands.radar_l0, first_pixel_pos);
 	last_pixel_pos.x.i = first_pixel_pos.x.i
-		+ game->assets.radar_l0.texture.width;
+		+ game->player.hands.radar_l0.texture.width;
 	last_pixel_pos.y.i = first_pixel_pos.y.i
-		+ game->assets.radar_l0.texture.height;
+		+ game->player.hands.radar_l0.texture.height;
 	bound.x.i = (last_pixel_pos.x.i - first_pixel_pos.x.i) / 2;
 	bound.y.i = (last_pixel_pos.y.i - first_pixel_pos.y.i) / 2;
 	map_center.x.i = first_pixel_pos.x.i + bound.x.i;
 	map_center.y.i = first_pixel_pos.y.i + bound.y.i;
 	stt_blocks_render(game, first_pixel_pos, bound.x.i, map_center);
-	p_pos.x.i = map_center.x.i - game->assets.radar_l0.texture.width / 24 + 4;
-	p_pos.y.i = map_center.y.i - game->assets.radar_l0.texture.height / 24 + 4;
+	p_pos.x.i = map_center.x.i - game->player.hands.radar_l0.texture.width / 24 + 4;
+	p_pos.y.i = map_center.y.i - game->player.hands.radar_l0.texture.height / 24 + 4;
 	stt_draw_player_circle(game, p_pos, map_center, bound.x.i);
 	stt_draw_layer(game->frame.render,
-		game->drawbuf.radar_l1, first_pixel_pos);
+		game->player.hands.radar_l1, first_pixel_pos);
+}
+
+	// // RADAR TMP >>>
+	// if (player->map & st_raising)
+	// 	cub_advance_animation(&drawbuf->radar, dt);
+	// cub_advance_animation(&drawbuf->radar_l0, dt);
+	// cub_advance_animation(&drawbuf->radar_l1, dt);
+	// // <<< RADAR TMP
+
+void	cub_draw_radar(t_game *game, t_mat32 render, t_hands *hands)
+{
+	t_mat32	texture;
+
+	if (game->player.map & st_checking)
+	{
+		hands->radar.index = 0;
+		texture = hands->radar.texture;
+		texture.ptr = hands->radar.texture.ptr
+			+ hands->radar.frame_size * (hands->radar.count -1);
+		cub_draw_texture(render, texture, 0, 195);
+		draw_radar(game);
+	}
+	else if (game->player.map & st_raising)
+	{
+		texture = hands->radar.texture;
+		texture.ptr += hands->radar.index
+			* hands->radar.frame_size;
+		cub_draw_texture(render, texture, 0, 195);
+		if (hands->radar.index == hands->radar.count - 2)
+			game->player.map |= st_checking;
+	}
 }
