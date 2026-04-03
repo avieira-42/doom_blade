@@ -25,6 +25,11 @@ void	enemy_init(t_game *game)
 	}
 }
 
+// to call on update state
+void	enemy_update_state(t_game *game)
+{
+}
+
 // to call every time the enemy shoots
 int	is_enemy_shooting(void)
 {

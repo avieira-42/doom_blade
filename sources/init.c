@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <time.h>
 #include "cmlx_base.h"
 #include "cub_defines.h"
 #include "cub_structs.h"
@@ -51,9 +52,15 @@ void	stt_enemy_init(t_game *game, t_memory *memory)
 	ft_memset(game->enemies, 0, sizeof(t_enemy) * NUM_ENEMIES);
 	while (i < NUM_ENEMIES)
 	{
-		cub_read_texture(game->mlx, &game->enemies[i].texture, "assets/ghost_tmp.xpm", NULL);
+		//cub_read_texture(game->mlx, &game->enemies[i].texture, "assets/ghost_tmp.xpm", NULL);
+		game->enemies[i].running = cub_read_spritesheet(game, "assets/sprites/xpm/characters/zombie/enemy_walking_front", 4, ANIM_TIME * 3);
+		game->enemies[i].shooting = cub_read_spritesheet(game, "assets/sprites/xpm/characters/zombie/enemy_shooting", 2, ANIM_TIME * 3);
+		game->enemies[i].shot = cub_read_spritesheet(game, "assets/sprites/xpm/characters/zombie/enemy_shot", 1, ANIM_TIME * 3);
+		game->enemies[i].dying = cub_read_spritesheet(game, "assets/sprites/xpm/characters/zombie/enemy_exploding", 12, ANIM_TIME * 1);
+		game->enemies[i].state = e_idle;
 		game->enemies[i].health = 100;
 		game->enemies[i].cam.pos = random_valid_pos(&game->map);
+		srand(time(NULL));
 		i++;
 	}
 }
@@ -70,13 +77,11 @@ int	stt_sprites_init(t_game *game)
 	game->assets.radar = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/hands_radar", 4, ANIM_TIME * 3);
 	game->assets.radar_l0 = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/map/layer0_", 13, ANIM_TIME / 3);
 	game->assets.radar_l1 = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/map/layer1_", 1, ANIM_TIME);
+	game->assets.blood = cub_read_spritesheet(game, "assets/sprites/xpm/hud/damage/damage", 3, ANIM_TIME);
 	game->drawbuf.hands = game->assets.walk;
 	game->drawbuf.radar = game->assets.radar;
 	game->drawbuf.radar_l0 = game->assets.radar_l0;
 	game->drawbuf.radar_l1 = game->assets.radar_l1;
-	// segredo >>>
-	enemy_init(game);
-	// <<< segredo
 	return (0);
 }
 

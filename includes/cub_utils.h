@@ -14,22 +14,28 @@ void	enemy_init(t_game *game);
 
 // Draw and Render
 void		raycast(t_view *cam, t_map *map, t_rayhit *rays);
-void		planecast(t_frame frame, t_mat32 floor, t_mat32 ceiling, t_view cam);
 void		render_image(t_game *game);
 void		cub_update_state(t_player *player, t_audio *audio, t_game *game, long dt);
 int			cub_actions(t_game *game);
+uint8_t		stt_render_animation(t_sheet *sheet, long dt);
+void		floorcast(t_frame frame, t_mat32 floor_mat, t_view cam);
+void		ceilingcast(t_frame frame, t_mat32 ceil_mat, t_view cam);
+void		planecast(t_frame frame, t_mat32 floor, t_mat32 ceiling, t_view cam);
+void		map_render(t_game *game);
+void		pixel_swap(t_mat32 frame, int32_t x, int32_t y, uint32_t color);
+void		quad_draw(t_game *game, t_quad q);
 
 // Draw
 void		cub_draw_crosshair(uint32_t *ptr);
 void		cub_draw_enemies(t_game *game, long dt);
-void		cub_draw_hud(t_mat32 frame, t_drawbuf *drawbuf);
+void		cub_draw_hud(t_mat32 frame, t_drawbuf *drawbuf, int32_t health, t_sheet blood);
 int			ft_transpose(t_mat32 *src);
 int			ft_transpose_img(uint32_t *ptr, size_t width, size_t height);	// TMP
 int			cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner);
 t_img		*read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr);
 void		animate(t_game *game);
 void		animate_hud(t_game *game);
-void		frame_pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color);
+void		pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color);
 void		cub_draw_texture(t_mat32 frame, t_mat32 image, size_t x_corner, size_t y_corner);
 
 uint32_t	ft_bilerp_argb(const t_mat32 *src, t_vec2 norm_pos);
