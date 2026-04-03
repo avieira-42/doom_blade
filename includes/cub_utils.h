@@ -14,7 +14,7 @@ void	enemy_init(t_game *game);
 
 // Draw and Render
 void		raycast(t_view *cam, t_map *map, t_rayhit *rays);
-void		planecast(t_frame frame, t_mat32 floor, t_mat32 ceiling, t_view cam);
+void		planecast(t_frame *frame, t_mat32 floor, t_mat32 ceil, t_view *cam);
 void		cub_draw_world(t_game *game);
 void		cub_update_state(t_player *player, t_audio *audio, t_game *game, long dt);
 int			cub_actions(t_game *game);

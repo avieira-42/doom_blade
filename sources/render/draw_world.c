@@ -77,7 +77,7 @@ void	cub_draw_world(t_game *game)
 
 	x = 0;
 	ptr = game->frame.render.ptr;
-	planecast(game->frame, game->blocks[0].south, game->blocks[0].north, game->player.cam);
+	planecast(&game->frame, game->blocks[0].south, game->blocks[0].north, &game->player.cam);
 	raycast(&game->player.cam, &game->map, game->frame.rays);
 	// stt_filter(frame->rays);
 	while (x < RENDER_WIDTH)
