@@ -43,7 +43,7 @@ typedef struct s_mat32
 
 typedef union t_32
 {
-	float 		f;
+	float		f;
 	int32_t		i;
 	uint32_t	u;
 	struct

@@ -18,7 +18,8 @@ typedef struct s_hands
 	t_sheet	radar_l1;
 }	t_hands;
 
-// Every physics loop, positions are updated taking into account the speed vector
+// Every physics loop, positions are updated taking
+// into account the speed vector
 typedef struct s_player
 {
 	t_view		cam;
@@ -36,7 +37,7 @@ typedef struct s_player
 typedef struct s_map
 {
 	uint8_t		*tex_index;
-	uint8_t		*state;	// 0: nothing is drawn, 255: everything is drawn (left to right)
+	uint8_t		*state;	// 0: noth is drawn 255: evrything is drawn (l to r)
 	uint32_t	width;
 	uint32_t	height;
 	t_vec2		radar_sprite_pos;

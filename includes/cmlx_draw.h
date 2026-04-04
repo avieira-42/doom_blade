@@ -5,26 +5,18 @@
 
 typedef struct s_ray
 {
-	t_vec2  ray_dir;
-	t_vec2  map_pos;    // Integer
-	t_vec2  delta_dist;
-	t_vec2  side_dist;
-	t_vec2  step;       // Integer
+	t_vec2	ray_dir;
+	t_vec2	map_pos;
+	t_vec2	delta_dist;
+	t_vec2	side_dist;
+	t_vec2	step;
 }	t_ray;
-
-// typedef struct s_rayhit
-// {
-// 	uint8_t		tex_index;
-// 	uint8_t		tex_dir;
-// 	uint16_t	tex_offset;
-// 	float		perp_dist;
-// }	t_rayhit;
 
 typedef struct s_rayhit
 {
 	uint8_t	tex_index;
 	uint8_t	tex_dir;
-	float	x_pos;		// THIS IS UGLY
+	float	x_pos;
 	float	perp_dist;
 }	t_rayhit;
 
@@ -37,12 +29,12 @@ typedef struct s_plane
 	t_vec2	step;
 }	t_plane;
 
-typedef	struct s_grid
+typedef struct s_grid
 {
-    t_vec2  size;
+	t_vec2	size;
 	t_vec2	i;
-    t_vec2  draw_pos;
-    t_vec2  map_pos;
+	t_vec2	draw_pos;
+	t_vec2	map_pos;
 	t_vec2	map_center;
 	t_vec2	pos;
 	int32_t	bound;
@@ -69,7 +61,7 @@ typedef struct s_transform
 {
 	t_vec2		draw_pos;
 	t_vec2		delta;
-	t_vec2		norm_offset;	// Clip start to normalized range
+	t_vec2		norm_offset;
 	uint32_t	top;
 	uint32_t	bottom;
 	uint32_t	left;
@@ -79,8 +71,8 @@ typedef struct s_transform
 typedef struct s_sheet
 {
 	t_mat32		texture;
-	int32_t		frame_time;		// When frame_dt exceeds frame_time, go to next frame
-	int32_t		frame_dt;		// Counts how much time has passed in the current frame
+	int32_t		frame_time;
+	int32_t		frame_dt;
 	uint32_t	frame_size;
 	uint16_t	index;
 	uint16_t	count;
@@ -100,10 +92,10 @@ typedef union u_block
 
 typedef struct s_view
 {
-	t_vec2  pos;
-	t_vec2  dir;
-	t_vec2  plane;
-}   t_view;
+	t_vec2	pos;
+	t_vec2	dir;
+	t_vec2	plane;
+}	t_view;
 
 typedef struct s_frame
 {

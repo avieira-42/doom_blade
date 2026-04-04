@@ -1,59 +1,69 @@
 #ifndef CUB_UTILS_H
 # define CUB_UTILS_H
 
-#include <stdint.h>
-#include <stddef.h>
-#include <stdbool.h>
-#include <unistd.h>
-#include "cmlx_base.h"
-#include "cmlx_draw.h"
-#include "cub_structs.h"
+# include <stdint.h>
+# include <stddef.h>
+# include <stdbool.h>
+# include <unistd.h>
+# include "cmlx_base.h"
+# include "cmlx_draw.h"
+# include "cub_structs.h"
 
 // Draw and Render
 void		raycast(t_view *cam, t_map *map, t_rayhit *rays);
 void		planecast(t_frame *frame, t_mat32 floor, t_mat32 ceil, t_view *cam);
 void		cub_draw_world(t_game *game);
-void		cub_update_state(t_player *player, t_audio *audio, t_game *game, long dt);
+void		cub_update_state(t_player *player, t_audio *audio,
+				t_game *game, long dt);
 t_sheet		*cub_actions(t_player *player, t_map *map, long dt);
-void		cub_play_audio(t_player *player, t_audio *audio, t_game *game, long dt);
+void		cub_play_audio(t_player *player, t_audio *audio,
+				t_game *game, long dt);
 uint8_t		cub_advance_animation(t_sheet *sheet, long dt);
 void		pixel_swap(t_mat32 frame, int32_t x, int32_t y, uint32_t color);
-void		quad_draw(t_game *game, t_quad q);
-void		cub_draw_radar(t_game *game, t_mat32 render, t_hands *hands, long dt);
+void		quad_draw(t_mat32 frame, t_quad quad);
+void		cub_draw_radar(t_game *game, t_mat32 render,
+				t_hands *hands, long dt);
 
 // Draw
 void		cub_draw_hands(t_mat32 frame, t_game *game, long dt);
 void		cub_draw_crosshair(uint32_t *ptr);
 void		cub_draw_enemies(t_game *game, long dt);
 int			ft_transpose(t_mat32 *src);
-int			ft_transpose_img(uint32_t *ptr, size_t width, size_t height);	// TMP
-int			cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner);
+int			ft_transpose_img(uint32_t *ptr, size_t width,
+				size_t height);	// TMP
+int			cub_draw_image(t_mat32 src, t_mat32 dst,
+				size_t x_corner, size_t y_corner);
 void		pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color);
-void		cub_draw_texture(t_mat32 frame, t_mat32 image, size_t x_corner, size_t y_corner);
-void		draw_number(t_mat32 frame, size_t xpos, size_t ypos, uint32_t value);
+void		cub_draw_texture(t_mat32 frame, t_mat32 image,
+				size_t x_corner, size_t y_corner);
+void		draw_number(t_mat32 frame, size_t xpos,
+				size_t ypos, uint32_t value);
 uint32_t	ft_bilerp_argb(const t_mat32 *src, t_vec2 norm_pos);
 uint32_t	ft_bilerp_argb_t(const t_mat32 *src, t_vec2 norm_pos);
 void		ft_integer_scaling(t_mat32 src, t_mat32 dst, size_t factor);
 void		ft_integer_scaling_t(t_mat32 src, t_mat32 dst, size_t factor);
 
 // Events
-int		cmlx_keydown(int keycode, t_game *game);
-int		cmlx_keyup(int keycode, t_game *game);
-int		cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game);
-int		cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game);
-int		cmlx_mousemove(t_game *game);
-int		cmlx_loop(t_game *game);
-void	input_handler(t_game *game, t_player *player);
+int			cmlx_keydown(int keycode, t_game *game);
+int			cmlx_keyup(int keycode, t_game *game);
+int			cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game);
+int			cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game);
+int			cmlx_mousemove(t_game *game);
+int			cmlx_loop(t_game *game);
+void		input_handler(t_game *game, t_player *player);
 
 // init
-int		cub_init(const char *filename, t_game *game, t_memory *memory);
-int		cub_cleanup(t_game *game, const char *msg);
-int		cub_parse_textures(t_game *game, const char *str, const char **str_ptr, t_block *blocks);
-int		cub_read_map(t_game *game, const char *str, t_map *map, t_player *player);
-t_sheet cub_readsheet(t_game *game, const char *base_path, size_t count, long frame_time);
+int			cub_init(const char *filename, t_game *game, t_memory *memory);
+int			cub_cleanup(t_game *game, const char *msg);
+int			cub_parse_textures(t_game *game, const char *str,
+				const char **str_ptr, t_block *blocks);
+int			cub_read_map(t_game *game, const char *str,
+				t_map *map, t_player *player);
+t_sheet		cub_readsheet(t_game *game, const char *base_path,
+				size_t count, long frame_time);
 
 // Physics
-void	cub_update_pos(t_game *game, float dt);
+void		cub_update_pos(t_game *game, float dt);
 
 // Utils
 t_vec2		random_valid_pos(t_map *map);
@@ -69,7 +79,8 @@ t_vec2		vec2_rotate(t_vec2 vec, float angle);
 t_vec2		vec2_norm(t_vec2 vec);
 int32_t		vec2_dist(t_vec2 a, t_vec2 b);
 int32_t		vec2_idist(t_vec2 a, t_vec2 b);
-int			cub_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr);
+int			cub_read_texture(t_xvar *mlx, t_mat32 *texture,
+				const char *filename, const char **filename_ptr);
 // ------------------------------
 
 void		**ft_free_array(void *array, size_t length);
@@ -78,19 +89,19 @@ int64_t		ft_memrcmp(const void *vptr1, const void *vptr2, size_t length);
 void		*ft_realloc(void *src, size_t src_size, size_t dst_size);
 int64_t		ft_strtol(const char *str, const char **str_ptr);
 
-float	ft_min(float number1, float number2);
-float	ft_max(float number1, float number2);
-float	ft_abs(float number);
-float	ft_absdiff(float number1, float number2);
-float	ft_absclamp(float number, float value);
+float		ft_min(float number1, float number2);
+float		ft_max(float number1, float number2);
+float		ft_abs(float number);
+float		ft_absdiff(float number1, float number2);
+float		ft_absclamp(float number, float value);
 
-int64_t	ft_iabsmax(int64_t number1, int64_t number2);
-int64_t	ft_imin(int64_t number1, int64_t number2);
-int64_t	ft_imax(int64_t number1, int64_t number2);
-int64_t	ft_iabs(int64_t number);
-int64_t	ft_iclamp(int64_t value, int64_t min, int64_t max);
-float	ft_qinvsqrt(float number);
-float	ft_qsqrt(float number);
+int64_t		ft_iabsmax(int64_t number1, int64_t number2);
+int64_t		ft_imin(int64_t number1, int64_t number2);
+int64_t		ft_imax(int64_t number1, int64_t number2);
+int64_t		ft_iabs(int64_t number);
+int64_t		ft_iclamp(int64_t value, int64_t min, int64_t max);
+float		ft_qinvsqrt(float number);
+float		ft_qsqrt(float number);
 
 // Prototypes: IO ------------------------------------------------------------
 size_t		ft_itoa_r(int64_t number, char *ptr);

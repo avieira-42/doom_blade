@@ -43,6 +43,27 @@ void	cub_draw_crosshair(uint32_t *ptr)
 // In low framerates, will slow down the animation
 // TODO: Insert the concept of frame period
 // 1) First Render Call, 2) Updated, 4) End
+
+void	quad_draw(t_mat32 frame, t_quad quad)
+{
+	int32_t	y;
+	int32_t	x;
+	t_vec2	dst;
+
+	y = 0;
+	while (y <= quad.size.y.i)
+	{
+		x = 0;
+		while (x <= quad.size.x.i)
+		{
+			dst = (t_vec2){.x.i = quad.pos.x.i + x, .y.i = quad.pos.y.i + y};
+			if (vec2_idist(quad.center, dst) <= quad.radius * quad.radius)
+				pixel_swap(frame, dst.x.i, dst.y.i, quad.color);
+			x++;
+		}
+		y++;
+	}
+}
 uint8_t	cub_advance_animation(t_sheet *sheet, long dt)
 {
 	uint8_t	rvalue;

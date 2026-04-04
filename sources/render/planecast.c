@@ -28,8 +28,10 @@ void	stt_plane_draw(t_mat32 render, t_plane *plane, int32_t y)
 	ptr = render.ptr + y;
 	while (x < render.width)
 	{
-		tx = (int)(plane->texture.width * (plane->pos.x.f - (int)plane->pos.x.f));
-		ty = (int)(plane->texture.height * (plane->pos.y.f - (int)plane->pos.y.f));
+		tx = (int)(plane->texture.width
+				* (plane->pos.x.f - (int)plane->pos.x.f));
+		ty = (int)(plane->texture.height
+				* (plane->pos.y.f - (int)plane->pos.y.f));
 		tx &= plane->texture.width - 1;
 		ty &= plane->texture.height - 1;
 		color = plane->texture.ptr[tx * plane->texture.stride + ty];

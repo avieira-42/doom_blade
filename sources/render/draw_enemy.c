@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_enemy.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/04 21:43:55 by avieira-          #+#    #+#             */
+/*   Updated: 2026/04/04 21:45:57 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -174,7 +186,8 @@ bool	stt_draw_enemy(t_frame *frame, t_rayhit *rays, t_player *player, t_enemy *e
 	uint32_t	*ptr;
 	uint32_t	x;
 	t_mat32		tex;
-	float		enemy_dist = stt_init(&form, frame, &player->cam, enemy); // Could be dist
+	const float	enemy_dist
+		= stt_init(&form, frame, &player->cam, enemy); // Could be dist
 
 	tex = enemy_get_frame(enemy);
 	if (enemy_dist <= NEAR_RADIUS)
