@@ -2,7 +2,7 @@
 NAME = main
 VPATH = sources sources/utils sources/events sources/parse sources/physics sources/math sources/render
 SRCS = main.c audio.c cleanup.c init.c rng.c actions.c rng_utils.c \
-raycast.c draw_texture.c draw_utils.c draw_enemy.c draw_world.c draw_hands.c draw_radar.c planecast.c\
+raycast.c draw_texture.c draw_utils.c draw_enemy.c draw_world.c draw_hands.c draw_radar.c draw_number.c planecast.c\
 time.c io_basic.c memory.c char_ascii.c transpose.c int_limits.c float_limits.c float_abs.c vec2.c\
 map.c textures.c animation.c \
 convert.c str_search.c \

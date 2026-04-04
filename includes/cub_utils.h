@@ -30,7 +30,7 @@ int			ft_transpose_img(uint32_t *ptr, size_t width, size_t height);	// TMP
 int			cub_draw_image(t_mat32 src, t_mat32 dst, size_t x_corner, size_t y_corner);
 void		pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color);
 void		cub_draw_texture(t_mat32 frame, t_mat32 image, size_t x_corner, size_t y_corner);
-
+void		draw_number(t_mat32 frame, size_t xpos, size_t ypos, uint32_t value);
 uint32_t	ft_bilerp_argb(const t_mat32 *src, t_vec2 norm_pos);
 uint32_t	ft_bilerp_argb_t(const t_mat32 *src, t_vec2 norm_pos);
 void		ft_integer_scaling(t_mat32 src, t_mat32 dst, size_t factor);

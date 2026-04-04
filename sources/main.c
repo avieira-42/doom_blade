@@ -26,6 +26,7 @@ int	cmlx_loop(t_game *game)
 		cub_draw_hands(game->frame.render, game, dt);
 		ft_integer_scaling_t(game->frame.render, game->frame.display, UPSCALING_FACTOR);
 		cub_draw_crosshair(game->frame.display.ptr);
+		draw_number(game->frame.display, 8, 8, 1000000 / dt);
 		mlx_put_image_to_window(game->mlx, game->mlx->win_list, game->frame.img, 0, 0);
 		cmlx_mousemove(game);
 		last_frame = 0;
