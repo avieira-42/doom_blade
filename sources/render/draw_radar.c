@@ -156,32 +156,16 @@ void	stt_grid_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_vec2 grid_size)
 static
 void	stt_player_icon_draw(t_mat32 frame, t_player player, t_vec2 grid_pos, t_vec2 quad_size)
 {
-	const t_vec2	icon_pos =
-		(t_vec2){.x.i =  grid_pos.x.i + player.cam.pos.x.f * quad_size.x.i
-		, .y.i = grid_pos.y.i + player.cam.pos.y.f * quad_size.y.i};
-	t_vec2	icon_size;
-	
-	icon_size = (t_vec2){.x.i = quad_size.x.i - 2,
-		.y.i = quad_size.y.i - 2};
-	icon_size.x.i = ft_imax(icon_size.x.i, 1);
-	icon_size.y.i = ft_imax(icon_size.y.i, 1);
-	printf("x: %i\ny: %i\n", icon_pos.x.i, icon_pos.y.i);
-	stt_quad_draw(frame, icon_pos, icon_size, 0x00FF00);
 }
 
 static
 void	stt_draw_radar(t_game *game, long dt)
 {
-	t_vec2	first_pixel_pos;
 	t_vec2	last_pixel_pos;
 	t_vec2	bound;
 	t_vec2	map_center;
 	t_vec2	p_pos;
 
-	first_pixel_pos.x.i = 110;
-	first_pixel_pos.y.i = 240;
-	stt_draw_layer(game->frame.render,
-		&game->player.hands.radar_l0, first_pixel_pos, dt);
 
 	// to rework | attempting to draw a pseudo so long but just in a tiny area
 	// what i need is to keep pushing the position of the grid and the grid will
@@ -189,14 +173,48 @@ void	stt_draw_radar(t_game *game, long dt)
 	// the player position
 
 	// DRAW GRID // WORKING PROPERLY FOR NOW
-	const t_vec2	grid_pos = (t_vec2){.x.i = 100, .y.i = 100};
-	const t_vec2	grid_size = (t_vec2){.x.i = 100, .y.i = 100};
+	const t_vec2	radar_pos = (t_vec2){.x.i = 110, .y.i = 240}; // also grid_pos
+	const t_vec2	grid_size =
+		(t_vec2){.x.i = game->player.hands.radar_l0.texture.width * 2,
+			.y.i = game->player.hands.radar_l0.texture.height * 2};
 	const t_vec2	quad_size = (t_vec2){.x.i = grid_size.x.i / game->map.width,
 		.y.i = grid_size.y.i / game->map.height};
+	t_vec2	player_pos;
+	t_vec2			grid_pos;
+	t_vec2			icon_size;
+	t_vec2			icon_pos;
 
-	stt_grid_draw(game->frame.render, game->map, grid_pos, grid_size);
-	stt_player_icon_draw(game->frame.render, game->player, grid_pos, quad_size);
+	player_pos = (t_vec2){.x.i =  game->player.cam.pos.x.f * quad_size.x.i
+		, .y.i = game->player.cam.pos.y.f * quad_size.y.i};
+	grid_pos = (t_vec2){.x.i =
+		player_pos.x.i - game->player.hands.radar_l0.texture.width / 2,
+		.y.i = player_pos.y.i - game->player.hands.radar_l0.texture.height / 2};
+	icon_size = (t_vec2){.x.i = quad_size.x.i - 2,
+		.y.i = quad_size.y.i - 2};
+	icon_size.x.i = ft_imax(icon_size.x.i, 1);
+	icon_size.y.i = ft_imax(icon_size.y.i, 1);
+	grid_pos.x.i = ft_imax(grid_pos.x.i, 0);
+	grid_pos.x.i = ft_imin(grid_pos.x.i, grid_size.x.i
+			- game->player.hands.radar_l0.texture.width);
+	grid_pos.y.i = ft_imax(grid_pos.y.i, 0);
+	grid_pos.y.i = ft_imin(grid_pos.y.i, grid_size.y.i
+			- game->player.hands.radar_l0.texture.height);
+	player_pos = (t_vec2){.x.i = radar_pos.x.i
+		+ player_pos.x.i - grid_pos.x.i,
+			.y.i = radar_pos.y.i + player_pos.y.i - grid_pos.y.i};
+	stt_draw_layer(game->frame.render,
+		&game->player.hands.radar_l0, radar_pos, dt);
 
+	stt_grid_draw(game->frame.render, game->map,
+			(t_vec2){.x.i = radar_pos.x.i - grid_pos.x.i,
+			.y.i = radar_pos.y.i - grid_pos.y.i}, grid_size);
+	
+	stt_quad_draw(game->frame.render, player_pos, icon_size, 0x00FF00);
+
+	stt_draw_layer(game->frame.render,
+		&game->player.hands.radar_l1, radar_pos, dt);
+
+	//stt_player_icon_draw(game->frame.render, game->player, radar_pos, quad_size);
 	/*last_pixel_pos.x.i = first_pixel_pos.x.i
 		+ game->player.hands.radar_l0.texture.width;
 	last_pixel_pos.y.i = first_pixel_pos.y.i
@@ -210,8 +228,6 @@ void	stt_draw_radar(t_game *game, long dt)
 	p_pos.y.i = map_center.y.i - game->player.hands.radar_l0.texture.height / 24 + 4;
 	stt_draw_player_circle(game, p_pos, map_center, bound.x.i);*/
 
-	stt_draw_layer(game->frame.render,
-		&game->player.hands.radar_l1, first_pixel_pos, dt);
 }
 
 	// // RADAR TMP >>>
