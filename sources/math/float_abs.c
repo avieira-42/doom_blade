@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 12:06:26 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/28 16:55:46 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/04 22:18:02 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 float	ft_abs(float number)
 {
-	t_32 number_union;
+	t_32	number_union;
 
 	number_union.f = number;
 	number_union.u &= 0x7FFFFFFF;

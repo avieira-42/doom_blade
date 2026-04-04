@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 15:13:28 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/02 15:37:25 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/04 22:17:17 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ uint32_t	stt_lerp_argb(uint32_t p0, uint32_t p1, uint8_t alpha)
 	ga = (p0 >> 8) & 0x00FF00FF;							// Shifts green and alpha channel then masks
 	rb += (((p1 & 0x00FF00FF) - rb) * alpha) >> 8;			// 
 	ga += ((((p1 >> 8) & 0x00FF00FF) - ga) * alpha) >> 8;
-	return (rb & 0x00FF00FF) | ((ga & 0x00FF00FF) << 8);
+	return ((rb & 0x00FF00FF) | ((ga & 0x00FF00FF) << 8));
 }
 
 static inline
