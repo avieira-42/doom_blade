@@ -19,14 +19,15 @@ void	stt_sqr_transpose(uint32_t *src, uint32_t length)
 			tmp = src[i * length + j];
 			src[i * length + j] = src[j * length + i];
 			src[j * length + i] = tmp;
-			j++;			
+			j++;
 		}
 		i++;
 	}
 }
 
 static inline
-void	stt_transpose(uint32_t *src, uint32_t *dst, uint32_t cols, uint32_t rows)
+void	stt_transpose(uint32_t *src, uint32_t *dst,
+		uint32_t cols, uint32_t rows)
 {
 	uint32_t		i;
 	uint32_t		j;
@@ -48,7 +49,8 @@ void	stt_transpose(uint32_t *src, uint32_t *dst, uint32_t cols, uint32_t rows)
 // Passing a NULL ptr to dst mallocs the required buffer memory
 int	ft_transpose(t_mat32 *src)
 {
-	const size_t	mat_size = (size_t)src->width * (size_t)src->height * sizeof(uint32_t);
+	const size_t	mat_size = (size_t)src->width
+		* (size_t)src->height * sizeof(uint32_t);
 	uint32_t		*dst;
 
 	if (src->width == src->height)
@@ -68,7 +70,8 @@ int	ft_transpose(t_mat32 *src)
 
 int	ft_transpose_img(uint32_t *ptr, size_t width, size_t height)
 {
-	const size_t	mat_size = (size_t)width * (size_t)height * sizeof(uint32_t);
+	const size_t	mat_size = (size_t)width
+		* (size_t)height * sizeof(uint32_t);
 	uint32_t		*dst;
 
 	if (width == height)
