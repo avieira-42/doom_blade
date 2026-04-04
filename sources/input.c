@@ -48,11 +48,11 @@ void	input_handler(t_game *game, t_player *player)
 		player->state = st_interacting;
 		game->state.key &= ~(size_t) key_e;
 	}
-	if	(game->state.key & key_tab)
+	if	(game->state.key & key_tab && !(game->state.key & st_reloading))
 	{
 		game->player.map |= st_raising;
 	}
-	else
+	if (!(game->state.key & key_tab) || player->state & st_reloading)
 	{
 		game->player.map &= ~(size_t)st_checking;
 		game->player.map &= ~(size_t)st_raising;
