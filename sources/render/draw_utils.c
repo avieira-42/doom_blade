@@ -62,30 +62,6 @@ uint8_t	cub_advance_animation(t_sheet *sheet, long dt)
 	return (rvalue);
 }
 
-void	quad_draw(t_game *game, t_quad q)
-{
-	t_vec2	limit;
-	int32_t	y;
-	int32_t	x;
-	int32_t	dist;
-
-	limit.x.i = q.pos.x.i + q.size.x.i;
-	limit.y.i = q.pos.y.i + q.size.y.i;
-	y = q.pos.y.i;
-	while (y <= limit.y.i)
-	{
-		x = q.pos.x.i;
-		while (x <= limit.x.i)
-		{
-			dist = vec2_idist(q.map_center, (t_vec2){.x.i = x, .y.i = y});
-			if (dist <= q.bound * q.bound)
-				pixel_swap(game->frame.render, x, y, q.color);
-			x++;
-		}
-		y++;
-	}
-}
-
 void	pixel_swap(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
 {
 	uint32_t	*dst;
@@ -93,12 +69,15 @@ void	pixel_swap(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
 	if (x < 0 || x >= frame.width || y < 0 || y >= frame.height)
 		return ;
 	dst = frame.ptr + x * frame.stride + y;
+	if ((*dst == 0x401013 || *dst == 0x3a0c0e)
+			&& color != 0x005500)
+		return ;
 	if (color == 0x000000)
 	{
 		if (*dst == 2693401)
-			color = 0xd5213f;
+			color = 0x401013;
 		else if (*dst == 2299157)
-			color = 0xd72a55;
+			color = 0x3a0c0e;
 	}
 	else if (color == 0xFFFFFF)
 	{
