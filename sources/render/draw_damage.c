@@ -24,6 +24,8 @@ void	cub_draw_damage(t_mat32 frame, t_game *game, long dt)
 		texture.ptr = game->assets.hud_blood.texture.ptr
 			+ game->assets.hud_blood.frame_size * 2;
 	cub_draw_texture(frame, texture, 0, 0);
+	if (get_time() - game->player.last_damage_time >= HEALING_TIME)
+		game->player.health += HEALING_AMOUNT;
 }
 
 /* blood health signlaling in the edges is working, but enemies

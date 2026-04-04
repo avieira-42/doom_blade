@@ -32,6 +32,7 @@ typedef struct s_player
 	float		spd_max;
 	int32_t		health;
 	int32_t		ammo;
+	long		last_damage_time;
 }	t_player;
 
 typedef struct s_map

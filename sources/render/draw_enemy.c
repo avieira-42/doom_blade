@@ -8,7 +8,6 @@
 static
 int	stt_is_enemy_shooting(t_enemy *enemy)
 {
-	printf("enemy->dist: %f\n", enemy->dist);
 	if (ft_randf() > ENEMY_ATTACK_AGRESS &&
 			ft_abs(enemy->dist) < ENEMY_ATTACK_DIST)  // DEFINE ENEMY_AGGRESSIVENES and DIST
 		return (1);
@@ -85,6 +84,7 @@ void	enemy_update_anim(t_enemy *e, long dt, t_player *player)
 		e->shooting.index = 0;
 		e->shooting.frame_dt = 0;
 		player->health -= 20;
+		player->last_damage_time = get_time();
 	}
 }
 
