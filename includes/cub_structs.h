@@ -39,22 +39,29 @@ typedef struct s_map
 	uint8_t		*state;	// 0: nothing is drawn, 255: everything is drawn (left to right)
 	uint32_t	width;
 	uint32_t	height;
+	t_vec2		radar_sprite_pos;
+	t_vec2		radar_size;
+	t_vec2		radar_cell_size;
+	t_vec2		radar_sprite_center;
+	t_vec2		radar_character_icon_size;
+	int32_t		radar_radius;
+	int32_t		radar_icon_radius;
 }	t_map;
 
 typedef struct s_enemy
 {
-	t_view	cam;
-	t_vec2	speed;
-	t_mat32	texture;
-	t_sheet	running; // segredo
-	t_sheet	shooting; // segredo
-	t_sheet	dying; // segredo
-	t_sheet	shot; // segredo
-	uint32_t	state; // segredo
-	int32_t	health;
-	long	respawn_timer;
-	uint8_t	id;
-	bool	is_visible;
+	t_view		cam;
+	t_vec2		speed;
+	t_mat32		texture;
+	t_sheet		running;
+	t_sheet		shooting;
+	t_sheet		dying;
+	t_sheet		shot;
+	uint32_t	state;
+	int32_t		health;
+	long		respawn_timer;
+	uint8_t		id;
+	bool		is_visible;
 }	t_enemy;
 
 typedef struct s_memory

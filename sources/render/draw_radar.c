@@ -77,7 +77,7 @@ void	stt_player_icon_draw(t_mat32 frame, t_player player, t_vec2 grid_pos, t_vec
 }
 
 static
-void	stt_draw_radar(t_game *game, long dt)
+void	stt_draw_radar(t_game *game, t_map map, long dt)
 {
 	// to rework | attempting to draw a pseudo so long but just in a tiny area
 	// what i need is to keep pushing the position of the grid and the grid will
@@ -86,51 +86,40 @@ void	stt_draw_radar(t_game *game, long dt)
 	// TODO for the icon: get center of player to draw from it, NOT the corner
 
 	// DRAW GRID // WORKING PROPERLY FOR NOW
-	const t_vec2	radar_pos = (t_vec2){.x.i = 110, .y.i = 240}; // also grid_pos
-	const t_vec2	grid_size =
-		(t_vec2){.x.i = game->player.hands.radar_l0.texture.width * 2,
-			.y.i = game->player.hands.radar_l0.texture.height * 2};
-	const t_vec2	quad_size = (t_vec2){.x.i = grid_size.x.i / game->map.width,
-		.y.i = grid_size.y.i / game->map.height};
-	const int32_t	radius = game->player.hands.radar_l0.texture.width / 2;
-	const t_vec2 sprite_center = (t_vec2){
-		.x.i = radar_pos.x.i + game->player.hands.radar_l0.texture.width / 2,
-			.y.i = radar_pos.y.i + game->player.hands.radar_l0.texture.height / 2};
-	const t_vec2	icon_size = (t_vec2){.x.i = 4, .y.i = 4};
-	const int32_t	icon_radius = icon_size.x.i / 2;
+
 	t_vec2			player_pos;
 	t_vec2			grid_pos;
 	t_vec2			icon_center;
 
-	player_pos = (t_vec2){.x.i =  game->player.cam.pos.x.f * quad_size.x.i
-		, .y.i = game->player.cam.pos.y.f * quad_size.y.i};
+	player_pos = (t_vec2){.x.i =  game->player.cam.pos.x.f * map.radar_cell_size.x.i
+		, .y.i = game->player.cam.pos.y.f * map.radar_cell_size.y.i};
 	grid_pos = (t_vec2){.x.i =
 		player_pos.x.i - game->player.hands.radar_l0.texture.width / 2,
 		.y.i = player_pos.y.i - game->player.hands.radar_l0.texture.height / 2};
 	grid_pos.x.i = ft_imax(grid_pos.x.i, 0);
-	grid_pos.x.i = ft_imin(grid_pos.x.i, grid_size.x.i
+	grid_pos.x.i = ft_imin(grid_pos.x.i, map.radar_size.x.i
 			- game->player.hands.radar_l0.texture.width);
 	grid_pos.y.i = ft_imax(grid_pos.y.i, 0);
-	grid_pos.y.i = ft_imin(grid_pos.y.i, grid_size.y.i
+	grid_pos.y.i = ft_imin(grid_pos.y.i, map.radar_size.y.i
 			- game->player.hands.radar_l0.texture.height);
-	player_pos = (t_vec2){.x.i = radar_pos.x.i
-		+ player_pos.x.i - grid_pos.x.i - icon_size.x.i / 2,
-			.y.i = radar_pos.y.i + player_pos.y.i - grid_pos.y.i - icon_size.y.i / 2};
-	icon_center = (t_vec2){.x.i = player_pos.x.i + icon_radius,
-		.y.i = player_pos.y.i + icon_radius};
+	player_pos = (t_vec2){.x.i = map.radar_sprite_pos.x.i
+		+ player_pos.x.i - grid_pos.x.i - map.radar_character_icon_size.x.i / 2,
+			.y.i = map.radar_sprite_pos.y.i + player_pos.y.i - grid_pos.y.i - map.radar_character_icon_size.y.i / 2};
+	icon_center = (t_vec2){.x.i = player_pos.x.i + map.radar_icon_radius,
+		.y.i = player_pos.y.i + map.radar_icon_radius};
 	stt_draw_layer(game->frame.render,
-		&game->player.hands.radar_l0, radar_pos, dt);
+		&game->player.hands.radar_l0, map.radar_sprite_pos, dt);
 
 	stt_grid_draw(game->frame.render, game->map,
-			(t_vec2){.x.i = radar_pos.x.i - grid_pos.x.i,
-			.y.i = radar_pos.y.i - grid_pos.y.i}, grid_size, radius,
-			sprite_center);
+			(t_vec2){.x.i = map.radar_sprite_pos.x.i - grid_pos.x.i,
+			.y.i = map.radar_sprite_pos.y.i - grid_pos.y.i}, map.radar_size, map.radar_radius,
+			map.radar_sprite_center);
 	
-	stt_quad_draw(game->frame.render, player_pos, icon_size, 0x005500,
-			icon_radius, icon_center);
+	stt_quad_draw(game->frame.render, player_pos, map.radar_character_icon_size, 0x005500,
+			map.radar_icon_radius, icon_center);
 
 	stt_draw_layer(game->frame.render,
-		&game->player.hands.radar_l1, radar_pos, dt);
+		&game->player.hands.radar_l1, map.radar_sprite_pos, dt);
 }
 
 void	cub_draw_radar(t_game *game, t_mat32 render, t_hands *hands, long dt)
@@ -144,7 +133,7 @@ void	cub_draw_radar(t_game *game, t_mat32 render, t_hands *hands, long dt)
 		texture.ptr = hands->radar.texture.ptr
 			+ hands->radar.frame_size * (hands->radar.count -1);
 		cub_draw_texture(render, texture, 0, 195);
-		stt_draw_radar(game, dt);
+		stt_draw_radar(game, game->map, dt);
 	}
 	else if (game->player.map & st_raising)
 	{
