@@ -59,6 +59,7 @@ typedef struct s_enemy
 	int32_t		health;
 	long		respawn_timer;
 	uint8_t		id;
+	float		dist;
 	bool		is_visible;
 }	t_enemy;
 

@@ -7,9 +7,7 @@
 
 int	is_enemy_shooting(void)
 {
-	const int	options[3] = {0, 1, 2};
-
-	if (options[rand() % 1] == 2)
+	if (ft_randf() > 0.995f) // DEFINE ENEMY_AGGRESSIVENES
 		return (1);
 	return (0);
 }
@@ -107,7 +105,6 @@ static inline
 float	stt_init(t_form *form, t_frame *frame, t_view *p, t_enemy *enemy)
 {
 	t_vec2			new_size;
-	float			enemy_dist;
 	float			horz_dist;
 	t_vec2			rel_pos;
 	float			invd;
@@ -116,20 +113,20 @@ float	stt_init(t_form *form, t_frame *frame, t_view *p, t_enemy *enemy)
 	invd = 1.0f / (p->plane.x.f * p->dir.y.f - p->dir.x.f * p->plane.y.f);
 	rel_pos.x.f = enemy->cam.pos.x.f - p->pos.x.f;
 	rel_pos.y.f = enemy->cam.pos.y.f - p->pos.y.f;
-	enemy_dist = (-p->plane.y.f * rel_pos.x.f + p->plane.x.f * rel_pos.y.f);
-	enemy_dist *= invd;
-	if (enemy_dist <= NEAR_RADIUS)
-		return (enemy_dist);
+	enemy->dist = (-p->plane.y.f * rel_pos.x.f + p->plane.x.f * rel_pos.y.f);
+	enemy->dist *= invd;
+	if (enemy->dist <= NEAR_RADIUS)
+		return (enemy->dist);
 	horz_dist = invd * (p->dir.y.f * rel_pos.x.f - p->dir.x.f * rel_pos.y.f);
-	invd = 1.0f / enemy_dist; // Scale
+	invd = 1.0f / enemy->dist; // Scale
 	form->draw_pos.x.i = (RENDER_WIDTH * 0.5f) * (1.0f + horz_dist * invd);
 	form->draw_pos.y.i = RENDER_HEIGHT * 0.5f - frame->offset;
 	new_size.x.i = tex.width * invd;	// tex.width / enemy_dist
 	new_size.y.i = tex.height * invd;
-	form->delta.x.f = enemy_dist / tex.width;	// REVIEW: These can be constants
-	form->delta.y.f = enemy_dist / tex.height;
+	form->delta.x.f = enemy->dist / tex.width;	// REVIEW: These can be constants
+	form->delta.y.f = enemy->dist / tex.height;
 	stt_clip(form, new_size);
-	return (enemy_dist);
+	return (enemy->dist);
 }
 
 static inline
