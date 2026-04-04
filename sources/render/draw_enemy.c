@@ -124,10 +124,10 @@ float	stt_init(t_form *form, t_frame *frame, t_view *p, t_enemy *enemy)
 	invd = 1.0f / enemy_dist; // Scale
 	form->draw_pos.x.i = (RENDER_WIDTH * 0.5f) * (1.0f + horz_dist * invd);
 	form->draw_pos.y.i = RENDER_HEIGHT * 0.5f - frame->offset;
-	new_size.x.i = tex.width * invd;
+	new_size.x.i = tex.width * invd;	// tex.width / enemy_dist
 	new_size.y.i = tex.height * invd;
-	form->delta.x.f = 1.0 / new_size.x.i;
-	form->delta.y.f = 1.0 / new_size.y.i;
+	form->delta.x.f = enemy_dist / tex.width;	// REVIEW: These can be constants
+	form->delta.y.f = enemy_dist / tex.height;
 	stt_clip(form, new_size);
 	return (enemy_dist);
 }

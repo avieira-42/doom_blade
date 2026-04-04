@@ -5,29 +5,31 @@
 #include "cub_structs.h"
 
 static inline
-void	stt_linecpy_t(uint32_t *restrict dst, t_mat32 src, size_t factor)
+void	stt_linecpy_t(uint32_t *restrict dst, const t_mat32 src, size_t factor)
 {
 	size_t			i;
-	const uint32_t	*src_end = src.ptr + src.width * src.height;
+	size_t			k;
 	uint32_t		tmp;
+	const size_t	length = src.height * src.width;
 
-	while (src.ptr < src_end)
+	i = 0;
+	while (i < length)
 	{
-		i = 0;
-		tmp = *src.ptr;
-		while (i < factor)
+		k = 0;
+		tmp = src.ptr[i];
+		while (k < factor)
 		{
 			*dst++ = tmp;
-			i++;
+			k++;
 		}
-		src.ptr += src.stride;
+		i += src.height;
 	}
 }
 
 // TODO: Add pos start for draw on DST, assumption isnt scale to fit
 void	ft_integer_scaling_t(t_mat32 src, t_mat32 dst, size_t factor)
 {
-	size_t			i;
+	size_t			k;
 	uint32_t		*src_end;
 	uint32_t		*odst;
 	const size_t	line_size = src.width * factor * sizeof(uint32_t);
@@ -38,12 +40,12 @@ void	ft_integer_scaling_t(t_mat32 src, t_mat32 dst, size_t factor)
 		odst = dst.ptr;
 		stt_linecpy_t(dst.ptr, src, factor);	// Copies the line, 123 becomes 112233
 		dst.ptr += dst.stride;
-		i = 1;
-		while (i < factor)
+		k = 1;
+		while (k < factor)
 		{
 			ft_memcpy(dst.ptr, odst, line_size);	// Copies the line across N rows
 			dst.ptr += dst.stride;
-			i++;
+			k++;
 		}
 		src.ptr += 1;
 	}

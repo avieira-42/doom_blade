@@ -48,7 +48,7 @@ void	input_handler(t_game *game, t_player *player)
 		player->state = st_interacting;
 		game->state.key &= ~(size_t) key_e;
 	}
-	if	(game->state.key & key_tab && !(game->state.key & st_reloading))
+	if	(game->state.key & key_tab && !(player->state & st_reloading))
 		game->player.map |= st_raising;
 	if (!(game->state.key & key_tab) || player->state & st_reloading)
 	{

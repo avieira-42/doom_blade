@@ -85,7 +85,7 @@ int	stt_sprites_init(t_game *game, t_hands *hands)
 	hands->shoot = cub_readsheet(game, PLAYER_ATK, 5, ANIM_TIME);
 	hands->walk = cub_readsheet(game, PLAYER_WALK, 9, ANIM_TIME);
 	hands->reload = cub_readsheet(game, PLAYER_RELOAD, 32, ANIM_TIME);
-	hands->radar = cub_readsheet(game, PLAYER_RADAR, 4, ANIM_TIME * 3);
+	hands->radar = cub_readsheet(game, PLAYER_RADAR, 4, ANIM_TIME);
 	hands->radar_l0 = cub_readsheet(game, PLAYER_RADAR0, 13, ANIM_TIME / 3);
 	hands->radar_l1 = cub_readsheet(game, PLAYER_RADAR1, 1, ANIM_TIME);
 	game->assets.hud_blood = cub_readsheet(game, PLAYER_BLOOD, 3, ANIM_TIME);

@@ -62,7 +62,7 @@ int	cmlx_keyup(int keycode, t_game *game)
 	if (keycode == XK_r)
 		game->state.key &= ~(size_t)key_r;
 	if (keycode == XK_e)
-		game->state.key &= ~(size_t)key_r;
+		game->state.key &= ~(size_t)key_e;
 	if (keycode == XK_Tab)
 		game->state.key &= ~(size_t)key_tab;
 	if (keycode == XK_Left)

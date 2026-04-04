@@ -11,13 +11,11 @@
 int	cmlx_loop(t_game *game)
 {
 	static long	avg_fps = 0;
-	const long	dt = get_time();
+	const long	dt = 1 + get_time();
 
 	if (game->state.paused == false)
 	{
 		avg_fps = (avg_fps - avg_fps / 8) + 125000 / dt;
-		ft_memset(game->frame.display.ptr, 0, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(uint32_t));
-		ft_memset(game->frame.render.ptr, 0, RENDER_HEIGHT * RENDER_WIDTH * sizeof(uint32_t));
 		input_handler(game, &game->player);
 		cub_update_pos(game, (double)dt * 0.000001);
 		cub_play_audio(&game->player, &game->assets.audio, game, dt);
