@@ -140,15 +140,16 @@ void	cub_draw_radar(t_game *game, t_mat32 render, t_hands *hands)
 
 	if (game->player.map & st_checking)
 	{
+		printf("checking\n");
 		hands->radar.index = 0;
 		texture = hands->radar.texture;
 		texture.ptr = hands->radar.texture.ptr
 			+ hands->radar.frame_size * (hands->radar.count -1);
 		cub_draw_texture(render, texture, 0, 195);
-		draw_radar(game);
 	}
 	else if (game->player.map & st_raising)
 	{
+		printf("raising\n");
 		texture = hands->radar.texture;
 		texture.ptr += hands->radar.index
 			* hands->radar.frame_size;

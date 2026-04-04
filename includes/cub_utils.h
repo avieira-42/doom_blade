@@ -17,9 +17,9 @@ void		cub_update_state(t_player *player, t_audio *audio, t_game *game, long dt);
 t_sheet		*cub_actions(t_player *player, t_map *map, long dt);
 void		cub_play_audio(t_player *player, t_audio *audio, t_game *game, long dt);
 uint8_t		cub_advance_animation(t_sheet *sheet, long dt);
-void		draw_radar(t_game *game);
 void		pixel_swap(t_mat32 frame, int32_t x, int32_t y, uint32_t color);
 void		quad_draw(t_game *game, t_quad q);
+void		cub_draw_radar(t_game *game, t_mat32 render, t_hands *hands);
 
 // Draw
 void		cub_draw_hands(t_mat32 frame, t_game *game, long dt);

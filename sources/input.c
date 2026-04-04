@@ -48,6 +48,10 @@ void	input_handler(t_game *game, t_player *player)
 		player->state = st_interacting;
 		game->state.key &= ~(size_t) key_e;
 	}
+	if	(game->state.key & key_tab)
+	{
+		game->player.map |= st_raising;
+	}
 	stt_move(game);
 }
 
