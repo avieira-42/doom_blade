@@ -43,39 +43,52 @@ int stt_mlx_init(t_game *game)
 	return (0);
 }
 
+#define ENM_WALK "assets/sprites/xpm/characters/zombie/enemy_walking_front"
+#define ENM_SHOOT "assets/sprites/xpm/characters/zombie/enemy_shooting"
+#define ENM_SHOT "assets/sprites/xpm/characters/zombie/enemy_shot"
+#define ENM_EXPL "assets/sprites/xpm/characters/zombie/enemy_exploding"
+
 static
-void	stt_enemy_init(t_game *game, t_memory *memory)
+void	stt_enemy_init(t_game *game)
 {
 	size_t	i;
+	t_enemy	*enm;
 
 	i = 0;
 	ft_memset(game->enemies, 0, sizeof(t_enemy) * NUM_ENEMIES);
 	while (i < NUM_ENEMIES)
 	{
-		//cub_read_texture(game->mlx, &game->enemies[i].texture, "assets/ghost_tmp.xpm", NULL);
-		game->enemies[i].running = cub_read_spritesheet(game, "assets/sprites/xpm/characters/zombie/enemy_walking_front", 4, ANIM_TIME * 3);
-		game->enemies[i].shooting = cub_read_spritesheet(game, "assets/sprites/xpm/characters/zombie/enemy_shooting", 2, ANIM_TIME * 3);
-		game->enemies[i].shot = cub_read_spritesheet(game, "assets/sprites/xpm/characters/zombie/enemy_shot", 1, ANIM_TIME * 3);
-		game->enemies[i].dying = cub_read_spritesheet(game, "assets/sprites/xpm/characters/zombie/enemy_exploding", 12, ANIM_TIME * 1);
-		game->enemies[i].state = e_idle;
-		game->enemies[i].health = 100;
-		game->enemies[i].cam.pos = random_valid_pos(&game->map);
+		enm = game->enemies + i;
+		enm->running = cub_readsheet(game, ENM_WALK, 4, ANIM_TIME * 3);
+		enm->shooting = cub_readsheet(game, ENM_SHOOT, 2, ANIM_TIME * 3);
+		enm->shot = cub_readsheet(game, ENM_SHOT, 1, ANIM_TIME * 3);
+		enm->dying = cub_readsheet(game, ENM_EXPL, 12, ANIM_TIME * 1);
+		enm->state = e_idle;
+		enm->health = 100;
+		enm->cam.pos = random_valid_pos(&game->map);
 		i++;
 	}
 }
 
+#define TEX_SHOT "assets/sprites/xpm/hud/hands/hands_shooting"
+#define TEX_WALK "assets/sprites/xpm/hud/hands/hands_walking"
+#define TEX_RELOAD "assets/sprites/xpm/hud/hands/hands_reloading"
+#define TEX_RADR "assets/sprites/xpm/hud/hands/hands_radar"
+#define TEX_RADR0 "assets/sprites/xpm/hud/hands/map/layer0_"
+#define TEX_RADR1 "assets/sprites/xpm/hud/hands/map/layer1_"
+#define TEX_BLOOD "assets/sprites/xpm/hud/damage/damage"
+
 static
-int	stt_sprites_init(t_game *game)
+int	stt_sprites_init(t_game *game, t_hands *hands)
 {
 	ft_memset(&game->assets, 0, sizeof(game->assets));
-	game->player.hands.shoot = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/hands_shooting", 5, ANIM_TIME);	// REVIEW: all of these values were wrong. this is supposed to be count, not index where it ends
-	game->player.hands.walk = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/hands_walking", 9, ANIM_TIME);
-	game->player.hands.reload = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/hands_reloading", 32, ANIM_TIME);	// Changed from 33 to 32
-	// game->assets.city = cub_read_spritesheet(game, "assets/sprites/xpm/tiles/city", 4, ANIM_TIME);
-	game->player.hands.radar = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/hands_radar", 4, ANIM_TIME * 3);
-	game->player.hands.radar_l0 = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/map/layer0_", 13, ANIM_TIME / 3);
-	game->player.hands.radar_l1 = cub_read_spritesheet(game, "assets/sprites/xpm/hud/hands/map/layer1_", 1, ANIM_TIME);
-	game->assets.hud_blood = cub_read_spritesheet(game, "assets/sprites/xpm/hud/damage/damage", 3, ANIM_TIME);
+	hands->shoot = cub_readsheet(game, TEX_SHOT, 5, ANIM_TIME);
+	hands->walk = cub_readsheet(game, TEX_WALK, 9, ANIM_TIME);
+	hands->reload = cub_readsheet(game, TEX_RELOAD, 32, ANIM_TIME);
+	hands->radar = cub_readsheet(game, TEX_RADR, 4, ANIM_TIME * 3);
+	hands->radar_l0 = cub_readsheet(game, TEX_RADR0, 13, ANIM_TIME / 3);
+	hands->radar_l1 = cub_readsheet(game, TEX_RADR1, 1, ANIM_TIME);
+	game->assets.hud_blood = cub_readsheet(game, TEX_BLOOD, 3, ANIM_TIME);
 	return (0);
 }
 
@@ -118,9 +131,9 @@ int	cub_init(const char *filename, t_game *game, t_memory *memory)
 	cub_read_map(game, str, &game->map, &game->player);
 	stt_mlx_init(game);
 	stt_params_init(game, memory);
-	stt_sprites_init(game);
+	stt_sprites_init(game, &game->player.hands);
 	stt_audio_init(game);
-	stt_enemy_init(game, memory);
+	stt_enemy_init(game);
 	ft_rng_init();
 	get_time();
 	return (0);

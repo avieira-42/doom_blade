@@ -10,12 +10,12 @@
 
 int	cmlx_loop(t_game *game)
 {
-	static long	last_frame = 0;
+	static long	avg_fps = 0;
 	const long	dt = get_time();
 
 	if (game->state.paused == false)
 	{
-		last_frame += dt;
+		avg_fps = (avg_fps - avg_fps / 8) + 125000 / dt;
 		ft_memset(game->frame.display.ptr, 0, SCREEN_HEIGHT * SCREEN_WIDTH * sizeof(uint32_t));
 		ft_memset(game->frame.render.ptr, 0, RENDER_HEIGHT * RENDER_WIDTH * sizeof(uint32_t));
 		input_handler(game, &game->player);
@@ -26,10 +26,9 @@ int	cmlx_loop(t_game *game)
 		cub_draw_hands(game->frame.render, game, dt);
 		ft_integer_scaling_t(game->frame.render, game->frame.display, UPSCALING_FACTOR);
 		cub_draw_crosshair(game->frame.display.ptr);
-		draw_number(game->frame.display, 8, 8, 1000000 / dt);
+		draw_number(game->frame.display, 8, 8, avg_fps);
 		mlx_put_image_to_window(game->mlx, game->mlx->win_list, game->frame.img, 0, 0);
 		cmlx_mousemove(game);
-		last_frame = 0;
 		game->player.state &= ~(size_t) (st_shot);	// Clears the (just X animation)
 	}
 	return (1);

@@ -9,8 +9,7 @@ convert.c str_search.c \
 movement.c \
 bilinear_interp.c integer_scaling.c\
 keyboard.c mouse.c input.c
-LDLIBS = libraries/mlx/libmlx_Linux.a
-ASM = $(OBJS:.o=.s)
+LDLIBS = libraries/mlx/libmlx_Linux.a -lXext -lX11 -lm -lz -lSDL2 -lSDL2_mixer -lSDL2main
 
 # Defaults ------------------------------------ #
 RM := rm -f
@@ -24,25 +23,19 @@ OBJS = $(addprefix $(OBJ_PATH)/, $(SRCS:.c=.o))
 CC = clang
 CPPFLAGS = $(addprefix -I,$(INC_PATH))
 CFLAGS = -Wall -Wextra -std=c11
-SDLFLAGS = -lSDL2 -lSDL2_mixer -lSDL2main
-LDFLAGS = -lXext -lX11 -lm -lz $(SDLFLAGS)
+LDFLAGS =
 DEBUG = -g -Wpedantic -Wcast-qual -Wfloat-equal -Wswitch-default -Wsign-conversion
 ASAN = -fsanitize=address,undefined,leak -fno-omit-frame-pointer
 TSAN = -fsanitize=thread -fno-omit-frame-pointer
-FAST = -march=native -O3 -ffast-math -fstrict-aliasing
+FAST = -march=native -flto -O3 -ffast-math -fstrict-aliasing
 
 # Pattern Rules: Compilation ------------------ #
 $(OBJ_PATH)/%.o: %.c | $(OBJ_PATH)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 # Linking
-$(BIN): $(OBJS) $(ASM) | $(BUILD_PATH)	
+$(BIN): $(OBJS) | $(BUILD_PATH)	
 	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
-
-# Assembly
-$(OBJ_PATH)/%.s: $(OBJ_PATH)/%.o
-	llvm-objdump -d --x86-asm-syntax=intel --no-show-raw-insn \
-	--no-leading-addr --no-leading-headers --symbolize-operands $< > $@
 
 # Directory
 $(OBJ_PATH):
@@ -76,8 +69,4 @@ fast: CFLAGS += $(FAST)
 fast: LDFLAGS += -flto
 fast: clean $(BIN)
 
-ffast: CFLAGS += $(FAST) -Ofast
-ffast: LDFLAGS += -flto
-ffast: clean $(BIN)
-
-.PHONY: all clean fclean re debug asan tsan fast ffast
+.PHONY: all clean fclean re debug asan tsan fast

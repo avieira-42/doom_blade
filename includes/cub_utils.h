@@ -50,7 +50,7 @@ int		cub_init(const char *filename, t_game *game, t_memory *memory);
 int		cub_cleanup(t_game *game, const char *msg);
 int		cub_parse_textures(t_game *game, const char *str, const char **str_ptr, t_block *blocks);
 int		cub_read_map(t_game *game, const char *str, t_map *map, t_player *player);
-t_sheet cub_read_spritesheet(t_game *game, const char *base_path, size_t count, long frame_time);
+t_sheet cub_readsheet(t_game *game, const char *base_path, size_t count, long frame_time);
 
 // Physics
 void	cub_update_pos(t_game *game, float dt);
