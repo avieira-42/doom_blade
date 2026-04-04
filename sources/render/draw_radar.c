@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_radar.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/04 03:56:27 by avieira-          #+#    #+#             */
+/*   Updated: 2026/04/04 04:24:54 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub_structs.h"
 #include "cub_utils.h"
 
@@ -134,7 +146,7 @@ void	stt_draw_radar(t_game *game)
 	// cub_advance_animation(&drawbuf->radar_l1, dt);
 	// // <<< RADAR TMP
 
-void	cub_draw_radar(t_game *game, t_mat32 render, t_hands *hands)
+void	cub_draw_radar(t_game *game, t_mat32 render, t_hands *hands, long dt)
 {
 	t_mat32	texture;
 
@@ -146,15 +158,20 @@ void	cub_draw_radar(t_game *game, t_mat32 render, t_hands *hands)
 		texture.ptr = hands->radar.texture.ptr
 			+ hands->radar.frame_size * (hands->radar.count -1);
 		cub_draw_texture(render, texture, 0, 195);
+		stt_draw_radar(game);
 	}
 	else if (game->player.map & st_raising)
 	{
-		printf("raising\n");
+		printf("index: %i\n", hands->radar.index);
 		texture = hands->radar.texture;
 		texture.ptr += hands->radar.index
 			* hands->radar.frame_size;
 		cub_draw_texture(render, texture, 0, 195);
 		if (hands->radar.index == hands->radar.count - 2)
-			game->player.map |= st_checking;
+		{
+			game->player.map &= ~(size_t)st_raising;
+			game->player.map |= (size_t)st_checking;
+		}
+		cub_advance_animation(&hands->radar, dt);
 	}
 }

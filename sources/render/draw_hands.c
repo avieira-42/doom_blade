@@ -17,7 +17,7 @@ void	cub_draw_hands(t_mat32 frame, t_game *game, long dt)
 	x_tmp = (RENDER_WIDTH - texture.width) / 2;
 	y_tmp = RENDER_HEIGHT - texture.height;
 	cub_draw_texture(frame, texture, x_tmp, y_tmp);
-	cub_draw_radar(game, frame, &game->player.hands);
+	cub_draw_radar(game, frame, &game->player.hands, dt);
 }
 
 /* blood health signlaling in the edges is working, but enemies

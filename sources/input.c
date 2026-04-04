@@ -52,6 +52,11 @@ void	input_handler(t_game *game, t_player *player)
 	{
 		game->player.map |= st_raising;
 	}
+	else
+	{
+		game->player.map &= ~(size_t)st_checking;
+		game->player.map &= ~(size_t)st_raising;
+	}
 	stt_move(game);
 }
 
