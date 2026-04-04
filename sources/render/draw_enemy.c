@@ -5,9 +5,11 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
-int	is_enemy_shooting(void)
+static
+int	stt_is_enemy_shooting(t_enemy *enemy)
 {
-	if (ft_randf() > 0.995f) // DEFINE ENEMY_AGGRESSIVENES
+	printf("enemy->dist: %f\n", enemy->dist);
+	if (ft_randf() > 0.995f && ft_abs(enemy->dist) < 1)  // DEFINE ENEMY_AGGRESSIVENES and DIST
 		return (1);
 	return (0);
 }
@@ -75,7 +77,7 @@ void	enemy_update_anim(t_enemy *e, long dt, t_player *player)
 		return ;
 	}
 	cub_advance_animation(&e->running, dt);
-	if (is_enemy_shooting())
+	if (stt_is_enemy_shooting(e))
 	{
 		e->state &= ~(size_t)e_running;
 		e->state |= e_shooting;
