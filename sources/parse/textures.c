@@ -13,7 +13,8 @@
 // Reads a string until it finds a null terminator, space or length > 255
 // Returns: 
 static
-t_img	*stt_read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr)
+t_img	*stt_read_xpm(t_xvar *mlx, const char *filename,
+		const char **filename_ptr)
 {
 	t_img		*ptr;
 	int			tmp[2];
@@ -41,7 +42,8 @@ t_img	*stt_read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr
 
 // Reads an xpm texture, scales it to tex_height, transposes the result
 // and frees the original MLX img ptr
-int	cub_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr)
+int	cub_read_texture(t_xvar *mlx, t_mat32 *texture,
+		const char *filename, const char **filename_ptr)
 {
 	t_img	*img;
 
@@ -64,7 +66,8 @@ int	cub_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const 
 }
 
 static
-int	stt_read_color(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr)
+int	stt_read_color(t_xvar *mlx, t_mat32 *texture,
+		const char *filename, const char **filename_ptr)
 {
 	size_t		i;
 	uint32_t	color;
@@ -92,7 +95,8 @@ int	stt_read_color(t_xvar *mlx, t_mat32 *texture, const char *filename, const ch
 }
 
 static inline
-int	stt_match_texture(t_xvar *mlx, const char *str, t_block *blocks, const char **str_ptr)
+int	stt_match_texture(t_xvar *mlx, const char *str,
+		t_block *blocks, const char **str_ptr)
 {
 	int	rvalue;
 
@@ -122,7 +126,8 @@ int	stt_match_texture(t_xvar *mlx, const char *str, t_block *blocks, const char 
 	return (rvalue);
 }
 
-int	cub_parse_textures(t_game *game, const char *str, const char **str_ptr, t_block *blocks)
+int	cub_parse_textures(t_game *game, const char *str,
+		const char **str_ptr, t_block *blocks)
 {
 	int		rvalue;
 	size_t	match_target;

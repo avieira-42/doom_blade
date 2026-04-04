@@ -81,8 +81,8 @@ t_sheet cub_readsheet(t_game *game, const char *base_path, size_t count, long fr
 	tex = (t_mat32){0, img->width, img->height, count, img->width};
 	tex.ptr = malloc((size_t)(img->height * img->width) * count * sizeof(uint32_t));
 	if (tex.ptr == NULL)
-		return (mlx_destroy_image(game->mlx, img), 
-		cub_cleanup(game, "Malloc failure"), (t_sheet){0});
+		return (mlx_destroy_image(game->mlx, img),
+			cub_cleanup(game, "Malloc failure"), (t_sheet){0});
 	ft_memcpy(tex.ptr, img->data, tex.width * tex.height * sizeof(uint32_t));
 	ft_transpose(&tex);
 	mlx_destroy_image(game->mlx, img);

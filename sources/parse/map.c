@@ -15,7 +15,8 @@
 
 // Returns: >0) Ok, -1) Invalid value (P), -2) Two Player Positions (P)
 static
-ssize_t	stt_parse_line(t_game *game, const char *line, t_map *map, t_player *player)
+ssize_t	stt_parse_line(t_game *game, const char *line,
+		t_map *map, t_player *player)
 {
 	char		c;
 	const char	*oline = line;
@@ -50,8 +51,8 @@ void	stt_filtercpy(const char *str, t_map *map)
 	uint8_t					*dst;
 	size_t					y;
 	static const uint8_t	lut[256] = {
-		['\t'] = 1, ['\n'] = 1, ['\v'] = 1, ['\f'] = 1, ['\r'] = 1, [' '] = 1,
-		['0'] = 0, ['1'] = 1, ['2'] = 2};
+	['\t'] = 1, ['\n'] = 1, ['\v'] = 1, ['\f'] = 1, ['\r'] = 1, [' '] = 1,
+	['0'] = 0, ['1'] = 1, ['2'] = 2};
 
 	y = 0;
 	while (*str != 0)
