@@ -15,8 +15,8 @@ t_ray	stt_raycast_init(float camera_x, t_vec2 pos, t_vec2 dir, t_vec2 plane)
 	ray.ray_dir.y.f = dir.y.f + camera_x * plane.y.f;
 	ray.map_pos.x.i = (int32_t)floorf(pos.x.f);
 	ray.map_pos.y.i = (int32_t)floorf(pos.y.f);
-	ray.delta_dist.x.f = 1.0f / (fabsf(ray.ray_dir.x.f) + EPS);
-	ray.delta_dist.y.f = 1.0f / (fabsf(ray.ray_dir.y.f) + EPS);
+	ray.d_dist.x.f = 1.0f / (fabsf(ray.ray_dir.x.f) + EPS);
+	ray.d_dist.y.f = 1.0f / (fabsf(ray.ray_dir.y.f) + EPS);
 	if (ray.ray_dir.x.f < 0)
 		ray.step.x.i = -1;
 	else
@@ -26,31 +26,34 @@ t_ray	stt_raycast_init(float camera_x, t_vec2 pos, t_vec2 dir, t_vec2 plane)
 	else
 		ray.step.y.i = 1;
 	if (ray.ray_dir.x.f < 0)
-		ray.side_dist.x.f = (pos.x.f - ray.map_pos.x.i) * ray.delta_dist.x.f;
+		ray.side_dist.x.f = (pos.x.f - ray.map_pos.x.i) * ray.d_dist.x.f;
 	else
-		ray.side_dist.x.f = (ray.map_pos.x.i + 1.0f - pos.x.f) * ray.delta_dist.x.f;
+		ray.side_dist.x.f = (ray.map_pos.x.i + 1.0f - pos.x.f) * ray.d_dist.x.f;
 	if (ray.ray_dir.y.f < 0)
-		ray.side_dist.y.f = (pos.y.f - ray.map_pos.y.i) * ray.delta_dist.y.f;
+		ray.side_dist.y.f = (pos.y.f - ray.map_pos.y.i) * ray.d_dist.y.f;
 	else
-		ray.side_dist.y.f = (ray.map_pos.y.i + 1.0f - pos.y.f) * ray.delta_dist.y.f;
+		ray.side_dist.y.f = (ray.map_pos.y.i + 1.0f - pos.y.f) * ray.d_dist.y.f;
 	return (ray);
 }
 
 static inline
-t_rayhit	stt_rayhit_info(t_ray *ray, uint8_t side, uint8_t block_index, t_vec2 pos)
+t_rayhit	stt_rayhit_info(t_ray *ray, uint8_t side,
+		uint8_t block_index, t_vec2 pos)
 {
 	t_rayhit	hit;
 	float		x_pos_texture;
 
 	if (side == 0)
 	{
-		hit.perp_dist = (ray->map_pos.x.i - pos.x.f + 0.5f * (1 - ray->step.x.i)) / ray->ray_dir.x.f;
+		hit.perp_dist = (ray->map_pos.x.i - pos.x.f + 0.5f
+				* (1 - ray->step.x.i)) / ray->ray_dir.x.f;
 		hit.tex_dir = 1 + ((ray->step.x.i > 0) << 1);
 		x_pos_texture = pos.y.f + hit.perp_dist * ray->ray_dir.y.f;
 	}
 	else
 	{
-		hit.perp_dist = (ray->map_pos.y.i - pos.y.f + 0.5f * (1 - ray->step.y.i)) / ray->ray_dir.y.f;
+		hit.perp_dist = (ray->map_pos.y.i - pos.y.f + 0.5f
+				* (1 - ray->step.y.i)) / ray->ray_dir.y.f;
 		hit.tex_dir = (ray->step.y.i > 0) << 1;
 		x_pos_texture = pos.x.f + hit.perp_dist * ray->ray_dir.x.f;
 	}
@@ -70,19 +73,21 @@ t_rayhit	stt_dda(t_ray *ray, t_vec2 pos, t_map *map)
 	{
 		if (ray->side_dist.x.f < ray->side_dist.y.f)
 		{
-			ray->side_dist.x.f += ray->delta_dist.x.f;
+			ray->side_dist.x.f += ray->d_dist.x.f;
 			ray->map_pos.x.i += ray->step.x.i;
 			side = 0;
 		}
 		else
 		{
-			ray->side_dist.y.f += ray->delta_dist.y.f;
+			ray->side_dist.y.f += ray->d_dist.y.f;
 			ray->map_pos.y.i += ray->step.y.i;
 			side = 1;
 		}
-		if ((uint32_t)(ray->map_pos.x.i) >= map->width || (uint32_t)(ray->map_pos.y.i) >= map->height)
+		if ((uint32_t)(ray->map_pos.x.i) >= map->width
+				|| (uint32_t)(ray->map_pos.y.i) >= map->height)
 			break ;
-		block_index = map->tex_index[ray->map_pos.y.i * map->width + ray->map_pos.x.i];
+		block_index = map->tex_index[ray->map_pos.y.i
+			* map->width + ray->map_pos.x.i];
 	}
 	return (stt_rayhit_info(ray, side, block_index, pos));
 }

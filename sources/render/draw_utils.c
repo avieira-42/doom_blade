@@ -64,6 +64,7 @@ void	quad_draw(t_mat32 frame, t_quad quad)
 		y++;
 	}
 }
+
 uint8_t	cub_advance_animation(t_sheet *sheet, long dt)
 {
 	uint8_t	rvalue;
@@ -91,7 +92,7 @@ void	pixel_swap(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
 		return ;
 	dst = frame.ptr + x * frame.stride + y;
 	if ((*dst == 0x401013 || *dst == 0x3a0c0e)
-			&& color != 0x005500)
+		&& color != 0x005500)
 		return ;
 	if (color == 0x000000)
 	{

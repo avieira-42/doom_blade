@@ -7,7 +7,7 @@ typedef struct s_ray
 {
 	t_vec2	ray_dir;
 	t_vec2	map_pos;
-	t_vec2	delta_dist;
+	t_vec2	d_dist;
 	t_vec2	side_dist;
 	t_vec2	step;
 }	t_ray;
