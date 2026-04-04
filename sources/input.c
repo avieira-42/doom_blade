@@ -49,9 +49,7 @@ void	input_handler(t_game *game, t_player *player)
 		game->state.key &= ~(size_t) key_e;
 	}
 	if	(game->state.key & key_tab && !(game->state.key & st_reloading))
-	{
 		game->player.map |= st_raising;
-	}
 	if (!(game->state.key & key_tab) || player->state & st_reloading)
 	{
 		game->player.map &= ~(size_t)st_checking;
@@ -59,16 +57,3 @@ void	input_handler(t_game *game, t_player *player)
 	}
 	stt_move(game);
 }
-
-// if (game->state.key & key_tab)
-// {
-// 	if (!(player->state & (st_reloading | st_shooting))
-// 			&& !(player->map & (st_raising | st_checking)))
-// 		player->map |= (size_t)st_raising;
-// }
-// else if (!(game->state.key & key_tab))
-// {
-// 	game->player.hands.radar.index = 0;
-// 	player->map &= ~(size_t)st_raising;
-// 	player->map &= ~(size_t)st_checking;
-// }

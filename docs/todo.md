@@ -10,3 +10,5 @@ I think gates might be a system where, when its a gate, you calculate two rayhit
 
 TO REMEMBER:
 - Screen width and height must be greater than render height/width
+- Transparency color needs to be only one, and processed in parse
+- Parse needs to validate map first to see how many textures it will need, to adjust match target

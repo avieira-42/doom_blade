@@ -18,7 +18,7 @@ void	cub_draw_texture(t_mat32 frame, t_mat32 image, size_t xc, size_t yc)
 		while (x < image.width)
 		{
 			color = image.ptr[x * image.stride + y];
-			if (color != 2228223 && color != 1441791)	// REVIEW: colors are hex coded normally
+			if (color != 2228223 && color != 1441791)
 				pixel_put(frame, x + xc, y + yc, color);
 			x++;
 		}

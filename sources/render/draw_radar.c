@@ -166,8 +166,8 @@ void	cub_draw_radar(t_game *game, t_mat32 render, t_hands *hands, long dt)
 {
 	t_mat32	texture;
 
-	if (game->player.map & st_checking)
-	{
+	if (game->player.map & st_checking)	// This should be in actions. Pipeline is: actions determine what sheet to load;
+	{									// The sheet is then used by draw hands to draw the texture
 		hands->radar.index = 0;
 		texture = hands->radar.texture;
 		texture.ptr = hands->radar.texture.ptr

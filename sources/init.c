@@ -43,52 +43,52 @@ int stt_mlx_init(t_game *game)
 	return (0);
 }
 
-#define ENM_WALK "assets/sprites/xpm/characters/zombie/enemy_walking_front"
-#define ENM_SHOOT "assets/sprites/xpm/characters/zombie/enemy_shooting"
-#define ENM_SHOT "assets/sprites/xpm/characters/zombie/enemy_shot"
-#define ENM_EXPL "assets/sprites/xpm/characters/zombie/enemy_exploding"
+#define ENEMY_WALK "assets/sprites/xpm/characters/zombie/enemy_walking_front"
+#define ENEMY_ATK "assets/sprites/xpm/characters/zombie/enemy_shooting"
+#define ENEMY_HIT "assets/sprites/xpm/characters/zombie/enemy_shot"
+#define ENEMY_DEATH "assets/sprites/xpm/characters/zombie/enemy_exploding"
 
 static
 void	stt_enemy_init(t_game *game)
 {
 	size_t	i;
-	t_enemy	*enm;
+	t_enemy	*enemy;
 
 	i = 0;
 	ft_memset(game->enemies, 0, sizeof(t_enemy) * NUM_ENEMIES);
 	while (i < NUM_ENEMIES)
 	{
-		enm = game->enemies + i;
-		enm->running = cub_readsheet(game, ENM_WALK, 4, ANIM_TIME * 3);
-		enm->shooting = cub_readsheet(game, ENM_SHOOT, 2, ANIM_TIME * 3);
-		enm->shot = cub_readsheet(game, ENM_SHOT, 1, ANIM_TIME * 3);
-		enm->dying = cub_readsheet(game, ENM_EXPL, 12, ANIM_TIME * 1);
-		enm->state = e_idle;
-		enm->health = 100;
-		enm->cam.pos = random_valid_pos(&game->map);
+		enemy = game->enemies + i;
+		enemy->running = cub_readsheet(game, ENEMY_WALK, 4, ANIM_TIME * 3);
+		enemy->shooting = cub_readsheet(game, ENEMY_ATK, 2, ANIM_TIME * 3);
+		enemy->shot = cub_readsheet(game, ENEMY_HIT, 1, ANIM_TIME * 3);
+		enemy->dying = cub_readsheet(game, ENEMY_DEATH, 12, ANIM_TIME * 1);
+		enemy->state = e_idle;
+		enemy->health = 100;
+		enemy->cam.pos = random_valid_pos(&game->map);
 		i++;
 	}
 }
 
-#define TEX_SHOT "assets/sprites/xpm/hud/hands/hands_shooting"
-#define TEX_WALK "assets/sprites/xpm/hud/hands/hands_walking"
-#define TEX_RELOAD "assets/sprites/xpm/hud/hands/hands_reloading"
-#define TEX_RADR "assets/sprites/xpm/hud/hands/hands_radar"
-#define TEX_RADR0 "assets/sprites/xpm/hud/hands/map/layer0_"
-#define TEX_RADR1 "assets/sprites/xpm/hud/hands/map/layer1_"
-#define TEX_BLOOD "assets/sprites/xpm/hud/damage/damage"
+#define PLAYER_ATK "assets/sprites/xpm/hud/hands/hands_shooting"
+#define PLAYER_WALK "assets/sprites/xpm/hud/hands/hands_walking"
+#define PLAYER_RELOAD "assets/sprites/xpm/hud/hands/hands_reloading"
+#define PLAYER_RADAR "assets/sprites/xpm/hud/hands/hands_radar"
+#define PLAYER_RADAR0 "assets/sprites/xpm/hud/hands/map/layer0_"
+#define PLAYER_RADAR1 "assets/sprites/xpm/hud/hands/map/layer1_"
+#define PLAYER_BLOOD "assets/sprites/xpm/hud/damage/damage"
 
 static
 int	stt_sprites_init(t_game *game, t_hands *hands)
 {
 	ft_memset(&game->assets, 0, sizeof(game->assets));
-	hands->shoot = cub_readsheet(game, TEX_SHOT, 5, ANIM_TIME);
-	hands->walk = cub_readsheet(game, TEX_WALK, 9, ANIM_TIME);
-	hands->reload = cub_readsheet(game, TEX_RELOAD, 32, ANIM_TIME);
-	hands->radar = cub_readsheet(game, TEX_RADR, 4, ANIM_TIME * 3);
-	hands->radar_l0 = cub_readsheet(game, TEX_RADR0, 13, ANIM_TIME / 3);
-	hands->radar_l1 = cub_readsheet(game, TEX_RADR1, 1, ANIM_TIME);
-	game->assets.hud_blood = cub_readsheet(game, TEX_BLOOD, 3, ANIM_TIME);
+	hands->shoot = cub_readsheet(game, PLAYER_ATK, 5, ANIM_TIME);
+	hands->walk = cub_readsheet(game, PLAYER_WALK, 9, ANIM_TIME);
+	hands->reload = cub_readsheet(game, PLAYER_RELOAD, 32, ANIM_TIME);
+	hands->radar = cub_readsheet(game, PLAYER_RADAR, 4, ANIM_TIME * 3);
+	hands->radar_l0 = cub_readsheet(game, PLAYER_RADAR0, 13, ANIM_TIME / 3);
+	hands->radar_l1 = cub_readsheet(game, PLAYER_RADAR1, 1, ANIM_TIME);
+	game->assets.hud_blood = cub_readsheet(game, PLAYER_BLOOD, 3, ANIM_TIME);
 	return (0);
 }
 
