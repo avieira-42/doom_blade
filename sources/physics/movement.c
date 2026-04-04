@@ -107,7 +107,8 @@ void	cub_update_pos(t_game *game, float dt)
 	{
 		if (game->enemies[i].health > 0)
 		{
-			delta = stt_move_toward(&game->map, game->player.cam.pos, game->enemies + i, dt);
+			delta = stt_move_toward(&game->map, game->player.cam.pos,
+					game->enemies + i, dt);
 			game->enemies[i].cam.pos.x.f += delta.x.f;
 			game->enemies[i].cam.pos.y.f += delta.y.f;
 		}
