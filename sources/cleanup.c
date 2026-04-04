@@ -44,6 +44,12 @@ void	stt_free_assets(t_assets *assets, t_block *blocks, t_player *player)
 	}
 }
 
+static
+void	stt_free_enemies(t_game *game)
+{
+	free(game->assets.hud_blood.texture.ptr);
+}
+
 int	cub_cleanup(t_game *game, const char *msg)
 {
 	const int	rvalue = msg == NULL;
@@ -59,5 +65,6 @@ int	cub_cleanup(t_game *game, const char *msg)
 	if (game->mlx != NULL)
 		mlx_destroy_display(game->mlx);
 	stt_free_assets(&game->assets, game->blocks, &game->player);
+	stt_free_enemies(game);
 	exit(rvalue);
 }

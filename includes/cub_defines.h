@@ -28,10 +28,14 @@
 # define HALT_THR 0.5f		// 
 # define ANIM_TIME 60000	// Time between anim frames
 
+// Difficulty
+# define ENEMY_ATTACK_DIST 1
+# define ENEMY_ATTACK_AGRESS 0.995f
+
 # define MOUSE_SENS 0.001953125f	// 	1/512
 # define RESPAWN_TIMER 8000000
 # define AMMO_COUNT 8
-# define PLAYER_HEALTH 128
+# define PLAYER_HEALTH 200
 # define RELOAD_CYCLE 4
 # define PILL_COUNT 1
 

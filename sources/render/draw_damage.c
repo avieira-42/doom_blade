@@ -12,6 +12,8 @@ void	cub_draw_damage(t_mat32 frame, t_game *game, long dt)
 	const int32_t	p_health = game->player.health;
 	t_mat32			texture;
 
+	if (p_health > 100)
+		return ;
 	texture = game->assets.hud_blood.texture;
 	if (p_health <= 100)
 		texture.ptr = game->assets.hud_blood.texture.ptr;

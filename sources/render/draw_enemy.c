@@ -9,7 +9,8 @@ static
 int	stt_is_enemy_shooting(t_enemy *enemy)
 {
 	printf("enemy->dist: %f\n", enemy->dist);
-	if (ft_randf() > 0.995f && ft_abs(enemy->dist) < 1)  // DEFINE ENEMY_AGGRESSIVENES and DIST
+	if (ft_randf() > ENEMY_ATTACK_AGRESS &&
+			ft_abs(enemy->dist) < ENEMY_ATTACK_DIST)  // DEFINE ENEMY_AGGRESSIVENES and DIST
 		return (1);
 	return (0);
 }
