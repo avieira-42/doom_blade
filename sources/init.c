@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/04 20:36:40 by avieira-          #+#    #+#             */
+/*   Updated: 2026/04/04 20:37:47 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <X11/X.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -120,17 +132,20 @@ void stt_radar_init(t_game *game)
 	game->map.radar_size =
 		(t_vec2){.x.i = game->player.hands.radar_l0.texture.width * 2,
 			.y.i = game->player.hands.radar_l0.texture.height * 2};
-	game->map.radar_cell_size = (t_vec2){.x.i = game->map.radar_size.x.i
+
+	game->map.radar_quad.size = (t_vec2){.x.i = game->map.radar_size.x.i
 		/ game->map.width,
 		.y.i = game->map.radar_size.y.i / game->map.height};
-	game->map.radar_radius = game->player.hands.radar_l0.texture.width / 2;
-	game->map.radar_sprite_center = (t_vec2){
+	game->map.radar_quad.color = 0x000000; // DEFINES
+	game->map.radar_quad.radius = game->player.hands.radar_l0.texture.width / 2;
+	game->map.radar_quad.center = (t_vec2){
 		.x.i = game->map.radar_sprite_pos.x.i
 			+ game->player.hands.radar_l0.texture.width / 2,
 			.y.i = game->map.radar_sprite_pos.y.i
 				+ game->player.hands.radar_l0.texture.height / 2};
-	game->map.radar_character_icon_size = (t_vec2){.x.i = 4, .y.i = 4};
-	game->map.radar_icon_radius= game->map.radar_character_icon_size.x.i / 2;
+	game->map.icon_quad.size = (t_vec2){.x.i = 4, .y.i = 4};
+	game->map.icon_quad.color = 0x005500; // DEFINES
+	game->map.icon_quad.radius = game->map.icon_quad.size.x.i / 2;
 }
 
 int	cub_init(const char *filename, t_game *game, t_memory *memory)

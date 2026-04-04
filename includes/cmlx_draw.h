@@ -53,8 +53,8 @@ typedef struct s_quad
 	t_vec2	pos;
 	t_vec2	size;
 	int32_t	color;
-	int32_t	bound;
-	t_vec2	map_center;
+	int32_t	radius;
+	t_vec2	center;
 }	t_quad;
 
 typedef struct s_sides

@@ -15,24 +15,22 @@ void	stt_draw_layer(t_mat32 frame, t_sheet *layer,
 }
 
 // to place on utils instead of the other quad draw
-// TODO: to remove one parameter (FUCK NORMINETTE REALLY) might remove the color....
 static
-void	stt_quad_draw(t_mat32 frame, t_vec2 pos,
-		const t_vec2 quad_size, int32_t color, int32_t radius, t_vec2 center)
+void	stt_quad_draw(t_mat32 frame, t_quad quad)
 {
 	int32_t	y;
 	int32_t	x;
 	t_vec2	dst;
 
 	y = 0;
-	while (y <= quad_size.y.i)
+	while (y <= quad.size.y.i)
 	{
 		x = 0;
-		while(x <= quad_size.x.i)
+		while(x <= quad.size.x.i)
 		{
-			dst = (t_vec2){.x.i = pos.x.i + x, .y.i = pos.y.i + y};
-			if (vec2_idist(center, dst) <= radius * radius)
-				pixel_swap(frame, dst.x.i, dst.y.i, color);
+			dst = (t_vec2){.x.i = quad.pos.x.i + x, .y.i = quad.pos.y.i + y};
+			if (vec2_idist(quad.center, dst) <= quad.radius * quad.radius)
+				pixel_swap(frame, dst.x.i, dst.y.i, quad.color);
 			x++;
 		}
 		y++;
@@ -41,15 +39,11 @@ void	stt_quad_draw(t_mat32 frame, t_vec2 pos,
 
 // this function is working properly, but it needs a review since if the grid is too tiny
 // the result of integer division might make it unrenderable
-void	stt_grid_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_vec2 grid_size,
-		int32_t radius, t_vec2 sprite_center)
+void	stt_grid_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_quad cell)
 {
 	size_t			y;
 	size_t			x;
 	uint32_t		block;
-	t_vec2			quad_pos;
-	const t_vec2	quad_size = (t_vec2){.x.i = grid_size.x.i / map.width,
-		.y.i = grid_size.y.i / map.height};
 
 	y = 0;
 	while (y < map.height)
@@ -60,9 +54,9 @@ void	stt_grid_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_vec2 grid_size,
 			block = map.tex_index[x + y * map.width];
 			if (block == 129)
 			{
-				quad_pos = (t_vec2){.x.i = grid_pos.x.i + quad_size.x.i * x,
-					.y.i = grid_pos.y.i + quad_size.y.i * y};
-				stt_quad_draw(frame, quad_pos, quad_size, 0x000000, radius, sprite_center);
+				cell.pos = (t_vec2){.x.i = grid_pos.x.i + cell.size.x.i * x,
+					.y.i = grid_pos.y.i + cell.size.y.i * y};
+				stt_quad_draw(frame, cell);
 			}
 			x++;
 		}
@@ -72,52 +66,42 @@ void	stt_grid_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_vec2 grid_size,
 
 // for funcitonality separation
 static
-void	stt_player_icon_draw(t_mat32 frame, t_player player, t_vec2 grid_pos, t_vec2 quad_size)
+void	stt_player_icon_draw(t_mat32 frame, t_map map, t_vec2 grid_pos)
 {
+	t_vec2	icon_center;
+	map.icon_quad.pos = (t_vec2){.x.i = map.radar_sprite_pos.x.i
+		+ map.icon_quad.pos.x.i - grid_pos.x.i - map.icon_quad.size.x.i / 2,
+			.y.i = map.radar_sprite_pos.y.i + map.icon_quad.pos.y.i - grid_pos.y.i - map.icon_quad.size.y.i / 2};
+	icon_center = (t_vec2){.x.i = map.icon_quad.pos.x.i + map.icon_quad.radius,
+		.y.i = map.icon_quad.pos.y.i + map.icon_quad.radius};
+	map.icon_quad.center = icon_center;
+	stt_quad_draw(frame, map.icon_quad);
 }
 
+// TODO: draw enemies icons
+// TODO: draw player foc representation
 static
 void	stt_draw_radar(t_game *game, t_map map, long dt)
 {
-	// to rework | attempting to draw a pseudo so long but just in a tiny area
-	// what i need is to keep pushing the position of the grid and the grid will
-	// only be visible within a certain distance from the center of the sprite NOT
-	// the player position
-	// TODO for the icon: get center of player to draw from it, NOT the corner
+	t_vec2	grid_pos;
 
-	// DRAW GRID // WORKING PROPERLY FOR NOW
-
-	t_vec2			player_pos;
-	t_vec2			grid_pos;
-	t_vec2			icon_center;
-
-	player_pos = (t_vec2){.x.i =  game->player.cam.pos.x.f * map.radar_cell_size.x.i
-		, .y.i = game->player.cam.pos.y.f * map.radar_cell_size.y.i};
+	map.icon_quad.pos = (t_vec2){.x.i =  game->player.cam.pos.x.f * map.radar_quad.size.x.i
+		, .y.i = game->player.cam.pos.y.f * map.radar_quad.size.y.i};
 	grid_pos = (t_vec2){.x.i =
-		player_pos.x.i - game->player.hands.radar_l0.texture.width / 2,
-		.y.i = player_pos.y.i - game->player.hands.radar_l0.texture.height / 2};
+		map.icon_quad.pos.x.i - game->player.hands.radar_l0.texture.width / 2,
+		.y.i = map.icon_quad.pos.y.i - game->player.hands.radar_l0.texture.height / 2};
 	grid_pos.x.i = ft_imax(grid_pos.x.i, 0);
 	grid_pos.x.i = ft_imin(grid_pos.x.i, map.radar_size.x.i
 			- game->player.hands.radar_l0.texture.width);
 	grid_pos.y.i = ft_imax(grid_pos.y.i, 0);
 	grid_pos.y.i = ft_imin(grid_pos.y.i, map.radar_size.y.i
 			- game->player.hands.radar_l0.texture.height);
-	player_pos = (t_vec2){.x.i = map.radar_sprite_pos.x.i
-		+ player_pos.x.i - grid_pos.x.i - map.radar_character_icon_size.x.i / 2,
-			.y.i = map.radar_sprite_pos.y.i + player_pos.y.i - grid_pos.y.i - map.radar_character_icon_size.y.i / 2};
-	icon_center = (t_vec2){.x.i = player_pos.x.i + map.radar_icon_radius,
-		.y.i = player_pos.y.i + map.radar_icon_radius};
 	stt_draw_layer(game->frame.render,
 		&game->player.hands.radar_l0, map.radar_sprite_pos, dt);
-
 	stt_grid_draw(game->frame.render, game->map,
 			(t_vec2){.x.i = map.radar_sprite_pos.x.i - grid_pos.x.i,
-			.y.i = map.radar_sprite_pos.y.i - grid_pos.y.i}, map.radar_size, map.radar_radius,
-			map.radar_sprite_center);
-	
-	stt_quad_draw(game->frame.render, player_pos, map.radar_character_icon_size, 0x005500,
-			map.radar_icon_radius, icon_center);
-
+			.y.i = map.radar_sprite_pos.y.i - grid_pos.y.i}, game->map.radar_quad);
+	stt_player_icon_draw(game->frame.render, map, grid_pos);
 	stt_draw_layer(game->frame.render,
 		&game->player.hands.radar_l1, map.radar_sprite_pos, dt);
 }

@@ -41,11 +41,8 @@ typedef struct s_map
 	uint32_t	height;
 	t_vec2		radar_sprite_pos;
 	t_vec2		radar_size;
-	t_vec2		radar_cell_size;
-	t_vec2		radar_sprite_center;
-	t_vec2		radar_character_icon_size;
-	int32_t		radar_radius;
-	int32_t		radar_icon_radius;
+	t_quad		radar_quad;
+	t_quad		icon_quad;
 }	t_map;
 
 typedef struct s_enemy
