@@ -102,7 +102,7 @@ void	stt_grid_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_vec2 grid_size,
 	}
 }
 
-// for funcitonality seperation
+// for funcitonality separation
 static
 void	stt_player_icon_draw(t_mat32 frame, t_player player, t_vec2 grid_pos, t_vec2 quad_size)
 {
@@ -125,19 +125,15 @@ void	stt_draw_radar(t_game *game, long dt)
 	const t_vec2	quad_size = (t_vec2){.x.i = grid_size.x.i / game->map.width,
 		.y.i = grid_size.y.i / game->map.height};
 	const int32_t	radius = game->player.hands.radar_l0.texture.width / 2;
-	t_vec2	player_pos;
+	t_vec2			player_pos;
 	t_vec2			grid_pos;
-	t_vec2			icon_size;
+	const t_vec2	icon_size = (t_vec2){.x.i = 2, .y.i = 2};
 
 	player_pos = (t_vec2){.x.i =  game->player.cam.pos.x.f * quad_size.x.i
 		, .y.i = game->player.cam.pos.y.f * quad_size.y.i};
 	grid_pos = (t_vec2){.x.i =
 		player_pos.x.i - game->player.hands.radar_l0.texture.width / 2,
 		.y.i = player_pos.y.i - game->player.hands.radar_l0.texture.height / 2};
-	icon_size = (t_vec2){.x.i = quad_size.x.i - 2,
-		.y.i = quad_size.y.i - 2};
-	icon_size.x.i = ft_imax(icon_size.x.i, 1);
-	icon_size.y.i = ft_imax(icon_size.y.i, 1);
 	grid_pos.x.i = ft_imax(grid_pos.x.i, 0);
 	grid_pos.x.i = ft_imin(grid_pos.x.i, grid_size.x.i
 			- game->player.hands.radar_l0.texture.width);
@@ -145,8 +141,8 @@ void	stt_draw_radar(t_game *game, long dt)
 	grid_pos.y.i = ft_imin(grid_pos.y.i, grid_size.y.i
 			- game->player.hands.radar_l0.texture.height);
 	player_pos = (t_vec2){.x.i = radar_pos.x.i
-		+ player_pos.x.i - grid_pos.x.i,
-			.y.i = radar_pos.y.i + player_pos.y.i - grid_pos.y.i};
+		+ player_pos.x.i - grid_pos.x.i - icon_size.x.i / 2,
+			.y.i = radar_pos.y.i + player_pos.y.i - grid_pos.y.i - icon_size.y.i / 2};
 	stt_draw_layer(game->frame.render,
 		&game->player.hands.radar_l0, radar_pos, dt);
 
