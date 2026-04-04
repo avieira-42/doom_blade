@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   draw_radar.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/04 03:56:27 by avieira-          #+#    #+#             */
-/*   Updated: 2026/04/04 04:24:54 by avieira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "cub_structs.h"
 #include "cub_utils.h"
 
@@ -45,11 +33,16 @@ void	stt_draw_player_circle(t_game *game, t_vec2 p_pos,
 }
 
 static
-void	stt_draw_layer(t_mat32 frame, t_sheet layer, t_vec2 first_pixel_pos)
+void	stt_draw_layer(t_mat32 frame, t_sheet *layer,
+		t_vec2 first_pixel_pos, long dt)
 {
-	layer.texture.ptr += layer.index * layer.frame_size;
-	cub_draw_texture(frame, layer.texture, first_pixel_pos.x.i,
+	t_mat32	texture;
+
+	texture = layer->texture;
+	texture.ptr += layer->index * layer->frame_size;
+	cub_draw_texture(frame, texture, first_pixel_pos.x.i,
 		first_pixel_pos.y.i);
+	cub_advance_animation(layer, dt);
 }
 
 static
@@ -111,7 +104,7 @@ void	stt_blocks_render(t_game *game, t_vec2 pos,
 }
 
 static
-void	stt_draw_radar(t_game *game)
+void	stt_draw_radar(t_game *game, long dt)
 {
 	t_vec2	first_pixel_pos;
 	t_vec2	last_pixel_pos;
@@ -122,7 +115,7 @@ void	stt_draw_radar(t_game *game)
 	first_pixel_pos.x.i = 110;
 	first_pixel_pos.y.i = 240;
 	stt_draw_layer(game->frame.render,
-		game->player.hands.radar_l0, first_pixel_pos);
+		&game->player.hands.radar_l0, first_pixel_pos, dt);
 	last_pixel_pos.x.i = first_pixel_pos.x.i
 		+ game->player.hands.radar_l0.texture.width;
 	last_pixel_pos.y.i = first_pixel_pos.y.i
@@ -136,7 +129,7 @@ void	stt_draw_radar(t_game *game)
 	p_pos.y.i = map_center.y.i - game->player.hands.radar_l0.texture.height / 24 + 4;
 	stt_draw_player_circle(game, p_pos, map_center, bound.x.i);
 	stt_draw_layer(game->frame.render,
-		game->player.hands.radar_l1, first_pixel_pos);
+		&game->player.hands.radar_l1, first_pixel_pos, dt);
 }
 
 	// // RADAR TMP >>>
@@ -158,7 +151,7 @@ void	cub_draw_radar(t_game *game, t_mat32 render, t_hands *hands, long dt)
 		texture.ptr = hands->radar.texture.ptr
 			+ hands->radar.frame_size * (hands->radar.count -1);
 		cub_draw_texture(render, texture, 0, 195);
-		stt_draw_radar(game);
+		stt_draw_radar(game, dt);
 	}
 	else if (game->player.map & st_raising)
 	{
