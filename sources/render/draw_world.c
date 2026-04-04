@@ -26,13 +26,14 @@ void	stt_filter(t_rayhit *rays)
 }
 
 static inline
-void	stt_texture_sample(t_mat32 texture, float line_height, uint32_t *render_col, float unclamped_start, float unclamped_end)
+void	stt_texture_sample(t_mat32 texture, float line_height, uint32_t *render_col,
+		float unclamped_start, float unclamped_end)
 {
 	int32_t			y;
 	int32_t			tex_pos;
-	const int32_t	dy = 65536.0f * texture.height / line_height;	// if line height = render_height / perp_dist, then if
 	float			draw_start;
 	float			draw_end;
+	const int32_t	dy = 65536.0f * texture.height / line_height;	// if line height = render_height / perp_dist, then if
 
 	draw_start = ft_imax(0, unclamped_start);
 	draw_end = ft_imin(RENDER_HEIGHT, unclamped_end);
@@ -47,7 +48,8 @@ void	stt_texture_sample(t_mat32 texture, float line_height, uint32_t *render_col
 }
 
 static inline
-void	stt_column_render(t_rayhit hit, uint32_t *render_col, t_block *blocks, int32_t offset)
+void	stt_column_render(t_rayhit hit, uint32_t *render_col,
+		t_block *blocks, int32_t offset)
 {
 	t_mat32	texture;
 	float	line_height;
@@ -59,7 +61,8 @@ void	stt_column_render(t_rayhit hit, uint32_t *render_col, t_block *blocks, int3
 	line_height = fmaxf(1.0f, RENDER_HEIGHT / hit.perp_dist);
 	unclamped_start = 0.5f * (RENDER_HEIGHT - line_height) - offset;
 	unclamped_end = 0.5f * (RENDER_HEIGHT + line_height) - offset;
-	stt_texture_sample(texture, line_height, render_col, unclamped_start, unclamped_end);
+	stt_texture_sample(texture, line_height, render_col,
+		unclamped_start, unclamped_end);
 }
 
 // Blocks contains transposed rows for sequential memory access
@@ -71,12 +74,14 @@ void	cub_draw_world(t_game *game)
 
 	x = 0;
 	ptr = game->frame.render.ptr;
-	planecast(&game->frame, game->blocks[0].south, game->blocks[0].north, &game->player.cam);
+	planecast(&game->frame, game->blocks[0].south,
+		game->blocks[0].north, &game->player.cam);
 	raycast(&game->player.cam, &game->map, game->frame.rays);
 	// stt_filter(frame->rays);
 	while (x < RENDER_WIDTH)
 	{
-		stt_column_render(game->frame.rays[x], ptr, game->blocks, game->frame.offset);
+		stt_column_render(game->frame.rays[x], ptr,
+			game->blocks, game->frame.offset);
 		ptr += game->frame.render.stride;
 		x++;
 	}
