@@ -6,10 +6,10 @@
 typedef struct s_ray
 {
 	t_vec2	ray_dir;
-	t_vec2	map_pos;
+	t_vec2	map_pos;	// Integer
 	t_vec2	d_dist;
 	t_vec2	side_dist;
-	t_vec2	step;
+	t_vec2	step;		// Integer
 }	t_ray;
 
 typedef struct s_rayhit
@@ -61,7 +61,7 @@ typedef struct s_transform
 {
 	t_vec2		draw_pos;
 	t_vec2		delta;
-	t_vec2		norm_offset;
+	t_vec2		norm_offset;	// Clip start to normalized range
 	uint32_t	top;
 	uint32_t	bottom;
 	uint32_t	left;
@@ -71,8 +71,8 @@ typedef struct s_transform
 typedef struct s_sheet
 {
 	t_mat32		texture;
-	int32_t		frame_time;
-	int32_t		frame_dt;
+	int32_t		frame_time;		// When frame_dt exceeds frame_time, go to next frame
+	int32_t		frame_dt;		// Counts how much time has passed in the current frame
 	uint32_t	frame_size;
 	uint16_t	index;
 	uint16_t	count;

@@ -50,7 +50,7 @@ void	stt_fov_draw(t_mat32 frame, t_player player, t_quad p_icon)
 	t_vec2			line_dst;
 
 	line_dst = vec2_sum(p_pos,
-			vec2_scalar_mult(player.cam.dir, 5));
+			vec2_mult(player.cam.dir, 5));
 	line_draw(frame, p_pos, line_dst, rgb_yellow);
 }
 
@@ -97,7 +97,7 @@ void	stt_enemies_icon_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_enemy *e
 
 // TODO: draw enemies icons
 // TODO: draw player foc representation
-	static
+static
 void	stt_draw_radar(t_game *game, t_map map, long dt)
 {
 	t_vec2	grid_offset;

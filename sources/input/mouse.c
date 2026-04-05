@@ -39,9 +39,7 @@ int	cmlx_mousemove(t_game *game)
 	dy = y1 - (SCREEN_HEIGHT / 2);
 	game->player.cam.dir = vec2_rotate(game->player.cam.dir, dx);
 	game->player.cam.plane = vec2_rotate(game->player.cam.plane, dx);
-	game->frame.offset = ft_iclamp(game->frame.offset + dy,
-			-OFFSET_MAX, OFFSET_MAX);
-	mlx_mouse_move(game->mlx, game->mlx->win_list,
-		SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	game->frame.offset = ft_iclamp(game->frame.offset + dy, -OFFSET_MAX, OFFSET_MAX);
+	mlx_mouse_move(game->mlx, game->mlx->win_list, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	return (0);
 }

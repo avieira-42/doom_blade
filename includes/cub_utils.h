@@ -12,36 +12,27 @@
 // Draw and Render
 void		raycast(t_view *cam, t_map *map, t_rayhit *rays);
 void		planecast(t_frame *frame, t_mat32 floor, t_mat32 ceil, t_view *cam);
-void		cub_draw_world(t_game *game);
-void		cub_update_state(t_player *player, t_audio *audio,
-				t_game *game, long dt);
+void		cub_update_state(t_player *player, t_audio *audio, t_game *game, long dt);
 t_sheet		*cub_actions(t_player *player, t_map *map, long dt);
-void		cub_play_audio(t_player *player, t_audio *audio,
-				t_game *game, long dt);
+void		cub_play_audio(t_player *player, t_audio *audio, t_game *game, long dt);
 uint8_t		cub_advance_animation(t_sheet *sheet, long dt);
 void		pixel_swap(t_mat32 frame, int32_t x, int32_t y, uint32_t color);
 void		quad_draw(t_mat32 frame, t_quad quad);
-void		cub_draw_radar(t_game *game, t_mat32 render,
-				t_hands *hands, long dt);
-void		cub_draw_damage(t_mat32 frame, t_game *game, long dt);
 void		line_draw(t_mat32 frame, t_vec2 a, t_vec2 b, int color);
-bool		draw_enemy(t_frame *frame, t_rayhit *rays,
-		t_player *player, t_enemy *enemy);
 
 // Draw
+void		cub_draw_radar(t_game *game, t_mat32 render, t_hands *hands, long dt);
+void		cub_draw_damage(t_mat32 frame, t_game *game, long dt);
+void		cub_draw_world(t_game *game);
+bool		draw_enemy(t_frame *frame, t_player *player, t_enemy *enemy, t_mat32 tex);
+void		draw_number(t_mat32 frame, size_t xpos, size_t ypos, uint32_t value);
 void		cub_draw_hands(t_mat32 frame, t_game *game, long dt);
 void		cub_draw_crosshair(uint32_t *ptr);
 void		cub_draw_enemies(t_game *game, long dt);
+void		cub_draw_texture(t_mat32 frame, t_mat32 image, uint32_t xc, uint32_t yc);
 int			ft_transpose(t_mat32 *src);
-int			ft_transpose_img(uint32_t *ptr, size_t width,
-				size_t height);	// TMP
-int			cub_draw_image(t_mat32 src, t_mat32 dst,
-				size_t x_corner, size_t y_corner);
+int			ft_transpose_img(uint32_t *ptr, size_t width, size_t height);	// TMP
 void		pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color);
-void		cub_draw_texture(t_mat32 frame, t_mat32 image,
-				size_t x_corner, size_t y_corner);
-void		draw_number(t_mat32 frame, size_t xpos,
-				size_t ypos, uint32_t value);
 uint32_t	ft_bilerp_argb(const t_mat32 *src, t_vec2 norm_pos);
 uint32_t	ft_bilerp_argb_t(const t_mat32 *src, t_vec2 norm_pos);
 void		ft_integer_scaling(t_mat32 src, t_mat32 dst, size_t factor);
@@ -59,12 +50,9 @@ void		input_handler(t_game *game, t_player *player);
 // init
 int			cub_init(const char *filename, t_game *game, t_memory *memory);
 int			cub_cleanup(t_game *game, const char *msg);
-int			cub_parse_textures(t_game *game, const char *str,
-				const char **str_ptr, t_block *blocks);
-int			cub_read_map(t_game *game, const char *str,
-				t_map *map, t_player *player);
-t_sheet		cub_readsheet(t_game *game, const char *base_path,
-				size_t count, long frame_time);
+int			cub_parse_textures(t_game *game, const char *str, const char **str_ptr, t_block *blocks);
+int			cub_read_map(t_game *game, const char *str, t_map *map, t_player *player);
+t_sheet		cub_readsheet(t_game *game, const char *base_path, size_t count, long frame_time);
 
 // Physics
 void		cub_update_pos(t_game *game, float dt);
@@ -80,14 +68,13 @@ uint32_t	ft_strtoargb(const char *str, const char **str_ptr);
 void		*ft_read_all(const char *filename, size_t *file_size);
 t_vec2		vec2_rotate(t_vec2 vec, float angle);
 t_vec2		vec2_norm(t_vec2 vec);
-t_vec2		vec2_scalar_mult(t_vec2 a, int32_t scalar);
+t_vec2		vec2_mult(t_vec2 a, int32_t scalar);
 float		vec2_dot(t_vec2 a, t_vec2 b);
 t_vec2		vec2_sum(t_vec2 a, t_vec2 b);
 int32_t		vec2_dist(t_vec2 a, t_vec2 b);
 t_vec2		vec2_sub(t_vec2 a, t_vec2 b);
 int32_t		vec2_idist(t_vec2 a, t_vec2 b);
-int			cub_read_texture(t_xvar *mlx, t_mat32 *texture,
-				const char *filename, const char **filename_ptr);
+int			cub_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr);
 // ------------------------------
 
 void		**ft_free_array(void *array, size_t length);

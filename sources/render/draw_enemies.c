@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include "cub_defines.h"
 #include "cub_structs.h"
 #include "cub_utils.h"
 
@@ -15,6 +16,26 @@ int	stt_is_enemy_shooting(t_enemy *enemy)
 	return (0);
 }
 
+t_mat32	enemy_get_frame(t_enemy *enemy)
+{
+	t_sheet	*sheet;
+	t_mat32	frame;
+	size_t	offset;
+
+	if (enemy->state & e_dying)
+		sheet = &enemy->dying;
+	else if (enemy->state & e_hit)
+		sheet = &enemy->shot;
+	else if (enemy->state & e_shooting)
+		sheet = &enemy->shooting;
+	else
+		sheet = &enemy->running;
+	offset = (size_t)sheet->index * (size_t)sheet->frame_size;
+	frame = sheet->texture;
+	frame.ptr = sheet->texture.ptr + offset;
+	return (frame);
+}
+
 void	enemy_update_anim(t_enemy *e, long dt, t_player *player)
 {
 	uint8_t	r;
@@ -23,7 +44,10 @@ void	enemy_update_anim(t_enemy *e, long dt, t_player *player)
 	{
 		r = cub_advance_animation(&e->dying, dt);
 		if (r & (1 << 2))
+		{
+			player->health += HEAL_VALUE;
 			e->state = e_dead;
+		}
 		return ;
 	}
 	if (e->state & e_dead)
@@ -65,8 +89,6 @@ void	enemy_update_anim(t_enemy *e, long dt, t_player *player)
 		e->shooting.index = 0;
 		e->shooting.frame_dt = 0;
 		player->health -= ENEMY_ATTACK_POWER;
-		player->last_damage_time = get_time();
-		player->regen_cd = REGEN_CD;
 		e->state &= ~(size_t)e_seen;
 	}
 }
@@ -95,13 +117,12 @@ void	stt_enemy_update_stats(t_game *game, t_enemy *enemy, bool hit)
 	}
 }
 
-
-
 void	cub_draw_enemies(t_game *game, long dt)
 {
 	bool	hit;
 	size_t	i;
 	t_enemy	*enemy;
+	t_mat32	tex;
 
 	i = 0;
 	while (i < NUM_ENEMIES)
@@ -109,8 +130,8 @@ void	cub_draw_enemies(t_game *game, long dt)
 		enemy = &game->enemies[i];
 		if (!(enemy->state & e_dead))
 		{
-			hit = draw_enemy(&game->frame, game->frame.rays,
-					&game->player, enemy);
+			tex = enemy_get_frame(enemy);
+			hit = draw_enemy(&game->frame, &game->player, enemy, tex);
 			enemy_update_anim(enemy, dt, &game->player);
 			stt_enemy_update_stats(game, enemy, hit);
 		}

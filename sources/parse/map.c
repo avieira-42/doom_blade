@@ -15,8 +15,7 @@
 
 // Returns: >0) Ok, -1) Invalid value (P), -2) Two Player Positions (P)
 static
-ssize_t	stt_parse_line(t_game *game, const char *line,
-		t_map *map, t_player *player)
+ssize_t	stt_parse_line(t_game *game, const char *line, t_map *map, t_player *player)
 {
 	char		c;
 	const char	*oline = line;

@@ -2,10 +2,23 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include "cub_defines.h"
 #include "cub_utils.h"
 #include "cmlx_base.h"
 
-#define SENTINEL_VALUE 0xFF000000 // Color value that should be transparent
+static inline
+void	stt_clean_texture(uint32_t *ptr, size_t length)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < length)
+	{
+		if (ptr[i] == ALPHA_SENTINEL1 || ptr[i] == ALPHA_SENTINEL2)
+			ptr[i] = 0;
+		i++;
+	}
+}
 
 static
 t_img	*stt_load_img(t_xvar *mlx, t_str path, size_t count)
@@ -29,9 +42,11 @@ int	stt_load_sheet(t_xvar *mlx, t_mat32 sprite, t_str path, size_t count)
 {
 	size_t			i;
 	t_img			*img;
+	uint32_t		*optr;
 	const size_t	depth_stride = sprite.height * sprite.width;
 
 	i = 1;
+	optr = sprite.ptr;
 	sprite.ptr += depth_stride;
 	while (i < count)
 	{
@@ -46,21 +61,8 @@ int	stt_load_sheet(t_xvar *mlx, t_mat32 sprite, t_str path, size_t count)
 		sprite.ptr += depth_stride;
 		i++;
 	}
+	stt_clean_texture(optr, depth_stride * sprite.depth);
 	return (0);
-}
-
-void	stt_clean_texture(t_mat32 texture)
-{
-	size_t			i;
-	const size_t	length = texture.height * texture.width * texture.depth;
-
-	i = 0;
-	while (i < length)
-	{
-		if (texture.ptr[i] == SENTINEL_VALUE)
-			texture.ptr[i] = 0;
-		i++;
-	}
 }
 
 // Saves images sequentially in memory, in a row x col x depth matrix
@@ -81,8 +83,7 @@ t_sheet cub_readsheet(t_game *game, const char *base_path, size_t count, long fr
 	tex = (t_mat32){0, img->width, img->height, count, img->width};
 	tex.ptr = malloc((size_t)(img->height * img->width) * count * sizeof(uint32_t));
 	if (tex.ptr == NULL)
-		return (mlx_destroy_image(game->mlx, img),
-			cub_cleanup(game, "Malloc failure"), (t_sheet){0});
+		return (mlx_destroy_image(game->mlx, img), cub_cleanup(game, "Malloc failure"), (t_sheet){0});
 	ft_memcpy(tex.ptr, img->data, tex.width * tex.height * sizeof(uint32_t));
 	ft_transpose(&tex);
 	mlx_destroy_image(game->mlx, img);

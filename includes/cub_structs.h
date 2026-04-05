@@ -31,7 +31,6 @@ typedef struct s_player
 	float		spd_sideway;
 	float		spd_max;
 	int32_t		health;
-	long		regen_cd;
 	int32_t		ammo;
 	long		last_damage_time;
 }	t_player;
@@ -39,7 +38,7 @@ typedef struct s_player
 typedef struct s_map
 {
 	uint8_t		*tex_index;
-	uint8_t		*state;	// 0: noth is drawn 255: evrything is drawn (l to r)
+	uint8_t		*state;	// 0: nothing is drawn, 255: everything is drawn (left to right)
 	uint32_t	width;
 	uint32_t	height;
 	t_vec2		radar_sprite_pos;
@@ -60,9 +59,7 @@ typedef struct s_enemy
 	uint32_t	state;
 	int32_t		health;
 	long		respawn_timer;
-	uint8_t		id;
 	float		dist;
-	bool		is_visible;
 }	t_enemy;
 
 typedef struct s_memory

@@ -15,15 +15,15 @@
 # define PI_DEG 0.01745329251994329576923690768488612713439L
 
 // Game Vars
-# define HITREG_AREA 2		// Number of pix to chck in cntr grid, must be even
+# define HITREG_AREA 2		// Number of pixels to check in center grid, must be even
 # define NEAR_RADIUS 0.1f	// Determines how near for texture culling
-# define MELEE_RANGE 0.25f	// Determines range enemy'll apprch the plr and hit
+# define MELEE_RANGE 0.25f	// Determines range enemy will approach the player and hit
 # define PLAYER_WALK_SPEED 1.6f
 # define PLAYER_RUN_SPEED 3.2f
 # define PLAYER_ACCEL 0.33f
 # define ENEMY_SPEED 2.5f
 # define ENEMY_ACCEL 0.5f
-# define SPEED_THR 4.1f		// Speed threshold where anim goes from norm to fst
+# define SPEED_THR 4.1f		// Speed threshold where animation goes from normal to fast
 # define HALT_THR 0.5f		// 
 # define ANIM_TIME 60000	// Time between anim frames
 
@@ -31,16 +31,18 @@
 # define ENEMY_ATTACK_DIST 1
 # define ENEMY_ATTACK_AGRESS 0.9f
 # define ENEMY_ATTACK_POWER 5
-# define HEALING_AMOUNT 1
-# define REGEN_CD 3000000
-# define NUM_ENEMIES 25
+# define HEAL_VALUE 40				// Heal on kill value
+# define NUM_ENEMIES 32
 
 # define MOUSE_SENS 0.001953125f	// 	1/512
 # define RESPAWN_TIMER 8000000
 # define AMMO_COUNT 8
-# define PLAYER_HEALTH 200
+# define PLAYER_HEALTH 100
 # define RELOAD_CYCLE 4
 # define PILL_COUNT 1
+
+#define ALPHA_SENTINEL1 0x21FFFF
+#define ALPHA_SENTINEL2 0x15FFFF
 
 // Mouse Movement
 # define OFFSET_MAX 650

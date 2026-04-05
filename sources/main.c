@@ -12,7 +12,7 @@ static
 void	stt_cub_is_dead(t_game *game)
 {
 	if (game->player.health <= 0)
-		cub_cleanup(game, "YOU ARE DEAD\n");
+		cub_cleanup(game, "YOU ARE DEAD\n");	// Putting messages here exits with error
 }
 
 int	cmlx_loop(t_game *game)
@@ -34,10 +34,9 @@ int	cmlx_loop(t_game *game)
 		cub_draw_crosshair(game->frame.display.ptr);
 		draw_number(game->frame.display, 8, 8, avg_fps);
 		mlx_put_image_to_window(game->mlx, game->mlx->win_list, game->frame.img, 0, 0);
-		stt_cub_is_dead(game);
+		// stt_cub_is_dead(game);
 		cmlx_mousemove(game);
 		game->player.state &= ~(size_t) (st_shot);	// Clears the (just X animation)
-		game->player.regen_cd -= dt;
 	}
 	return (1);
 }

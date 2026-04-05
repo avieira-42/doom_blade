@@ -49,23 +49,23 @@ int stt_mlx_init(t_game *game)
 #define ENEMY_DEATH "assets/sprites/xpm/characters/zombie/enemy_exploding"
 
 static
-void	stt_enemy_init(t_game *game)
+void	stt_enemy_init(t_game *game, t_enemy enemies[NUM_ENEMIES])
 {
 	size_t	i;
-	t_enemy	*enemy;
 
 	i = 0;
-	ft_memset(game->enemies, 0, sizeof(t_enemy) * NUM_ENEMIES);
+	ft_memset(enemies, 0, sizeof(t_enemy) * NUM_ENEMIES);
+	enemies[0].running = cub_readsheet(game, ENEMY_WALK, 4, ANIM_TIME * 3);
+	enemies[0].shooting = cub_readsheet(game, ENEMY_ATK, 2, ANIM_TIME * 3);
+	enemies[0].shot = cub_readsheet(game, ENEMY_HIT, 1, ANIM_TIME * 3);
+	enemies[0].dying = cub_readsheet(game, ENEMY_DEATH, 12, ANIM_TIME * 1);
+	enemies[0].state = e_idle;
+	enemies[0].health = 100;	// Enemies spawn dead
+	enemies[0].cam.pos = random_valid_pos(&game->map);
 	while (i < NUM_ENEMIES)
 	{
-		enemy = game->enemies + i;
-		enemy->running = cub_readsheet(game, ENEMY_WALK, 4, ANIM_TIME * 3);
-		enemy->shooting = cub_readsheet(game, ENEMY_ATK, 2, ANIM_TIME * 3);
-		enemy->shot = cub_readsheet(game, ENEMY_HIT, 1, ANIM_TIME * 3);
-		enemy->dying = cub_readsheet(game, ENEMY_DEATH, 12, ANIM_TIME * 1);
-		enemy->state = e_idle;
-		enemy->health = 100;
-		enemy->cam.pos = random_valid_pos(&game->map);
+		enemies[i] = enemies[0];	// Now enemies all draw from the same texture
+		enemies[i].cam.pos = random_valid_pos(&game->map);
 		i++;
 	}
 }
@@ -100,7 +100,6 @@ void	stt_params_init(t_game *game, t_memory *memory)
 		.y.f =  game->player.cam.dir.x.f * 0.66f};
 	game->player.ammo = AMMO_COUNT;
 	game->player.health = PLAYER_HEALTH;
-	game->player.regen_cd = REGEN_CD;
 	game->player.state = st_idle;
 	game->player.map = st_off;
 	game->frame.display.ptr = (uint32_t*)game->frame.img->data;
@@ -123,9 +122,8 @@ void stt_radar_init(t_game *game)
 			.y.i = game->player.hands.radar_l0.texture.height * 2};
 
 	game->map.radar_quad.size = (t_vec2){.x.i = game->map.radar_size.x.i
-		/ game->map.width,
-		.y.i = game->map.radar_size.y.i / game->map.height};
-	game->map.radar_quad.color = 0x000000; // DEFINES
+		/ game->map.width, .y.i = game->map.radar_size.y.i / game->map.height};
+	game->map.radar_quad.color = 0x000000; // REVIEW: DEFINES
 	game->map.radar_quad.radius = game->player.hands.radar_l0.texture.width / 2;
 	game->map.radar_quad.center = (t_vec2){
 		.x.i = game->map.radar_sprite_pos.x.i
@@ -133,7 +131,7 @@ void stt_radar_init(t_game *game)
 			.y.i = game->map.radar_sprite_pos.y.i
 				+ game->player.hands.radar_l0.texture.height / 2};
 	game->map.icon_quad.size = (t_vec2){.x.i = 4, .y.i = 4};
-	game->map.icon_quad.color = 0x005500; // DEFINES
+	game->map.icon_quad.color = 0x005500; // REVIEW: DEFINES
 	game->map.icon_quad.radius = game->map.icon_quad.size.x.i / 2;
 }
 
@@ -156,7 +154,7 @@ int	cub_init(const char *filename, t_game *game, t_memory *memory)
 	stt_params_init(game, memory);
 	stt_sprites_init(game, &game->player.hands);
 	stt_audio_init(game);
-	stt_enemy_init(game);
+	stt_enemy_init(game, game->enemies);
 	stt_radar_init(game);
 	ft_rng_init();
 	get_time();

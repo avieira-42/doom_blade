@@ -27,6 +27,4 @@ void	cub_draw_damage(t_mat32 frame, t_game *game, long dt)
 		texture.ptr = game->assets.hud_blood.texture.ptr
 			+ game->assets.hud_blood.frame_size * 2;
 	cub_draw_texture(frame, texture, 0, 0);
-	if (game->player.regen_cd <= 0)
-		game->player.health += HEALING_AMOUNT;
 }
