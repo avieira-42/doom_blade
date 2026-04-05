@@ -41,9 +41,23 @@ void	stt_grid_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_quad cell)
 	}
 }
 
+static
+void	stt_fov_draw(t_mat32 frame, t_player player, t_quad p_icon)
+{
+	const t_vec2	p_pos = (t_vec2){.x.f
+		= (float)p_icon.center.x.i,
+		.y.f = (float)p_icon.center.y.i};
+	const t_vec2	line_dst = vec2_sum(p_pos,
+			vec2_scalar_mult(player.cam.dir, 5));
+
+	printf("x: %f\ny: %f\n", line_dst.x.f, line_dst.y.f);
+	line_draw(frame, p_pos, line_dst, rgb_yellow);
+}
+
 // for funcitonality separation
 static
-void	stt_player_icon_draw(t_mat32 frame, t_map map, t_vec2 grid_pos)
+void	stt_player_icon_draw(t_mat32 frame, t_map map,
+		t_vec2 grid_pos, t_player player)
 {
 	map.icon_quad.pos = (t_vec2){.x.i = map.radar_sprite_pos.x.i
 		+ map.icon_quad.pos.x.i - grid_pos.x.i - map.icon_quad.size.x.i / 2,
@@ -51,7 +65,7 @@ void	stt_player_icon_draw(t_mat32 frame, t_map map, t_vec2 grid_pos)
 		- grid_pos.y.i - map.icon_quad.size.y.i / 2};
 	map.icon_quad.center = (t_vec2){.x.i = map.icon_quad.pos.x.i + map.icon_quad.radius,
 		.y.i = map.icon_quad.pos.y.i + map.icon_quad.radius};
-	printf("PLAYER:\nx: %i\ny: %i\n", map.icon_quad.pos.x.i, map.icon_quad.pos.y.i);
+	stt_fov_draw(frame, player, map.icon_quad);
 	quad_draw(frame, map.icon_quad);
 }
 
@@ -108,9 +122,9 @@ void	stt_draw_radar(t_game *game, t_map map, long dt)
 			&game->player.hands.radar_l0, map.radar_sprite_pos, dt);
 	stt_grid_draw(game->frame.render, game->map, g_pos, game->map.radar_quad);
 	stt_enemies_icon_draw(game->frame.render, map, g_pos, game->enemies);
-	stt_player_icon_draw(game->frame.render, map, grid_offset);
+	stt_player_icon_draw(game->frame.render, map, grid_offset, game->player);
 	stt_draw_layer(game->frame.render,
-			&game->player.hands.radar_l1, map.radar_sprite_pos, dt);
+		&game->player.hands.radar_l1, map.radar_sprite_pos, dt);
 }
 
 void	cub_draw_radar(t_game *game, t_mat32 render,

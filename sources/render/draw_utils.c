@@ -4,6 +4,40 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
+int     vec_max_coord(t_vec2 vec)
+{
+        int     const x = ft_abs(vec.x.f);
+        int     const y = ft_abs(vec.y.f);
+
+        if (x > y)
+                return (x);
+        else
+                return (y);
+}
+
+void line_draw(t_mat32 frame, t_vec2 a, t_vec2 b, int color)
+{
+    size_t      i;
+    t_vec2		line = vec2_sub(a, b);
+    float     x;
+    float     y;
+    size_t      max = vec_max_coord(line);
+
+    if (max != 0)
+    {
+        x = line.x.f / max;
+        y = line.y.f / max;
+        i = 0;
+        while (i < max)
+        {
+            a.x.f += x;
+            a.y.f += y;
+            pixel_put(frame, a.x.f, a.y.f, color);
+            i++;
+        }
+    }
+}
+
 void	cub_draw_crosshair(uint32_t *ptr)
 {
 	size_t	index;

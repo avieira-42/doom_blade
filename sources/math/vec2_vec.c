@@ -4,9 +4,14 @@
 #include <math.h>
 #include "cmlx_base.h"
 
-float	vec2_dot(t_vec2 a, t_vec2 b)
+t_vec2	vec2_sum(t_vec2 a, t_vec2 b)
 {
-	return (a.x.f * b.x.f + a.y.f * b.y.f);
+	return ((t_vec2){.x.f = a.x.f + b.x.f, .y.f = a.y.f + b.y.f});
+}
+
+t_vec2	vec2_scalar_mult(t_vec2 a, int32_t scalar)
+{
+	return ((t_vec2){.x.f = a.x.f * scalar, .y.f = a.y.f * scalar});
 }
 
 // Angle in radians
@@ -34,24 +39,6 @@ t_vec2	vec2_norm(t_vec2 vec)
 	return (vec);
 }
 
-int32_t	vec2_dist(t_vec2 a, t_vec2 b)
-{
-	int32_t	dist;
-	t_vec2	delta;
-
-	delta.x.f = a.x.f - b.x.f;
-	delta.y.f = a.y.f - b.y.f;
-	dist = delta.x.f * delta.x.f + delta.y.f * delta.y.f;
-	return (dist);
-}
-
-int32_t	vec2_idist(t_vec2 a, t_vec2 b)
-{
-	int32_t	dist;
-	t_vec2	delta;
-
-	delta.x.i = a.x.i - b.x.i;
-	delta.y.i = a.y.i - b.y.i;
-	dist = delta.x.i * delta.x.i + delta.y.i * delta.y.i;
-	return (dist);
+t_vec2	vec2_sub(t_vec2 a, t_vec2 b) {
+	return ((t_vec2){.x.f = b.x.f - a.x.f, .y.f = b.y.f - a.y.f});
 }

@@ -24,6 +24,7 @@ void		quad_draw(t_mat32 frame, t_quad quad);
 void		cub_draw_radar(t_game *game, t_mat32 render,
 				t_hands *hands, long dt);
 void		cub_draw_damage(t_mat32 frame, t_game *game, long dt);
+void		line_draw(t_mat32 frame, t_vec2 a, t_vec2 b, int color);
 
 // Draw
 void		cub_draw_hands(t_mat32 frame, t_game *game, long dt);
@@ -75,10 +76,13 @@ float		ft_randf(void);
 long		get_time(void);
 uint32_t	ft_strtoargb(const char *str, const char **str_ptr);
 void		*ft_read_all(const char *filename, size_t *file_size);
-float		vec2_dot(t_vec2 a, t_vec2 b);
 t_vec2		vec2_rotate(t_vec2 vec, float angle);
 t_vec2		vec2_norm(t_vec2 vec);
+t_vec2		vec2_scalar_mult(t_vec2 a, int32_t scalar);
+float		vec2_dot(t_vec2 a, t_vec2 b);
+t_vec2		vec2_sum(t_vec2 a, t_vec2 b);
 int32_t		vec2_dist(t_vec2 a, t_vec2 b);
+t_vec2		vec2_sub(t_vec2 a, t_vec2 b);
 int32_t		vec2_idist(t_vec2 a, t_vec2 b);
 int			cub_read_texture(t_xvar *mlx, t_mat32 *texture,
 				const char *filename, const char **filename_ptr);
