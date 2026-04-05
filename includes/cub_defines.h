@@ -1,6 +1,8 @@
 #ifndef CUB_DEFINES_H
 # define CUB_DEFINES_H
 
+// Did have to change to this excrutiating enum
+// so norminette doesnt screan in our faces
 enum e_render
 {
 	render_upscaling_factor = 2,
