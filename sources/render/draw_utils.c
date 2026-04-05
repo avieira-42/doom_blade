@@ -57,8 +57,8 @@ void	quad_draw(t_mat32 frame, t_quad quad)
 		while (x <= quad.size.x.i)
 		{
 			dst = (t_vec2){.x.i = quad.pos.x.i + x, .y.i = quad.pos.y.i + y};
-			if (vec2_idist(quad.center, dst) <= quad.radius * quad.radius)
-				pixel_swap(frame, dst.x.i, dst.y.i, quad.color);
+			//if (vec2_idist(quad.center, dst) <= quad.radius * quad.radius)
+			pixel_swap(frame, dst.x.i, dst.y.i, quad.color);
 			x++;
 		}
 		y++;
