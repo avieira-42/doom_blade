@@ -12,6 +12,7 @@ typedef struct s_hands
 {
 	t_sheet	reload;
 	t_sheet	shoot;
+	t_sheet	idle; // TODO: to free
 	t_sheet	walk;
 	t_sheet	radar;
 	t_sheet	radar_l0;

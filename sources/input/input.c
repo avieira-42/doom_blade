@@ -31,6 +31,11 @@ void	stt_move(t_game *game)
 
 void	input_handler(t_game *game, t_player *player)
 {
+	player->state |= st_idle;
+	if (game->state.key & key_w || game->state.key & key_a
+			|| game->state.key & key_s || game->state.key & key_d)
+		player->state |= st_run;
+
 	if ((game->state.key & key_rmb) && !(player->state & st_shooting) && player->ammo > 0)
 	{
 		player->ammo--;

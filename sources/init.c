@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/05 17:06:32 by avieira-          #+#    #+#             */
+/*   Updated: 2026/04/05 17:06:36 by avieira-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <X11/X.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -77,6 +89,7 @@ void	stt_enemy_init(t_game *game, t_enemy enemies[NUM_ENEMIES])
 #define PLAYER_RADAR0 "assets/sprites/xpm/hud/hands/map/layer0_"
 #define PLAYER_RADAR1 "assets/sprites/xpm/hud/hands/map/layer1_"
 #define PLAYER_BLOOD "assets/sprites/xpm/hud/damage/damage"
+#define PLAYER_IDLE "assets/sprites/xpm/hud/hands/hands_idle"
 
 static
 int	stt_sprites_init(t_game *game, t_hands *hands)
@@ -88,6 +101,7 @@ int	stt_sprites_init(t_game *game, t_hands *hands)
 	hands->radar = cub_readsheet(game, PLAYER_RADAR, 4, ANIM_TIME);
 	hands->radar_l0 = cub_readsheet(game, PLAYER_RADAR0, 13, ANIM_TIME / 3);
 	hands->radar_l1 = cub_readsheet(game, PLAYER_RADAR1, 1, ANIM_TIME);
+	hands->idle = cub_readsheet(game, PLAYER_IDLE, 3, ANIM_TIME * 5);
 	game->assets.hud_blood = cub_readsheet(game, PLAYER_BLOOD, 3, ANIM_TIME);
 	return (0);
 }
@@ -123,7 +137,7 @@ void stt_radar_init(t_game *game)
 
 	game->map.radar_quad.size = (t_vec2){.x.i = game->map.radar_size.x.i
 		/ game->map.width, .y.i = game->map.radar_size.y.i / game->map.height};
-	game->map.radar_quad.color = 0x000000; // REVIEW: DEFINES
+	game->map.radar_quad.color = RADAR_CELL_COLOR; // REVIEW: DEFINES
 	game->map.radar_quad.radius = game->player.hands.radar_l0.texture.width / 2;
 	game->map.radar_quad.center = (t_vec2){
 		.x.i = game->map.radar_sprite_pos.x.i

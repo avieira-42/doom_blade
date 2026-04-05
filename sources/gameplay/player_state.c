@@ -65,8 +65,15 @@ t_sheet	*cub_actions(t_player *player, t_map *map, long dt)
 		if (rvalue < 4)
 			return (sheet);
 	}
+	else if (player->state & st_run)
+	{
+		sheet = &player->hands.walk;
+		rvalue = cub_advance_animation(&player->hands.walk, dt);
+		if (rvalue < 4)
+			return (sheet);
+	}
 	else
-		cub_advance_animation(&player->hands.walk, dt);
+		cub_advance_animation(&player->hands.idle, dt);
 	player->state = st_idle;
-	return (&player->hands.walk);
+	return (&player->hands.idle);
 }

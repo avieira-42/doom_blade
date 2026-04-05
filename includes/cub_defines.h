@@ -35,6 +35,9 @@
 # define HEAL_VALUE 40				// Heal on kill value
 # define NUM_ENEMIES 32
 
+// RADAR SPECS
+# define RADAR_CELL_COLOR rgb_black
+
 # define MOUSE_SENS 0.001953125f	// 	1/512
 # define RESPAWN_TIMER 8000000
 # define AMMO_COUNT 8
