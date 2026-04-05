@@ -9,7 +9,6 @@ void	cub_draw_damage(t_mat32 frame, t_game *game, long dt)
 	/*blood health signlaling in the edges is working, but enemies
 		* shoot player outside of sight  so NEED REVIEW, in case we have time*/
 
-	// BAD IMPLEMENTATION: get_time function is costing a lot of processing power
 	// Might change the player health for a big number to be able to heal in small
 	// increments
 

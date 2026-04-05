@@ -15,7 +15,6 @@ int	stt_is_enemy_shooting(t_enemy *enemy)
 	return (0);
 }
 
-
 void	enemy_update_anim(t_enemy *e, long dt, t_player *player)
 {
 	uint8_t	r;
