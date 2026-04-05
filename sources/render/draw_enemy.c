@@ -20,7 +20,7 @@ float	stt_init(t_form *form, t_frame *frame, t_view *p, t_enemy *enemy)
 	if (enemy->dist <= NEAR_RADIUS)
 		return (enemy->dist);
 	horz_dist = invd * (p->dir.y.f * rel_pos.x.f - p->dir.x.f * rel_pos.y.f);
-	invd = 1.0f / enemy->dist; // Scale
+	invd = (1.0f / enemy->dist) * ENEMY_SCALE; // Scale
 	form->draw_pos.x.i = (render_width * 0.5f) * (1.0f + horz_dist * invd);
 	form->draw_pos.y.i = render_height * 0.5f - frame->offset;
 	new_size.x.i = enemy->running.texture.width * invd;	// tex.width / enemy_dist

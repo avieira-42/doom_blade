@@ -12,18 +12,15 @@ enum e_render
 	screen_height = render_height * render_upscaling_factor,
 };
 
-# define SCREEN_WIDTH render_width * render_upscaling_factor
-# define SCREEN_HEIGHT render_height * render_upscaling_factor
-
 // CONTEXT
-enum e_context
+enum e_area
 {
-	c_hell = 1,
-	c_castle = 2,
-	c_lab = 3,
+	a_hell = 1,
+	a_castle = 2,
+	a_lab = 3,
 };
 
-# define CONTEXT c_castle
+# define CONTEXT a_hell
 
 # define TEX_HEIGHT 256
 # define NUM_BLOCKS 4
@@ -40,6 +37,7 @@ enum e_context
 # define PLAYER_ACCEL 0.33f
 # define ENEMY_SPEED 2.5f
 # define ENEMY_ACCEL 0.5f
+# define ENEMY_SCALE 1.0f
 # define SPEED_THR 4.1f		// Speed threshold where animation goes from normal to fast
 # define HALT_THR 0.5f		// 
 # define ANIM_TIME 60000	// Time between anim frames

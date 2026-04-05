@@ -40,7 +40,7 @@ void	stt_zombie_init(t_game *game, t_enemy enemies[NUM_ENEMIES])
 #define GUNMAN_DEATH "assets/sprites/xpm/characters/gentleman/gentleman_dying"
 
 static
-void	stt_gentleman_init(t_game *game, t_enemy enemies[NUM_ENEMIES])
+void	stt_gunman_init(t_game *game, t_enemy enemies[NUM_ENEMIES])
 {
 	size_t	i;
 
@@ -63,8 +63,8 @@ void	stt_gentleman_init(t_game *game, t_enemy enemies[NUM_ENEMIES])
 
 void	enemy_init(t_game *game, t_enemy enemies[NUM_ENEMIES])
 {
-	if (CONTEXT == c_hell)
+	if (CONTEXT == a_hell)
 		stt_zombie_init(game, enemies);
-	else if (CONTEXT == c_castle)
-		stt_gentleman_init(game, enemies);
+	else if (CONTEXT == a_castle)
+		stt_gunman_init(game, enemies);
 }
