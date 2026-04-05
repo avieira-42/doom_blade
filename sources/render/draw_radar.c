@@ -50,7 +50,6 @@ void	stt_fov_draw(t_mat32 frame, t_player player, t_quad p_icon)
 	const t_vec2	line_dst = vec2_sum(p_pos,
 			vec2_scalar_mult(player.cam.dir, 5));
 
-	printf("x: %f\ny: %f\n", line_dst.x.f, line_dst.y.f);
 	line_draw(frame, p_pos, line_dst, rgb_yellow);
 }
 
