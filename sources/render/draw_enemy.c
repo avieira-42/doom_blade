@@ -63,7 +63,8 @@ bool	stt_hitreg(t_sides *bounds)
 		&& bounds->bottom > ((RENDER_HEIGHT - HITREG_AREA) / 2));
 }
 
-bool	draw_enemy(t_frame *frame, t_player *player, t_enemy *enemy, t_mat32 tex)
+static
+bool	stt_draw_enemy(t_frame *frame, t_player *player, t_enemy *enemy)
 {
 	t_form		form;
 	t_vec2		norm_pos;
@@ -79,11 +80,33 @@ bool	draw_enemy(t_frame *frame, t_player *player, t_enemy *enemy, t_mat32 tex)
 		if (enemy->dist < frame->rays[x].perp_dist)	// Do not draw if wall column is ahead of enemy
 		{
 			ptr = frame->render.ptr + frame->render.stride * x;
-			stt_draw_col(norm_pos, &form, ptr, &tex);
-			enemy->state |= e_seen;
+			stt_draw_col(norm_pos, &form, ptr, &enemy->texture);
+			enemy->state |= e_seen;		// REVIEW: is there anything that turns this off?
 		}
 		norm_pos.x.f += form.delta.x.f;
 		x++;
 	}
 	return (stt_hitreg(&form.bounds));
+}
+
+void	cub_draw_enemies(t_game *game, long dt)
+{
+	bool	hit;
+	size_t	i;
+	t_enemy	*enemy;
+
+	i = 0;
+	while (i < NUM_ENEMIES)
+	{
+		enemy = &game->enemies[i];
+		if (!(enemy->state & e_dead))
+		{
+			hit = stt_draw_enemy(&game->frame, &game->player, enemy);
+			if (hit == true)
+				enemy->state |= e_hit;
+			else
+				enemy->state &= ~(size_t) e_hit;
+		}
+		i++;
+	}
 }

@@ -9,6 +9,11 @@
 # include "cmlx_draw.h"
 # include "cub_structs.h"
 
+// New (to be sorted)
+void	cub_update_game(t_game *game, long dt);
+void	cub_update_pos(t_game *game, float dt);
+void	cub_draw_enemies(t_game *game, long dt);
+
 // Draw and Render
 void		raycast(t_view *cam, t_map *map, t_rayhit *rays);
 void		planecast(t_frame *frame, t_mat32 floor, t_mat32 ceil, t_view *cam);
@@ -27,12 +32,10 @@ t_sides		cub_center_clip(t_mat32 frame, t_vec2 draw_pos, t_vec2 size);
 // Draw
 void		cub_draw_radar(t_game *game, t_mat32 render, t_hands *hands, long dt);
 void		cub_draw_world(t_game *game);
-bool		draw_enemy(t_frame *frame, t_player *player, t_enemy *enemy, t_mat32 tex);
 void		draw_number(t_mat32 frame, size_t xpos, size_t ypos, uint32_t value);
 void		cub_draw_hands(t_mat32 frame, t_game *game, long dt);
 void		cub_draw_blood(t_mat32 frame, t_game *game);
 void		cub_draw_crosshair(uint32_t *ptr);
-void		cub_draw_enemies(t_game *game, long dt);
 
 int			ft_transpose(t_mat32 *src);
 int			ft_transpose_img(uint32_t *ptr, size_t width, size_t height);	// TMP
@@ -57,8 +60,6 @@ int			cub_parse_textures(t_game *game, const char *str, const char **str_ptr, t_
 int			cub_read_map(t_game *game, const char *str, t_map *map, t_player *player);
 t_sheet		cub_readsheet(t_game *game, const char *base_path, size_t count, long frame_time);
 
-// Physics
-void		cub_update_pos(t_game *game, float dt);
 
 // Utils
 t_vec2		random_valid_pos(t_map *map);

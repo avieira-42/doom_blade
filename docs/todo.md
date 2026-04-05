@@ -20,3 +20,5 @@ TO REMEMBER:
 - Clip space function that returns a bounds
 - Adhere to one standard of rendering, either state functions choose what texture is loaded (adds t_mat32 to struct) or render functions determine texture from state (more branches)
 - Review diagonal movement
+- Fix respawn
+- Add some random lateral movement

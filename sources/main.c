@@ -24,7 +24,7 @@ int	cmlx_loop(t_game *game)
 	{
 		avg_fps = (avg_fps - avg_fps / 8) + 125000 / dt;
 		input_handler(game, &game->player);
-		cub_update_pos(game, (double)dt * 0.000001);
+		cub_update_game(game, dt);
 		cub_play_audio(&game->player, &game->assets.audio, game, dt);
 		cub_draw_world(game);
 		cub_draw_enemies(game, dt);
@@ -36,6 +36,7 @@ int	cmlx_loop(t_game *game)
 		mlx_put_image_to_window(game->mlx, game->mlx->win_list, game->frame.img, 0, 0);
 		// stt_cub_is_dead(game);
 		cmlx_mousemove(game);
+		printf("%d\n", game->player.health);
 		game->player.state &= ~(size_t) (st_shot);	// Clears the (just X animation)
 	}
 	return (1);

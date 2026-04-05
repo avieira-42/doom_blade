@@ -76,8 +76,9 @@ enum e_enemy_state
 	e_seen = 1 << 1,
 	e_shooting = 1 << 2,
 	e_hit = 1 << 3,
-	e_dying = 1 << 4,
-	e_dead = 1 << 5,
+	e_hurt = 1 << 4,	
+	e_dying = 1 << 5,
+	e_dead = 1 << 6
 };
 
 enum e_minimap_state
