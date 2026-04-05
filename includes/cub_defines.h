@@ -15,6 +15,16 @@ enum e_render
 # define SCREEN_WIDTH render_width * render_upscaling_factor
 # define SCREEN_HEIGHT render_height * render_upscaling_factor
 
+// CONTEXT
+enum e_context
+{
+	c_hell = 1,
+	c_castle = 2,
+	c_lab = 3,
+};
+
+# define CONTEXT c_castle
+
 # define TEX_HEIGHT 256
 # define NUM_BLOCKS 4
 # define EPS 0.00000011920929f
@@ -48,10 +58,6 @@ enum e_render
 # define RADAR_PLAYER_COLOR rgb_dark_green
 # define RADAR_ENEMY_COLOR rgb_red
 # define RADAR_BORDER_SIZE 0
-
-// CONTEXT
-# define ENEMY_GENTLEMAN 1
-# define ENEMY_ZOMBIE 2
 
 # define MOUSE_SENS 0.001953125f	// 	1/512
 # define RESPAWN_TIMER 8000000
