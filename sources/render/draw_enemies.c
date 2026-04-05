@@ -65,7 +65,7 @@ void	enemy_update_anim(t_enemy *e, long dt, t_player *player)
 		e->state |= e_shooting;
 		e->shooting.index = 0;
 		e->shooting.frame_dt = 0;
-		player->health -= 20;
+		player->health -= ENEMY_ATTACK_POWER;
 		player->last_damage_time = get_time();
 		player->regen_cd = REGEN_CD;
 		e->state &= ~(size_t)e_seen;
