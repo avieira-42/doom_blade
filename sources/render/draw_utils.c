@@ -15,55 +15,6 @@ int     vec_max_coord(t_vec2 vec)
                 return (y);
 }
 
-void line_draw(t_mat32 frame, t_vec2 a, t_vec2 b, int color)
-{
-    size_t      i;
-    t_vec2		line = vec2_sub(a, b);
-    float     x;
-    float     y;
-    size_t      max = vec_max_coord(line);
-
-    if (max != 0)
-    {
-        x = line.x.f / max;
-        y = line.y.f / max;
-        i = 0;
-        while (i < max)
-        {
-            a.x.f += x;
-            a.y.f += y;
-            pixel_put(frame, a.x.f, a.y.f, color);
-            i++;
-        }
-    }
-}
-
-void	cub_draw_crosshair(uint32_t *ptr)
-{
-	size_t	index;
-
-	index = (SCREEN_HEIGHT / 2 - 1) * SCREEN_WIDTH + (SCREEN_WIDTH / 2 - 1);
-	ptr[index] = 0;
-	ptr[index + 1] = 0;
-	ptr[index + 2] = 0;
-	ptr[index + 3] = 0;
-	index += SCREEN_WIDTH;
-	ptr[index] = 0;
-	ptr[index + 1] = 0xFFFFFFFF;
-	ptr[index + 2] = 0xFFFFFFFF;
-	ptr[index + 3] = 0;
-	index += SCREEN_WIDTH;
-	ptr[index] = 0;
-	ptr[index + 1] = 0xFFFFFFFF;
-	ptr[index + 2] = 0xFFFFFFFF;
-	ptr[index + 3] = 0;
-	index += SCREEN_WIDTH;
-	ptr[index] = 0;
-	ptr[index + 1] = 0;
-	ptr[index + 2] = 0;
-	ptr[index + 3] = 0;
-}
-
 // Animation system pipeline:
 // 1) Input is processed, and player states are determined (shooting, reloading, etc). This also changes the animation sheet to be loaded.
 // 2) The animation render takes care of the frame advancing, and returns whether the animation is done or not
@@ -151,4 +102,27 @@ void	pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
 		return ;
 	dst = frame.ptr + x * frame.stride + y;
 	*dst = color;
+}
+
+void line_draw(t_mat32 frame, t_vec2 a, t_vec2 b, int color)
+{
+    size_t      i;
+    t_vec2		line = vec2_sub(a, b);
+    float     x;
+    float     y;
+    size_t      max = vec_max_coord(line);
+
+    if (max != 0)
+    {
+        x = line.x.f / max;
+        y = line.y.f / max;
+        i = 0;
+        while (i < max)
+        {
+            a.x.f += x;
+            a.y.f += y;
+            pixel_put(frame, a.x.f, a.y.f, color);
+            i++;
+        }
+    }
 }

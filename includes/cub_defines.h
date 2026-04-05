@@ -28,9 +28,10 @@
 # define ANIM_TIME 60000	// Time between anim frames
 
 // Difficulty
+# define PLAYER_DAMAGE 25
 # define ENEMY_ATTACK_DIST 1
 # define ENEMY_ATTACK_AGRESS 0.9f
-# define ENEMY_ATTACK_POWER 5
+# define ENEMY_DAMAGE 5
 # define HEAL_VALUE 40				// Heal on kill value
 # define NUM_ENEMIES 32
 

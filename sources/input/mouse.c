@@ -7,7 +7,6 @@ int	mlx_mouse_get_pos(void *mlx, void *win_ptr, int *x, int *y);
 
 // 4 ButtonPress
 // 12345 = LMB MMB RMB WHEELUP WHEELDOWN
-// TODO: The X Y could be relevant for hitreg
 int	cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game)
 {
 	(void) x;

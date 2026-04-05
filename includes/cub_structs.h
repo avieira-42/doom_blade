@@ -26,13 +26,13 @@ typedef struct s_player
 	t_vec2		speed;
 	uint32_t	state;	// Defined by player_state enum
 	uint32_t	map;
+	t_mat32		texture;	// Current texture being drawn
 	t_hands		hands;
 	float		spd_forward;
 	float		spd_sideway;
 	float		spd_max;
 	int32_t		health;
 	int32_t		ammo;
-	long		last_damage_time;
 }	t_player;
 
 typedef struct s_map

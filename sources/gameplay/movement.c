@@ -50,7 +50,7 @@ t_vec2	stt_move_toward(t_map *map, t_vec2 pos, t_enemy *enemy, float dt)
 	mag_dist = to_player.x.f * to_player.x.f + to_player.y.f * to_player.y.f;
 	// if (mag_dist >= 10.0f)							// Follows the player only at a specific distance
 	// 	return ((t_vec2){.x.f = 0.0f, .y.f = 0.0f});
-	enemy->cam.dir = vec2_norm(to_player);				// TODO: Review if cam dir needs to change when stopping
+	enemy->cam.dir = vec2_norm(to_player);
 	if (mag_dist < MELEE_RANGE)
 		enemy->speed.y.f *= 0.9f;
 	else

@@ -33,7 +33,7 @@ void	stt_texture_sample(t_mat32 texture, float line_height, uint32_t *render_col
 	int32_t			tex_pos;
 	float			draw_start;
 	float			draw_end;
-	const int32_t	dy = 65536.0f * texture.height / line_height;	// if line height = render_height / perp_dist, then if
+	const int32_t	dy = 65536.0f * texture.height / line_height;
 
 	draw_start = ft_imax(0, unclamped_start);
 	draw_end = ft_imin(RENDER_HEIGHT, unclamped_end);

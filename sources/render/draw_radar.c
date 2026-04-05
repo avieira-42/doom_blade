@@ -9,8 +9,7 @@ void	stt_draw_layer(t_mat32 frame, t_sheet *layer,
 
 	texture = layer->texture;
 	texture.ptr += layer->index * layer->frame_size;
-	cub_draw_texture(frame, texture, first_pixel_pos.x.i,
-		first_pixel_pos.y.i);
+	cub_draw_texture(frame, texture, first_pixel_pos.x.i, first_pixel_pos.y.i);
 	cub_advance_animation(layer, dt);
 }
 
@@ -97,7 +96,6 @@ void	stt_enemies_icon_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_enemy *e
 
 // TODO: draw enemies icons
 // TODO: draw player foc representation
-static
 void	stt_draw_radar(t_game *game, t_map map, long dt)
 {
 	t_vec2	grid_offset;
