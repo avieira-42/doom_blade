@@ -92,7 +92,7 @@ void	pixel_swap(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
 		return ;
 	dst = frame.ptr + x * frame.stride + y;
 	if ((*dst == 0x401013 || *dst == 0x3a0c0e)
-		&& color != 0x005500)
+		&& color != 0x005500 && color != rgb_red)
 		return ;
 	if (color == 0x000000)
 	{

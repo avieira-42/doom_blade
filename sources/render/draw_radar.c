@@ -45,32 +45,58 @@ void	stt_grid_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_quad cell)
 static
 void	stt_player_icon_draw(t_mat32 frame, t_map map, t_vec2 grid_pos)
 {
-	t_vec2	icon_center;
-
 	map.icon_quad.pos = (t_vec2){.x.i = map.radar_sprite_pos.x.i
 		+ map.icon_quad.pos.x.i - grid_pos.x.i - map.icon_quad.size.x.i / 2,
 		.y.i = map.radar_sprite_pos.y.i + map.icon_quad.pos.y.i
 		- grid_pos.y.i - map.icon_quad.size.y.i / 2};
-	icon_center = (t_vec2){.x.i = map.icon_quad.pos.x.i + map.icon_quad.radius,
+	map.icon_quad.center = (t_vec2){.x.i = map.icon_quad.pos.x.i + map.icon_quad.radius,
 		.y.i = map.icon_quad.pos.y.i + map.icon_quad.radius};
-	map.icon_quad.center = icon_center;
 	quad_draw(frame, map.icon_quad);
+}
+
+static
+void	stt_enemies_icon_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_enemy *enemies)
+{
+	size_t	i;
+
+	i = 0;
+	map.icon_quad.color = rgb_red;
+	while (i < NUM_ENEMIES)
+	{
+		if (enemies[i].state & e_dead)
+		{
+			i++;
+			continue;
+		}
+		map.icon_quad.pos = (t_vec2){.x.i = enemies[i].cam.pos.x.f
+			* map.radar_quad.size.x.i,
+				.y.i = enemies[i].cam.pos.y.f * map.radar_quad.size.y.i};
+		map.icon_quad.pos = (t_vec2){.x.i = map.radar_sprite_pos.x.i
+			+ map.icon_quad.pos.x.i - grid_pos.x.i - map.icon_quad.size.x.i / 2,
+				.y.i = map.radar_sprite_pos.y.i + map.icon_quad.pos.y.i
+					- grid_pos.y.i - map.icon_quad.size.y.i / 2};
+		map.icon_quad.center = (t_vec2){.x.i = map.icon_quad.pos.x.i + map.icon_quad.radius,
+			.y.i = map.icon_quad.pos.y.i + map.icon_quad.radius};
+		map.icon_quad.size = (t_vec2){.x.i = 30, .y.i = 30};
+		quad_draw(frame, map.icon_quad);
+		i++;
+	}
 }
 
 // TODO: draw enemies icons
 // TODO: draw player foc representation
-static
+	static
 void	stt_draw_radar(t_game *game, t_map map, long dt)
 {
 	t_vec2	grid_pos;
 
 	map.icon_quad.pos = (t_vec2){.x.i
 		= game->player.cam.pos.x.f * map.radar_quad.size.x.i,
-		.y.i = game->player.cam.pos.y.f * map.radar_quad.size.y.i};
+			.y.i = game->player.cam.pos.y.f * map.radar_quad.size.y.i};
 	grid_pos = (t_vec2){.x.i = map.icon_quad.pos.x.i
 		- game->player.hands.radar_l0.texture.width / 2,
-		.y.i = map.icon_quad.pos.y.i
-		- game->player.hands.radar_l0.texture.height / 2};
+			.y.i = map.icon_quad.pos.y.i
+				- game->player.hands.radar_l0.texture.height / 2};
 	grid_pos.x.i = ft_imax(grid_pos.x.i, 0);
 	grid_pos.x.i = ft_imin(grid_pos.x.i, map.radar_size.x.i
 			- game->player.hands.radar_l0.texture.width);
@@ -78,13 +104,14 @@ void	stt_draw_radar(t_game *game, t_map map, long dt)
 	grid_pos.y.i = ft_imin(grid_pos.y.i, map.radar_size.y.i
 			- game->player.hands.radar_l0.texture.height);
 	stt_draw_layer(game->frame.render,
-		&game->player.hands.radar_l0, map.radar_sprite_pos, dt);
+			&game->player.hands.radar_l0, map.radar_sprite_pos, dt);
 	stt_grid_draw(game->frame.render, game->map,
-		(t_vec2){.x.i = map.radar_sprite_pos.x.i - grid_pos.x.i,
-		.y.i = map.radar_sprite_pos.y.i - grid_pos.y.i}, game->map.radar_quad);
+			(t_vec2){.x.i = map.radar_sprite_pos.x.i - grid_pos.x.i,
+			.y.i = map.radar_sprite_pos.y.i - grid_pos.y.i}, game->map.radar_quad);
+	stt_enemies_icon_draw(game->frame.render, map, grid_pos, game->enemies);
 	stt_player_icon_draw(game->frame.render, map, grid_pos);
 	stt_draw_layer(game->frame.render,
-		&game->player.hands.radar_l1, map.radar_sprite_pos, dt);
+			&game->player.hands.radar_l1, map.radar_sprite_pos, dt);
 }
 
 void	cub_draw_radar(t_game *game, t_mat32 render,
