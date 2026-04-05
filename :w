@@ -72,11 +72,10 @@ void	stt_enemies_icon_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_enemy *e
 		map.icon_quad.pos = (t_vec2){.x.i = grid_pos.x.i
 			+ enemies[i].cam.pos.x.f * map.radar_quad.size.x.i,
 		.y.i = grid_pos.y.i + enemies[i].cam.pos.y.f * map.radar_quad.size.y.i};
-		map.icon_quad.center = (t_vec2){.x.i = map.icon_quad.pos.x.i + map.icon_quad.radius,
-			.y.i = map.icon_quad.pos.y.i + map.icon_quad.radius};
-		if (vec2_idist(map.radar_quad.center, map.icon_quad.pos)
-				< map.radar_quad.radius * map.radar_quad.radius)
-			quad_draw(frame, map.icon_quad);
+		/*map.icon_quad.center = (t_vec2){.x.i = map.icon_quad.pos.x.i + map.icon_quad.radius,
+			.y.i = map.icon_quad.pos.y.i + map.icon_quad.radius};*/
+		map.icon_quad.radius = map.radar_quad.radius;
+		quad_draw(frame, map.icon_quad);
 		i++;
 	}
 }

@@ -30,7 +30,7 @@
 
 // Difficulty
 # define ENEMY_ATTACK_DIST 1
-# define ENEMY_ATTACK_AGRESS 0.9f
+# define ENEMY_ATTACK_AGRESS 0.95f
 # define HEALING_TIME 1000
 # define HEALING_AMOUNT 4
 
