@@ -37,6 +37,10 @@
 
 // RADAR SPECS
 # define RADAR_CELL_COLOR rgb_black
+# define RADAR_ICON_SIZE 4
+# define RADAR_PLAYER_COLOR rgb_dark_green
+# define RADAR_ENEMY_COLOR rgb_red
+# define RADAR_BORDER_SIZE 0
 
 # define MOUSE_SENS 0.001953125f	// 	1/512
 # define RESPAWN_TIMER 8000000
@@ -117,6 +121,7 @@ enum e_colors
 	rgb_black = 0x000000u,
 	rgb_red = 0xFF0000u,
 	rgb_green = 0x00FF00u,
+	rgb_dark_green = 0x005500u,
 	rgb_blue = 0x0000FFu,
 	rgb_white = 0xFFFFFFu,
 	rgb_yellow = 0xFFFF00u,

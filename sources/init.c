@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: avieira- <avieira-@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/05 17:06:32 by avieira-          #+#    #+#             */
-/*   Updated: 2026/04/05 17:06:36 by avieira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <X11/X.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -137,15 +125,17 @@ void stt_radar_init(t_game *game)
 
 	game->map.radar_quad.size = (t_vec2){.x.i = game->map.radar_size.x.i
 		/ game->map.width, .y.i = game->map.radar_size.y.i / game->map.height};
-	game->map.radar_quad.color = RADAR_CELL_COLOR; // REVIEW: DEFINES
-	game->map.radar_quad.radius = game->player.hands.radar_l0.texture.width / 2;
+	game->map.radar_quad.color = RADAR_CELL_COLOR;
+	game->map.radar_quad.radius = game->player.hands.radar_l0.texture.width / 2
+		- RADAR_BORDER_SIZE;
 	game->map.radar_quad.center = (t_vec2){
 		.x.i = game->map.radar_sprite_pos.x.i
 			+ game->player.hands.radar_l0.texture.width / 2,
 			.y.i = game->map.radar_sprite_pos.y.i
 				+ game->player.hands.radar_l0.texture.height / 2};
-	game->map.icon_quad.size = (t_vec2){.x.i = 4, .y.i = 4};
-	game->map.icon_quad.color = 0x005500; // REVIEW: DEFINES
+	game->map.icon_quad.size = (t_vec2){.x.i = RADAR_ICON_SIZE,
+		.y.i = RADAR_ICON_SIZE};
+	game->map.icon_quad.color = RADAR_PLAYER_COLOR;
 	game->map.icon_quad.radius = game->map.icon_quad.size.x.i / 2;
 }
 

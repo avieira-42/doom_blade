@@ -74,7 +74,7 @@ void	stt_enemies_icon_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_enemy *e
 	int32_t	i;
 
 	i = 0;
-	map.icon_quad.color = rgb_red;
+	map.icon_quad.color = RADAR_ENEMY_COLOR;
 	while (i < NUM_ENEMIES)
 	{
 		if (enemies[i].state & e_dead)
