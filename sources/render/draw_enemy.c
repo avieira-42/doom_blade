@@ -21,8 +21,8 @@ float	stt_init(t_form *form, t_frame *frame, t_view *p, t_enemy *enemy)
 		return (enemy->dist);
 	horz_dist = invd * (p->dir.y.f * rel_pos.x.f - p->dir.x.f * rel_pos.y.f);
 	invd = 1.0f / enemy->dist; // Scale
-	form->draw_pos.x.i = (RENDER_WIDTH * 0.5f) * (1.0f + horz_dist * invd);
-	form->draw_pos.y.i = RENDER_HEIGHT * 0.5f - frame->offset;
+	form->draw_pos.x.i = (render_width * 0.5f) * (1.0f + horz_dist * invd);
+	form->draw_pos.y.i = render_height * 0.5f - frame->offset;
 	new_size.x.i = enemy->running.texture.width * invd;	// tex.width / enemy_dist
 	new_size.y.i = enemy->running.texture.height * invd;
 	form->delta.x.f = enemy->dist / enemy->running.texture.width;	// REVIEW: These can be constants
@@ -57,10 +57,10 @@ void	stt_draw_col(t_vec2 norm_pos, t_form *form, uint32_t *ptr, t_mat32 *texture
 static inline
 bool	stt_hitreg(t_sides *bounds)
 {
-	return (bounds->left < ((RENDER_WIDTH  + HITREG_AREA) / 2)
-		&& bounds->right > ((RENDER_WIDTH  - HITREG_AREA) / 2)
-		&& bounds->top < ((RENDER_HEIGHT + HITREG_AREA) / 2)
-		&& bounds->bottom > ((RENDER_HEIGHT - HITREG_AREA) / 2));
+	return (bounds->left < ((render_width  + HITREG_AREA) / 2)
+		&& bounds->right > ((render_width  - HITREG_AREA) / 2)
+		&& bounds->top < ((render_height + HITREG_AREA) / 2)
+		&& bounds->bottom > ((render_height - HITREG_AREA) / 2));
 }
 
 static

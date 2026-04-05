@@ -1,12 +1,17 @@
 #ifndef CUB_DEFINES_H
 # define CUB_DEFINES_H
 
-# define RENDER_WIDTH 640
-# define RENDER_HEIGHT 360
-# define UPSCALING_FACTOR 2
+enum e_render
+{
+	render_upscaling_factor = 2,
+	render_width = 640,
+	render_height = 360,
+	screen_width = render_width * render_upscaling_factor,
+	screen_height = render_height * render_upscaling_factor,
+};
 
-# define SCREEN_WIDTH (RENDER_WIDTH * UPSCALING_FACTOR)
-# define SCREEN_HEIGHT (RENDER_HEIGHT * UPSCALING_FACTOR)
+# define SCREEN_WIDTH render_width * render_upscaling_factor
+# define SCREEN_HEIGHT render_height * render_upscaling_factor
 
 # define TEX_HEIGHT 256
 # define NUM_BLOCKS 4
@@ -41,6 +46,10 @@
 # define RADAR_PLAYER_COLOR rgb_dark_green
 # define RADAR_ENEMY_COLOR rgb_red
 # define RADAR_BORDER_SIZE 0
+
+// CONTEXT
+# define ENEMY_GENTLEMAN 1
+# define ENEMY_ZOMBIE 2
 
 # define MOUSE_SENS 0.001953125f	// 	1/512
 # define RESPAWN_TIMER 8000000

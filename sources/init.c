@@ -26,10 +26,10 @@ int stt_mlx_init(t_game *game)
 {
 	t_win_list	*window;
 
-	mlx_new_window(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, "doom_blade");
+	mlx_new_window(game->mlx, screen_width, screen_height, "doom_blade");
 	if (game->mlx->win_list == NULL)
 		return (cub_cleanup(game, "MLX (WIN) failed to initialize"));
-	game->frame.img = mlx_int_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT, ZPixmap);
+	game->frame.img = mlx_int_new_image(game->mlx, screen_width, screen_height, ZPixmap);
 	if (game->frame.img == NULL)
 		return (cub_cleanup(game, "MLX (IMG) failed to initialize"));
 	window = game->mlx->win_list;
@@ -109,9 +109,9 @@ void	stt_params_init(t_game *game, t_memory *memory)
 	game->frame.display.width = game->frame.img->width;
 	game->frame.display.stride = game->frame.img->width;
 	game->frame.render.ptr = (uint32_t*)memory->render_frame;
-	game->frame.render.height = RENDER_HEIGHT;
-	game->frame.render.width = RENDER_WIDTH;
-	game->frame.render.stride = RENDER_HEIGHT;
+	game->frame.render.height = render_height;
+	game->frame.render.width = render_width;
+	game->frame.render.stride = render_height;
 	game->frame.rays = memory->rays;
 	game->state.paused = false;
 }

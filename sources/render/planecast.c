@@ -6,8 +6,8 @@
 static inline
 void	stt_plane_row(t_plane *plane, t_view *cam, int32_t dist)
 {
-	const float	row_dist = (0.5f * RENDER_HEIGHT) / dist;
-	const float	factor = row_dist / RENDER_WIDTH;
+	const float	row_dist = (0.5f * render_height) / dist;
+	const float	factor = row_dist / render_width;
 
 	plane->step.x.f = factor * (plane->ray_right.x.f - plane->ray_left.x.f);
 	plane->step.y.f = factor * (plane->ray_right.y.f - plane->ray_left.y.f);
@@ -55,9 +55,9 @@ void	stt_render_floor(t_frame *frame, t_mat32 texture, t_view *cam)
 	plane.ray_left.y.f = cam->dir.y.f - cam->plane.y.f;
 	plane.ray_right.x.f = cam->dir.x.f + cam->plane.x.f;
 	plane.ray_right.y.f = cam->dir.y.f + cam->plane.y.f;
-	horizon = RENDER_HEIGHT / 2 - frame->offset;
+	horizon = render_height / 2 - frame->offset;
 	y = ft_imax(0, horizon + 1);
-	while (y < RENDER_HEIGHT)
+	while (y < render_height)
 	{
 		stt_plane_row(&plane, cam, y - horizon);
 		stt_plane_draw(frame->render, &plane, y);
@@ -77,12 +77,12 @@ void	stt_render_ceil(t_frame *frame, t_mat32 texture, t_view *cam)
 	plane.ray_left.y.f = cam->dir.y.f - cam->plane.y.f;
 	plane.ray_right.x.f = cam->dir.x.f + cam->plane.x.f;
 	plane.ray_right.y.f = cam->dir.y.f + cam->plane.y.f;
-	horizon = RENDER_HEIGHT / 2 + frame->offset;
+	horizon = render_height / 2 + frame->offset;
 	y = ft_imax(0, horizon + 1);
-	while (y < RENDER_HEIGHT)
+	while (y < render_height)
 	{
 		stt_plane_row(&plane, cam, y - horizon);
-		stt_plane_draw(frame->render, &plane, RENDER_HEIGHT - y - 1);
+		stt_plane_draw(frame->render, &plane, render_height - y - 1);
 		y++;
 	}
 }

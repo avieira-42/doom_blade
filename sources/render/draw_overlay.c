@@ -8,22 +8,22 @@ void	cub_draw_crosshair(uint32_t *ptr)
 {
 	size_t	index;
 
-	index = (SCREEN_HEIGHT / 2 - 1) * SCREEN_WIDTH + (SCREEN_WIDTH / 2 - 1);
+	index = (screen_height / 2 - 1) * screen_width + (screen_width / 2 - 1);
 	ptr[index] = 0;
 	ptr[index + 1] = 0;
 	ptr[index + 2] = 0;
 	ptr[index + 3] = 0;
-	index += SCREEN_WIDTH;
+	index += screen_width;
 	ptr[index] = 0;
 	ptr[index + 1] = 0xFFFFFFFF;
 	ptr[index + 2] = 0xFFFFFFFF;
 	ptr[index + 3] = 0;
-	index += SCREEN_WIDTH;
+	index += screen_width;
 	ptr[index] = 0;
 	ptr[index + 1] = 0xFFFFFFFF;
 	ptr[index + 2] = 0xFFFFFFFF;
 	ptr[index + 3] = 0;
-	index += SCREEN_WIDTH;
+	index += screen_width;
 	ptr[index] = 0;
 	ptr[index + 1] = 0;
 	ptr[index + 2] = 0;

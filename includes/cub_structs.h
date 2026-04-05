@@ -65,8 +65,8 @@ typedef struct s_enemy
 
 typedef struct s_memory
 {
-	uint32_t	render_frame[RENDER_WIDTH][RENDER_HEIGHT];
-	t_rayhit	rays[RENDER_WIDTH];
+	uint32_t	render_frame[render_width][render_height];
+	t_rayhit	rays[render_width];
 }	t_memory;
 
 typedef struct s_gstate

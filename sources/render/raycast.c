@@ -121,11 +121,11 @@ void	raycast(t_view *cam, t_map *map, t_rayhit *rays)
 {
 	size_t		x;
 	float		camera_x;
-	const float	dx = 2.0 / RENDER_WIDTH;
+	const float	dx = 2.0 / render_width;
 
 	x = 0;
 	camera_x = -1.0f;
-	while (x < RENDER_WIDTH)
+	while (x < render_width)
 	{
 		rays[x] = stt_raycast(camera_x, cam, map);
 		camera_x += dx;
