@@ -10,6 +10,8 @@
 #include "cmlx_base.h"
 #include "mlx.h"
 
+void	cub_clean_texture(uint32_t *ptr, size_t length);
+
 // Reads a string until it finds a null terminator, space or length > 255
 // Returns: 
 static
@@ -44,21 +46,26 @@ t_img	*stt_read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr
 int	cub_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr)
 {
 	t_img	*img;
+	size_t	img_size;
 
 	if (texture->ptr != NULL)
 		return (-2);
 	img = stt_read_xpm(mlx, filename, filename_ptr);
 	if (img == NULL)
 		return (-1);
+	if ((img->width & 1) || (img->height & 1))		// REVIEW: TMP HACK TO GUARANTEE FUNCTIONALITY
+		return (mlx_destroy_image(mlx, img), -1);
+	img_size = (size_t)(img->width * img->height);
 	texture->height = img->height;
 	texture->width = img->width;
 	texture->depth = 1;
 	texture->stride = img->width;
-	texture->ptr = malloc(texture->width * texture->height * sizeof(uint32_t));
+	texture->ptr = malloc(img_size * sizeof(uint32_t));
 	if (texture->ptr == NULL)
 		return (mlx_destroy_image(mlx, img), -1);
-	ft_memcpy(texture->ptr, img->data, img->width * img->height * sizeof(uint32_t));
+	ft_memcpy(texture->ptr, img->data, img_size * sizeof(uint32_t));
 	ft_transpose(texture);
+	cub_clean_texture(texture->ptr, img_size);
 	mlx_destroy_image(mlx, img);
 	return (0);
 }

@@ -6,19 +6,7 @@
 #include "cub_utils.h"
 #include "cmlx_base.h"
 
-static inline
-void	stt_clean_texture(uint32_t *ptr, size_t length)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < length)
-	{
-		if (ptr[i] == ALPHA_SENTINEL1 || ptr[i] == ALPHA_SENTINEL2)
-			ptr[i] = 0;
-		i++;
-	}
-}
+void	cub_clean_texture(uint32_t *ptr, size_t length);
 
 static
 t_img	*stt_load_img(t_xvar *mlx, t_str path, size_t count)
@@ -37,6 +25,8 @@ t_img	*stt_load_img(t_xvar *mlx, t_str path, size_t count)
 	return (img);
 }
 
+// Loads a width by height image, and with already allocated memory, saves an image there transposing it
+// Path is different as well
 static
 int	stt_load_sheet(t_xvar *mlx, t_mat32 sprite, t_str path, size_t count)
 {
@@ -61,7 +51,7 @@ int	stt_load_sheet(t_xvar *mlx, t_mat32 sprite, t_str path, size_t count)
 		sprite.ptr += depth_stride;
 		i++;
 	}
-	stt_clean_texture(optr, depth_stride * sprite.depth);
+	cub_clean_texture(optr, depth_stride * sprite.depth);
 	return (0);
 }
 
