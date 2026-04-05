@@ -72,6 +72,30 @@ void	enemy_update_anim(t_enemy *e, long dt, t_player *player)
 	}
 }
 
+static
+void	stt_enemy_update_stats(t_game *game, t_enemy *enemy, bool hit)
+{
+	if ((game->player.state & st_shot) && hit)
+	{
+		if (!(enemy->state & e_dying))
+		{
+			enemy->health -= 25;
+			if (enemy->health <= 0)
+			{
+				enemy->state = e_dying;
+				enemy->dying.index = 0;
+				enemy->dying.frame_dt = 0;
+			}
+			else if (!(enemy->state & e_hit))
+			{
+				enemy->state = e_hit;
+				enemy->shot.index = 0;
+				enemy->shot.frame_dt = 0;
+			}
+		}
+	}
+}
+
 
 
 void	cub_draw_enemies(t_game *game, long dt)
@@ -89,25 +113,7 @@ void	cub_draw_enemies(t_game *game, long dt)
 			hit = draw_enemy(&game->frame, game->frame.rays,
 					&game->player, enemy);
 			enemy_update_anim(enemy, dt, &game->player);
-			if ((game->player.state & st_shot) && hit)
-			{
-				if (!(enemy->state & e_dying))
-				{
-					enemy->health -= 25;
-					if (enemy->health <= 0)
-					{
-						enemy->state = e_dying;
-						enemy->dying.index = 0;
-						enemy->dying.frame_dt = 0;
-					}
-					else if (!(enemy->state & e_hit))
-					{
-						enemy->state = e_hit;
-						enemy->shot.index = 0;
-						enemy->shot.frame_dt = 0;
-					}
-				}
-			}
+			stt_enemy_update_stats(game, enemy, hit);
 		}
 		i++;
 	}

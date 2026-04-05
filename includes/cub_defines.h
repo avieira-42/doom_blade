@@ -30,7 +30,7 @@
 // Difficulty
 # define ENEMY_ATTACK_DIST 1
 # define ENEMY_ATTACK_AGRESS 0.9f
-# define ENEMY_ATTACK_POWER 10
+# define ENEMY_ATTACK_POWER 5
 # define HEALING_AMOUNT 1
 # define REGEN_CD 3000000
 # define NUM_ENEMIES 25
