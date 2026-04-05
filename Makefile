@@ -4,6 +4,8 @@ VPATH = sources sources/utils sources/input sources/parse sources/gameplay sourc
 LDLIBS = libraries/mlx/libmlx_Linux.a -lXext -lX11 -lm -lz -lSDL2 -lSDL2_mixer -lSDL2main
 # CORE ------------------------------------ #
 SRCS = main.c audio.c cleanup.c init.c
+# INIT ------------------------------------ #
+SRCS += init_enemy.c
 # DRAW ------------------------------------ #
 SRCS += raycast.c planecast.c bilinear_interp.c integer_scaling.c transpose.c 
 SRCS += draw_texture.c draw_utils.c draw_world.c

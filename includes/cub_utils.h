@@ -10,9 +10,9 @@
 # include "cub_structs.h"
 
 // New (to be sorted)
-void	cub_update_game(t_game *game, long dt);
-void	cub_update_pos(t_game *game, float dt);
-void	cub_draw_enemies(t_game *game, long dt);
+void		cub_update_game(t_game *game, long dt);
+void		cub_update_pos(t_game *game, float dt);
+void		cub_draw_enemies(t_game *game, long dt);
 
 // Draw and Render
 void		raycast(t_view *cam, t_map *map, t_rayhit *rays);
@@ -59,6 +59,7 @@ int			cub_cleanup(t_game *game, const char *msg);
 int			cub_parse_textures(t_game *game, const char *str, const char **str_ptr, t_block *blocks);
 int			cub_read_map(t_game *game, const char *str, t_map *map, t_player *player);
 t_sheet		cub_readsheet(t_game *game, const char *base_path, size_t count, long frame_time);
+void		enemy_init(t_game *game, t_enemy enemies[NUM_ENEMIES]);
 
 
 // Utils

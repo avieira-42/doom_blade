@@ -91,9 +91,7 @@ typedef struct s_audio
 typedef struct s_assets
 {
 	t_audio	audio;
-
 	t_sheet	hud_blood;
-	// t_sheet	city;	// Isnt being used
 }	t_assets;
 
 typedef struct s_game
