@@ -9,6 +9,10 @@ void	cub_draw_damage(t_mat32 frame, t_game *game, long dt)
 	/*blood health signlaling in the edges is working, but enemies
 		* shoot player outside of sight  so NEED REVIEW, in case we have time*/
 
+	// BAD IMPLEMENTATION: get_time function is costing a lot of processing power
+	// Might change the player health for a big number to be able to heal in small
+	// increments
+
 	const int32_t	p_health = game->player.health;
 	t_mat32			texture;
 
@@ -24,6 +28,6 @@ void	cub_draw_damage(t_mat32 frame, t_game *game, long dt)
 		texture.ptr = game->assets.hud_blood.texture.ptr
 			+ game->assets.hud_blood.frame_size * 2;
 	cub_draw_texture(frame, texture, 0, 0);
-	if (get_time() - game->player.last_damage_time >= HEALING_TIME)
+	if (game->player.regen_cd <= 0)
 		game->player.health += HEALING_AMOUNT;
 }

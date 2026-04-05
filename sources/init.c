@@ -100,6 +100,7 @@ void	stt_params_init(t_game *game, t_memory *memory)
 		.y.f =  game->player.cam.dir.x.f * 0.66f};
 	game->player.ammo = AMMO_COUNT;
 	game->player.health = PLAYER_HEALTH;
+	game->player.regen_cd = REGEN_CD;
 	game->player.state = st_idle;
 	game->player.map = st_off;
 	game->frame.display.ptr = (uint32_t*)game->frame.img->data;

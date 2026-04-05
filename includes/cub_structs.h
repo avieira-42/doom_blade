@@ -31,6 +31,7 @@ typedef struct s_player
 	float		spd_sideway;
 	float		spd_max;
 	int32_t		health;
+	long		regen_cd;
 	int32_t		ammo;
 	long		last_damage_time;
 }	t_player;

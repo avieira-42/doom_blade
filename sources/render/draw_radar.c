@@ -47,9 +47,10 @@ void	stt_fov_draw(t_mat32 frame, t_player player, t_quad p_icon)
 	const t_vec2	p_pos = (t_vec2){.x.f
 		= (float)p_icon.center.x.i,
 		.y.f = (float)p_icon.center.y.i};
-	const t_vec2	line_dst = vec2_sum(p_pos,
-			vec2_scalar_mult(player.cam.dir, 5));
+	t_vec2			line_dst;
 
+	line_dst = vec2_sum(p_pos,
+			vec2_scalar_mult(player.cam.dir, 5));
 	line_draw(frame, p_pos, line_dst, rgb_yellow);
 }
 

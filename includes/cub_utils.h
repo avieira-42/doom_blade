@@ -25,6 +25,8 @@ void		cub_draw_radar(t_game *game, t_mat32 render,
 				t_hands *hands, long dt);
 void		cub_draw_damage(t_mat32 frame, t_game *game, long dt);
 void		line_draw(t_mat32 frame, t_vec2 a, t_vec2 b, int color);
+bool		draw_enemy(t_frame *frame, t_rayhit *rays,
+		t_player *player, t_enemy *enemy);
 
 // Draw
 void		cub_draw_hands(t_mat32 frame, t_game *game, long dt);

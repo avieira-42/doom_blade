@@ -33,6 +33,7 @@
 # define ENEMY_ATTACK_AGRESS 0.99f
 # define HEALING_TIME 1500
 # define HEALING_AMOUNT 1
+# define REGEN_CD 2000000
 
 # define MOUSE_SENS 0.001953125f	// 	1/512
 # define RESPAWN_TIMER 8000000
@@ -69,10 +70,11 @@ enum e_enemy_state
 {
 	e_idle = 0,
 	e_running = 1 << 0,
-	e_shooting = 1 << 1,
-	e_hit = 1 << 2,
-	e_dying = 1 << 3,
-	e_dead = 1 << 4,
+	e_seen = 1 << 1,
+	e_shooting = 1 << 2,
+	e_hit = 1 << 3,
+	e_dying = 1 << 4,
+	e_dead = 1 << 5,
 };
 
 enum e_minimap_state
