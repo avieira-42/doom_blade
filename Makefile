@@ -9,7 +9,7 @@ SRCS += raycast.c planecast.c bilinear_interp.c integer_scaling.c transpose.c
 SRCS += draw_texture.c draw_utils.c draw_world.c
 SRCS += draw_enemy.c draw_enemies.c draw_overlay.c draw_viewmodel.c draw_radar.c draw_ascii.c
 # UTILS ------------------------------------ #
-SRCS += rng.c rng_utils.c clean_texture.c
+SRCS += rng.c rng_utils.c clean_texture.c clip.c
 SRCS += time.c int_limits.c float_limits.c float_abs.c vec2_algebra.c vec2_math.c
 SRCS += convert.c str_search.c io_basic.c memory.c char_ascii.c
 # PARSE ------------------------------------ #

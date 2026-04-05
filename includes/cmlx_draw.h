@@ -51,21 +51,20 @@ typedef struct s_quad
 
 typedef struct s_sides
 {
-	int32_t	top;
-	int32_t	bottom;
-	int32_t	left;
-	int32_t	right;
-}	t_sides;
-
-typedef struct s_transform
-{
-	t_vec2		draw_pos;
-	t_vec2		delta;
-	t_vec2		norm_offset;	// Clip start to normalized range
+	int32_t		x;
+	int32_t		y;
 	uint32_t	top;
 	uint32_t	bottom;
 	uint32_t	left;
 	uint32_t	right;
+}	t_sides;
+
+typedef struct s_transform
+{
+	t_vec2	draw_pos;
+	t_vec2	delta;
+	t_vec2	norm_offset;	// Clip start to normalized range
+	t_sides	bounds;
 }	t_form;
 
 typedef struct s_sheet

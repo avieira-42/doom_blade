@@ -22,6 +22,7 @@ void		quad_draw(t_mat32 frame, t_quad quad);
 void		line_draw(t_mat32 frame, t_vec2 a, t_vec2 b, int color);
 void		cub_draw_texture(t_mat32 frame, t_mat32 image, uint32_t xc, uint32_t yc);
 void		cub_draw_sheet(t_mat32 frame, const t_sheet *sheet, uint32_t xc, uint32_t yc);
+t_sides		cub_center_clip(t_mat32 frame, t_vec2 draw_pos, t_vec2 size);
 
 // Draw
 void		cub_draw_radar(t_game *game, t_mat32 render, t_hands *hands, long dt);
