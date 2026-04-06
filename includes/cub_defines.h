@@ -10,16 +10,6 @@ enum e_render
 	screen_height = render_height * UPSCALING_FACTOR,
 };
 
-// CONTEXT
-enum e_area
-{
-	a_hell = 1,
-	a_castle = 2,
-	a_lab = 3,
-};
-
-# define CONTEXT a_castle
-
 # define TEX_SIZE 128
 # define NUM_BLOCKS 4
 # define EPS 0.00000011920929f
@@ -60,7 +50,6 @@ enum e_area
 # define AMMO_COUNT 8
 # define PLAYER_HEALTH 100
 # define RELOAD_CYCLE 4
-# define PILL_COUNT 1
 
 # define ALPHA_SENTINEL1 0x000021FFFF
 # define ALPHA_SENTINEL2 0x000015FFFF

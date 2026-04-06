@@ -16,23 +16,19 @@ void	stt_error(const char *msg)
 }
 
 static
-void	stt_free_assets(t_assets *assets, t_block *blocks, t_player *player)
+void	stt_free_assets(t_assets *assets, t_player *player, t_enemy *enemy)
 {
-	size_t	i;
-
 	free(player->hands.reload.texture.ptr);
 	free(player->hands.shoot.texture.ptr);
 	free(player->hands.walk.texture.ptr);
-	// free(assets->city.texture.ptr);
 	free(player->hands.radar.texture.ptr);
 	free(player->hands.radar_l0.texture.ptr);
 	free(player->hands.radar_l1.texture.ptr);
-}
-
-static
-void	stt_free_enemies(t_game *game)
-{
-	free(game->assets.hud_blood.texture.ptr);
+	free(assets->hud_blood.texture.ptr);
+	free(enemy->running.texture.ptr);
+	free(enemy->shooting.texture.ptr);
+	free(enemy->dying.texture.ptr);
+	free(enemy->shot.texture.ptr);
 }
 
 int	cub_cleanup(t_game *game, const char *msg)
@@ -49,7 +45,6 @@ int	cub_cleanup(t_game *game, const char *msg)
 		mlx_destroy_image(game->mlx, game->frame.img);
 	if (game->mlx != NULL)
 		mlx_destroy_display(game->mlx);
-	stt_free_assets(&game->assets, game->blocks, &game->player);
-	stt_free_enemies(game);
+	stt_free_assets(&game->assets, &game->player, game->enemies);
 	exit(rvalue);
 }

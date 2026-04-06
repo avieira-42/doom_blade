@@ -56,13 +56,12 @@ int			cmlx_mousemove(t_game *game);
 int			cmlx_loop(t_game *game);
 void		input_handler(t_game *game, t_player *player);
 
-// init
+// Init
 int			cub_init(const char *filename, t_game *game, t_memory *memory);
 int			cub_cleanup(t_game *game, const char *msg);
 int			cub_parse_textures(t_game *game, const char **str_ptr, t_memory *memory);
 int			cub_read_map(t_game *game, const char *str, t_map *map, t_player *player);
 t_sheet		cub_readsheet(t_game *game, const char *base_path, size_t count, long frame_time);
-void		enemy_init(t_game *game, t_enemy enemies[NUM_ENEMIES]);
 
 // Utils
 t_vec2		random_valid_pos(t_map *map);
