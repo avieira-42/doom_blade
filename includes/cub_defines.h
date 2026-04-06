@@ -113,6 +113,7 @@ enum e_colors
 {
 	rgb_black = 0x000000u,
 	rgb_red = 0xFF0000u,
+	rgb_shy_red = 0x110000u,
 	rgb_green = 0x00FF00u,
 	rgb_dark_green = 0x005500u,
 	rgb_blue = 0x0000FFu,

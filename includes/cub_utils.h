@@ -24,7 +24,6 @@ t_sheet		*cub_actions(t_player *player, t_map *map, long dt);
 
 // Draw Utils
 uint8_t		cub_advance_animation(t_sheet *sheet, long dt);
-void		pixel_swap(t_mat32 frame, int32_t x, int32_t y, uint32_t color);
 void		quad_draw(t_mat32 frame, t_quad quad);
 void		line_draw(t_mat32 frame, t_vec2 a, t_vec2 b, int color);
 void		cub_draw_texture(t_mat32 frame, t_mat32 image, uint32_t xc, uint32_t yc);
@@ -32,7 +31,7 @@ void		cub_draw_sheet(t_mat32 frame, const t_sheet *sheet, uint32_t xc, uint32_t 
 t_sides		cub_center_clip(t_mat32 frame, t_vec2 draw_pos, t_vec2 size);
 
 // Draw
-void		cub_draw_radar(t_game *game, t_mat32 render, t_hands *hands, long dt);
+void		cub_draw_radar(t_game *game, t_map map, long dt);
 void		cub_draw_world(t_game *game);
 void		draw_number(t_mat32 frame, size_t xpos, size_t ypos, uint32_t value);
 void		cub_draw_hands(t_mat32 frame, t_game *game, long dt);

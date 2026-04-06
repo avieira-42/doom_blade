@@ -41,6 +41,8 @@ void	stt_params_init(t_game *game, t_memory *memory)
 	game->player.health = PLAYER_HEALTH;
 	game->player.state = st_idle;
 	game->player.map = st_off;
+	game->player.texture[0].ptr = NULL;
+	game->player.texture[0].ptr = NULL;
 	game->frame.display.ptr = (uint32_t*)game->frame.img->data;
 	game->frame.display.height = game->frame.img->height;
 	game->frame.display.width = game->frame.img->width;

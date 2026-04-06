@@ -34,6 +34,32 @@ t_sheet	*cub_actions(t_player *player, t_map *map, long dt)
 	size_t	index;
 	int		rvalue;
 	t_sheet	*sheet;
+	t_mat32	texture;
+
+	// OLD RADAR DRAW >>>>>
+	if (player->map & st_checking)
+	{
+		player->hands.radar.index = 0;
+		texture = player->hands.radar.texture;
+		texture.ptr = player->hands.radar.texture.ptr
+			+ player->hands.radar.frame_size * (player->hands.radar.count -1);
+	}
+	else if (player->map & st_raising)
+	{
+		texture = player->hands.radar.texture;
+		texture.ptr += player->hands.radar.index
+			* player->hands.radar.frame_size;
+		if (player->hands.radar.index == player->hands.radar.count - 2)
+		{
+			player->map &= ~(size_t)st_raising;
+			player->map |= (size_t)st_checking;
+		}
+		cub_advance_animation(&player->hands.radar, dt);
+	}
+	else
+		texture.ptr = NULL;
+	player->texture[1] = texture; // send one of the three texture ptrs to player->texture
+	// <<<<< OLD RADAR DRAW
 
 	if (player->state & st_interacting)
 	{

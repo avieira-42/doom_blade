@@ -4,6 +4,16 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
+void	pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
+{
+	uint32_t	*dst;
+
+	if (x < 0 || x >= frame.width || y < 0 || y >= frame.height)
+		return ;
+	dst = frame.ptr + x * frame.stride + y;
+	*dst = color;
+}
+
 int     vec_max_coord(t_vec2 vec)
 {
         int     const x = ft_abs(vec.x.f);
@@ -29,11 +39,20 @@ int     vec_max_coord(t_vec2 vec)
 // TODO: Insert the concept of frame period
 // 1) First Render Call, 2) Updated, 4) End
 
+uint64_t	color_variation_get(int32_t base_color)
+{
+	const int32_t	mask = 0x0F0F0Fu;
+	const uint64_t	modifier = ft_rand();
+
+	return ((mask & modifier) ^ base_color);
+}
+
 void	quad_draw(t_mat32 frame, t_quad quad)
 {
-	int32_t	y;
-	int32_t	x;
-	t_vec2	dst;
+	int32_t			y;
+	int32_t			x;
+	t_vec2			dst;
+	uint64_t		color;
 
 	y = 0;
 	while (y <= quad.size.y.i)
@@ -42,8 +61,9 @@ void	quad_draw(t_mat32 frame, t_quad quad)
 		while (x <= quad.size.x.i)
 		{
 			dst = (t_vec2){.x.i = quad.pos.x.i + x, .y.i = quad.pos.y.i + y};
+			color = color_variation_get(quad.color);
 			if (vec2_idist(quad.center, dst) <= quad.radius * quad.radius)
-				pixel_swap(frame, dst.x.i, dst.y.i, quad.color);
+				pixel_put(frame, dst.x.i, dst.y.i, color);
 			x++;
 		}
 		y++;
@@ -69,60 +89,25 @@ uint8_t	cub_advance_animation(t_sheet *sheet, long dt)
 	return (rvalue);
 }
 
-void	pixel_swap(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
-{
-	uint32_t	*dst;
-
-	if (x < 0 || x >= frame.width || y < 0 || y >= frame.height)
-		return ;
-	dst = frame.ptr + x * frame.stride + y;
-	if ((*dst == 0x401013 || *dst == 0x3a0c0e)
-		&& color != 0x005500 && color != rgb_red)
-		return ;
-	if (color == 0x000000)
-	{
-		if (*dst == 2693401)
-			color = 0x401013;
-		else if (*dst == 2299157)
-			color = 0x3a0c0e;
-	}
-	else if (color == 0xFFFFFF)
-	{
-		if (*dst == 2693401)
-			color = 0xe6c84b;
-	}
-	*dst = color;
-}
-
-void	pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
-{
-	uint32_t	*dst;
-
-	if (x < 0 || x >= frame.width || y < 0 || y >= frame.height)
-		return ;
-	dst = frame.ptr + x * frame.stride + y;
-	*dst = color;
-}
-
 void line_draw(t_mat32 frame, t_vec2 a, t_vec2 b, int color)
 {
-    size_t      i;
-    t_vec2		line = vec2_sub(a, b);
-    float     x;
-    float     y;
-    size_t      max = vec_max_coord(line);
+	size_t      i;
+	t_vec2		line = vec2_sub(a, b);
+	float     x;
+	float     y;
+	size_t      max = vec_max_coord(line);
 
-    if (max != 0)
-    {
-        x = line.x.f / max;
-        y = line.y.f / max;
-        i = 0;
-        while (i < max)
-        {
-            a.x.f += x;
-            a.y.f += y;
-            pixel_put(frame, a.x.f, a.y.f, color);
-            i++;
-        }
-    }
+	if (max != 0)
+	{
+		x = line.x.f / max;
+		y = line.y.f / max;
+		i = 0;
+		while (i < max)
+		{
+			a.x.f += x;
+			a.y.f += y;
+			pixel_put(frame, a.x.f, a.y.f, color);
+			i++;
+		}
+	}
 }

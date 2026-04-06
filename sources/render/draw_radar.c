@@ -40,12 +40,12 @@ void	stt_grid_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_quad cell)
 	}
 }
 
-static
+	static
 void	stt_fov_draw(t_mat32 frame, t_player player, t_quad p_icon)
 {
 	const t_vec2	p_pos = (t_vec2){.x.f
 		= (float)p_icon.center.x.i,
-		.y.f = (float)p_icon.center.y.i};
+			.y.f = (float)p_icon.center.y.i};
 	t_vec2			line_dst;
 
 	line_dst = vec2_sum(p_pos,
@@ -54,21 +54,21 @@ void	stt_fov_draw(t_mat32 frame, t_player player, t_quad p_icon)
 }
 
 // for funcitonality separation
-static
+	static
 void	stt_player_icon_draw(t_mat32 frame, t_map map,
 		t_vec2 grid_pos, t_player player)
 {
 	map.icon_quad.pos = (t_vec2){.x.i = map.radar_sprite_pos.x.i
 		+ map.icon_quad.pos.x.i - grid_pos.x.i - map.icon_quad.size.x.i / 2,
 		.y.i = map.radar_sprite_pos.y.i + map.icon_quad.pos.y.i
-		- grid_pos.y.i - map.icon_quad.size.y.i / 2};
+			- grid_pos.y.i - map.icon_quad.size.y.i / 2};
 	map.icon_quad.center = (t_vec2){.x.i = map.icon_quad.pos.x.i + map.icon_quad.radius,
 		.y.i = map.icon_quad.pos.y.i + map.icon_quad.radius};
 	stt_fov_draw(frame, player, map.icon_quad);
 	quad_draw(frame, map.icon_quad);
 }
 
-static
+	static
 void	stt_enemies_icon_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_enemy *enemies)
 {
 	int32_t	i;
@@ -84,7 +84,7 @@ void	stt_enemies_icon_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_enemy *e
 		}
 		map.icon_quad.pos = (t_vec2){.x.i = grid_pos.x.i
 			+ enemies[i].cam.pos.x.f * map.radar_quad.size.x.i,
-		.y.i = grid_pos.y.i + enemies[i].cam.pos.y.f * map.radar_quad.size.y.i};
+				.y.i = grid_pos.y.i + enemies[i].cam.pos.y.f * map.radar_quad.size.y.i};
 		map.icon_quad.center = (t_vec2){.x.i = map.icon_quad.pos.x.i + map.icon_quad.radius,
 			.y.i = map.icon_quad.pos.y.i + map.icon_quad.radius};
 		if (vec2_idist(map.radar_quad.center, map.icon_quad.pos)
@@ -94,9 +94,7 @@ void	stt_enemies_icon_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_enemy *e
 	}
 }
 
-// TODO: draw enemies icons
-// TODO: draw player foc representation
-void	stt_draw_radar(t_game *game, t_map map, long dt)
+void	cub_draw_radar(t_game *game, t_map map, long dt)
 {
 	t_vec2	grid_offset;
 	t_vec2	g_pos;
@@ -115,41 +113,12 @@ void	stt_draw_radar(t_game *game, t_map map, long dt)
 	grid_offset.y.i = ft_imin(grid_offset.y.i, map.radar_size.y.i
 			- game->player.hands.radar_l0.texture.height);
 	g_pos = (t_vec2){.x.i = map.radar_sprite_pos.x.i - grid_offset.x.i,
-			.y.i = map.radar_sprite_pos.y.i - grid_offset.y.i};
+		.y.i = map.radar_sprite_pos.y.i - grid_offset.y.i};
 	stt_draw_layer(game->frame.render,
 			&game->player.hands.radar_l0, map.radar_sprite_pos, dt);
 	stt_grid_draw(game->frame.render, game->map, g_pos, game->map.radar_quad);
 	stt_enemies_icon_draw(game->frame.render, map, g_pos, game->enemies);
 	stt_player_icon_draw(game->frame.render, map, grid_offset, game->player);
 	stt_draw_layer(game->frame.render,
-		&game->player.hands.radar_l1, map.radar_sprite_pos, dt);
-}
-
-void	cub_draw_radar(t_game *game, t_mat32 render,
-		t_hands *hands, long dt)
-{
-	t_mat32	texture;
-
-	if (game->player.map & st_checking) // This should be in actions. Pipeline is: actions determine what sheet to load;
-	{									// The sheet is then used by draw hands to draw the texture
-		hands->radar.index = 0;
-		texture = hands->radar.texture;
-		texture.ptr = hands->radar.texture.ptr
-			+ hands->radar.frame_size * (hands->radar.count -1);
-		cub_draw_texture(render, texture, 0, 195);
-		stt_draw_radar(game, game->map, dt);
-	}
-	else if (game->player.map & st_raising)
-	{
-		texture = hands->radar.texture;
-		texture.ptr += hands->radar.index
-			* hands->radar.frame_size;
-		cub_draw_texture(render, texture, 0, 195);
-		if (hands->radar.index == hands->radar.count - 2)
-		{
-			game->player.map &= ~(size_t)st_raising;
-			game->player.map |= (size_t)st_checking;
-		}
-		cub_advance_animation(&hands->radar, dt);
-	}
+			&game->player.hands.radar_l1, map.radar_sprite_pos, dt);
 }
