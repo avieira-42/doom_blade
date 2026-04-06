@@ -4,6 +4,38 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
+typedef struct s_audio
+{
+	Mix_Chunk	*no_ammo;
+	Mix_Chunk	*shot;
+	Mix_Chunk	*reload;
+	Mix_Chunk	*step;
+	Mix_Chunk	*step_fast;
+}	t_audio;
+
+enum e_audio_channel
+{
+	ch_steps = 1,
+	ch_shot = 2,
+	ch_reload = 3,
+	ch_no_ammo = 4,
+};
+
+static
+void	stt_audio_init(t_game *game)
+{
+	SDL_Init(SDL_INIT_AUDIO);
+	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+	Mix_AllocateChannels(10);
+	game->assets.audio.shot = Mix_LoadWAV("assets/audio/gun_shot.wav");
+	game->assets.audio.reload = Mix_LoadWAV("assets/audio/gun_reload.wav");
+	game->assets.audio.step = Mix_LoadWAV("assets/audio/step.wav");
+	game->assets.audio.step_fast = Mix_LoadWAV("assets/audio/step_fast.wav");
+	game->assets.audio.no_ammo = Mix_LoadWAV("assets/audio/no_ammo.wav");
+}
+
+void		cub_play_audio(t_player *player, t_audio *audio, t_game *game, long dt);
+
 // Todo: add state change function with hysteresis for audio
 void	cub_play_audio(t_player *player, t_audio *audio, t_game *game, long dt)
 {

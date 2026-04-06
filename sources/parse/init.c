@@ -9,19 +9,6 @@
 #include "cub_utils.h"
 
 static
-void	stt_audio_init(t_game *game)
-{
-	SDL_Init(SDL_INIT_AUDIO);
-	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-	Mix_AllocateChannels(10);
-	game->assets.audio.shot = Mix_LoadWAV("assets/audio/gun_shot.wav");
-	game->assets.audio.reload = Mix_LoadWAV("assets/audio/gun_reload.wav");
-	game->assets.audio.step = Mix_LoadWAV("assets/audio/step.wav");
-	game->assets.audio.step_fast = Mix_LoadWAV("assets/audio/step_fast.wav");
-	game->assets.audio.no_ammo = Mix_LoadWAV("assets/audio/no_ammo.wav");
-}
-
-static
 int stt_mlx_init(t_game *game)
 {
 	t_win_list	*window;
@@ -130,7 +117,6 @@ int	cub_init(const char *filename, t_game *game, t_memory *memory)
 	stt_mlx_init(game);
 	stt_params_init(game, memory);
 	stt_sprites_init(game, &game->player.hands);
-	stt_audio_init(game);
 	enemy_init(game, game->enemies);
 	stt_radar_init(game);
 	ft_rng_init();

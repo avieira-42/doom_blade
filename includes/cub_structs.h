@@ -78,19 +78,9 @@ typedef struct s_gstate
 	// ...
 }	t_gstate;
 
-typedef struct s_audio
-{
-	Mix_Chunk	*no_ammo;
-	Mix_Chunk	*shot;
-	Mix_Chunk	*reload;
-	Mix_Chunk	*step;
-	Mix_Chunk	*step_fast;
-}	t_audio;
-
 // If adding to assets, remember to add to the free list
 typedef struct s_assets
 {
-	t_audio	audio;
 	t_sheet	hud_blood;
 }	t_assets;
 

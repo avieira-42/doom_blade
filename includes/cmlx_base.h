@@ -10,10 +10,6 @@
 # include <X11/extensions/XShm.h>
 # include <X11/XKBlib.h>
 
-// Extension
-# include <SDL2/SDL.h>
-# include <SDL2/SDL_mixer.h>
-
 # define MLX_MAX_EVENT LASTEvent
 
 typedef struct s_str

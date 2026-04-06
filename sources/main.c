@@ -25,7 +25,6 @@ int	cmlx_loop(t_game *game)
 		avg_fps = (avg_fps - avg_fps / 8) + 125000 / dt;
 		input_handler(game, &game->player);
 		cub_update_game(game, dt);
-		cub_play_audio(&game->player, &game->assets.audio, game, dt);
 		cub_draw_world(game);
 		cub_draw_enemies(game, dt);
 		cub_draw_hands(game->frame.render, game, dt);

@@ -1,3 +1,4 @@
+#include <math.h>
 #include "cmlx_base.h"
 #include "cub_structs.h"
 #include "cub_utils.h"

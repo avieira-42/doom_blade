@@ -3,8 +3,7 @@
 #include <stdlib.h>
 #include "cub_utils.h"
 
-static inline
-void	stt_sqr_transpose(uint32_t *src, uint32_t length)
+void	sqr_transpose(uint32_t *src, uint32_t length)
 {
 	uint32_t	i;
 	uint32_t	j;
@@ -53,7 +52,7 @@ int	ft_transpose(t_mat32 *src)
 
 	if (src->width == src->height)
 	{
-		stt_sqr_transpose(src->ptr, src->width);
+		sqr_transpose(src->ptr, src->width);
 		return (0);
 	}
 	dst = malloc(mat_size);
@@ -73,7 +72,7 @@ int	ft_transpose_img(uint32_t *ptr, size_t width, size_t height)
 
 	if (width == height)
 	{
-		stt_sqr_transpose(ptr, width);
+		sqr_transpose(ptr, width);
 		return (0);
 	}
 	dst = malloc(mat_size);

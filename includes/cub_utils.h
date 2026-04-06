@@ -5,6 +5,7 @@
 # include <stddef.h>
 # include <stdbool.h>
 # include <unistd.h>
+# include <math.h>
 # include "cmlx_base.h"
 # include "cmlx_draw.h"
 # include "cub_structs.h"
@@ -18,7 +19,7 @@ void		cub_draw_enemies(t_game *game, long dt);
 void		raycast(t_view *cam, t_map *map, t_rayhit *rays);
 void		planecast(t_frame *frame, t_mat32 floor, t_mat32 ceil, t_view *cam);
 t_sheet		*cub_actions(t_player *player, t_map *map, long dt);
-void		cub_play_audio(t_player *player, t_audio *audio, t_game *game, long dt);
+
 
 // Draw Utils
 uint8_t		cub_advance_animation(t_sheet *sheet, long dt);
@@ -38,6 +39,7 @@ void		cub_draw_blood(t_mat32 frame, t_game *game);
 void		cub_draw_crosshair(uint32_t *ptr);
 
 int			ft_transpose(t_mat32 *src);
+void		sqr_transpose(uint32_t *src, uint32_t length);
 int			ft_transpose_img(uint32_t *ptr, size_t width, size_t height);	// TMP
 uint32_t	ft_bilerp_argb(const t_mat32 *src, t_vec2 norm_pos);
 uint32_t	ft_bilerp_argb_t(const t_mat32 *src, t_vec2 norm_pos);

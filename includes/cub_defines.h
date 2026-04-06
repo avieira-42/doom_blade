@@ -68,15 +68,6 @@ enum e_area
 // Mouse Movement
 # define OFFSET_MAX 650
 
-enum e_audio_channel
-{
-	ch_steps = 1,
-	ch_shot = 2,
-	ch_reload = 3,
-	ch_no_ammo = 4,
-};
-
-// first call of 
 enum e_player_state
 {
 	st_idle = 0,
@@ -88,7 +79,6 @@ enum e_player_state
 	st_shot = 1 << 6,
 };
 
-//segredo
 enum e_enemy_state
 {
 	e_idle = 0,
