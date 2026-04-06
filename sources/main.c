@@ -34,7 +34,7 @@ int	cmlx_loop(t_game *game)
 		cub_draw_crosshair(game->frame.display.ptr);
 		draw_number(game->frame.display, 8, 8, avg_fps);
 		mlx_put_image_to_window(game->mlx, game->mlx->win_list, game->frame.img, 0, 0);
-		// stt_cub_is_dead(game);
+		stt_cub_is_dead(game);
 		cmlx_mousemove(game);
 		game->player.state &= ~(size_t) (st_shot);	// Clears the (just X animation)
 	}

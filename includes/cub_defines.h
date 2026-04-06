@@ -20,7 +20,7 @@ enum e_area
 	a_lab = 3,
 };
 
-# define CONTEXT a_hell
+# define CONTEXT a_castle
 
 # define TEX_HEIGHT 256
 # define NUM_BLOCKS 4
