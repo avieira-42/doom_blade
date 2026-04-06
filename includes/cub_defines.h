@@ -1,15 +1,13 @@
 #ifndef CUB_DEFINES_H
 # define CUB_DEFINES_H
 
-// Did have to change to this excrutiating enum
-// so norminette doesnt screan in our faces
+# define UPSCALING_FACTOR 2
 enum e_render
 {
-	render_upscaling_factor = 2,
 	render_width = 640,
 	render_height = 360,
-	screen_width = render_width * render_upscaling_factor,
-	screen_height = render_height * render_upscaling_factor,
+	screen_width = render_width * UPSCALING_FACTOR,
+	screen_height = render_height * UPSCALING_FACTOR,
 };
 
 // CONTEXT
@@ -22,7 +20,7 @@ enum e_area
 
 # define CONTEXT a_castle
 
-# define TEX_HEIGHT 256
+# define TEX_HEIGHT 128
 # define NUM_BLOCKS 4
 # define EPS 0.00000011920929f
 # define PI 3.141592653589793238462643383279502884L
@@ -39,7 +37,7 @@ enum e_area
 # define ENEMY_ACCEL 0.5f
 # define ENEMY_SCALE 1.0f
 # define SPEED_THR 4.1f		// Speed threshold where animation goes from normal to fast
-# define HALT_THR 0.5f		// 
+# define HALT_THR 0.5f
 # define ANIM_TIME 60000	// Time between anim frames
 
 // Difficulty

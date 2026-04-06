@@ -61,10 +61,11 @@ void	stt_gunman_init(t_game *game, t_enemy enemies[NUM_ENEMIES])
 	}
 }
 
+// TODO: add a fallback enemy
 void	enemy_init(t_game *game, t_enemy enemies[NUM_ENEMIES])
 {
 	if (CONTEXT == a_hell)
 		stt_zombie_init(game, enemies);
-	else if (CONTEXT == a_castle)
+	else if (CONTEXT == a_castle)	// REVIEW: Doesnt initialize enemies if no context
 		stt_gunman_init(game, enemies);
 }
