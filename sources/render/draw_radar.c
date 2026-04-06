@@ -50,7 +50,7 @@ void	stt_fov_draw(t_mat32 frame, t_player player, t_quad p_icon)
 
 	line_dst = vec2_sum(p_pos,
 			vec2_mult(player.cam.dir, 5));
-	line_draw(frame, p_pos, line_dst, rgb_yellow);
+	line_draw(frame, p_pos, line_dst, RADAR_FOV_COLOR);
 }
 
 // for funcitonality separation
