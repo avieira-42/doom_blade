@@ -4,8 +4,10 @@ WE assets/sprites/xpm/tiles/hell/wallGore0.xpm
 EA assets/sprites/xpm/tiles/hell/wallGore0.xpm
 F assets/sprites/xpm/tiles/hell/stoneGore0.xpm
 C assets/sprites/xpm/tiles/hell/lampGore0.xpm
-D assets/sprites/xpm/tiles/hell/gates/doorGore0.xpm
-
+T2N assets/sprites/xpm/tiles/hell/gates/doorGore0.xpm
+T2E assets/sprites/xpm/tiles/hell/gates/doorGore0.xpm
+T2S assets/sprites/xpm/tiles/hell/gates/doorGore0.xpm
+T2W assets/sprites/xpm/tiles/hell/gates/doorGore0.xpm
 
      111111111111111           11111
      10000000001111          11000111

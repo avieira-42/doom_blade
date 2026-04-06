@@ -14,7 +14,7 @@
 void		cub_update_game(t_game *game, long dt);
 void		cub_update_pos(t_game *game, float dt);
 void		cub_draw_enemies(t_game *game, long dt);
-int			cub_read_texture(t_xvar *mlx, t_img *img, t_mat32 *dst);
+int			cub_read_xpm(t_xvar *mlx, t_mat32 *dst, const char *filename, const char **filename_ptr);
 
 // Draw and Render
 void		raycast(t_view *cam, t_map *map, t_rayhit *rays);

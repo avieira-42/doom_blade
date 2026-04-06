@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_texture.c                                     :+:      :+:    :+:   */
+/*   read_xpm.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 14:20:57 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/06 16:04:54 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/06 18:11:19 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include <math.h>
 #include "cmlx_base.h"
+#include "cub_utils.h"
 #include "cub_defines.h"
 #include "mlx.h"
 
@@ -72,10 +74,46 @@ void	stt_clean_texture(uint32_t *ptr, size_t length)
 	}
 }
 
-int	cub_read_texture(t_xvar *mlx, t_img *img, t_mat32 *dst)
+static
+t_img	*stt_read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr)
 {
-	t_mat32	src;
+	int			tmp[2];
+	char		buffer[256];
+	char		*path;
+	const char	*path_end = buffer + sizeof(buffer) - 1;
 
+	path = buffer;
+	while (ft_isspace(*filename))
+		filename++;
+	while (*filename != 0 && !ft_isspace(*filename))
+	{
+		if (path >= path_end)
+			return (NULL);	// Path too long, TODO: print
+		*path++ = *filename++;
+	}
+	*path = 0;
+	if (filename_ptr != NULL)
+		*filename_ptr = filename;
+	return (mlx_xpm_file_to_image(mlx, buffer, tmp, tmp + 1));
+}
+
+// Todo: guarantee lower than render res
+int	cub_read_xpm(t_xvar *mlx, t_mat32 *dst, const char *filename, const char **filename_ptr)
+{
+	t_img	*img;
+	t_mat32	src;
+	size_t	size;
+
+	img = stt_read_xpm(mlx, filename, filename_ptr);
+	if (img == NULL)
+		return (-1);
+	if (dst->ptr == NULL)	// DST needs to have depth defined
+	{
+		size = (size_t)(img->height * img->width) * sizeof(uint32_t) * dst->depth;
+		*dst = (t_mat32){malloc(size), img->width, img->height, dst->depth, img->height};
+		if (dst->ptr == NULL)
+			return (mlx_destroy_image(mlx, img), -1);	// Malloc failure
+	}
 	src = (t_mat32){(uint32_t *)img->data, img->width, img->height, 1, img->width};
 	ft_near_scale(*dst, src);
 	mlx_destroy_image(mlx, img);
