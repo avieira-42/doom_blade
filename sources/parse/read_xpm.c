@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 14:20:57 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/06 18:11:19 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 00:12:57 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ void	stt_clean_texture(uint32_t *ptr, size_t length)
 	i = 0;
 	while (i < length)
 	{
+		if (ptr[i] == 0)
+			ptr[i] = 0xFF000000;
 		if (ptr[i] == ALPHA_SENTINEL1 || ptr[i] == ALPHA_SENTINEL2)
 			ptr[i] = 0;
 		i++;

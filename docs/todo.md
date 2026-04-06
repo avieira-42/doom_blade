@@ -27,3 +27,4 @@ TO REMEMBER:
 - Add grounded enemies (add vars to enemy struct like zheight, etc etc)
 - Radar hands draw on top (bug)
 - Enemies deal damage based on enemy dist
+- Add debug mode (draw on screen)
