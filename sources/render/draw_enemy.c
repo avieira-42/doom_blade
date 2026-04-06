@@ -25,28 +25,32 @@ float	stt_init(t_form *form, t_frame *frame, t_view *p, t_enemy *enemy)
 	form->draw_pos.y.i = render_height * 0.5f - frame->offset;
 	new_size.x.i = enemy->running.texture.width * invd;	// tex.width / enemy_dist
 	new_size.y.i = enemy->running.texture.height * invd;
-	form->delta.x.f = enemy->dist / enemy->running.texture.width;	// REVIEW: These can be constants
-	form->delta.y.f = enemy->dist / enemy->running.texture.height;	// TODO: HACK
+	form->delta.x.u = 65536.0f * enemy->dist / enemy->running.texture.width;	// REVIEW: These can be constants
+	form->delta.y.u = 65536.0f * enemy->dist / enemy->running.texture.height;	// TODO: HACK
 	form->bounds = cub_center_clip(frame->render, form->draw_pos, new_size);
-	form->norm_offset.x.f = ((int)form->bounds.left - form->bounds.x) * form->delta.x.f;
-	form->norm_offset.y.f = ((int)form->bounds.top - form->bounds.y) * form->delta.y.f;
+	form->norm_offset.x.u = (form->bounds.left - form->bounds.x) * form->delta.x.u;
+	form->norm_offset.y.u = (form->bounds.top - form->bounds.y) * form->delta.y.u;
 	return (enemy->dist);
 }
 
 static inline
-void	stt_draw_col(t_vec2 norm_pos, t_form *form, uint32_t *ptr, t_mat32 *texture)
+void	stt_draw_col(t_vec2 norm_pos, t_form *form, uint32_t *ptr, t_mat32 *src)
 {
 	uint32_t	y;
 	uint32_t	c;
+	uint32_t	xsrc;
+	uint32_t	ysrc;
 
 	y = form->bounds.top;
-	norm_pos.y.f = form->norm_offset.y.f;
+	norm_pos.y.u = form->norm_offset.y.u;
 	while (y < form->bounds.bottom)
 	{
-		c = ft_bilerp_argb_t(texture, norm_pos); // Bilerp takes a normalized range to sample from
+		xsrc = (norm_pos.x.u * (src->width - 1)) >> 16;
+		ysrc = (norm_pos.y.u * (src->height - 1)) >> 16;
+		c = src->ptr[ysrc + src->stride * xsrc];
 		if (c != 0)	// TODO: Check if a blend would be expensive (blend could be cheap like overwrite if not 0)
 			ptr[y] = c;
-		norm_pos.y.f += form->delta.y.f;
+		norm_pos.y.u += form->delta.y.u;
 		y++;
 	}
 }
@@ -74,7 +78,7 @@ bool	stt_draw_enemy(t_frame *frame, t_player *player, t_enemy *enemy)
 	if (stt_init(&form, frame, &player->cam, enemy) <= NEAR_RADIUS)
 		return (false);
 	x = form.bounds.left;
-	norm_pos.x.f = form.norm_offset.x.f;
+	norm_pos.x.u = form.norm_offset.x.u;
 	while (x < form.bounds.right)
 	{
 		if (enemy->dist < frame->rays[x].perp_dist)	// Do not draw if wall column is ahead of enemy
@@ -83,7 +87,7 @@ bool	stt_draw_enemy(t_frame *frame, t_player *player, t_enemy *enemy)
 			stt_draw_col(norm_pos, &form, ptr, &enemy->texture);
 			enemy->state |= e_seen;		// REVIEW: is there anything that turns this off?
 		}
-		norm_pos.x.f += form.delta.x.f;
+		norm_pos.x.u += form.delta.x.u;
 		x++;
 	}
 	return (stt_hitreg(&form.bounds));

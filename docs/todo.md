@@ -7,15 +7,14 @@ I think gates might be a system where, when its a gate, you calculate two rayhit
 	For deferred rendering, this is cancer -->
 
 <!-- 1. Polish draw sprites function to take y offset parameter -->
-
 TO REMEMBER:
 - Screen width and height must be greater than render height/width
-- Parse needs to validate map first to see how many textures it will need, to adjust match target
-- ^^^ Optionally only fail on mandatory textures not loaded, then always load empty textures (PINK, for example)
+<!-- - Parse needs to validate map first to see how many textures it will need, to adjust match target -->
+<!-- - ^^^ Optionally only fail on mandatory textures not loaded, then always load empty textures (PINK, for example) -->
 <!-- - Enemy init copies , enemy has a texture ptr -->
 
-- Create a read texture function that scales with nearest neighbour to nearest power of two
-- Transparency color needs to be only one, and processed in parse (needs to be done for other textures too)
+<!-- - Create a read texture function that scales with nearest neighbour to nearest power of two -->
+<!-- - Transparency color needs to be only one, and processed in parse (needs to be done for other textures too) -->
 - Move draw_radar to draw_overlay
 - Clip space function that returns a bounds
 - Adhere to one standard of rendering, either state functions choose what texture is loaded (adds t_mat32 to struct) or render functions determine texture from state (more branches)
@@ -23,3 +22,8 @@ TO REMEMBER:
 - Fix respawn
 - Add some random lateral movement
 - Add readme
+- Add enemy dist drawcull
+- DT acceleration
+- Add grounded enemies (add vars to enemy struct like zheight, etc etc)
+- Radar hands draw on top (bug)
+- Enemies deal damage based on enemy dist

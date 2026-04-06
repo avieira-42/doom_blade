@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 14:50:05 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/05 15:07:12 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/06 20:44:04 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 t_sides	cub_center_clip(t_mat32 frame, t_vec2 draw_pos, t_vec2 new_size)
 {
-	t_sides			bounds;
+	t_sides	bounds;
 
 	bounds.x = draw_pos.x.i - new_size.x.i / 2;
 	bounds.y = draw_pos.y.i - new_size.y.i / 2;
