@@ -4,6 +4,8 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
+// MAKEFILE -lSDL2 -lSDL2_mixer -lSDL2main
+
 typedef struct s_audio
 {
 	Mix_Chunk	*no_ammo;

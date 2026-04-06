@@ -112,7 +112,7 @@ int	cub_init(const char *filename, t_game *game, t_memory *memory)
 	game->mlx = mlx_init();
 	if (game->mlx == NULL)
 		return (cub_cleanup(game, "MLX initialization failed"));
-	cub_parse_textures(game, str, &str, game->blocks);
+	cub_parse_textures(game, &str, memory);
 	cub_read_map(game, str, &game->map, &game->player);
 	stt_mlx_init(game);
 	stt_params_init(game, memory);

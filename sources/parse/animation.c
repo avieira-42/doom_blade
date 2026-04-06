@@ -6,8 +6,6 @@
 #include "cub_utils.h"
 #include "cmlx_base.h"
 
-void	cub_clean_texture(uint32_t *ptr, size_t length);
-
 static
 t_img	*stt_load_img(t_xvar *mlx, t_str path, size_t count)
 {
@@ -32,26 +30,19 @@ int	stt_load_sheet(t_xvar *mlx, t_mat32 sprite, t_str path, size_t count)
 {
 	size_t			i;
 	t_img			*img;
-	uint32_t		*optr;
 	const size_t	depth_stride = sprite.height * sprite.width;
 
 	i = 1;
-	optr = sprite.ptr;
 	sprite.ptr += depth_stride;
 	while (i < count)
 	{
 		img = stt_load_img(mlx, path, i);
 		if (img == NULL)
 			return (-1);
-		if (img->width != sprite.width || img->height != sprite.height)	// Image sizes are different
-			return (mlx_destroy_image(mlx, img), -1);
-		ft_transpose_img((uint32_t *)img->data, (size_t)img->width, (size_t)img->height);
-		ft_memcpy(sprite.ptr, img->data, depth_stride * sizeof(uint32_t));
-		mlx_destroy_image(mlx, img);
+		cub_read_texture(mlx, img, &sprite);
 		sprite.ptr += depth_stride;
 		i++;
 	}
-	cub_clean_texture(optr, depth_stride * sprite.depth);
 	return (0);
 }
 
@@ -70,13 +61,11 @@ t_sheet cub_readsheet(t_game *game, const char *base_path, size_t count, long fr
 	img = stt_load_img(game->mlx, path, 0);
 	if (img == NULL)
 		return (cub_cleanup(game, "Failed to load MLX image"), (t_sheet){0});
-	tex = (t_mat32){0, img->width, img->height, count, img->width};
+	tex = (t_mat32){0, img->width, img->height, count, img->height};
 	tex.ptr = malloc((size_t)(img->height * img->width) * count * sizeof(uint32_t));
 	if (tex.ptr == NULL)
 		return (mlx_destroy_image(game->mlx, img), cub_cleanup(game, "Malloc failure"), (t_sheet){0});
-	ft_memcpy(tex.ptr, img->data, tex.width * tex.height * sizeof(uint32_t));
-	ft_transpose(&tex);
-	mlx_destroy_image(game->mlx, img);
+	cub_read_texture(game->mlx, img, &tex);
 	if (stt_load_sheet(game->mlx, tex, path, count) == -1)
 		return (free(tex.ptr), cub_cleanup(game, "Failed to load sheet"), (t_sheet){0});
 	return ((t_sheet){.texture = tex, .count = count, .index = 0,

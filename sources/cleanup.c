@@ -27,21 +27,6 @@ void	stt_free_assets(t_assets *assets, t_block *blocks, t_player *player)
 	free(player->hands.radar.texture.ptr);
 	free(player->hands.radar_l0.texture.ptr);
 	free(player->hands.radar_l1.texture.ptr);
-	i = 0;
-	while (i < NUM_BLOCKS)
-	{
-		free(blocks[i].north.ptr);
-		if (blocks[i].south.ptr != blocks[i].north.ptr)
-			free(blocks[i].south.ptr);
-		if (blocks[i].west.ptr != blocks[i].north.ptr 
-				&& blocks[i].west.ptr != blocks[i].south.ptr)
-			free(blocks[i].west.ptr);
-		if (blocks[i].east.ptr != blocks[i].north.ptr 
-				&& blocks[i].east.ptr != blocks[i].south.ptr 
-				&& blocks[i].east.ptr != blocks[i].west.ptr)
-			free(blocks[i].east.ptr);
-		i++;
-	}
 }
 
 static

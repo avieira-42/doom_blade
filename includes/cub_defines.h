@@ -20,7 +20,7 @@ enum e_area
 
 # define CONTEXT a_castle
 
-# define TEX_HEIGHT 128
+# define TEX_SIZE 128
 # define NUM_BLOCKS 4
 # define EPS 0.00000011920929f
 # define PI 3.141592653589793238462643383279502884L

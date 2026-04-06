@@ -22,3 +22,4 @@ TO REMEMBER:
 - Review diagonal movement
 - Fix respawn
 - Add some random lateral movement
+- Add readme

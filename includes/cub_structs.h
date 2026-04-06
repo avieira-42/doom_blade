@@ -67,6 +67,7 @@ typedef struct s_memory
 {
 	uint32_t	render_frame[render_width][render_height];
 	t_rayhit	rays[render_width];
+	uint32_t	textures[NUM_BLOCKS][4][TEX_SIZE][TEX_SIZE];
 }	t_memory;
 
 typedef struct s_gstate

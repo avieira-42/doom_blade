@@ -14,6 +14,7 @@
 void		cub_update_game(t_game *game, long dt);
 void		cub_update_pos(t_game *game, float dt);
 void		cub_draw_enemies(t_game *game, long dt);
+int			cub_read_texture(t_xvar *mlx, t_img *img, t_mat32 *dst);
 
 // Draw and Render
 void		raycast(t_view *cam, t_map *map, t_rayhit *rays);
@@ -58,11 +59,10 @@ void		input_handler(t_game *game, t_player *player);
 // init
 int			cub_init(const char *filename, t_game *game, t_memory *memory);
 int			cub_cleanup(t_game *game, const char *msg);
-int			cub_parse_textures(t_game *game, const char *str, const char **str_ptr, t_block *blocks);
+int			cub_parse_textures(t_game *game, const char **str_ptr, t_memory *memory);
 int			cub_read_map(t_game *game, const char *str, t_map *map, t_player *player);
 t_sheet		cub_readsheet(t_game *game, const char *base_path, size_t count, long frame_time);
 void		enemy_init(t_game *game, t_enemy enemies[NUM_ENEMIES]);
-
 
 // Utils
 t_vec2		random_valid_pos(t_map *map);
@@ -81,7 +81,6 @@ t_vec2		vec2_sum(t_vec2 a, t_vec2 b);
 int32_t		vec2_dist(t_vec2 a, t_vec2 b);
 t_vec2		vec2_sub(t_vec2 a, t_vec2 b);
 int32_t		vec2_idist(t_vec2 a, t_vec2 b);
-int			cub_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr);
 // ------------------------------
 
 void		**ft_free_array(void *array, size_t length);
