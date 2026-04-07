@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_texture.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/07 15:30:34 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/04/07 16:22:29 by adeimlin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -5,7 +17,8 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
-void	cub_draw_texture(t_mat32 frame, t_mat32 image, uint32_t xc, uint32_t yc)
+void	cub_draw_texture\
+(t_mat32 frame, t_mat32 image, uint32_t xc, uint32_t yc)
 {
 	uint32_t	x;
 	uint32_t	y;
@@ -26,7 +39,8 @@ void	cub_draw_texture(t_mat32 frame, t_mat32 image, uint32_t xc, uint32_t yc)
 	}
 }
 
-void	cub_draw_sheet(t_mat32 frame, const t_sheet *sheet, uint32_t xc, uint32_t yc)
+void	cub_draw_sheet\
+(t_mat32 frame, const t_sheet *sheet, uint32_t xc, uint32_t yc)
 {
 	uint32_t	x;
 	uint32_t	y;

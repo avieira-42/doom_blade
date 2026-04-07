@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/07 15:30:00 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/04/07 16:00:46 by adeimlin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -14,8 +26,8 @@
 // Dont forget to convert everything inside walls to 0 (NESW)
 
 // Returns: >0) Ok, -1) Invalid value (P), -2) Two Player Positions (P)
-static
-ssize_t	stt_parse_line(t_game *game, const char *line, t_map *map, t_player *player)
+static ssize_t	stt_parse_line\
+(t_game *game, const char *line, t_map *map, t_player *player)
 {
 	char		c;
 	const char	*oline = line;
@@ -60,7 +72,7 @@ void	stt_filtercpy(const char *str, t_map *map)
 		dst = (uint8_t *) map->tex_index + y * map->width;
 		while (*str != 0 && *str != '\n')
 		{
-			*dst = lut[(uint8_t)*str];
+			*dst = lut[(uint8_t)str[0]];
 			dst++;
 			str++;
 		}

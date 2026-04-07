@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   player_state.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/07 15:29:04 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/04/07 16:02:24 by adeimlin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -59,8 +71,6 @@ t_sheet	*cub_actions(t_player *player, t_map *map, long dt)
 	else
 		texture.ptr = NULL;
 	player->texture[1] = texture; // send one of the three texture ptrs to player->texture
-	// <<<<< OLD RADAR DRAW
-
 	if (player->state & st_interacting)
 	{
 		index = stt_first_neighbor(player->cam.pos, player->cam.dir, map);

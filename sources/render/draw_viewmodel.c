@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_viewmodel.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/07 15:30:42 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/04/07 16:27:24 by adeimlin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -14,8 +26,8 @@ void	cub_draw_hands(t_mat32 frame, t_game *game, long dt)
 	sheet = cub_actions(&game->player, &game->map, dt);
 	texture = sheet->texture;
 	texture.ptr += sheet->index * sheet->frame_size;
-	x_tmp = ((render_width - texture.width) / 2) + 5;	// TODO: defines
-	y_tmp = render_height - texture.height;
+	x_tmp = ((r_width - texture.width) / 2) + 5;	// TODO: defines
+	y_tmp = r_height - texture.height;
 	cub_draw_texture(frame, texture, x_tmp, y_tmp);
 	if (game->player.texture[1].ptr)
 		cub_draw_texture(frame, game->player.texture[1], 0, 195);

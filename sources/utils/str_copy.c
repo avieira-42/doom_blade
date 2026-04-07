@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 20:25:16 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/17 11:43:43 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 16:06:09 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ char	*ft_strncpy(char *dst, const char *src, size_t length)
 	return (odst);
 }
 
-char	*ft_strlcpy(char *restrict dst, const char *restrict src, size_t dst_size)
+char	*ft_strlcpy\
+(char *restrict dst, const char *restrict src, size_t dst_size)
 {
 	char		*odst;
 	size_t		src_len;

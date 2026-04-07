@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycast.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/07 15:30:56 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/04/07 16:27:21 by adeimlin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -121,11 +133,11 @@ void	raycast(t_view *cam, t_map *map, t_rayhit *rays)
 {
 	size_t		x;
 	float		camera_x;
-	const float	dx = 2.0 / render_width;
+	const float	dx = 2.0 / r_width;
 
 	x = 0;
 	camera_x = -1.0f;
-	while (x < render_width)
+	while (x < r_width)
 	{
 		rays[x] = stt_raycast(camera_x, cam, map);
 		camera_x += dx;

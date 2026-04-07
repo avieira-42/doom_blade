@@ -15,33 +15,33 @@
 # define PLAYER_IDLE "assets/sprites/xpm/hud/hands/hands_idle"
 
 # ifdef MAP_HELL
- # define ENEMY_WALK "assets/sprites/xpm/characters/zombie/enemy_walking_front"
- # define ENEMY_ATK "assets/sprites/xpm/characters/zombie/enemy_shooting"
- # define ENEMY_HIT "assets/sprites/xpm/characters/zombie/enemy_shot"
- # define ENEMY_DEATH "assets/sprites/xpm/characters/zombie/enemy_exploding"
- # define ENEMY_WALK_COUNT 4
- # define ENEMY_ATK_COUNT 2
- # define ENEMY_HIT_COUNT 1
- # define ENEMY_DEATH_COUNT 12
- # define ENEMY_WALK_SPEED 3 * ANIM_TIME
- # define ENEMY_ATK_SPEED 3 * ANIM_TIME
- # define ENEMY_HIT_SPEED 3 * ANIM_TIME
- # define ENEMY_DEATH_SPEED 1 * ANIM_TIME
+ # define EWALK "assets/sprites/xpm/characters/zombie/EWALKing_front"
+ # define EATK "assets/sprites/xpm/characters/zombie/enemy_shooting"
+ # define EHIT "assets/sprites/xpm/characters/zombie/enemy_shot"
+ # define EDEATH "assets/sprites/xpm/characters/zombie/enemy_exploding"
+ # define EWALK_COUNT 4
+ # define EATK_COUNT 2
+ # define EHIT_COUNT 1
+ # define EDEATH_COUNT 12
+ # define EWALK_SPEED 3 * ANIM_TIME
+ # define EATK_SPEED 3 * ANIM_TIME
+ # define EHIT_SPEED 3 * ANIM_TIME
+ # define EDEATH_SPEED 1 * ANIM_TIME
 # endif
 
 # ifdef MAP_CASTLE
- # define ENEMY_WALK "assets/sprites/xpm/characters/gentleman/gentleman_running"
- # define ENEMY_ATK "assets/sprites/xpm/characters/gentleman/gentleman_shooting"
- # define ENEMY_HIT "assets/sprites/xpm/characters/gentleman/gentleman_hurt"
- # define ENEMY_DEATH "assets/sprites/xpm/characters/gentleman/gentleman_dying"
- # define ENEMY_WALK_COUNT 4
- # define ENEMY_ATK_COUNT 3
- # define ENEMY_HIT_COUNT 1
- # define ENEMY_DEATH_COUNT 4
- # define ENEMY_WALK_SPEED 3 * ANIM_TIME
- # define ENEMY_ATK_SPEED 4 * ANIM_TIME
- # define ENEMY_HIT_SPEED 3 * ANIM_TIME
- # define ENEMY_DEATH_SPEED 2 * ANIM_TIME
+ # define EWALK "assets/sprites/xpm/characters/gentleman/gentleman_running"
+ # define EATK "assets/sprites/xpm/characters/gentleman/gentleman_shooting"
+ # define EHIT "assets/sprites/xpm/characters/gentleman/gentleman_hurt"
+ # define EDEATH "assets/sprites/xpm/characters/gentleman/gentleman_dying"
+ # define EWALK_COUNT 4
+ # define EATK_COUNT 3
+ # define EHIT_COUNT 1
+ # define EDEATH_COUNT 4
+ # define EWALK_SPEED 3 * ANIM_TIME
+ # define EATK_SPEED 4 * ANIM_TIME
+ # define EHIT_SPEED 3 * ANIM_TIME
+ # define EDEATH_SPEED 2 * ANIM_TIME
 # endif
 
 #endif

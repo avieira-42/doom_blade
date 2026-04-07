@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_overlay.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/07 15:30:27 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/04/07 15:40:28 by adeimlin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -8,22 +20,22 @@ void	cub_draw_crosshair(uint32_t *ptr)
 {
 	size_t	index;
 
-	index = (screen_height / 2 - 1) * screen_width + (screen_width / 2 - 1);
+	index = (s_height / 2 - 1) * s_width + (s_width / 2 - 1);
 	ptr[index] = 0;
 	ptr[index + 1] = 0;
 	ptr[index + 2] = 0;
 	ptr[index + 3] = 0;
-	index += screen_width;
+	index += s_width;
 	ptr[index] = 0;
 	ptr[index + 1] = 0xFFFFFFFF;
 	ptr[index + 2] = 0xFFFFFFFF;
 	ptr[index + 3] = 0;
-	index += screen_width;
+	index += s_width;
 	ptr[index] = 0;
 	ptr[index + 1] = 0xFFFFFFFF;
 	ptr[index + 2] = 0xFFFFFFFF;
 	ptr[index + 3] = 0;
-	index += screen_width;
+	index += s_width;
 	ptr[index] = 0;
 	ptr[index + 1] = 0;
 	ptr[index + 2] = 0;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   keyboard.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/07 15:29:13 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/04/07 16:16:04 by adeimlin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 #include "cub_structs.h"
@@ -16,7 +28,6 @@ void	stt_keydown(int keycode, t_game *game)
 		game->state.key |= (size_t)key_right;
 }
 
-// TODO: Make the functions take another smaller struct that only relates to keybinds 
 // Keymap
 // 2 KeyRelease
 int	cmlx_keydown(int keycode, t_game *game)

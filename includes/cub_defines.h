@@ -1,14 +1,14 @@
 #ifndef CUB_DEFINES_H
 # define CUB_DEFINES_H
 
-# define UPSCALING_FACTOR 2
+# define UPSCALE 2
 
 enum e_render
 {
-	render_width = 640,
-	render_height = 360,
-	screen_width = render_width * UPSCALING_FACTOR,
-	screen_height = render_height * UPSCALING_FACTOR,
+	r_width = 640,
+	r_height = 360,
+	s_width = r_width * UPSCALE,
+	s_height = r_height * UPSCALE,
 };
 
 # define TEX_SIZE 128

@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 14:26:12 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 15:26:27 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 16:22:02 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,7 @@
 static inline
 uint64_t	stt_font(uint8_t index)
 {
-	static const uint64_t ascii_font[96] =
-	{
+	static const uint64_t	ascii_font[96] = {
 		_X20, _X21, _X22, _X23, _X24, _X25, _X26, _X27,
 		_X28, _X29, _X2A, _X2B, _X2C, _X2D, _X2E, _X2F,
 		_X30, _X31, _X32, _X33, _X34, _X35, _X36, _X37,
@@ -128,8 +127,8 @@ uint64_t	stt_font(uint8_t index)
 		_X60, _X61, _X62, _X63, _X64, _X65, _X66, _X67,
 		_X68, _X69, _X6A, _X6B, _X6C, _X6D, _X6E, _X6F,
 		_X70, _X71, _X72, _X73, _X74, _X75, _X76, _X77,
-		_X78, _X79, _X7A, _X7B, _X7C, _X7D, _X7E, _X7F
-	};
+		_X78, _X79, _X7A, _X7B, _X7C, _X7D, _X7E, _X7F};
+
 	if (index < 32 || index >= 127)
 		index = '?';
 	return (ascii_font[index - 32]);
@@ -170,12 +169,11 @@ void	stt_draw_digit(t_mat32 frame, size_t xpos, size_t ypos, int digit)
 	size_t					y;
 	size_t					row;
 	size_t					col;
-	static const uint8_t	digit_font_5x7[10][7] = {
-		{14, 17, 19, 21, 25, 17, 14}, {4, 12, 4, 4, 4, 4, 14},
-		{14, 17, 1, 2, 4, 8, 31}, {30, 1, 1, 14, 1, 1, 30},
-		{2, 6, 10, 18, 31, 2, 2}, {31, 16, 16, 30, 1, 1, 30},
-		{14, 16, 16, 30, 17, 17, 14}, {31, 1, 2, 4, 8, 8, 8},
-		{14, 17, 17, 14, 17, 17, 14}, {14, 17, 17, 15, 1, 1, 14}};
+	static const uint8_t	font[10][7] = {{14, 17, 19, 21, 25, 17, 14}, \
+{4, 12, 4, 4, 4, 4, 14}, {14, 17, 1, 2, 4, 8, 31}, {30, 1, 1, 14, 1, 1, 30}, \
+{2, 6, 10, 18, 31, 2, 2}, {31, 16, 16, 30, 1, 1, 30}, \
+{14, 16, 16, 30, 17, 17, 14}, {31, 1, 2, 4, 8, 8, 8}, \
+{14, 17, 17, 14, 17, 17, 14}, {14, 17, 17, 15, 1, 1, 14}};
 
 	row = 0;
 	while (row < 7)
@@ -185,7 +183,7 @@ void	stt_draw_digit(t_mat32 frame, size_t xpos, size_t ypos, int digit)
 		while (col < 5)
 		{
 			x = xpos + col;
-			if (digit_font_5x7[digit][row] & (1u << (4 - col)))
+			if (font[digit][row] & (1u << (4 - col)))
 				if (x < frame.width && y < frame.height)
 					frame.ptr[y * frame.width + x] = 0xFFFFFFFF;
 			col++;

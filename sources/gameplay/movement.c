@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   movement.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/07 15:29:00 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/04/07 16:05:12 by adeimlin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -8,7 +20,6 @@
 #define PLAYER_RADIUS 0.125f
 
 // TODO: fix diagonal movement being faster
-
 static inline
 bool	stt_box_collision(t_map *map, float x, float y, float radius)
 {
@@ -48,8 +59,6 @@ t_vec2	stt_move_toward(t_map *map, t_vec2 pos, t_enemy *enemy, float dt)
 	to_player.x.f = pos.x.f - enemy->cam.pos.x.f;
 	to_player.y.f = pos.y.f - enemy->cam.pos.y.f;
 	mag_dist = to_player.x.f * to_player.x.f + to_player.y.f * to_player.y.f;
-	// if (mag_dist >= 10.0f)							// Follows the player only at a specific distance
-	// 	return ((t_vec2){.x.f = 0.0f, .y.f = 0.0f});
 	enemy->cam.dir = vec2_norm(to_player);
 	if (mag_dist < MELEE_RANGE)
 		enemy->speed.y.f *= 0.9f;
@@ -60,8 +69,6 @@ t_vec2	stt_move_toward(t_map *map, t_vec2 pos, t_enemy *enemy, float dt)
 	}
 	delta.x.f = enemy->cam.dir.x.f * enemy->speed.y.f * dt;	// forward
 	delta.y.f = enemy->cam.dir.y.f * enemy->speed.y.f * dt;
-	// delta.x.f -= enemy->cam.dir.y.f * enemy->speed.x.f; // lateral
-	// delta.y.f += enemy->cam.dir.x.f * enemy->speed.x.f;
 	delta = stt_collision(map, delta, enemy->cam.pos);	// Clamps value to prevent going through walls
 	return (delta);
 }
@@ -96,8 +103,10 @@ t_vec2	stt_player_move(t_player *player, t_map *map, float dt)
 
 void	cub_update_pos(t_game *game, float dt)
 {
-	size_t	i;
-	t_vec2	delta;
+	size_t			i;
+	t_vec2			delta;
+	t_enemy			*enemy;
+	const t_vec2	player_pos = game->player.cam.pos;
 
 	delta = stt_player_move(&game->player, &game->map, dt);
 	game->player.cam.pos.x.f += delta.x.f;
@@ -105,9 +114,10 @@ void	cub_update_pos(t_game *game, float dt)
 	i = 0;
 	while (i < NUM_ENEMIES)
 	{
+		enemy = game->enemies + i;
 		if (game->enemies[i].health > 0)
 		{
-			delta = stt_move_toward(&game->map, game->player.cam.pos, game->enemies + i, dt);
+			delta = stt_move_toward(&game->map, player_pos, enemy, dt);
 			game->enemies[i].cam.pos.x.f += delta.x.f;
 			game->enemies[i].cam.pos.y.f += delta.y.f;
 		}

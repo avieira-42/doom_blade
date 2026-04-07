@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_world.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/07 15:30:47 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/04/07 16:27:24 by adeimlin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -15,7 +27,7 @@ void	stt_filter(t_rayhit *rays)
 	float	cur;
 
 	x = 0;
-	while (x < render_width - 1)
+	while (x < r_width - 1)
 	{
 		next = rays[x + 1].perp_dist;
 		cur = rays[x].perp_dist;
@@ -25,9 +37,8 @@ void	stt_filter(t_rayhit *rays)
 	}
 }
 
-static inline
-void	stt_texture_sample(t_mat32 texture, float line_height, uint32_t *render_col,
-		float unclamped_start, float unclamped_end)
+static inline void	stt_texture_sample\
+(t_mat32 texture, float line_height, uint32_t *render_col, t_vec2 unclamped)
 {
 	int32_t			y;
 	int32_t			tex_pos;
@@ -35,9 +46,9 @@ void	stt_texture_sample(t_mat32 texture, float line_height, uint32_t *render_col
 	float			draw_end;
 	const int32_t	dy = 65536.0f * texture.height / line_height;
 
-	draw_start = ft_imax(0, unclamped_start);
-	draw_end = ft_imin(render_height, unclamped_end);
-	tex_pos = dy * (draw_start - unclamped_start);
+	draw_start = ft_imax(0, unclamped.x.f);
+	draw_end = ft_imin(r_height, unclamped.y.f);
+	tex_pos = dy * (draw_start - unclamped.x.f);
 	y = draw_start;
 	while (y < draw_end)
 	{
@@ -47,22 +58,20 @@ void	stt_texture_sample(t_mat32 texture, float line_height, uint32_t *render_col
 	}
 }
 
-static inline
-void	stt_column_render(t_rayhit hit, uint32_t *render_col,
-		t_block *blocks, int32_t offset)
+// X is start, Y is end
+static inline void	stt_column_render\
+(t_rayhit hit, uint32_t *render_col, t_block *blocks, int32_t offset)
 {
 	t_mat32	texture;
 	float	line_height;
-	float	unclamped_start;
-	float	unclamped_end;
+	t_vec2	unclamped;
 
-	texture = blocks[hit.tex_index].index[hit.tex_dir];		// THIS NEEDS TO CHECK IF TEX_INDEX > 0
+	texture = blocks[hit.tex_index].index[hit.tex_dir];	// THIS NEEDS TO CHECK IF TEX_INDEX > 0
 	texture.ptr += (size_t)(hit.x_pos * texture.width) * texture.stride;	// REVIEW
-	line_height = fmaxf(1.0f, render_height / hit.perp_dist);
-	unclamped_start = 0.5f * (render_height - line_height) - offset;
-	unclamped_end = 0.5f * (render_height + line_height) - offset;
-	stt_texture_sample(texture, line_height, render_col,
-		unclamped_start, unclamped_end);
+	line_height = fmaxf(1.0f, r_height / hit.perp_dist);
+	unclamped.x.f = 0.5f * (r_height - line_height) - offset;
+	unclamped.y.f = 0.5f * (r_height + line_height) - offset;
+	stt_texture_sample(texture, line_height, render_col, unclamped);
 }
 
 // Blocks contains transposed rows for sequential memory access
@@ -77,8 +86,7 @@ void	cub_draw_world(t_game *game)
 	planecast(&game->frame, game->blocks[0].south,
 		game->blocks[0].north, &game->player.cam);
 	raycast(&game->player.cam, &game->map, game->frame.rays);
-	// stt_filter(frame->rays);
-	while (x < render_width)
+	while (x < r_width)
 	{
 		stt_column_render(game->frame.rays[x], ptr,
 			game->blocks, game->frame.offset);

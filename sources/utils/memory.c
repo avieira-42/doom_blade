@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 17:35:52 by adeimlin          #+#    #+#             */
-/*   Updated: 2025/12/10 17:37:45 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 16:05:56 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ void	*ft_memmove(void *vdst, const void *vsrc, size_t length)
 }
 
 // With O1, calls builtin memcpy
-void	*ft_memcpy(void *restrict vdst, const void *restrict vsrc, size_t length)
+void	*ft_memcpy\
+(void *restrict vdst, const void *restrict vsrc, size_t length)
 {
 	unsigned char		*restrict dst;
 	const unsigned char	*restrict src = vsrc;

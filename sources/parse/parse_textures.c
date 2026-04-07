@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_textures.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/07 15:30:11 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/04/07 15:40:09 by adeimlin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -39,8 +51,8 @@ void	stt_texture_init(t_block *blocks, t_memory *memory)
 		ptr[i++] = rgb_pink;
 }
 
-static
-int	stt_read_texture(t_game *game, t_mat32 *texture, const char *filename, const char **filename_ptr)
+static int	stt_read_texture\
+(t_game *game, t_mat32 *texture, const char *filename, const char **filen_ptr)
 {
 	size_t		i;
 	uint32_t	color;
@@ -55,14 +67,14 @@ int	stt_read_texture(t_game *game, t_mat32 *texture, const char *filename, const
 		i++;
 	if (filename[i] == ',')
 	{
-		color = ft_strtoargb(filename, filename_ptr);
+		color = ft_strtoargb(filename, filen_ptr);
 		tex_size = texture->width * texture->height;
 		i = 0;
 		while (i < tex_size)
 			texture->ptr[i++] = color;
 	}
 	else
-		cub_read_xpm(game, texture, filename, filename_ptr);
+		cub_read_xpm(game, texture, filename, filen_ptr);
 	texture->depth = 1;
 	return (0);
 }
@@ -94,31 +106,31 @@ const char	*stt_parse_length(const char *str, const char **str_ptr)
 	return (parse_pos);
 }
 
-static inline
-int	stt_match_texture(t_game *game, const char *str, t_block *blocks, const char **str_ptr)
+static inline int	stt_match_texture\
+(t_game *game, const char *s, t_block *blk, const char **sptr)
 {
-	if (str[0] == 'N' && str[1] == 'O')
-		return (stt_read_texture(game, &blocks[1].north, str + 2, str_ptr));
-	else if (str[0] == 'E' && str[1] == 'A')
-		return (stt_read_texture(game, &blocks[1].east, str + 2, str_ptr));
-	else if (str[0] == 'S' && str[1] == 'O')
-		return (stt_read_texture(game, &blocks[1].south, str + 2, str_ptr));
-	else if (str[0] == 'W' && str[1] == 'E')
-		return (stt_read_texture(game, &blocks[1].west, str + 2,  str_ptr));
-	else if (str[0] == 'F')
-		return (stt_read_texture(game, &blocks[0].south, str + 1, str_ptr));
-	else if (str[0] == 'C')
-		return (stt_read_texture(game, &blocks[0].north, str + 1, str_ptr));
-	else if (!(str[0] == 'T' && str[1] >= '2' && str[1] < ('0' + NUM_BLOCKS)))
+	if (s[0] == 'N' && s[1] == 'O')
+		return (stt_read_texture(game, &blk[1].north, s + 2, sptr));
+	else if (s[0] == 'E' && s[1] == 'A')
+		return (stt_read_texture(game, &blk[1].east, s + 2, sptr));
+	else if (s[0] == 'S' && s[1] == 'O')
+		return (stt_read_texture(game, &blk[1].south, s + 2, sptr));
+	else if (s[0] == 'W' && s[1] == 'E')
+		return (stt_read_texture(game, &blk[1].west, s + 2, sptr));
+	else if (s[0] == 'F')
+		return (stt_read_texture(game, &blk[0].south, s + 1, sptr));
+	else if (s[0] == 'C')
+		return (stt_read_texture(game, &blk[0].north, s + 1, sptr));
+	else if (!(s[0] == 'T' && s[1] >= '2' && s[1] < ('0' + NUM_BLOCKS)))
 		return (0);
-	if (str[2] == 'N')
-		return (stt_read_texture(game, &blocks[str[1] - '0'].north, str + 3, str_ptr));
-	else if (str[2] == 'E')
-		return (stt_read_texture(game, &blocks[str[1] - '0'].east, str + 3, str_ptr));
-	else if (str[2] == 'S')
-		return (stt_read_texture(game, &blocks[str[1] - '0'].south, str + 3, str_ptr));
-	else if (str[2] == 'W')
-		return (stt_read_texture(game, &blocks[str[1] - '0'].west, str + 3,  str_ptr));
+	if (s[2] == 'N')
+		return (stt_read_texture(game, &blk[s[1] - '0'].north, s + 3, sptr));
+	else if (s[2] == 'E')
+		return (stt_read_texture(game, &blk[s[1] - '0'].east, s + 3, sptr));
+	else if (s[2] == 'S')
+		return (stt_read_texture(game, &blk[s[1] - '0'].south, s + 3, sptr));
+	else if (s[2] == 'W')
+		return (stt_read_texture(game, &blk[s[1] - '0'].west, s + 3, sptr));
 	return (0);
 }
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   planecast.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/07 15:30:52 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/04/07 16:28:06 by adeimlin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -6,8 +18,8 @@
 static inline
 void	stt_plane_row(t_plane *plane, t_view *cam, int32_t dist)
 {
-	const float	row_dist = (0.5f * render_height) / dist;
-	const float	factor = row_dist / render_width;
+	const float	row_dist = (0.5f * r_height) / dist;
+	const float	factor = row_dist / r_width;
 
 	plane->step.x.f = factor * (plane->ray_right.x.f - plane->ray_left.x.f);
 	plane->step.y.f = factor * (plane->ray_right.y.f - plane->ray_left.y.f);
@@ -55,9 +67,9 @@ void	stt_render_floor(t_frame *frame, t_mat32 texture, t_view *cam)
 	plane.ray_left.y.f = cam->dir.y.f - cam->plane.y.f;
 	plane.ray_right.x.f = cam->dir.x.f + cam->plane.x.f;
 	plane.ray_right.y.f = cam->dir.y.f + cam->plane.y.f;
-	horizon = render_height / 2 - frame->offset;
+	horizon = r_height / 2 - frame->offset;
 	y = ft_imax(0, horizon + 1);
-	while (y < render_height)
+	while (y < r_height)
 	{
 		stt_plane_row(&plane, cam, y - horizon);
 		stt_plane_draw(frame->render, &plane, y);
@@ -77,12 +89,12 @@ void	stt_render_ceil(t_frame *frame, t_mat32 texture, t_view *cam)
 	plane.ray_left.y.f = cam->dir.y.f - cam->plane.y.f;
 	plane.ray_right.x.f = cam->dir.x.f + cam->plane.x.f;
 	plane.ray_right.y.f = cam->dir.y.f + cam->plane.y.f;
-	horizon = render_height / 2 + frame->offset;
+	horizon = r_height / 2 + frame->offset;
 	y = ft_imax(0, horizon + 1);
-	while (y < render_height)
+	while (y < r_height)
 	{
 		stt_plane_row(&plane, cam, y - horizon);
-		stt_plane_draw(frame->render, &plane, render_height - y - 1);
+		stt_plane_draw(frame->render, &plane, r_height - y - 1);
 		y++;
 	}
 }

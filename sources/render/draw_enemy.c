@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_enemy.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/07 15:30:22 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/04/07 16:27:24 by adeimlin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -5,7 +17,7 @@
 #include "cub_utils.h"
 
 static inline
-float	stt_init(t_form *form, t_frame *frame, t_view *p, t_enemy *enemy)
+float	stt_init(t_form *f, t_frame *frame, t_view *p, t_enemy *enemy)
 {
 	t_vec2	new_size;
 	float	horz_dist;
@@ -21,15 +33,15 @@ float	stt_init(t_form *form, t_frame *frame, t_view *p, t_enemy *enemy)
 		return (enemy->dist);
 	horz_dist = invd * (p->dir.y.f * rel_pos.x.f - p->dir.x.f * rel_pos.y.f);
 	invd = (1.0f / enemy->dist) * ENEMY_SCALE; // Scale (TODO: check if enemy scale doesnt break math)
-	form->draw_pos.x.i = (render_width * 0.5f) * (1.0f + horz_dist * invd);
-	form->draw_pos.y.i = render_height * 0.5f - frame->offset;
+	f->draw_pos.x.i = (r_width * 0.5f) * (1.0f + horz_dist * invd);
+	f->draw_pos.y.i = r_height * 0.5f - frame->offset;
 	new_size.x.i = enemy->running.texture.width * invd;	// tex.width / enemy_dist
 	new_size.y.i = enemy->running.texture.height * invd;
-	form->delta.x.u = 65536.0f * enemy->dist / enemy->running.texture.width;	// REVIEW: These can be constants
-	form->delta.y.u = 65536.0f * enemy->dist / enemy->running.texture.height;	// TODO: HACK
-	form->bounds = cub_center_clip(frame->render, form->draw_pos, new_size);
-	form->norm_offset.x.u = (form->bounds.left - form->bounds.x) * form->delta.x.u;
-	form->norm_offset.y.u = (form->bounds.top - form->bounds.y) * form->delta.y.u;
+	f->delta.x.u = 65536.0f * enemy->dist / enemy->running.texture.width;	// REVIEW: These can be constants
+	f->delta.y.u = 65536.0f * enemy->dist / enemy->running.texture.height;	// TODO: HACK
+	f->bounds = cub_center_clip(frame->render, f->draw_pos, new_size);
+	f->norm_offset.x.u = (f->bounds.left - f->bounds.x) * f->delta.x.u;
+	f->norm_offset.y.u = (f->bounds.top - f->bounds.y) * f->delta.y.u;
 	return (enemy->dist);
 }
 
@@ -55,16 +67,17 @@ void	stt_draw_col(t_vec2 norm_pos, t_form *form, uint32_t *ptr, t_mat32 *src)
 	}
 }
 
-// Returns true if the enemy is within a NxN pixel grid on the center of the screen
-// Could add a check to see if the pixels belong to ignored alpha color, but id need to map screen space coordinate
-// to texture space, and that sounds like too much work. its not a bug its a feature
+// Returns true if the enemy is within a NxN pixel grid on the center of the
+// screen. Could add a check to see if the pixels belong to ignored alpha,
+// but id need to map screen space coordinate
+// to texture space, and that sounds like too much work. not a bug, feature
 static inline
 bool	stt_hitreg(t_sides *bounds)
 {
-	return (bounds->left < ((render_width  + HITREG_AREA) / 2)
-		&& bounds->right > ((render_width  - HITREG_AREA) / 2)
-		&& bounds->top < ((render_height + HITREG_AREA) / 2)
-		&& bounds->bottom > ((render_height - HITREG_AREA) / 2));
+	return (bounds->left < ((r_width + HITREG_AREA) / 2)
+		&& bounds->right > ((r_width - HITREG_AREA) / 2)
+		&& bounds->top < ((r_height + HITREG_AREA) / 2)
+		&& bounds->bottom > ((r_height - HITREG_AREA) / 2));
 }
 
 static

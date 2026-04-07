@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_sheet.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/07 15:30:05 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/04/07 15:59:41 by adeimlin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -20,10 +32,11 @@ void	stt_load_texture(t_game *game, t_str path, size_t count, t_mat32 *dst)
 	cub_read_xpm(game, dst, path.ptr, NULL);
 }
 
-// Loads a width by height image, and with already allocated memory, saves an image there transposing it
-// Path is different as well
+// Loads a width by height image, and with already allocated memory, 
+// saves an image there transposing it. Path is different as well
 // Saves images sequentially in memory, in a row x col x depth matrix
-t_sheet cub_readsheet(t_game *game, const char *base_path, size_t count, long frame_time)
+t_sheet	cub_readsheet\
+(t_game *game, const char *base_path, size_t count, long frame_time)
 {
 	size_t			i;
 	t_sheet			sheet;

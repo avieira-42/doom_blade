@@ -37,9 +37,6 @@ void		cub_draw_hands(t_mat32 frame, t_game *game, long dt);
 void		cub_draw_blood(t_mat32 frame, t_game *game);
 void		cub_draw_crosshair(uint32_t *ptr);
 
-int			ft_transpose(t_mat32 *src);
-void		sqr_transpose(uint32_t *src, uint32_t length);
-int			ft_transpose_img(uint32_t *ptr, size_t width, size_t height);	// TMP
 uint32_t	ft_bilerp_argb(const t_mat32 *src, t_vec2 norm_pos);
 uint32_t	ft_bilerp_argb_t(const t_mat32 *src, t_vec2 norm_pos);
 void		ft_integer_scaling(t_mat32 src, t_mat32 dst, size_t factor);
