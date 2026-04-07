@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:29:00 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:05:12 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 16:40:46 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,19 @@
 
 #define PLAYER_RADIUS 0.125f
 
-// TODO: fix diagonal movement being faster
+// Map is defined by uint16_t width height. If x or y are negative,
+// the integer wraparound will be guaranteed to be higher than u16_max
 static inline
 bool	stt_box_collision(t_map *map, float x, float y, float radius)
 {
-	bool		rvalue;
-	const int	left = (int)floorf(x - radius);
-	const int	right = (int)floorf(x + radius);
-	const int	top = (int)floorf(y - radius);
-	const int	bottom = (int)floorf(y + radius);
+	bool			rvalue;
+	const uint32_t	left = (uint32_t)floorf(x - radius);
+	const uint32_t	right = (uint32_t)floorf(x + radius);
+	const uint32_t	top = (uint32_t)floorf(y - radius);
+	const uint32_t	bottom = (uint32_t)floorf(y + radius);
 
-	if (left < 0 || right < 0 || left >= map->width || right >= map->width
-		|| top < 0 || bottom < 0 || top >= map->height || bottom >= map->height)
+	if (left >= map->width || right >= map->width
+		|| top >= map->height || bottom >= map->height)
 		return (1);
 	rvalue = (map->tex_index[bottom * map->width + left] > 127)
 		|| (map->tex_index[bottom * map->width + right] > 127)

@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:47 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:27:24 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 16:34:13 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,23 @@
 #include "cub_utils.h"
 
 // Aliasing is caused by differing line heights. This will reduce the effect
-static inline
-void	stt_filter(t_rayhit *rays)
-{
-	size_t	x;
-	float	next;
-	float	cur;
+// static inline
+// void	stt_filter(t_rayhit *rays)
+// {
+// 	size_t	x;
+// 	float	next;
+// 	float	cur;
 
-	x = 0;
-	while (x < r_width - 1)
-	{
-		next = rays[x + 1].perp_dist;
-		cur = rays[x].perp_dist;
-		if (fabsf(next) - fabsf(cur) < 0.25f)
-			next = cur;
-		x++;
-	}
-}
+// 	x = 0;
+// 	while (x < r_width - 1)
+// 	{
+// 		next = rays[x + 1].perp_dist;
+// 		cur = rays[x].perp_dist;
+// 		if (fabsf(next) - fabsf(cur) < 0.25f)
+// 			next = cur;
+// 		x++;
+// 	}
+// }
 
 static inline void	stt_texture_sample\
 (t_mat32 texture, float line_height, uint32_t *render_col, t_vec2 unclamped)

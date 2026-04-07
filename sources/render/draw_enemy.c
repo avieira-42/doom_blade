@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:22 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:27:24 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 16:34:00 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void	cub_draw_enemies(t_game *game, long dt)
 	size_t	i;
 	t_enemy	*enemy;
 
+	(void) dt;
 	i = 0;
 	while (i < NUM_ENEMIES)
 	{

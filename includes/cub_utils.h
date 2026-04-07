@@ -20,7 +20,6 @@ void		raycast(t_view *cam, t_map *map, t_rayhit *rays);
 void		planecast(t_frame *frame, t_mat32 floor, t_mat32 ceil, t_view *cam);
 t_sheet		*cub_actions(t_player *player, t_map *map, long dt);
 
-
 // Draw Utils
 uint8_t		cub_advance_animation(t_sheet *sheet, long dt);
 void		quad_draw(t_mat32 frame, t_quad quad);
@@ -37,8 +36,6 @@ void		cub_draw_hands(t_mat32 frame, t_game *game, long dt);
 void		cub_draw_blood(t_mat32 frame, t_game *game);
 void		cub_draw_crosshair(uint32_t *ptr);
 
-uint32_t	ft_bilerp_argb(const t_mat32 *src, t_vec2 norm_pos);
-uint32_t	ft_bilerp_argb_t(const t_mat32 *src, t_vec2 norm_pos);
 void		ft_integer_scaling(t_mat32 src, t_mat32 dst, size_t factor);
 void		ft_integer_scaling_t(t_mat32 src, t_mat32 dst, size_t factor);
 

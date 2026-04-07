@@ -95,7 +95,7 @@ typedef struct s_game
 	t_enemy		enemies[NUM_ENEMIES];
 	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
 	t_assets	assets;
-	const char	*file;
+	char		*file;
 }	t_game;
 
 #endif

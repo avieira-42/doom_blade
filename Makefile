@@ -5,7 +5,7 @@ LDLIBS = libraries/mlx/libmlx_Linux.a -lXext -lX11 -lm -lz
 # CORE ------------------------------------ #
 SRCS = main.c cleanup.c
 # DRAW ------------------------------------ #
-SRCS += raycast.c planecast.c bilinear_interp.c integer_scaling.c
+SRCS += raycast.c planecast.c integer_scaling.c
 SRCS += draw_texture.c draw_utils.c draw_world.c
 SRCS += draw_enemy.c draw_overlay.c draw_viewmodel.c draw_radar.c draw_ascii.c
 # UTILS ------------------------------------ #
