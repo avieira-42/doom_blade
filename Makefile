@@ -4,19 +4,21 @@ VPATH = sources sources/utils sources/input sources/parse sources/gameplay sourc
 LDLIBS = libraries/mlx/libmlx_Linux.a -lXext -lX11 -lm -lz
 # CORE ------------------------------------ #
 SRCS = main.c cleanup.c
-# DRAW ------------------------------------ #
-SRCS += raycast.c planecast.c integer_scaling.c
-SRCS += draw_texture.c draw_utils.c draw_world.c
-SRCS += draw_enemy.c draw_overlay.c draw_viewmodel.c draw_radar.c draw_ascii.c
+# RENDER ------------------------------------ #
+SRCS += raycast.c planecast.c 
+SRCS += draw_texture.c draw_utils.c draw_world.c draw_ascii.c
+SRCS += draw_enemy.c draw_overlay.c draw_viewmodel.c draw_radar.c
+# MATH ------------------------------------ #
+SRCS += integer_scaling.c int_limits.c float_math.c float_abs.c vec2_algebra.c vec2_math.c
 # UTILS ------------------------------------ #
-SRCS += rng.c rng_utils.c clip.c
-SRCS += time.c int_limits.c float_limits.c float_abs.c vec2_algebra.c vec2_math.c
-SRCS += convert.c str_search.c io_basic.c memory.c char_ascii.c
+SRCS += rng.c cub_utils.c string.c io_basic.c memory.c char_ascii.c
 # PARSE ------------------------------------ #
 SRCS += init.c map.c parse_textures.c read_xpm.c parse_sheet.c
 # GAMEPLAY ------------------------------------ #
 SRCS += movement.c player_state.c enemy_state.c game_state.c
+# INPUT ------------------------------------ #
 SRCS += keyboard.c mouse.c input.c
+
 # Defaults ------------------------------------ #
 RM := rm -f
 BUILD_PATH = build

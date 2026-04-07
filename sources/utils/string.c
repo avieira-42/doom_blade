@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   convert.c                                          :+:      :+:    :+:   */
+/*   string.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:50:30 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/03/25 11:24:04 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 17:04:30 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,16 @@
 #include <stddef.h>
 #include <threads.h>
 
-size_t		ft_strlen(const char *str);
 void		*ft_memset(void *vdst, const uint8_t byte, size_t length);
+
+size_t	ft_strlen(const char *str)
+{
+	const char	*ostr = str;
+
+	while (*str != 0)
+		str++;
+	return ((size_t)(str - ostr));
+}
 
 // To do: set errno on overflow
 int64_t	ft_strtol(const char *str, const char **str_ptr)
@@ -32,22 +40,6 @@ int64_t	ft_strtol(const char *str, const char **str_ptr)
 		number = number * 10 - (*str++ - '0');
 	if (str_ptr != NULL)
 		*str_ptr = str;
-	return (sign * number);
-}
-
-int64_t	ft_strntol(const char *str, size_t length)
-{
-	const char	*end = str + length;
-	int64_t		number;
-	int64_t		sign;
-
-	number = 0;
-	while (str < end && (*str == ' ' || (*str >= '\t' && *str <= '\r')))
-		str++;
-	sign = -1 + ((*str == '-') << 1);
-	str += (sign == 1) || (*str == '+');
-	while (*str >= '0' && *str <= '9' && str < end)
-		number = number * 10 - (*str++ - '0');
 	return (sign * number);
 }
 

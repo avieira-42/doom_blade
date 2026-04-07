@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:50:30 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/02 16:28:57 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 16:53:40 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,51 +106,3 @@ void	*ft_read_all(const char *filename, size_t *file_size)
 		*file_size = bytes_total;
 	return (close(fd), buffer);
 }
-
-// static
-// void	*stt_read_file(const char *filename, size_t bytes_total)
-// {
-// 	const int	fd = open(filename, O_RDONLY);
-// 	uint8_t		*buffer;
-
-// 	if (fd < 0)
-// 		return (NULL);
-// 	buffer = malloc(bytes_total + 1);
-// 	if (buffer == NULL)
-// 		return (close(fd), NULL);
-// 	if (ft_read(fd, buffer, buffer + bytes_total, bytes_total))
-// 		return (close(fd), NULL);
-// 	close(fd);
-// 	buffer[bytes_total] = 0;
-// 	return (buffer);
-// }
-
-// // TODO: review
-// void	*ft_read_all(const char *filename, size_t *file_size)
-// {
-// 	const int	fd = open(filename, O_RDONLY);
-// 	uint8_t		*buffer;
-// 	ssize_t		bytes_read;
-// 	size_t		bytes_total;
-
-// 	if (fd < 0)
-// 		return (NULL);
-// 	buffer = malloc(FT_IO_BUFSIZE);
-// 	if (buffer == NULL)
-// 		return (close(fd), NULL);
-// 	bytes_total = 0;
-// 	bytes_read = read(fd, buffer, FT_IO_BUFSIZE);
-// 	while (bytes_read > 0)
-// 	{
-// 		bytes_total += (size_t)bytes_read;
-// 		bytes_read = read(fd, buffer, FT_IO_BUFSIZE);
-// 	}
-// 	if (file_size != NULL)
-// 		*file_size = (size_t)bytes_total;
-// 	if (bytes_read < 0)
-// 		return (close(fd), free(buffer), NULL);
-// 	buffer[bytes_total] = 0;
-// 	if (bytes_total + 1 < FT_IO_BUFSIZE)
-// 		return (close(fd), buffer);
-// 	return (close(fd), free(buffer), stt_read_file(filename, bytes_total));
-// }
