@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:29:53 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:31:51 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 19:16:43 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,6 @@ void	stt_params_init(t_game *game, t_memory *memory)
 	game->player.ammo = AMMO_COUNT;
 	game->player.health = PLAYER_HEALTH;
 	game->player.state = st_idle;
-	game->player.map = st_off;
-	game->player.texture[0].ptr = NULL;
-	game->player.texture[1].ptr = NULL;
 	game->frame.display.ptr = (uint32_t *)game->frame.img->data;
 	game->frame.display.height = game->frame.img->height;
 	game->frame.display.width = game->frame.img->width;

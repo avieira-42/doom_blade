@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:38 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 15:30:38 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 20:35:19 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,6 @@ void	pixel_put(t_mat32 frame, int32_t x, int32_t y, uint32_t color)
 	*dst = color;
 }
 
-int     vec_max_coord(t_vec2 vec)
-{
-        int     const x = ft_abs(vec.x.f);
-        int     const y = ft_abs(vec.y.f);
-
-        if (x > y)
-                return (x);
-        else
-                return (y);
-}
-
 // Animation system pipeline:
 // 1) Input is processed, and player states are determined (shooting, reloading, etc). This also changes the animation sheet to be loaded.
 // 2) The animation render takes care of the frame advancing, and returns whether the animation is done or not
@@ -50,6 +39,24 @@ int     vec_max_coord(t_vec2 vec)
 // In low framerates, will slow down the animation
 // TODO: Insert the concept of frame period
 // 1) First Render Call, 2) Updated, 4) End
+uint8_t	cub_advance_animation(t_sheet *sheet, long dt)
+{
+	uint8_t	rvalue;
+
+	rvalue = (sheet->index == 0) && (sheet->frame_dt == 0);
+	sheet->frame_dt += dt;
+	if (sheet->frame_dt < sheet->frame_time)
+		return (rvalue);
+	rvalue |= (1 << 1);
+	sheet->index++;
+	if (sheet->index >= sheet->count)	// check if >= or >
+	{
+		sheet->index = 0;
+		rvalue |= (1 << 2);
+	}
+	sheet->frame_dt = 0;
+	return (rvalue);
+}
 
 uint64_t	color_variation_get(int32_t base_color)
 {
@@ -79,47 +86,5 @@ void	quad_draw(t_mat32 frame, t_quad quad)
 			x++;
 		}
 		y++;
-	}
-}
-
-uint8_t	cub_advance_animation(t_sheet *sheet, long dt)
-{
-	uint8_t	rvalue;
-
-	rvalue = (sheet->index == 0) && (sheet->frame_dt == 0);
-	sheet->frame_dt += dt;
-	if (sheet->frame_dt < sheet->frame_time)
-		return (rvalue);
-	rvalue |= (1 << 1);
-	sheet->index++;
-	if (sheet->index >= sheet->count)	// check if >= or >
-	{
-		sheet->index = 0;
-		rvalue |= (1 << 2);
-	}
-	sheet->frame_dt = 0;
-	return (rvalue);
-}
-
-void line_draw(t_mat32 frame, t_vec2 a, t_vec2 b, int color)
-{
-	size_t      i;
-	t_vec2		line = vec2_sub(a, b);
-	float     x;
-	float     y;
-	size_t      max = vec_max_coord(line);
-
-	if (max != 0)
-	{
-		x = line.x.f / max;
-		y = line.y.f / max;
-		i = 0;
-		while (i < max)
-		{
-			a.x.f += x;
-			a.y.f += y;
-			pixel_put(frame, a.x.f, a.y.f, color);
-			i++;
-		}
 	}
 }

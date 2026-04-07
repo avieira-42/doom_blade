@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:29:46 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 15:29:46 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 19:47:02 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,15 @@ t_vec2	vec2_mult(t_vec2 a, float scalar)
 t_vec2	vec2_sub(t_vec2 a, t_vec2 b)
 {
 	return ((t_vec2){.x.f = b.x.f - a.x.f, .y.f = b.y.f - a.y.f});
+}
+
+float	vec2_max(t_vec2 vec)
+{
+	vec.x.u &= 0x7FFFFFFF;
+	vec.y.u &= 0x7FFFFFFF;
+
+	if (vec.x.f > vec.y.f)
+		return (vec.x.f);
+	else
+		return (vec.y.f);
 }

@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 16:51:10 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:51:11 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 17:29:19 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ enum e_player_state
 	st_reloading = 1 << 2,
 	st_shooting = 1 << 3,
 	st_interacting = 1 << 4,
+	st_radar = 1 << 5,
 	st_shot = 1 << 6,
 };
 
@@ -92,13 +93,6 @@ enum e_enemy_state
 	e_hurt = 1 << 4,	
 	e_dying = 1 << 5,
 	e_dead = 1 << 6
-};
-
-enum e_minimap_state
-{
-	st_off = 0,
-	st_raising = 1 << 0,
-	st_checking = 1 << 1,
 };
 
 // Keys

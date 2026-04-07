@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 14:50:05 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:56:12 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 18:24:10 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,30 @@ t_vec2	random_valid_pos(t_map *map)
 			break ;
 	}
 	return (pos);
+}
+
+size_t	cub_first_neighbour(t_vec2 pos, t_vec2 dir, uint32_t stride)
+{
+	int		cx;
+	int		cy;
+	float	tx;
+	float	ty;
+
+	cx = (int)floorf(pos.x.f);
+	cy = (int)floorf(pos.y.f);
+	if (dir.x.f > 0.0f)
+		tx = (cx + 1.0f - pos.x.f) * fabsf(dir.y.f);
+	else
+		tx = (pos.x.f - cx) * fabsf(dir.y.f);
+	if (dir.y.f > 0.0f)
+		ty = (cy + 1.0f - pos.y.f) * fabsf(dir.x.f);
+	else
+		ty = (pos.y.f - cy) * fabsf(dir.x.f);
+	if (tx < ty)
+		cx += ((dir.x.f > 0.0f) << 1) - 1;
+	else
+		cy += ((dir.y.f > 0.0f) << 1) - 1;
+	return ((uint32_t)cy * stride + (uint32_t)cx);
 }
 
 long	get_time(void)

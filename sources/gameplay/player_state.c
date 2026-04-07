@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:29:04 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:02:24 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 19:39:59 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,102 +14,107 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "cmlx_base.h"
+#include "cub_defines.h"
 #include "cub_structs.h"
 #include "cub_utils.h"
 
-size_t	stt_first_neighbor(t_vec2 pos, t_vec2 dir, t_map *map)
+static inline
+void	stt_minimap(t_player *player, t_map *map, long dt)
 {
-	int		cx;
-	int		cy;
-	float	tx;
-	float	ty;
+	t_sheet	*sheet;
 
-	cx = (int)floorf(pos.x.f);
-	cy = (int)floorf(pos.y.f);
-	if (dir.x.f > 0.0f)
-		tx = (cx + 1.0f - pos.x.f) * fabsf(dir.y.f);
-	else
-		tx = (pos.x.f - cx) * fabsf(dir.y.f);
-	if (dir.y.f > 0.0f)
-		ty = (cy + 1.0f - pos.y.f) * fabsf(dir.x.f);
-	else
-		ty = (pos.y.f - cy) * fabsf(dir.x.f);
-	if (tx < ty)
-		cx += ((dir.x.f > 0.0f) << 1) - 1;
-	else
-		cy += ((dir.y.f > 0.0f) << 1) - 1;
-	return ((uint32_t)cy * map->width + (uint32_t)cx);
+	(void) map;
+	if (!(player->state & st_radar))
+		return ;
+	sheet = &player->hands.radar;
+	if (player->hands.radar.index < (player->hands.radar.count - 1))
+		cub_advance_animation(sheet, dt);
+	player->viewmodel[1] = sheet;
 }
 
-t_sheet	*cub_actions(t_player *player, t_map *map, long dt)
+static inline
+int	stt_reloading(t_player *player, t_map *map, long dt)
 {
-	size_t	index;
 	int		rvalue;
 	t_sheet	*sheet;
-	t_mat32	texture;
 
-	// OLD RADAR DRAW >>>>>
-	if (player->map & st_checking)
+	(void) map;
+	if (!(player->state & st_reloading))
+		return (0);
+	sheet = &player->hands.reload;
+	rvalue = cub_advance_animation(sheet, dt);
+	if (rvalue >= 2 && (sheet->index % RELOAD_CYCLE == 0))
+		player->ammo++;
+	if (rvalue >= 4)
 	{
-		player->hands.radar.index = 0;
-		texture = player->hands.radar.texture;
-		texture.ptr = player->hands.radar.texture.ptr
-			+ player->hands.radar.frame_size * (player->hands.radar.count -1);
+		player->state &= ~(size_t)st_reloading;
+		return (0);	// Do not exit, a sheet was not assigned
 	}
-	else if (player->map & st_raising)
+	player->viewmodel[0] = sheet;
+	player->viewmodel[1] = NULL;
+	return (2);	// Returns how many sheets were assigned
+}
+
+static inline
+int	stt_shooting(t_player *player, t_map *map, long dt)
+{
+	int		rvalue;
+	t_sheet	*sheet;
+
+	(void) map;
+	if (!(player->state & st_shooting))
+		return (0);
+	sheet = &player->hands.shoot;
+	rvalue = cub_advance_animation(sheet, dt);
+	if (rvalue <= 4)
 	{
-		texture = player->hands.radar.texture;
-		texture.ptr += player->hands.radar.index
-			* player->hands.radar.frame_size;
-		if (player->hands.radar.index == player->hands.radar.count - 2)
-		{
-			player->map &= ~(size_t)st_raising;
-			player->map |= (size_t)st_checking;
-		}
-		cub_advance_animation(&player->hands.radar, dt);
+		player->viewmodel[0] = sheet;
+		return (1);
 	}
-	else
-		texture.ptr = NULL;
-	player->texture[1] = texture; // send one of the three texture ptrs to player->texture
-	if (player->state & st_interacting)
+	player->state &= ~(size_t)st_shooting;
+	return (0);
+}
+
+static inline
+void	stt_interacting(t_player *player, t_map *map, long dt)
+{
+	size_t	index;
+
+	(void) dt;
+	if (!(player->state & st_interacting))
+		return ;
+	player->state &= ~(size_t) st_interacting;
+	index = cub_first_neighbour(player->cam.pos, player->cam.dir, map->width);
+	if (map->tex_index[index] == 130)
 	{
-		index = stt_first_neighbor(player->cam.pos, player->cam.dir, map);
-		if (map->tex_index[index] == 130)
-		{
-			map->tex_index[index] &= 127;
-			map->state[index] = 0;
-		}
-		else if (map->tex_index[index] == 2)
-		{
-			map->tex_index[index] |= 128;
-			map->state[index] = 255;
-		}
+		map->tex_index[index] &= 127;
+		map->state[index] = 0;
 	}
-	else if (player->state & st_reloading)
+	else if (map->tex_index[index] == 2)
 	{
-		sheet = &player->hands.reload;
-		rvalue = cub_advance_animation(sheet, dt);
-		if (rvalue >= 2 && (sheet->index % RELOAD_CYCLE == 0))
-			player->ammo++;
-		if (rvalue < 4)
-			return (sheet);
+		map->tex_index[index] |= 128;
+		map->state[index] = 255;
 	}
-	else if (player->state & st_shooting)
+	return ;
+}
+
+void	update_player_state(t_player *player, t_map *map, long dt)
+{
+	player->viewmodel[0] = NULL;
+	player->viewmodel[1] = NULL;
+	stt_interacting(player, map, dt);
+	if (stt_reloading(player, map, dt))
+		return ;
+	stt_shooting(player, map, dt);
+	stt_minimap(player, map, dt);
+	if (player->viewmodel[0] != NULL)
+		return ;
+	if (player->state & st_run)
 	{
-		sheet = &player->hands.shoot;
-		rvalue = cub_advance_animation(sheet, dt);
-		if (rvalue < 4)
-			return (sheet);
+		player->viewmodel[0] = &player->hands.walk;
+		cub_advance_animation(&player->hands.walk, dt);
+		return ;
 	}
-	else if (player->state & st_run)
-	{
-		sheet = &player->hands.walk;
-		rvalue = cub_advance_animation(&player->hands.walk, dt);
-		if (rvalue < 4)
-			return (sheet);
-	}
-	else
-		cub_advance_animation(&player->hands.idle, dt);
-	player->state = st_idle;
-	return (&player->hands.idle);
+	player->viewmodel[0] = &player->hands.idle;
+	cub_advance_animation(&player->hands.idle, dt);
 }
