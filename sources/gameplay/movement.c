@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:29:00 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:40:46 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 21:02:36 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ t_vec2	stt_move_toward(t_map *map, t_vec2 pos, t_enemy *enemy, float dt)
 static
 t_vec2	stt_player_move(t_player *player, t_map *map, float dt)
 {
-	t_vec2		norm_dir;
-	t_vec2		delta;
+	t_vec2	norm_dir;
+	t_vec2	delta;
 
 	player->speed.x.f += player->spd_sideway * PLAYER_ACCEL;	// base accel, dt dependant
 	player->speed.y.f += player->spd_forward * PLAYER_ACCEL;
