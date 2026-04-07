@@ -81,16 +81,19 @@ On error, the program exits with a descriptive message.
 **Movement**
 - W / S — Forward / Backward  
 - A / D — Strafe Left / Right  
-- Shift — Sprint  
-- ESC — Exit  
+- Shift — Walk slowly
 
 **Camera**
 - Arrow keys — Rotate view  
 - Mouse — Smooth horizontal rotation  
 - Vertical mouse — Pitch (if enabled)  
 
-**Interaction**
+**Actions**
+- MouseButton_left — Shoot
+- R - Reload
+- Tab — Minimap/Radar
 - E — Interact with doors  
+- ESC — Exit  
 
 ---
 
