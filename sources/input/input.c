@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:29:09 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:14:48 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 17:16:50 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	input_handler(t_game *game, t_player *player)
 	player->state |= st_idle;
 	if (game->state.key & (key_w | key_s | key_d | key_a))
 		player->state |= st_run;
-	if ((game->state.key & key_rmb)
+	if ((game->state.key & key_lmb)
 		&& !(player->state & st_shooting) && player->ammo > 0)
 	{
 		player->ammo--;

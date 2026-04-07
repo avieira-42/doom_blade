@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:29:19 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:15:29 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 17:16:44 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game)
 	(void) x;
 	(void) y;
 	if (button == 1)
-		game->state.key |= (size_t) key_rmb;
+		game->state.key |= (size_t) key_lmb;
 	return (0);
 }
 
@@ -34,7 +34,7 @@ int	cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game)
 	(void) x;
 	(void) y;
 	if (button == 1)
-		game->state.key &= ~(size_t)key_rmb;
+		game->state.key &= ~(size_t)key_lmb;
 	return (0);
 }
 

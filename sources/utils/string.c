@@ -6,15 +6,13 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:50:30 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 17:04:30 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 17:18:22 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <stddef.h>
 #include <threads.h>
-
-void		*ft_memset(void *vdst, const uint8_t byte, size_t length);
 
 size_t	ft_strlen(const char *str)
 {
