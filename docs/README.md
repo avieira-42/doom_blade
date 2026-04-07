@@ -1,3 +1,101 @@
+*This project has been created as part of the 42 curriculum by <login1>[, <login2>[, <login3>[...]]].*
+
+# Cub3D — Raycasting Engine
+
+## Description
+
+Cub3D is a **2.5D raycasting engine** inspired by early FPS games like **Wolfenstein 3D**.
+
+The objective of this project is to implement a full rendering pipeline from scratch using the **DDA (Digital Differential Analyzer)** algorithm. It covers:
+
+- Map parsing and validation  
+- Texture loading and sampling  
+- Player movement and collision detection  
+- Sprite and enemy rendering  
+- Input handling (keyboard and mouse)  
+- Performance-aware memory management  
+
+The project is written in **C** using **MiniLibX**, with a focus on:
+
+- **Determinism** — no undefined behavior or crashes  
+- **Extensibility** — easy addition of new blocks, textures, and entities  
+- **Clarity** — well-separated systems (parsing, rendering, input, loop)  
+
+### Extra Features
+
+- Texture transposition for optimized sampling  
+- Sprite-based enemy rendering with animation  
+- Horizontal and vertical mouse look  
+- Support for custom block texture indices  
+- Flexible configuration (textures or RGB colors)  
+
+---
+
+## Instructions
+
+### Dependencies
+
+- MiniLibX (42 provided)  
+- C compiler (`cc` or `clang`)  
+- Make  
+
+---
+
+### Compilation
+
+```bash
+make
+```
+
+Other commands:
+
+```bash
+make re      # full rebuild
+make clean   # remove object files
+make fclean  # remove objects + executable
+```
+
+---
+
+### Execution
+
+```bash
+./cub3D path/to/map.cub
+```
+
+At launch, the program:
+
+- Validates the `.cub` file  
+- Parses textures and colors  
+- Loads and processes textures  
+- Validates the map layout  
+- Ensures exactly one player position  
+- Initializes MiniLibX and rendering buffers  
+
+On error, the program exits with a descriptive message.
+
+---
+
+### Controls
+
+**Movement**
+- W / S — Forward / Backward  
+- A / D — Strafe Left / Right  
+- Shift — Sprint  
+- ESC — Exit  
+
+**Camera**
+- Arrow keys — Rotate view  
+- Mouse — Smooth horizontal rotation  
+- Vertical mouse — Pitch (if enabled)  
+
+**Interaction**
+- E — Interact with doors  
+
+---
+
+## Map & Configuration
+
 ## Texture Parsing
 Wall textures should be square and ideally be as close to 128x128 as possible, because when parsed, they will be scaled to that resolution using nearest neighbour scaling
 
@@ -63,3 +161,108 @@ T2W assets/sprites/xpm/tiles/gates/gateGore0.xpm
 11000001110101011111011110N0111
 11110111 1110101 101111010001
 11111111 1111111 111111111111
+
+---
+
+## Engine Overview
+
+### Initialization
+
+- Argument parsing  
+- File loading  
+- Texture initialization  
+- Memory allocation  
+- MLX setup  
+
+---
+
+### Parsing & Validation
+
+- Configuration extraction  
+- Texture and RGB validation  
+- Map normalization  
+- Player detection  
+- Map enclosure verification  
+
+---
+
+### Texture System
+
+- XPM loading  
+- Scaling to 128×128  
+- Pixel buffer conversion  
+- Texture transposition  
+
+Transposition improves cache locality and rendering performance during vertical sampling.
+
+---
+
+### Raycasting (DDA)
+
+For each screen column:
+
+- Compute ray direction  
+- Perform grid traversal (DDA)  
+- Calculate wall distance  
+- Determine texture coordinates  
+- Render vertical slice  
+
+Supports:
+
+- Multiple block types  
+- Direction-based textures  
+- Depth buffering  
+
+---
+
+### Sprite Rendering
+
+- Transform to camera space  
+- Project onto screen  
+- Depth comparison  
+- Render non-transparent pixels  
+
+Supports animated and state-based sprites.
+
+---
+
+### Input System
+
+- Keyboard event handling  
+- Mouse tracking  
+- Frame-based updates  
+
+Mouse is recentered each frame for continuous rotation.
+
+---
+
+### Game Loop
+
+- Input processing  
+- Movement and collision  
+- Raycasting  
+- Sprite rendering  
+- Frame display  
+
+---
+
+## Resources
+
+### Documentation & Tutorials
+
+- LodeV Raycasting Tutorial  
+- https://www.youtube.com/watch?v=NbSee-XM7WA  
+- Freya Holmer — Math for Game Developers  
+- 3Blue1Brown — Linear Algebra  
+
+---
+
+### AI Usage Disclosure
+
+AI tools were used for:
+
+- Code review and debugging assistance  
+- Clarification of mathematical concepts  
+- Documentation refinement  
+
+All core systems — including raycasting (DDA), parsing, rendering, and input handling — were implemented manually.
