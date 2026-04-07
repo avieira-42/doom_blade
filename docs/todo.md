@@ -16,7 +16,7 @@ TO REMEMBER:
 <!-- - Create a read texture function that scales with nearest neighbour to nearest power of two -->
 <!-- - Transparency color needs to be only one, and processed in parse (needs to be done for other textures too) -->
 - Move draw_radar to draw_overlay
-- Clip space function that returns a bounds
+<!-- - Clip space function that returns a bounds -->
 - Adhere to one standard of rendering, either state functions choose what texture is loaded (adds t_mat32 to struct) or render functions determine texture from state (more branches)
 - Review diagonal movement
 - Fix respawn

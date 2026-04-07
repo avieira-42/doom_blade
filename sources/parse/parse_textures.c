@@ -40,14 +40,14 @@ void	stt_texture_init(t_block *blocks, t_memory *memory)
 }
 
 static
-int	stt_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const char **filename_ptr)
+int	stt_read_texture(t_game *game, t_mat32 *texture, const char *filename, const char **filename_ptr)
 {
 	size_t		i;
 	uint32_t	color;
 	size_t		tex_size;
 
 	if (texture->depth != 0) 	// Sentinel value to see if the texture has already been initialized
-		return (-1);	// TODO: Print error
+		return (-1);
 	while (ft_isspace(*filename))
 		filename++;
 	i = 0;
@@ -62,7 +62,7 @@ int	stt_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const 
 			texture->ptr[i++] = color;
 	}
 	else
-		cub_read_xpm(mlx, texture, filename, filename_ptr);
+		cub_read_xpm(game, texture, filename, filename_ptr);
 	texture->depth = 1;
 	return (0);
 }
@@ -70,8 +70,8 @@ int	stt_read_texture(t_xvar *mlx, t_mat32 *texture, const char *filename, const 
 static
 const char	*stt_parse_length(const char *str, const char **str_ptr)
 {
-	const char	*parse_pos;
-	const char	*map_pos;
+	const char	*parse_pos = str;
+	const char	*map_pos = str;
 
 	while (*str != 0)
 	{
@@ -95,30 +95,31 @@ const char	*stt_parse_length(const char *str, const char **str_ptr)
 }
 
 static inline
-int	stt_match_texture(t_xvar *mlx, const char *str, t_block *blocks, const char **str_ptr)
+int	stt_match_texture(t_game *game, const char *str, t_block *blocks, const char **str_ptr)
 {
 	if (str[0] == 'N' && str[1] == 'O')
-		return (stt_read_texture(mlx, &blocks[1].north, str + 2, str_ptr));
+		return (stt_read_texture(game, &blocks[1].north, str + 2, str_ptr));
 	else if (str[0] == 'E' && str[1] == 'A')
-		return (stt_read_texture(mlx, &blocks[1].east, str + 2, str_ptr));
+		return (stt_read_texture(game, &blocks[1].east, str + 2, str_ptr));
 	else if (str[0] == 'S' && str[1] == 'O')
-		return (stt_read_texture(mlx, &blocks[1].south, str + 2, str_ptr));
+		return (stt_read_texture(game, &blocks[1].south, str + 2, str_ptr));
 	else if (str[0] == 'W' && str[1] == 'E')
-		return (stt_read_texture(mlx, &blocks[1].west, str + 2,  str_ptr));
+		return (stt_read_texture(game, &blocks[1].west, str + 2,  str_ptr));
 	else if (str[0] == 'F')
-		return (stt_read_texture(mlx, &blocks[0].south, str + 1, str_ptr));
+		return (stt_read_texture(game, &blocks[0].south, str + 1, str_ptr));
 	else if (str[0] == 'C')
-		return (stt_read_texture(mlx, &blocks[0].north, str + 1, str_ptr));
+		return (stt_read_texture(game, &blocks[0].north, str + 1, str_ptr));
 	else if (!(str[0] == 'T' && str[1] >= '2' && str[1] < ('0' + NUM_BLOCKS)))
 		return (0);
 	if (str[2] == 'N')
-		return (stt_read_texture(mlx, &blocks[str[1] - '0'].north, str + 3, str_ptr));
+		return (stt_read_texture(game, &blocks[str[1] - '0'].north, str + 3, str_ptr));
 	else if (str[2] == 'E')
-		return (stt_read_texture(mlx, &blocks[str[1] - '0'].east, str + 3, str_ptr));
+		return (stt_read_texture(game, &blocks[str[1] - '0'].east, str + 3, str_ptr));
 	else if (str[2] == 'S')
-		return (stt_read_texture(mlx, &blocks[str[1] - '0'].south, str + 3, str_ptr));
-	else
-		return (stt_read_texture(mlx, &blocks[str[1] - '0'].west, str + 3,  str_ptr));
+		return (stt_read_texture(game, &blocks[str[1] - '0'].south, str + 3, str_ptr));
+	else if (str[2] == 'W')
+		return (stt_read_texture(game, &blocks[str[1] - '0'].west, str + 3,  str_ptr));
+	return (0);
 }
 
 int	cub_parse_textures(t_game *game, const char **str_ptr, t_memory *memory)
@@ -133,8 +134,8 @@ int	cub_parse_textures(t_game *game, const char **str_ptr, t_memory *memory)
 	{
 		while (ft_isspace(*str))
 			str++;
-		if (stt_match_texture(game->mlx, str, game->blocks, &str) < 0)
-			return (cub_cleanup(game, "Failed to parse texture"));
+		if (stt_match_texture(game, str, game->blocks, &str) < 0)
+			return (cub_cleanup(game, "Duplicate textures"));
 		str++;
 	}
 	return (0);

@@ -40,7 +40,7 @@ void	stt_grid_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_quad cell)
 	}
 }
 
-	static
+static
 void	stt_fov_draw(t_mat32 frame, t_player player, t_quad p_icon)
 {
 	const t_vec2	p_pos = (t_vec2){.x.f
@@ -54,7 +54,7 @@ void	stt_fov_draw(t_mat32 frame, t_player player, t_quad p_icon)
 }
 
 // for funcitonality separation
-	static
+static
 void	stt_player_icon_draw(t_mat32 frame, t_map map,
 		t_vec2 grid_pos, t_player player)
 {
@@ -68,7 +68,7 @@ void	stt_player_icon_draw(t_mat32 frame, t_map map,
 	quad_draw(frame, map.icon_quad);
 }
 
-	static
+static
 void	stt_enemies_icon_draw(t_mat32 frame, t_map map, t_vec2 grid_pos, t_enemy *enemies)
 {
 	int32_t	i;

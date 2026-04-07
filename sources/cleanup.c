@@ -29,6 +29,7 @@ void	stt_free_assets(t_assets *assets, t_player *player, t_enemy *enemy)
 	free(enemy->shooting.texture.ptr);
 	free(enemy->dying.texture.ptr);
 	free(enemy->shot.texture.ptr);
+	free(player->hands.idle.texture.ptr);
 }
 
 int	cub_cleanup(t_game *game, const char *msg)
@@ -46,5 +47,6 @@ int	cub_cleanup(t_game *game, const char *msg)
 	if (game->mlx != NULL)
 		mlx_destroy_display(game->mlx);
 	stt_free_assets(&game->assets, &game->player, game->enemies);
+	free(game->mlx);
 	exit(rvalue);
 }

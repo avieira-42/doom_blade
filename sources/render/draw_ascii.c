@@ -1,6 +1,18 @@
-# include <stdint.h>
-# include <stddef.h>
-# include <cub_utils.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_ascii.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/07 14:26:12 by adeimlin          #+#    #+#             */
+/*   Updated: 2026/04/07 15:26:27 by adeimlin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <stdint.h>
+#include <stddef.h>
+#include <cub_utils.h>
 
 #define _X20 0x0000000000000000
 #define _X21 0x1010101010001000
@@ -99,22 +111,6 @@
 #define _X7E 0x0000324C00000000
 #define _X7F 0x0000000000000000
 
-// To use, just drop this in main folder and call stt_test
-void	draw_ascii(t_mat32 frame, t_vec2 pos, const char *str, uint32_t color);
-void	stt_test(t_game *game)
-{
-	char	str[96];
-	size_t		i;
-
-	i = 0;
-	while (i < 96)
-	{
-		str[i] = ' ' + i;
-		i++;
-	}
-	draw_ascii(game->frame.display, (t_vec2){.x.i = 8, .y.i = 32}, str, 0xFFFFFFFF);
-}
-
 // This shit is actually norm compliant
 static inline
 uint64_t	stt_font(uint8_t index)
@@ -138,36 +134,6 @@ uint64_t	stt_font(uint8_t index)
 		index = '?';
 	return (ascii_font[index - 32]);
 }
-	
-// This shit is actually norm compliant
-// static inline
-// uint64_t	stt_font(uint8_t index)
-// {
-// 	static const uint64_t	ascii_font[96] = {0, 0x1010101010001000, \
-// 0x2424000000000000, 0, 0, 0, 0, 0x1010000000000000, 0x810202020100800, \
-// 0x1008040404081000, 0, 0x10107C101000, 0x181020, 0x7E00000000, 0x1800, \
-// 0x204081020408000, 0x3C42464A52623C00, 0x818280808083E00, 0x3C42020C10207E00, \
-// 0x3C42021C02423C00, 0x40C14247E040400, 0x7E407C0202423C00, 0x1C20407C42423C00, \
-// 0x7E02040810101000, 0x3C42423C42423C00, 0x3C42423E02043800, 0x180000180000, \
-// 0x180000181020, 0x810204020100800, 0x7E00007E0000, 0x1008040204081000, \
-// 0x3C42020C10001000, 0, 0x1824427E42424200, 0x7C42427C42427C00, \
-// 0x3C42404040423C00, 0x7844424242447800, 0x7E40407C40407E00, 0x7E40407C40404000, \
-// 0x3C42404E42423C00, 0x4242427E42424200, 0x3E08080808083E00, 0x1E04040444443800, \
-// 0x4244487048444200, 0x4040404040407E00, 0x42665A4242424200, 0x4262524A46424200, \
-// 0x3C42424242423C00, 0x7C42427C40404000, 0x3C4242424A443A00, 0x7C42427C48444200, \
-// 0x3C42403C02423C00, 0x7F08080808080800, 0x4242424242423C00, 0x4242424242241800, \
-// 0x424242425A664200, 0x4242241824424200, 0x4141221408080800, 0x7E02040810207E00, \
-// 0x3820202020203800, 0x8040201008040200, 0x3808080808083800, 0, 0xFF, \
-// 0, 0x3C023E423E00, 0x40405C6242427C00, 0x3C4240423C00, \
-// 0x2023A4642423E00, 0x3C427E403C00, 0x1C20207C20202000, 0x3E42423E023C, \
-// 0x40405C6242424200, 0x800180808081C00, 0x4000C0404044438, 0x4040444850484400, \
-// 0x1808080808081C00, 0x6C5252525200, 0x5C6242424200, 0x3C4242423C00, \
-// 0x7C42427C4040, 0x3A46423E0202, 0x5C6240404000, 0x3E403C027C00, \
-// 0x20207C2020201C00, 0x424242463A00, 0x424242241800, 0x42425A5A2400, \
-// 0x422418244200, 0x4242423E023C, 0x7E0410207E00, 0, 0x1010101010101000};
-
-// 	return (ascii_font[index]);
-// }
 
 static
 void	stt_draw_char(t_mat32 frame, t_vec2 pos, uint8_t c, uint32_t color)
@@ -197,6 +163,37 @@ void	stt_draw_char(t_mat32 frame, t_vec2 pos, uint8_t c, uint32_t color)
 	}
 }
 
+static
+void	stt_draw_digit(t_mat32 frame, size_t xpos, size_t ypos, int digit)
+{
+	size_t					x;
+	size_t					y;
+	size_t					row;
+	size_t					col;
+	static const uint8_t	digit_font_5x7[10][7] = {
+		{14, 17, 19, 21, 25, 17, 14}, {4, 12, 4, 4, 4, 4, 14},
+		{14, 17, 1, 2, 4, 8, 31}, {30, 1, 1, 14, 1, 1, 30},
+		{2, 6, 10, 18, 31, 2, 2}, {31, 16, 16, 30, 1, 1, 30},
+		{14, 16, 16, 30, 17, 17, 14}, {31, 1, 2, 4, 8, 8, 8},
+		{14, 17, 17, 14, 17, 17, 14}, {14, 17, 17, 15, 1, 1, 14}};
+
+	row = 0;
+	while (row < 7)
+	{
+		y = ypos + row;
+		col = 0;
+		while (col < 5)
+		{
+			x = xpos + col;
+			if (digit_font_5x7[digit][row] & (1u << (4 - col)))
+				if (x < frame.width && y < frame.height)
+					frame.ptr[y * frame.width + x] = 0xFFFFFFFF;
+			col++;
+		}
+		row++;
+	}
+}
+
 void	draw_ascii(t_mat32 frame, t_vec2 pos, const char *str, uint32_t color)
 {
 	size_t	i;
@@ -214,48 +211,10 @@ void	draw_ascii(t_mat32 frame, t_vec2 pos, const char *str, uint32_t color)
 	}
 }
 
-static inline
-void	stt_putargb(t_mat32 *frame, size_t x, size_t y, uint32_t color)
-{
-	if (x >= frame->width || y >= frame->height)
-		return ;
-	frame->ptr[y * frame->width + x] = color;
-}
-
-static
-void	stt_draw_digit(t_mat32 frame, size_t xpos, size_t ypos, int digit)
-{
-	static const uint8_t	digit_font_5x7[10][7] = {
-	{14, 17, 19, 21, 25, 17, 14}, {4, 12, 4, 4, 4, 4, 14},
-	{14, 17, 1, 2, 4, 8, 31}, {30, 1, 1, 14, 1, 1, 30},
-	{2, 6, 10, 18, 31, 2, 2}, {31, 16, 16, 30, 1, 1, 30},
-	{14, 16, 16, 30, 17, 17, 14}, {31, 1, 2, 4, 8, 8, 8},
-	{14, 17, 17, 14, 17, 17, 14}, {14, 17, 17, 15, 1, 1, 14}};
-	size_t					x;
-	size_t					y;
-	size_t					row;
-	size_t					col;
-
-	row = 0;
-	while (row < 7)
-	{
-		y = ypos + row;
-		col = 0;
-		while (col < 5)
-		{
-			x = xpos + col;
-			if (digit_font_5x7[digit][row] & (1u << (4 - col)))
-				stt_putargb(&frame, x, y, 0xFFFFFFFF);
-			col++;
-		}
-		row++;
-	}
-}
-
 void	draw_number(t_mat32 frame, size_t xpos, size_t ypos, uint32_t value)
 {
 	size_t			i;
-	char			buffer[16];
+	char			buffer[24];
 	const size_t	length = ft_itoa_r(value, buffer);
 
 	i = 0;

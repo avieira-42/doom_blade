@@ -12,7 +12,10 @@ static
 void	stt_cub_is_dead(t_game *game)
 {
 	if (game->player.health <= 0)
-		cub_cleanup(game, "YOU ARE DEAD\n");	// Putting messages here exits with error
+	{
+		write(1, "You are dead!\n", 14);
+		cub_cleanup(game, NULL);
+	}
 }
 
 int	cmlx_loop(t_game *game)

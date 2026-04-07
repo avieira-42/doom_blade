@@ -14,8 +14,7 @@
 void		cub_update_game(t_game *game, long dt);
 void		cub_update_pos(t_game *game, float dt);
 void		cub_draw_enemies(t_game *game, long dt);
-int			cub_read_xpm(t_xvar *mlx, t_mat32 *dst, const char *filename, const char **filename_ptr);
-
+int			cub_read_xpm(t_game *game, t_mat32 *dst, const char *filename, const char **filename_ptr);
 // Draw and Render
 void		raycast(t_view *cam, t_map *map, t_rayhit *rays);
 void		planecast(t_frame *frame, t_mat32 floor, t_mat32 ceil, t_view *cam);

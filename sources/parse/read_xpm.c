@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 14:20:57 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 00:12:57 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/07 15:00:22 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ void	stt_clean_texture(uint32_t *ptr, size_t length)
 	i = 0;
 	while (i < length)
 	{
-		if (ptr[i] == 0)
-			ptr[i] = 0xFF000000;
 		if (ptr[i] == ALPHA_SENTINEL1 || ptr[i] == ALPHA_SENTINEL2)
 			ptr[i] = 0;
+		else
+			ptr[i] |= 0xFF000000;	// mlx is so stupid
 		i++;
 	}
 }
@@ -100,27 +100,27 @@ t_img	*stt_read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr
 }
 
 // Todo: guarantee lower than render res
-int	cub_read_xpm(t_xvar *mlx, t_mat32 *dst, const char *filename, const char **filename_ptr)
+int	cub_read_xpm(t_game *game, t_mat32 *dst, const char *filename, const char **filename_ptr)
 {
 	t_img	*img;
 	t_mat32	src;
 	size_t	size;
 
-	img = stt_read_xpm(mlx, filename, filename_ptr);
+	img = stt_read_xpm(game->mlx, filename, filename_ptr);
 	if (img == NULL)
-		return (-1);
+		return (cub_cleanup(game, "Failed to load image"));
 	if (dst->ptr == NULL)	// DST needs to have depth defined
 	{
 		size = (size_t)(img->height * img->width) * sizeof(uint32_t) * dst->depth;
 		*dst = (t_mat32){malloc(size), img->width, img->height, dst->depth, img->height};
 		if (dst->ptr == NULL)
-			return (mlx_destroy_image(mlx, img), -1);	// Malloc failure
+			return (mlx_destroy_image(game->mlx, img), cub_cleanup(game, "Malloc failure"));	// Malloc failure
 	}
 	src = (t_mat32){(uint32_t *)img->data, img->width, img->height, 1, img->width};
 	ft_near_scale(*dst, src);
-	mlx_destroy_image(mlx, img);
+	mlx_destroy_image(game->mlx, img);
 	stt_clean_texture(dst->ptr, dst->height * dst->width);
 	if (src.width != dst->width || src.height != dst->height)
-		return (-1);
+		return (cub_cleanup(game, "Sheet frame dimensions do not match"));
 	return (0);
 }

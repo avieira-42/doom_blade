@@ -31,7 +31,6 @@ int stt_mlx_init(t_game *game)
 	return (0);
 }
 
-// Cannot fail
 static
 void	stt_params_init(t_game *game, t_memory *memory)
 {
@@ -42,7 +41,7 @@ void	stt_params_init(t_game *game, t_memory *memory)
 	game->player.state = st_idle;
 	game->player.map = st_off;
 	game->player.texture[0].ptr = NULL;
-	game->player.texture[0].ptr = NULL;
+	game->player.texture[1].ptr = NULL;
 	game->frame.display.ptr = (uint32_t*)game->frame.img->data;
 	game->frame.display.height = game->frame.img->height;
 	game->frame.display.width = game->frame.img->width;
@@ -83,8 +82,6 @@ void	stt_load_assets(t_game *game, t_enemy enemies[NUM_ENEMIES], t_hands *hands)
 {
 	size_t	i;
 
-	ft_memset(enemies, 0, sizeof(t_enemy) * NUM_ENEMIES);
-	ft_memset(&game->assets, 0, sizeof(game->assets));
 	enemies[0].running = cub_readsheet(game, ENEMY_WALK, ENEMY_WALK_COUNT, ENEMY_WALK_SPEED);
 	enemies[0].shooting = cub_readsheet(game, ENEMY_ATK, ENEMY_ATK_COUNT, ENEMY_ATK_SPEED);
 	enemies[0].shot = cub_readsheet(game, ENEMY_HIT, ENEMY_HIT_COUNT, ENEMY_HIT_SPEED);

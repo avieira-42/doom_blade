@@ -120,7 +120,7 @@ int	cub_read_map(t_game *game, const char *str, t_map *map, t_player *player)
 		str += offset;
 		map->height++;
 	}
-	if (map->height < 3 && map->width < 3)
+	if (map->height < 3 || map->width < 3)
 		return (cub_cleanup(game, "Invalid map configuration"));	// REVIEW
 	map->tex_index = malloc(map->height * map->width * 2);
 	if (map->tex_index == NULL)
