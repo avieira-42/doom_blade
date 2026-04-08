@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:28:49 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/08 15:07:12 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/09 00:24:20 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,7 @@ void	stt_enemy_hurt(t_player *player, t_enemy *enemy, long dt)
 }
 
 // Every time draw_enemy gets called, enemy state updates e_hit
-void	update_enemy_state\
-(t_map *map, t_player *player, t_enemy *enemy, long dt)
+void	update_enemy_state(t_map *map, t_player *player, t_enemy *enemy, long dt)
 {
 	t_sheet	*sheet;
 

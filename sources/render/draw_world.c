@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:47 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/08 15:27:58 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/09 00:25:30 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@
 // 	}
 // }
 
-static inline void	stt_texture_sample\
-(t_mat32 texture, float line_height, uint32_t *render_col, t_vec2 unclamped)
+static inline void	stt_texture_sample(t_mat32 texture, float line_height, uint32_t *render_col, t_vec2 unclamped)
 {
 	int32_t			y;
 	int32_t			tex_pos;
@@ -59,8 +58,7 @@ static inline void	stt_texture_sample\
 }
 
 // X is start, Y is end
-static inline void	stt_column_render\
-(t_rayhit hit, uint32_t *render_col, t_block *blocks, int32_t offset)
+static inline void	stt_column_render(t_rayhit hit, uint32_t *render_col, t_block *blocks, int32_t offset)
 {
 	t_mat32	texture;
 	float	line_height;

@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:22 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/08 15:27:58 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/09 00:25:31 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,7 @@ float	stt_init(t_form *f, t_frame *frame, t_view *p, t_enemy *enemy)
 	return (enemy->dist);
 }
 
-static inline void	stt_draw_col\
-(t_vec2 norm_pos, t_form *form, uint32_t *dst, t_sheet *sheet)
+static inline void	stt_draw_col(t_vec2 norm_pos, t_form *form, uint32_t *dst, t_sheet *sheet)
 {
 	uint32_t	y;
 	uint32_t	c;

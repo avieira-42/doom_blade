@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:29:53 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/08 15:27:58 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/09 00:24:29 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,7 @@ void	stt_radar_init(t_game *game, t_sheet *rd_0)
 	game->map.icon_quad.radius = game->map.icon_quad.size.x.i / 2;
 }
 
-static void	stt_load_assets\
-(t_game *game, t_enemy enemies[NUM_ENEMIES], t_hands *hands)
+static void	stt_load_assets(t_game *game, t_enemy enemies[NUM_ENEMIES], t_hands *hands)
 {
 	size_t	i;
 

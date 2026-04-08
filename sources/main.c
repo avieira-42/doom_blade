@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:31:33 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/08 12:54:08 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/09 00:25:27 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,26 +56,6 @@ int	cmlx_loop(t_game *game)
 	return (1);
 }
 
-static
-int	stt_check_cub(const char *str)
-{
-	size_t				i;
-	static const char	ext[5] = ".cub";
-	const size_t		length = ft_strlen(str);
-
-	if (length < 4)
-		return (-1);
-	str += length - 4;
-	i = 0;
-	while (i < 4)
-	{
-		if (str[i] != ext[i])
-			return (-1);
-		i++;
-	}
-	return (0);
-}
-
 int	main(int argc, char **argv)
 {
 	static t_game	game;
@@ -83,8 +63,6 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		return (write(2, "Error\nInvalid Argument Count", 28), 1);
-	if (stt_check_cub(argv[1]) == -1)
-		return (write(2, "Error\nInvalid File Extension", 28), 1);
 	if (cub_init(argv[1], &game, &memory) == -1)
 		return (1);
 	mlx_loop(game.mlx);

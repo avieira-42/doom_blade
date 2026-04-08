@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 14:20:57 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 15:58:53 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/09 00:24:49 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,7 @@ void	stt_clean_texture(uint32_t *ptr, size_t length)
 	}
 }
 
-static t_img	*stt_read_xpm\
-(t_xvar *mlx, const char *filename, const char **filename_ptr)
+static t_img	*stt_read_xpm(t_xvar *mlx, const char *filename, const char **filename_ptr)
 {
 	int			tmp[2];
 	char		buffer[256];
@@ -102,8 +101,7 @@ static t_img	*stt_read_xpm\
 #define E1 "Malloc Failure"
 
 // Todo: guarantee lower than render res
-int	cub_read_xpm\
-(t_game *game, t_mat32 *dst, const char *filename, const char **filename_ptr)
+int	cub_read_xpm(t_game *game, t_mat32 *dst, const char *filename, const char **filename_ptr)
 {
 	t_img	*im;
 	t_mat32	src;

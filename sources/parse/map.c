@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:00 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:00:46 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/09 00:24:25 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@
 // Dont forget to convert everything inside walls to 0 (NESW)
 
 // Returns: >0) Ok, -1) Invalid value (P), -2) Two Player Positions (P)
-static ssize_t	stt_parse_line\
-(t_game *game, const char *line, t_map *map, t_player *player)
+static ssize_t	stt_parse_line(t_game *game, const char *line, t_map *map, t_player *player)
 {
 	char		c;
 	const char	*oline = line;

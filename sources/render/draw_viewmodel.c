@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:42 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/08 15:27:58 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/09 00:25:30 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ void	stt_grid_draw(t_mat32 frame, t_map *map, t_vec2 grid_pos, t_quad cell)
 	}
 }
 
-static void	stt_player_icon_draw\
-(t_mat32 frame, t_map *map, t_vec2 grid_pos, t_player *player)
+static void	stt_player_icon_draw(t_mat32 frame, t_map *map, t_vec2 grid_pos, t_player *player)
 {
 	t_vec2	line_dst;
 	t_quad	icon;
@@ -64,8 +63,7 @@ static void	stt_player_icon_draw\
 	draw_circle(frame, icon);
 }
 
-static void	stt_enemies_icon_draw\
-(t_mat32 frame, t_map *map, t_vec2 grid_pos, t_enemy *enemies)
+static void	stt_enemies_icon_draw(t_mat32 frame, t_map *map, t_vec2 grid_pos, t_enemy *enemies)
 {
 	int32_t			i;
 	t_quad			icon;
@@ -118,8 +116,7 @@ void	stt_draw_radar(t_game *game, t_map *map, t_sheet *r0)
 	cub_draw_sheet(game->frame.render, r1, spos.x.i, spos.y.i);
 }
 
-void	cub_draw_viewmodel\
-(t_mat32 frame, t_player *player, t_game *game, long dt)
+void	cub_draw_viewmodel(t_mat32 frame, t_player *player, t_game *game, long dt)
 {
 	size_t	x;
 	size_t	y;

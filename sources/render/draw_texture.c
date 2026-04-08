@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/08 12:55:34 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/09 00:25:29 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ void	stt_putrgb(t_mat32 *frame, uint32_t x, uint32_t y, uint32_t color)
 }
 
 // TODO: putrgb shouldnt be needed here
-void	cub_draw_texture\
-(t_mat32 frame, t_mat32 image, uint32_t xc, uint32_t yc)
+void	cub_draw_texture(t_mat32 frame, t_mat32 image, uint32_t xc, uint32_t yc)
 {
 	uint32_t	x;
 	uint32_t	y;
@@ -48,8 +47,7 @@ void	cub_draw_texture\
 	}
 }
 
-void	cub_draw_sheet\
-(t_mat32 frame, const t_sheet *sheet, uint32_t xc, uint32_t yc)
+void	cub_draw_sheet(t_mat32 frame, const t_sheet *sheet, uint32_t xc, uint32_t yc)
 {
 	uint32_t	x;
 	uint32_t	y;
