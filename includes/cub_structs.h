@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 16:51:15 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/08 12:27:52 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 15:28:55 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct s_player
 typedef struct s_map
 {
 	uint8_t		*tex_index;
-	uint8_t		*state;	// 0: nothing is drawn, 255: everything is drawn (left to right)
+	uint8_t		*state;	// 0: no draw, 255: everything drawn (left to right)
 	uint32_t	width;
 	uint32_t	height;
 	t_vec2		radar_sprite_pos;
@@ -77,8 +77,8 @@ typedef struct s_enemy
 
 typedef struct s_memory
 {
-	uint32_t	render_frame[r_width][r_height];
-	t_rayhit	rays[r_width];
+	uint32_t	render_frame[R_WIDTH][R_HEIGHT];
+	t_rayhit	rays[R_WIDTH];
 	uint32_t	textures[NUM_BLOCKS][4][TEX_SIZE][TEX_SIZE];
 }	t_memory;
 

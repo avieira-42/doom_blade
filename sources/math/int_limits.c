@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 19:03:49 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 20:31:28 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 15:22:26 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,3 @@ int64_t	ft_iclamp(int64_t value, int64_t min, int64_t max)
 		value = min;
 	return (value);
 }
-

@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:29:46 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 19:47:02 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 15:22:36 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ float	vec2_max(t_vec2 vec)
 {
 	vec.x.u &= 0x7FFFFFFF;
 	vec.y.u &= 0x7FFFFFFF;
-
 	if (vec.x.f > vec.y.f)
 		return (vec.x.f);
 	else

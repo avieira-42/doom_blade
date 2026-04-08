@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:56 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/08 14:10:52 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 15:27:54 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ t_rayhit	stt_rayhit_info(t_ray *ray, uint8_t side,
 
 	if (side == 0)
 	{
-		hit.perp_dist = (ray->map_pos.x.i - pos.x.f + 0.5f * (1 - ray->step.x.i)) / ray->ray_dir.x.f;
+		hit.perp_dist = (ray->map_pos.x.i - pos.x.f + 0.5f
+				* (1 - ray->step.x.i)) / ray->ray_dir.x.f;
 		hit.tex_dir = 1 + ((ray->step.x.i > 0) << 1);
 		x_pos_texture = pos.y.f + hit.perp_dist * ray->ray_dir.y.f;
 	}
@@ -132,11 +133,11 @@ void	raycast(t_view *cam, t_map *map, t_rayhit *rays)
 {
 	size_t		x;
 	float		camera_x;
-	const float	dx = 2.0 / r_width;
+	const float	dx = 2.0 / R_WIDTH;
 
 	x = 0;
 	camera_x = -1.0f;
-	while (x < r_width)
+	while (x < R_WIDTH)
 	{
 		rays[x] = stt_raycast(camera_x, cam, map);
 		camera_x += dx;

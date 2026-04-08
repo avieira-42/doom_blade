@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:29:53 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/08 12:37:29 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 15:27:58 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ void	stt_params_init(t_game *game, t_memory *memory)
 	game->frame.display.width = game->frame.img->width;
 	game->frame.display.stride = game->frame.img->width;
 	game->frame.render.ptr = (uint32_t *)memory->render_frame;
-	game->frame.render.height = r_height;
-	game->frame.render.width = r_width;
-	game->frame.render.stride = r_height;
+	game->frame.render.height = R_HEIGHT;
+	game->frame.render.width = R_WIDTH;
+	game->frame.render.stride = R_HEIGHT;
 	game->frame.rays = memory->rays;
 	game->state.paused = false;
 }

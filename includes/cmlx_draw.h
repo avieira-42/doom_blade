@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 16:50:59 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/08 13:48:19 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 15:29:50 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ typedef struct s_transform
 typedef struct s_sheet
 {
 	t_mat32		texture;
-	int32_t		frame_time;		// When frame_dt exceeds frame_time, go to next frame
-	int32_t		frame_dt;		// Counts how much time has passed in the current frame
+	int32_t		frame_time;	// When frame_dt > frame_time, go to next frame
+	int32_t		frame_dt;	// Counts how much time has passed in current frame
 	uint32_t	frame_size;
 	uint16_t	index;
 	uint16_t	count;

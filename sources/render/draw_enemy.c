@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:22 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/08 12:52:26 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 15:27:58 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ float	stt_init(t_form *f, t_frame *frame, t_view *p, t_enemy *enemy)
 		return (enemy->dist);
 	horz_dist = invd * (p->dir.y.f * rel_pos.x.f - p->dir.x.f * rel_pos.y.f);
 	invd = (1.0f / enemy->dist) * ENEMY_SCALE; // Scale (TODO: check if enemy scale doesnt break math)
-	f->draw_pos.x.i = (r_width * 0.5f) * (1.0f + horz_dist * invd);
-	f->draw_pos.y.i = r_height * 0.5f - frame->offset;
+	f->draw_pos.x.i = (R_WIDTH * 0.5f) * (1.0f + horz_dist * invd);
+	f->draw_pos.y.i = R_HEIGHT * 0.5f - frame->offset;
 	new_size.x.i = enemy->running.texture.width * invd;	// tex.width / enemy_dist
 	new_size.y.i = enemy->running.texture.height * invd;
 	f->delta.x.u = 65536.0f * enemy->dist / enemy->running.texture.width;	// REVIEW: These can be constants
@@ -45,8 +45,8 @@ float	stt_init(t_form *f, t_frame *frame, t_view *p, t_enemy *enemy)
 	return (enemy->dist);
 }
 
-static inline
-void	stt_draw_col(t_vec2 norm_pos, t_form *form, uint32_t *dst, t_sheet *sheet)
+static inline void	stt_draw_col\
+(t_vec2 norm_pos, t_form *form, uint32_t *dst, t_sheet *sheet)
 {
 	uint32_t	y;
 	uint32_t	c;
@@ -77,10 +77,10 @@ void	stt_draw_col(t_vec2 norm_pos, t_form *form, uint32_t *dst, t_sheet *sheet)
 static inline
 bool	stt_hitreg(t_sides *bounds)
 {
-	return (bounds->left < ((r_width + HITREG_AREA) / 2)
-		&& bounds->right > ((r_width - HITREG_AREA) / 2)
-		&& bounds->top < ((r_height + HITREG_AREA) / 2)
-		&& bounds->bottom > ((r_height - HITREG_AREA) / 2));
+	return (bounds->left < ((R_WIDTH + HITREG_AREA) / 2)
+		&& bounds->right > ((R_WIDTH - HITREG_AREA) / 2)
+		&& bounds->top < ((R_HEIGHT + HITREG_AREA) / 2)
+		&& bounds->bottom > ((R_HEIGHT - HITREG_AREA) / 2));
 }
 
 static

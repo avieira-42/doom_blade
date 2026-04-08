@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:47 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:34:13 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 15:27:58 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static inline void	stt_texture_sample\
 	const int32_t	dy = 65536.0f * texture.height / line_height;
 
 	draw_start = ft_imax(0, unclamped.x.f);
-	draw_end = ft_imin(r_height, unclamped.y.f);
+	draw_end = ft_imin(R_HEIGHT, unclamped.y.f);
 	tex_pos = dy * (draw_start - unclamped.x.f);
 	y = draw_start;
 	while (y < draw_end)
@@ -68,9 +68,9 @@ static inline void	stt_column_render\
 
 	texture = blocks[hit.tex_index].index[hit.tex_dir];	// THIS NEEDS TO CHECK IF TEX_INDEX > 0
 	texture.ptr += (size_t)(hit.x_pos * texture.width) * texture.stride;	// REVIEW
-	line_height = fmaxf(1.0f, r_height / hit.perp_dist);
-	unclamped.x.f = 0.5f * (r_height - line_height) - offset;
-	unclamped.y.f = 0.5f * (r_height + line_height) - offset;
+	line_height = fmaxf(1.0f, R_HEIGHT / hit.perp_dist);
+	unclamped.x.f = 0.5f * (R_HEIGHT - line_height) - offset;
+	unclamped.y.f = 0.5f * (R_HEIGHT + line_height) - offset;
 	stt_texture_sample(texture, line_height, render_col, unclamped);
 }
 
@@ -86,7 +86,7 @@ void	cub_draw_world(t_game *game)
 	planecast(&game->frame, game->blocks[0].south,
 		game->blocks[0].north, &game->player.cam);
 	raycast(&game->player.cam, &game->map, game->frame.rays);
-	while (x < r_width)
+	while (x < R_WIDTH)
 	{
 		stt_column_render(game->frame.rays[x], ptr,
 			game->blocks, game->frame.offset);

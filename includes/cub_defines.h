@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 16:51:10 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/08 12:48:00 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 15:32:42 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 # define CUB_DEFINES_H
 
 # define UPSCALE 2
+# define R_WIDTH 640
+# define R_HEIGHT 360
 
 enum e_render
 {
-	r_width = 640,
-	r_height = 360,
-	s_width = r_width * UPSCALE,
-	s_height = r_height * UPSCALE,
+	s_width = R_WIDTH * UPSCALE,
+	s_height = R_HEIGHT * UPSCALE,
 };
 
 # define TEX_SIZE 128
@@ -42,7 +42,11 @@ enum e_render
 # define ENEMY_SCALE 1.0f
 # define SPEED_THR 4.1f		// Speed threshold where animation goes from normal to fast
 # define HALT_THR 0.5f
+
+// Animation
 # define ANIM_TIME 60000	// Time between anim frames
+# define SLOW_ANIM_TIME 120000
+# define VSLOW_ANIM_TIME 180000
 
 // Difficulty
 # define PLAYER_DAMAGE 25
@@ -154,5 +158,4 @@ enum e_colors
 	rgb_lavender = 0xE6E6FAu,
 	rgb_mint = 0x98FF98u
 };
-
 #endif
