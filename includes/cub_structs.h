@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 16:51:15 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 19:22:27 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 12:27:52 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef struct s_enemy
 {
 	t_view		cam;
 	t_vec2		speed;
-	t_mat32		texture;
+	t_sheet		*model;
 	t_sheet		running;
 	t_sheet		shooting;
 	t_sheet		dying;

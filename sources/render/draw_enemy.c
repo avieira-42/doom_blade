@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:22 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:34:00 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 12:52:26 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,22 +46,25 @@ float	stt_init(t_form *f, t_frame *frame, t_view *p, t_enemy *enemy)
 }
 
 static inline
-void	stt_draw_col(t_vec2 norm_pos, t_form *form, uint32_t *ptr, t_mat32 *src)
+void	stt_draw_col(t_vec2 norm_pos, t_form *form, uint32_t *dst, t_sheet *sheet)
 {
 	uint32_t	y;
 	uint32_t	c;
 	uint32_t	xsrc;
 	uint32_t	ysrc;
+	t_mat32		src;
 
 	y = form->bounds.top;
+	src = sheet->texture;
+	src.ptr += (size_t)sheet->index * sheet->frame_size;
 	norm_pos.y.u = form->norm_offset.y.u;
 	while (y < form->bounds.bottom)
 	{
-		xsrc = (norm_pos.x.u * (src->width - 1)) >> 16;
-		ysrc = (norm_pos.y.u * (src->height - 1)) >> 16;
-		c = src->ptr[ysrc + src->stride * xsrc];
+		xsrc = (norm_pos.x.u * (src.width - 1)) >> 16;
+		ysrc = (norm_pos.y.u * (src.height - 1)) >> 16;
+		c = src.ptr[ysrc + src.stride * xsrc];
 		if (c != 0)	// TODO: Check if a blend would be expensive (blend could be cheap like overwrite if not 0)
-			ptr[y] = c;
+			dst[y] = c;
 		norm_pos.y.u += form->delta.y.u;
 		y++;
 	}
@@ -97,8 +100,8 @@ bool	stt_draw_enemy(t_frame *frame, t_player *player, t_enemy *enemy)
 		if (enemy->dist < frame->rays[x].perp_dist)	// Do not draw if wall column is ahead of enemy
 		{
 			ptr = frame->render.ptr + frame->render.stride * x;
-			stt_draw_col(norm_pos, &form, ptr, &enemy->texture);
-			enemy->state |= e_seen;		// REVIEW: is there anything that turns this off?
+			stt_draw_col(norm_pos, &form, ptr, enemy->model);
+			enemy->state |= e_seen;
 		}
 		norm_pos.x.u += form.delta.x.u;
 		x++;

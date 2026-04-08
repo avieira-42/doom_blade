@@ -1,26 +1,23 @@
-NO assets/sprites/xpm/tiles/lab0.xpm
-SO assets/sprites/xpm/tiles/lab1.xpm
-WE assets/sprites/xpm/tiles/lab2.xpm
-EA assets/sprites/xpm/tiles/lab3.xpm
-F assets/sprites/xpm/tiles/floor0.xpm
-C assets/sprites/xpm/tiles/ceiling0.xpm
+NO assets/sprites/xpm/tiles/castle/castle_wall0.xpm
+SO assets/sprites/xpm/tiles/castle/castle_wall0.xpm
+WE assets/sprites/xpm/tiles/castle/castle_wall0.xpm
+EA assets/sprites/xpm/tiles/castle/castle_wall0.xpm
+F assets/sprites/xpm/tiles/castle/castle_floor0.xpm
+C assets/sprites/xpm/tiles/castle/castle_ceiling1.xpm
 
-T2N assets/sprites/xpm/tiles/gates/gateGore0.xpm
-T2E assets/sprites/xpm/tiles/gates/gateGore0.xpm
-T2S assets/sprites/xpm/tiles/gates/gateGore0.xpm
-T2W assets/sprites/xpm/tiles/gates/gateGore0.xpm
+T2N assets/sprites/xpm/tiles/castle/castle_door0.xpm
+T2E assets/sprites/xpm/tiles/castle/castle_door0.xpm
+T2S assets/sprites/xpm/tiles/castle/castle_door0.xpm
+T2W assets/sprites/xpm/tiles/castle/castle_door0.xpm
 
-1111111111111111111111111
-1000000000110000000000001
-1011000001110000000000001
-1001000000000000000000001
-111111111011000001110000000000001
-100000000011000001111111111111111
-11110111111111011100000010001
-11110111111111011101010010001
-11000000110101011100000010001
-10000000000000022200000010001
-10000000000000011101010000001
-11000001110101011111011110N0111
-11110111 1110101 101111010001
-11111111 1111111 111111111111
+1111111111111111111111
+1000000000000000000001
+1000000000000000000001
+1000000000000000000001
+1000000000N00000000001
+1000000000000000000001
+1000000000000000000001
+1000000000000000000201
+1000000000000000000001
+1000000000000000000001
+1111111111111111111111

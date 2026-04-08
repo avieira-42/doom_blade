@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:28:54 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 19:40:50 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 12:06:32 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include "cub_utils.h"
 
 void	cub_update_pos(t_game *game, float dt);
-void	update_enemy_state(t_player *player, t_enemy *enemy, long dt);
+void	update_enemy_state(t_map *map, t_player *player, t_enemy *enemy, long dt);
 void	update_player_state(t_player *player, t_map *map, long dt);
 
 void	cub_update_game(t_game *game, long dt)
@@ -33,7 +33,7 @@ void	cub_update_game(t_game *game, long dt)
 	while (i < NUM_ENEMIES)
 	{
 		enemy = game->enemies + i;
-		update_enemy_state(&game->player, enemy, dt);
+		update_enemy_state(&game->map, &game->player, enemy, dt);
 		i++;
 	}
 }

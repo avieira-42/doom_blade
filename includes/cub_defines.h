@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 16:51:10 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 17:29:19 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 12:48:00 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ enum e_render
 # define PI_DEG 0.01745329251994329576923690768488612713439L
 
 // Game Vars
+# define PLAYER_RADIUS 0.125f
 # define HITREG_AREA 2		// Number of pixels to check in center grid, must be even
 # define NEAR_RADIUS 0.1f	// Determines how near for texture culling
 # define MELEE_RANGE 0.25f	// Determines range enemy will approach the player and hit
@@ -46,7 +47,7 @@ enum e_render
 // Difficulty
 # define PLAYER_DAMAGE 25
 # define ENEMY_ATTACK_DIST 1
-# define ENEMY_ATTACK_AGRESS 0.9f
+# define ENEMY_ACCURACY 0.6f
 # define ENEMY_DAMAGE 5
 # define HEAL_VALUE 40				// Heal on kill value
 # define NUM_ENEMIES 32

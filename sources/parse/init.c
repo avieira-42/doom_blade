@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:29:53 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 19:16:43 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 12:37:29 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ static void	stt_load_assets\
 	enemies[0].shooting = cub_readsheet(game, EATK, EATK_COUNT, EATK_SPEED);
 	enemies[0].shot = cub_readsheet(game, EHIT, EHIT_COUNT, EHIT_SPEED);
 	enemies[0].dying = cub_readsheet(game, EDEATH, EDEATH_COUNT, EDEATH_SPEED);
-	enemies[0].state = e_idle;
+	enemies[0].state = e_dead;
+	enemies[0].model = &enemies[0].running;
 	enemies[0].health = 100;	// Enemies spawn dead
 	enemies[0].cam.pos = random_valid_pos(&game->map);
 	hands->shoot = cub_readsheet(game, PLAYER_ATK, 5, ANIM_TIME);
@@ -105,11 +106,7 @@ static void	stt_load_assets\
 	game->assets.hud_blood = cub_readsheet(game, PLAYER_BLOOD, 3, ANIM_TIME);
 	i = 1;
 	while (i < NUM_ENEMIES)
-	{
-		enemies[i] = enemies[0];	// Now enemies all draw from the same texture
-		enemies[i].cam.pos = random_valid_pos(&game->map);
-		i++;
-	}
+		enemies[i++] = enemies[0];
 }
 
 int	cub_init(const char *filename, t_game *game, t_memory *memory)

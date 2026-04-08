@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:28:49 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:01:41 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 12:51:52 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,62 +19,29 @@
 #include "cub_utils.h"
 
 static
-int	stt_is_enemy_shooting(t_enemy *enemy)
+bool	stt_enemy_dead(t_map *map, t_enemy *enemy, long dt)
 {
-	if (ft_randf() > ENEMY_ATTACK_AGRESS
-		&& ft_abs(enemy->dist) < ENEMY_ATTACK_DIST
-		&& enemy->state & e_seen)  // DEFINE ENEMY_AGGRESSIVENES and DIST
-		return (1);
-	return (0);
+	if (enemy->state & e_dead)
+	{
+		enemy->respawn_timer += dt;
+		if (enemy->respawn_timer >= RESPAWN_TIMER)
+		{
+			enemy->health = 100;
+			enemy->respawn_timer = 0;
+			enemy->state = e_running;
+			enemy->cam.pos = random_valid_pos(map);
+		}
+		return (true);
+	}
+	return (false);
 }
 
 static
-void	stt_update_state(t_player *player, t_enemy *enemy, long dt)
+void	stt_enemy_shooting(t_player *player, t_enemy *enemy, long dt)
 {
-	uint8_t	rvalue;
-
-	if (enemy->state & e_dead)
-		return ;
-	if (enemy->state & e_dying)
-	{
-		rvalue = cub_advance_animation(&enemy->dying, dt);
-		if (rvalue >= 4)
-		{
-			player->health += HEAL_VALUE;
-			enemy->state = e_dead;
-		}
-		return ;
-	}
-	if ((player->state & st_shot) && (enemy->state & e_hit))
-	{
-		enemy->health -= PLAYER_DAMAGE;
-		if (enemy->health <= 0)
-		{
-			enemy->state = e_dying;
-			enemy->dying.index = 0;
-			enemy->dying.frame_dt = 0;
-		}
-		else if (!(enemy->state & e_hurt))
-		{
-			enemy->state = e_hurt;
-			enemy->shot.index = 0;
-			enemy->shot.frame_dt = 0;
-		}
-	}
-	if (enemy->state & e_hurt)
-	{
-		rvalue = cub_advance_animation(&enemy->shot, dt);
-		if (rvalue >= 4)
-		{
-			enemy->state &= ~(size_t) e_hurt;
-			enemy->state |= e_running;
-		}
-		return ;
-	}
 	if (enemy->state & e_shooting)
 	{
-		rvalue = cub_advance_animation(&enemy->shooting, dt);
-		if (rvalue >= 4)
+		if (cub_advance_animation(&enemy->shooting, dt) >= 4)
 		{
 			enemy->state &= ~(size_t)e_shooting;
 			enemy->state |= e_running;
@@ -83,32 +50,55 @@ void	stt_update_state(t_player *player, t_enemy *enemy, long dt)
 		}
 		return ;
 	}
-	if (enemy->health <= 0)
-	{
-		enemy->state = e_dying;
-		enemy->dying.index = 0;
-		enemy->dying.frame_dt = 0;
+	if ((fabsf(enemy->dist) > ENEMY_ATTACK_DIST) && (enemy->state & e_seen))
 		return ;
-	}
-	cub_advance_animation(&enemy->running, dt);
-	if (stt_is_enemy_shooting(enemy))
-	{
-		enemy->state &= ~(size_t)e_running;
-		enemy->state |= e_shooting;
-		enemy->shooting.index = 0;
-		enemy->shooting.frame_dt = 0;
+	enemy->state &= ~(size_t)e_running;
+	enemy->state |= e_shooting;
+	enemy->shooting.index = 0;
+	enemy->shooting.frame_dt = 0;
+	if (ft_randf() < ENEMY_ACCURACY)
 		player->health -= ENEMY_DAMAGE;
-		enemy->state &= ~(size_t)e_seen;
-	}
+	enemy->state &= ~(size_t) e_seen;
 }
 
 static
-t_mat32	stt_enemy_get_frame(t_enemy *enemy)
+void	stt_enemy_hurt(t_player *player, t_enemy *enemy, long dt)
+{
+	if ((player->state & st_shot) && (enemy->state & e_hit))
+	{
+		enemy->health -= PLAYER_DAMAGE;
+		if (enemy->health <= 0)
+			enemy->state = e_dying;
+		else
+			enemy->state = e_hurt;
+	}
+	if (enemy->state & e_dying)
+	{
+		if (cub_advance_animation(&enemy->dying, dt) >= 4)
+		{
+			player->health += HEAL_VALUE;
+			enemy->state = e_dead;
+		}
+	}
+	else if (enemy->state & e_hurt)
+	{
+		if (cub_advance_animation(&enemy->shot, dt) >= 4)
+		{
+			enemy->state &= ~(size_t) e_hurt;
+			enemy->state |= e_running;
+		}
+	}
+}
+
+// Every time draw_enemy gets called, enemy state is updated to contain e_hit or not
+void	update_enemy_state(t_map *map, t_player *player, t_enemy *enemy, long dt)
 {
 	t_sheet	*sheet;
-	t_mat32	frame;
-	size_t	offset;
 
+	if (stt_enemy_dead(map, enemy, dt))
+		return ;
+	stt_enemy_hurt(player, enemy, dt);
+	stt_enemy_shooting(player, enemy, dt);
 	if (enemy->state & e_dying)
 		sheet = &enemy->dying;
 	else if (enemy->state & e_hurt)
@@ -117,15 +107,5 @@ t_mat32	stt_enemy_get_frame(t_enemy *enemy)
 		sheet = &enemy->shooting;
 	else
 		sheet = &enemy->running;
-	offset = (size_t)sheet->index * (size_t)sheet->frame_size;
-	frame = sheet->texture;
-	frame.ptr = sheet->texture.ptr + offset;
-	return (frame);
-}
-
-// Every time draw_enemy gets called, enemy state is updated to contain e_hit or not
-void	update_enemy_state(t_player *player, t_enemy *enemy, long dt)
-{
-	stt_update_state(player, enemy, dt);
-	enemy->texture = stt_enemy_get_frame(enemy);
+	enemy->model = sheet;
 }

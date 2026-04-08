@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:56 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:27:21 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 00:02:53 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ t_rayhit	stt_rayhit_info(t_ray *ray, uint8_t side,
 
 	if (side == 0)
 	{
-		hit.perp_dist = (ray->map_pos.x.i - pos.x.f + 0.5f
-				* (1 - ray->step.x.i)) / ray->ray_dir.x.f;
+		hit.perp_dist = (ray->map_pos.x.i - pos.x.f + 0.5f * (1 - ray->step.x.i)) / ray->ray_dir.x.f;
 		hit.tex_dir = 1 + ((ray->step.x.i > 0) << 1);
 		x_pos_texture = pos.y.f + hit.perp_dist * ray->ray_dir.y.f;
 	}

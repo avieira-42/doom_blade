@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:29:00 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 21:02:36 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 12:46:41 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #include <math.h>
 #include "cub_structs.h"
 #include "cub_utils.h"
-
-#define PLAYER_RADIUS 0.125f
 
 // Map is defined by uint16_t width height. If x or y are negative,
 // the integer wraparound will be guaranteed to be higher than u16_max

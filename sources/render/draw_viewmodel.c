@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:42 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 22:09:44 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 12:43:38 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,8 +154,8 @@ void	cub_draw_viewmodel(t_mat32 frame, t_player *player, t_game *game, long dt)
 	cub_draw_sheet(frame, player->viewmodel[0], x, y);
 	if (player->viewmodel[1] != NULL)
 	{
-		y = r_height - player->viewmodel[1]->texture.height;
-		cub_draw_sheet(frame, player->viewmodel[1], 0, y);
+		// y = r_height - player->viewmodel[1]->texture.height;
+		cub_draw_sheet(frame, player->viewmodel[1], 0, 200);
 		if (player->hands.radar.index == (player->hands.radar.count - 1))
 			cub_draw_radar(game, game->map, dt);
 	}
