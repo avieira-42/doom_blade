@@ -1,7 +1,7 @@
-NO assets/sprites/xpm/tiles/castle/castle_wall0.xpm
-SO assets/sprites/xpm/tiles/castle/castle_wall0.xpm
-WE assets/sprites/xpm/tiles/castle/castle_wall0.xpm
-EA assets/sprites/xpm/tiles/castle/castle_wall0.xpm
+NO 255,0,0
+SO 0,0,255
+WE 0,255,0
+EA 255,255,0
 F assets/sprites/xpm/tiles/castle/castle_floor0.xpm
 C assets/sprites/xpm/tiles/castle/castle_ceiling1.xpm
 

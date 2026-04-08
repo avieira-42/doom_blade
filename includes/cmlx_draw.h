@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 16:50:59 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:51:00 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 13:48:19 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,13 @@ typedef struct s_plane
 	t_vec2	step;
 }	t_plane;
 
-typedef struct s_grid
-{
-	t_vec2	size;
-	t_vec2	i;
-	t_vec2	draw_pos;
-	t_vec2	map_pos;
-	t_vec2	map_center;
-	t_vec2	pos;
-	int32_t	bound;
-}	t_grid;
-
 typedef struct s_quad
 {
-	t_vec2	pos;
-	t_vec2	size;
-	int32_t	color;
-	int32_t	radius;
-	t_vec2	center;
+	t_vec2		pos;
+	t_vec2		size;
+	uint32_t	color;
+	int32_t		radius;
+	t_vec2		center;
 }	t_quad;
 
 typedef struct s_sides
