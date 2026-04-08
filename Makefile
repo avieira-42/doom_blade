@@ -1,11 +1,11 @@
 # Configuration ------------------------------- #
 NAME = main
 VPATH = sources sources/utils sources/input sources/parse sources/gameplay sources/math sources/render
-LDLIBS = libraries/mlx/libmlx_Linux.a -lXext -lX11 -lm -lz
+LDLIBS = $(HOME)/mlx/libmlx_Linux.a -lXext -lX11 -lm -lz
 # CORE ------------------------------------ #
 SRCS = main.c cleanup.c
 # RENDER ------------------------------------ #
-SRCS += raycast.c planecast.c 
+SRCS += raycast.c planecast.c
 SRCS += draw_texture.c draw_utils.c draw_world.c draw_ascii.c
 SRCS += draw_enemy.c draw_overlay.c draw_viewmodel.c
 # MATH ------------------------------------ #
@@ -22,7 +22,7 @@ SRCS += keyboard.c mouse.c input.c
 # Defaults ------------------------------------ #
 RM := rm -f
 BUILD_PATH = build
-INC_PATH = includes libraries/mlx
+INC_PATH = includes $(HOME)/mlx
 OBJ_PATH = $(BUILD_PATH)/obj
 BIN = $(BUILD_PATH)/$(NAME)
 OBJS = $(addprefix $(OBJ_PATH)/, $(SRCS:.c=.o))

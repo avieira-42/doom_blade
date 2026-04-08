@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:31:28 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:30:48 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 12:57:03 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
+static
 void	stt_error(const char *msg)
 {
 	char			buffer[1024];
