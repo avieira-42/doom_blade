@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:42 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/08 14:17:04 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 14:44:07 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,32 @@
 #include "cub_defines.h"
 #include "cub_structs.h"
 #include "cub_utils.h"
+
+void	draw_circle(t_mat32 frame, t_quad quad)
+{
+	int32_t		y;
+	int32_t		x;
+	t_vec2		dst;
+	uint32_t	color;
+
+	y = 0;
+	while (y <= quad.size.y.i)
+	{
+		x = 0;
+		while (x <= quad.size.x.i)
+		{
+			dst.x.i = quad.pos.x.i + x;
+			dst.y.i = quad.pos.y.i + y;
+			color = ((uint32_t)ft_rand() & 0x0F0F0Fu) ^ quad.color;
+			if (dst.x.i >= 0 && dst.y.i >= 0
+				&& dst.x.i < frame.width && dst.y.i < frame.height
+				&& vec2_idist(quad.center, dst) <= quad.radius * quad.radius)
+				frame.ptr[dst.x.i * frame.stride + dst.y.i] = color;
+			x++;
+		}
+		y++;
+	}
+}
 
 // the result of integer division might make it unrenderable
 static
@@ -34,8 +60,8 @@ void	stt_grid_draw(t_mat32 frame, t_map *map, t_vec2 grid_pos, t_quad cell)
 			block = map->tex_index[x + y * map->width];
 			if (block == 129)
 			{
-				cell.pos = (t_vec2){.x.i = grid_pos.x.i + cell.size.x.i * x,
-					.y.i = grid_pos.y.i + cell.size.y.i * y};
+				cell.pos.x.i = grid_pos.x.i + cell.size.x.i * x;
+				cell.pos.y.i = grid_pos.y.i + cell.size.y.i * y;
 				draw_circle(frame, cell);
 			}
 			x++;
@@ -56,8 +82,8 @@ void	stt_player_icon_draw(t_mat32 frame, t_map *map, t_vec2 grid_pos, t_player *
 	icon.center.x.i = icon.pos.x.i + icon.radius;
 	icon.center.y.i = icon.pos.y.i + icon.radius;
 	icon.color = RADAR_PLAYER_COLOR;
-	line_dst.x.i = icon.center.x.i + (int32_t)(player->cam.dir.x.f * 8.0f);
-	line_dst.y.i = icon.center.y.i + (int32_t)(player->cam.dir.y.f * 8.0f);
+	line_dst.x.i = icon.center.x.i - (int32_t)(player->cam.dir.x.f * 8.0f);
+	line_dst.y.i = icon.center.y.i - (int32_t)(player->cam.dir.y.f * 8.0f);
 	draw_line(frame, icon.center, line_dst, RADAR_FOV_COLOR);
 	draw_circle(frame, icon);
 }
@@ -78,11 +104,10 @@ void	stt_enemies_icon_draw(t_mat32 frame, t_map *map, t_vec2 grid_pos, t_enemy *
 			i++;
 			continue;
 		}
-		icon.pos = (t_vec2){.x.i = grid_pos.x.i
-			+ enemies[i].cam.pos.x.f * map->radar_quad.size.x.i,
-				.y.i = grid_pos.y.i + enemies[i].cam.pos.y.f * map->radar_quad.size.y.i};
-		icon.center = (t_vec2){.x.i = icon.pos.x.i + icon.radius,
-			.y.i = icon.pos.y.i + icon.radius};
+		icon.pos.x.i = grid_pos.x.i + enemies[i].cam.pos.x.f * map->radar_quad.size.x.i;
+		icon.pos.y.i = grid_pos.y.i + enemies[i].cam.pos.y.f * map->radar_quad.size.y.i;
+		icon.center.x.i = icon.pos.x.i + icon.radius;
+		icon.center.y.i = icon.pos.y.i + icon.radius;
 		if (vec2_idist(map->radar_quad.center, icon.pos) < map->radar_quad.radius * map->radar_quad.radius)
 			draw_circle(frame, icon);
 		i++;
