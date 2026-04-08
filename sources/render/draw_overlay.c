@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:27 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 15:40:28 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 12:54:28 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	cub_draw_crosshair(uint32_t *ptr)
 }
 
 // REVIEW: blood isnt animation, why is it sheet?
-// TODO: Move radar here
 void	cub_draw_blood(t_mat32 frame, t_game *game)
 {
 	const float	health = (float) game->player.health / PLAYER_HEALTH;

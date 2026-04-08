@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 20:37:56 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 12:55:34 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,14 @@
 #include "cub_utils.h"
 
 static inline
-void	stt_putrgb(t_mat32 *frame, int32_t x, int32_t y, uint32_t color)
+void	stt_putrgb(t_mat32 *frame, uint32_t x, uint32_t y, uint32_t color)
 {
-	if (x < 0 || y < 0 || x >= frame->width || y >= frame->height)
+	if (x >= frame->width || y >= frame->height)
 		return ;
 	frame->ptr[frame->stride * x + y] = color;
 }
 
+// TODO: putrgb shouldnt be needed here
 void	cub_draw_texture\
 (t_mat32 frame, t_mat32 image, uint32_t xc, uint32_t yc)
 {
@@ -39,9 +40,8 @@ void	cub_draw_texture\
 		while (x < image.width)
 		{
 			color = image.ptr[x * image.stride + y];
-			if (color != 0)												// TODO: Guarantee function safety
-				stt_putrgb(&frame, x + xc, y + yc, color);	// Review: removed putpixel because bounds can be precalcualted
-				// frame.ptr[(x + xc) * frame.stride + y + yc] = color;	// Review: removed putpixel because bounds can be precalcualted
+			if (color != 0)
+				stt_putrgb(&frame, x + xc, y + yc, color);
 			x++;
 		}
 		y++;
@@ -65,9 +65,8 @@ void	cub_draw_sheet\
 		while (x < image.width)
 		{
 			color = image.ptr[x * image.stride + y];
-			if (color != 0)												// TODO: Guarantee function safety
-				stt_putrgb(&frame, x + xc, y + yc, color);	// Review: removed putpixel because bounds can be precalcualted
-				// frame.ptr[(x + xc) * frame.stride + y + yc] = color;	// Review: removed putpixel because bounds can be precalcualted
+			if (color != 0)
+				stt_putrgb(&frame, x + xc, y + yc, color);
 			x++;
 		}
 		y++;

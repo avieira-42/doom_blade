@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 16:51:20 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 20:42:28 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 13:01:29 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,15 @@ void		raycast(t_view *cam, t_map *map, t_rayhit *rays);
 void		planecast(t_frame *frame, t_mat32 floor, t_mat32 ceil, t_view *cam);
 void		cub_draw_viewmodel(t_mat32 frame, t_player *player, t_game *game, long dt);
 void		cub_draw_enemies(t_game *game, long dt);
-void		cub_draw_radar(t_game *game, t_map map, long dt);
 void		cub_draw_world(t_game *game);
-void		draw_number(t_mat32 frame, size_t xpos, size_t ypos, uint32_t value);
 void		cub_draw_blood(t_mat32 frame, t_game *game);
 void		cub_draw_crosshair(uint32_t *ptr);
 
 // Draw Utils
 void		draw_line(t_mat32 frame, t_vec2 p0, t_vec2 p1, uint32_t color);
+void		draw_circle(t_mat32 frame, t_quad quad);
+void		draw_number(t_mat32 frame, size_t xpos, size_t ypos, uint32_t value);
 uint8_t		cub_advance_animation(t_sheet *sheet, long dt);
-void		quad_draw(t_mat32 frame, t_quad quad);
 void		cub_draw_texture(t_mat32 frame, t_mat32 image, uint32_t xc, uint32_t yc);
 void		cub_draw_sheet(t_mat32 frame, const t_sheet *sheet, uint32_t xc, uint32_t yc);
 t_sides		cub_center_clip(t_mat32 frame, t_vec2 draw_pos, t_vec2 size);
