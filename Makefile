@@ -1,5 +1,5 @@
 # Configuration ------------------------------- #
-NAME = main
+NAME = cub3D
 VPATH = sources sources/utils sources/input sources/parse sources/gameplay sources/math sources/render
 LDLIBS = $(HOME)/mlx/libmlx_Linux.a -lXext -lX11 -lm -lz
 # CORE ------------------------------------ #
@@ -24,13 +24,13 @@ RM := rm -f
 BUILD_PATH = build
 INC_PATH = includes $(HOME)/mlx
 OBJ_PATH = $(BUILD_PATH)/obj
-BIN = $(BUILD_PATH)/$(NAME)
+BIN = $(NAME)
 OBJS = $(addprefix $(OBJ_PATH)/, $(SRCS:.c=.o))
 
 # Flags --------------------------------------- #
 CC = clang
 CPPFLAGS = $(addprefix -I,$(INC_PATH))
-CFLAGS = -Wall -Wextra -std=c11
+CFLAGS = -Wall -Wextra -Werror -std=c11
 LDFLAGS =
 DEBUG = -g -Wpedantic -Wcast-qual -Wfloat-equal -Wswitch-default -Wsign-conversion
 ASAN = -fsanitize=address,undefined,leak -fno-omit-frame-pointer
@@ -53,6 +53,8 @@ $(BUILD_PATH):
 
 # Phonies ------------------------------------- #
 all: $(BIN)
+
+bonus: $(BIN)
 
 clean:
 	$(RM) -r $(OBJ_PATH)
@@ -77,4 +79,4 @@ fast: CFLAGS += $(FAST)
 fast: LDFLAGS += -flto
 fast: clean $(BIN)
 
-.PHONY: all clean fclean re debug asan tsan fast
+.PHONY: all clean fclean re debug asan tsan fast bonus
