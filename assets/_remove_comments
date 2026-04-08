@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#
+# strip_inline_slashslash_only_inplace.sh
+#
+# Usage: ./strip_inline_slashslash_only_inplace.sh
+# Recursively processes all .c files from the current working directory
+# and removes only inline // comments that follow code.
+# Lines that are only comments remain untouched. /* ... */ is not modified.
+
+set -euo pipefail
+
+if [[ $# -ne 0 ]]; then
+    echo "Usage: $0" >&2
+    exit 1
+fi
+
+find . -type f -name '*.c' -print0 | while IFS= read -r -d '' file; do
+    # Remove // comments only if there is code before them on the same line
+    perl -pi -e '
+        # Match: [indent][code with at least one non-space] [optional spaces] // comment
+        # Keep indent and code, drop the // comment
+        s/^(\s*)(.*\S)\s*\/\/.*$/$1$2/;
+    ' "$file"
+done

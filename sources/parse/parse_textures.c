@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:11 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 15:40:09 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/08 15:35:59 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ static inline int	stt_match_texture\
 	else if (s[0] == 'C')
 		return (stt_read_texture(game, &blk[0].north, s + 1, sptr));
 	else if (!(s[0] == 'T' && s[1] >= '2' && s[1] < ('0' + NUM_BLOCKS)))
-		return (0);
+		return (-2);
 	if (s[2] == 'N')
 		return (stt_read_texture(game, &blk[s[1] - '0'].north, s + 3, sptr));
 	else if (s[2] == 'E')
@@ -131,11 +131,12 @@ static inline int	stt_match_texture\
 		return (stt_read_texture(game, &blk[s[1] - '0'].south, s + 3, sptr));
 	else if (s[2] == 'W')
 		return (stt_read_texture(game, &blk[s[1] - '0'].west, s + 3, sptr));
-	return (0);
+	return (-2);
 }
 
 int	cub_parse_textures(t_game *game, const char **str_ptr, t_memory *memory)
 {
+	int			rvalue;
 	const char	*str = *str_ptr;
 	const char	*end = stt_parse_length(str, str_ptr);
 
@@ -146,8 +147,11 @@ int	cub_parse_textures(t_game *game, const char **str_ptr, t_memory *memory)
 	{
 		while (ft_isspace(*str))
 			str++;
-		if (stt_match_texture(game, str, game->blocks, &str) < 0)
+		rvalue = stt_match_texture(game, str, game->blocks, &str);
+		if (rvalue == -1)
 			return (cub_cleanup(game, "Duplicate textures"));
+		else if (rvalue == -2)
+			return (cub_cleanup(game, "Invalid texture symbol"));
 		str++;
 	}
 	return (0);

@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+#
+# norm_no_inline_comments.sh
+#
+# Usage:
+#   ./norm_no_inline_comments.sh           # runs on current directory
+#   ./norm_no_inline_comments.sh SRC_DIR   # runs on SRC_DIR
+#
+# Requirements:
+#   - norminette must be installed and in PATH.
+
+set -euo pipefail
+
+# Source root: default to current directory if not given
+SRC_ROOT=${1:-.}
+
+if [[ ! -d "$SRC_ROOT" ]]; then
+    echo "Source directory '$SRC_ROOT' does not exist." >&2
+    exit 1
+fi
+
+# Normalize to an absolute path
+SRC_ROOT=$(cd "$SRC_ROOT" && pwd)
+
+# Create temporary directory for modified sources
+TMP_ROOT=$(mktemp -d -t norm_no_inline_comments_XXXXXXXX)
+
+# Ensure temporary directory is removed on exit (success or failure)
+cleanup() {
+    rm -rf "$TMP_ROOT"
+}
+trap cleanup EXIT
+
+# Copy .c files, preserving structure, stripping inline // after code
+find "$SRC_ROOT" -type f -name '*.c' -print0 | while IFS= read -r -d '' src_file; do
+    # Path relative to source root
+    rel_path="${src_file#$SRC_ROOT/}"
+    dest_file="$TMP_ROOT/$rel_path"
+
+    # Create destination directory
+    mkdir -p "$(dirname "$dest_file")"
+
+    # Remove inline // comments only when they follow code
+    # - Lines like "int x = 0; // comment" -> "int x = 0;"
+    # - Lines like "// header" or "   // header" are preserved
+    perl -pe '
+        s/^(\s*)(.*\S)\s*\/\/.*$/$1$2/;
+    ' "$src_file" > "$dest_file"
+done
+
+# Run norminette in the temporary tree
+cd "$TMP_ROOT"
+norminette .
+status=$?
+
+exit "$status"
