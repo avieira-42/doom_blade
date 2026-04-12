@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 16:51:15 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/08 15:28:55 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/12 19:15:57 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdbool.h>
 # include "cmlx_base.h"
 # include "cmlx_draw.h"
+# include "cub_audio.h"
 # include "cub_defines.h"
 
 typedef struct s_hands
@@ -94,7 +95,8 @@ typedef struct s_gstate
 // If adding to assets, remember to add to the free list
 typedef struct s_assets
 {
-	t_sheet	hud_blood;
+	t_sheet	hud_blood; // to relocate
+	t_audio	audio;
 }	t_assets;
 
 typedef struct s_game

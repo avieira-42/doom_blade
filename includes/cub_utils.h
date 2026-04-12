@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 16:51:20 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/09 00:24:12 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/12 19:18:33 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ uint8_t		cub_advance_animation(t_sheet *sheet, long dt);
 void		cub_draw_texture(t_mat32 frame, t_mat32 image, uint32_t xc, uint32_t yc);
 void		cub_draw_sheet(t_mat32 frame, const t_sheet *sheet, uint32_t xc, uint32_t yc);
 t_sides		cub_center_clip(t_mat32 frame, t_vec2 draw_pos, t_vec2 size);
+
+// Audio
+void		cub_play_audio(t_player *player, t_audio *audio, t_game *game, long dt);
 
 // Input
 int			cmlx_keydown(int keycode, t_game *game);

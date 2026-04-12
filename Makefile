@@ -1,15 +1,20 @@
 # Configuration ------------------------------- #
 NAME = main
-VPATH = sources sources/utils sources/input sources/parse sources/gameplay sources/math sources/render
+VPATH = sources sources/utils sources/input sources/parse \
+		sources/gameplay sources/math sources/render sources/audio
 MLX_DIR = libraries/mlx
 MLX = $(MLX_DIR)/libmlx_Linux.a
-LDLIBS = $(MLX) -lXext -lX11 -lm -lz
+SDL_LDLIBS = -lSDL2 -lSDL2_mixer -lSDL2main
+MLX_LDLIBS = $(MLX) -lXext -lX11 -lm
+LDLIBS = $(SDL_LDLIBS) $(MLX_LDLIBS)
 # CORE ------------------------------------ #
 SRCS = main.c cleanup.c
 # RENDER ------------------------------------ #
 SRCS += raycast.c planecast.c
 SRCS += draw_texture.c draw_utils.c draw_world.c draw_ascii.c
 SRCS += draw_enemy.c draw_overlay.c draw_viewmodel.c
+# AUDIO -------------------------------------#
+SRCS += audio.c
 # MATH ------------------------------------ #
 SRCS += integer_scaling.c int_limits.c int_abs.c float_math.c float_abs.c vec2_algebra.c vec2_math.c
 # UTILS ------------------------------------ #

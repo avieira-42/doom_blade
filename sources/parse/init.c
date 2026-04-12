@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:29:53 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/09 00:24:29 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/12 19:17:26 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,19 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 #include "cub_assets.h"
+
+static
+void	stt_audio_init(t_game *game)
+{
+	SDL_Init(SDL_INIT_AUDIO);
+	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+	Mix_AllocateChannels(10);
+	game->assets.audio.shot = Mix_LoadWAV("assets/audio/gun_shot.wav");
+	game->assets.audio.reload = Mix_LoadWAV("assets/audio/gun_reload.wav");
+	game->assets.audio.step = Mix_LoadWAV("assets/audio/step.wav");
+	game->assets.audio.step_fast = Mix_LoadWAV("assets/audio/step_fast.wav");
+	game->assets.audio.no_ammo = Mix_LoadWAV("assets/audio/no_ammo.wav");
+}
 
 static
 int	stt_mlx_init(t_game *game)
@@ -127,6 +140,7 @@ int	cub_init(const char *filename, t_game *game, t_memory *memory)
 	stt_params_init(game, memory);
 	stt_load_assets(game, game->enemies, &game->player.hands);
 	stt_radar_init(game, &game->player.hands.radar_l0);
+	stt_audio_init(game);
 	ft_rng_init();
 	get_time();
 	return (0);

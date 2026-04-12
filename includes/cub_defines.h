@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 16:51:10 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/08 15:32:42 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/12 19:08:00 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,15 @@ enum e_keys
 	key_tab = 1u << 12,
 	key_left = 1u << 13,
 	key_right = 1u << 14
+};
+
+// Audio
+enum e_audio_channel
+{
+	ch_steps = 1,
+	ch_shot = 2,
+	ch_reload = 3,
+	ch_no_ammo = 4,
 };
 
 // Colors

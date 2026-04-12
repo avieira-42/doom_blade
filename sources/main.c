@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:31:33 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/09 00:25:27 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/12 19:21:50 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	cmlx_loop(t_game *game)
 			game->mlx->win_list, game->frame.img, 0, 0);
 		stt_cub_is_dead(game);
 		cmlx_mousemove(game);
+		cub_play_audio(&game->player, &game->assets.audio, game, dt);
 		game->player.state &= ~(size_t)(st_shot);	// Clears the (just X animation)
 	}
 	return (1);
