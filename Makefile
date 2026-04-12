@@ -1,7 +1,9 @@
 # Configuration ------------------------------- #
 NAME = main
 VPATH = sources sources/utils sources/input sources/parse sources/gameplay sources/math sources/render
-LDLIBS = $(HOME)/mlx/libmlx_Linux.a -lXext -lX11 -lm -lz
+MLX_DIR = libraries/mlx
+MLX = $(MLX_DIR)/libmlx_Linux.a
+LDLIBS = $(MLX) -lXext -lX11 -lm -lz
 # CORE ------------------------------------ #
 SRCS = main.c cleanup.c
 # RENDER ------------------------------------ #
@@ -22,7 +24,7 @@ SRCS += keyboard.c mouse.c input.c
 # Defaults ------------------------------------ #
 RM := rm -f
 BUILD_PATH = build
-INC_PATH = includes $(HOME)/mlx
+INC_PATH = includes libraries/mlx
 OBJ_PATH = $(BUILD_PATH)/obj
 BIN = $(BUILD_PATH)/$(NAME)
 OBJS = $(addprefix $(OBJ_PATH)/, $(SRCS:.c=.o))
@@ -42,8 +44,14 @@ $(OBJ_PATH)/%.o: %.c | $(OBJ_PATH)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 # Linking
-$(BIN): $(OBJS) | $(BUILD_PATH)	
+$(BIN): $(MLX) $(OBJS) | $(BUILD_PATH)
 	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
+
+$(MLX):
+	@make -C $(MLX_DIR)
+
+mlx_fclean:
+	$(RM) $(MLX_DIR)/*.a
 
 # Directory
 $(OBJ_PATH):
@@ -57,7 +65,7 @@ all: $(BIN)
 clean:
 	$(RM) -r $(OBJ_PATH)
 
-fclean: clean
+fclean: clean mlx_fclean
 	$(RM) $(BIN) $(BONUS_BIN)
 
 re: fclean all
