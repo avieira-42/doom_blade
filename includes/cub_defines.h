@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 16:51:10 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/12 19:08:00 by avieira-         ###   ########.fr       */
+/*   Updated: 2026/04/12 20:02:49 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,13 @@ enum e_render
 # define VSLOW_ANIM_TIME 180000
 
 // Difficulty
-# define PLAYER_DAMAGE 25
+# define PLAYER_DAMAGE 35
 # define ENEMY_ATTACK_DIST 1
-# define ENEMY_ACCURACY 0.6f
-# define ENEMY_DAMAGE 5
-# define HEAL_VALUE 40				// Heal on kill value
-# define NUM_ENEMIES 32
+# define ENEMY_ACCURACY 0.3f
+# define ENEMY_DAMAGE 1
+# define HEAL_VALUE 35				// Heal on kill value
+# define NUM_ENEMIES 15
+# define PLAYER_HEALTH 200
 
 // RADAR SPECS
 # define RADAR_ICON_SIZE 4
@@ -67,7 +68,6 @@ enum e_render
 # define MOUSE_SENS 0.001953125f	// 	1/512
 # define RESPAWN_TIMER 8000000
 # define AMMO_COUNT 8
-# define PLAYER_HEALTH 100
 # define RELOAD_CYCLE 4
 
 # define ALPHA_SENTINEL1 0x000021FFFF
