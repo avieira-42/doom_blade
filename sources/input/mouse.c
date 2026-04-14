@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   mouse.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/07 15:29:19 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 17:16:44 by adeimlin         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 #include "cub_structs.h"
@@ -19,21 +7,19 @@ int	mlx_mouse_get_pos(void *mlx, void *win_ptr, int *x, int *y);
 
 // 4 ButtonPress
 // 12345 = LMB MMB RMB WHEELUP WHEELDOWN
-int	cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game)
+int	cmlx_mousedown(uint8_t button, t_game *game)
 {
-	(void) x;
-	(void) y;
-	if (button == 1)
+	if (button == SDL_BUTTON_LEFT)
+	{
 		game->state.key |= (size_t) key_lmb;
+	}
 	return (0);
 }
 
 // 5 ButtonRelease
-int	cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game)
+int	cmlx_mouseup(uint8_t button, t_game *game)
 {
-	(void) x;
-	(void) y;
-	if (button == 1)
+	if (button == SDL_BUTTON_LEFT)
 		game->state.key &= ~(size_t)key_lmb;
 	return (0);
 }

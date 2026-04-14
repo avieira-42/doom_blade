@@ -35,7 +35,12 @@ void	stt_sdl_input_update(t_game *game)
 				break;
 			case SDL_KEYUP:
 				cmlx_keyup(event.key.keysym.scancode, game);
-				printf("Key release detected\n");
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				cmlx_mousedown(event.button.button, game);
+				break;
+			case SDL_MOUSEBUTTONUP:
+				cmlx_mouseup(event.button.button, game);
 				break;
 			default:
 				break;
@@ -48,10 +53,10 @@ int	cmlx_loop(t_game *game)
 	static long	avg_fps = 0;
 	const long	dt = 1 + get_time();
 
+	stt_sdl_input_update(game);
 	if (game->state.paused == false)
 	{
 		avg_fps = (avg_fps - avg_fps / 8) + 125000 / dt;
-		stt_sdl_input_update(game);
 		input_handler(game, &game->player);
 		cub_update_game(game, dt);
 		cub_draw_world(game);

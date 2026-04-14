@@ -22,24 +22,6 @@ void	stt_audio_init(t_game *game)
 	game->assets.audio.no_ammo = Mix_LoadWAV("assets/audio/no_ammo.wav");
 }
 
-// TO CHANGE DESTINATION FOLDER >>>>>
-static
-void	keyboard_input_update()
-{
-	const uint8_t	*keyboard_state;
-
-	keyboard_state = SDL_GetKeyboardState(NULL);
-}
-
-static
-void	mouse_input_update()
-{
-	 uint32_t	mouse_state;
-
-	mouse_state = SDL_GetMouseState(NULL, NULL);
-}
-//  <<<<< TO CHANGE DESTINATION FOLDER
-
 static
 int	stt_mlx_init(t_game *game)
 {
@@ -52,13 +34,7 @@ int	stt_mlx_init(t_game *game)
 	if (game->frame.img == NULL)
 		return (cub_cleanup(game, "MLX (IMG) failed to initialize"));
 	window = game->mlx->win_list;
-	
-	/*mlx_hook(window, KeyPress, KeyPressMask, cmlx_keydown, game);
-	mlx_hook(window, KeyRelease, KeyReleaseMask, cmlx_keyup, game);
-	mlx_hook(window, ButtonPress, ButtonPressMask, cmlx_mousedown, game);
-	mlx_hook(window, ButtonRelease, ButtonReleaseMask, cmlx_mouseup, game);
-	mlx_hook(window, DestroyNotify, 0, mlx_loop_end, game->mlx);*/
-	mlx_mouse_hide(game->mlx, window);
+	mlx_hook(window, DestroyNotify, 0, mlx_loop_end, game->mlx);
 	mlx_loop_hook(game->mlx, cmlx_loop, game);
 	return (0);
 }

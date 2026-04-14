@@ -39,8 +39,8 @@ void		cub_play_audio(t_player *player, t_audio *audio, t_game *game, long dt);
 // Input
 int			cmlx_keydown(SDL_Scancode keycode, t_game *game);
 int			cmlx_keyup(SDL_Scancode keycode, t_game *game);
-int			cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game);
-int			cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game);
+int			cmlx_mouseup(uint8_t button, t_game *game);
+int			cmlx_mousedown(uint8_t button, t_game *game);
 int			cmlx_mousemove(t_game *game);
 int			cmlx_loop(t_game *game);
 void		input_handler(t_game *game, t_player *player);
