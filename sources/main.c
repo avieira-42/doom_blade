@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/07 15:31:33 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/12 19:21:50 by avieira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -19,6 +7,8 @@
 #include "cub_defines.h"
 #include "cub_structs.h"
 #include "cub_utils.h"
+
+static	int32_t i = 0;
 
 static
 void	stt_cub_is_dead(t_game *game)
@@ -30,6 +20,29 @@ void	stt_cub_is_dead(t_game *game)
 	}
 }
 
+static
+void	stt_sdl_input_update(t_game *game)
+{
+	SDL_Event		event;
+	i++;
+
+	while(SDL_PollEvent(&event))
+	{
+		switch(event.type)
+		{
+			case SDL_KEYDOWN:
+				cmlx_keydown(event.key.keysym.scancode, game);
+				break;
+			case SDL_KEYUP:
+				cmlx_keyup(event.key.keysym.scancode, game);
+				printf("Key release detected\n");
+				break;
+			default:
+				break;
+		}
+	}
+}
+
 int	cmlx_loop(t_game *game)
 {
 	static long	avg_fps = 0;
@@ -38,6 +51,7 @@ int	cmlx_loop(t_game *game)
 	if (game->state.paused == false)
 	{
 		avg_fps = (avg_fps - avg_fps / 8) + 125000 / dt;
+		stt_sdl_input_update(game);
 		input_handler(game, &game->player);
 		cub_update_game(game, dt);
 		cub_draw_world(game);

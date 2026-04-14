@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/07 15:29:53 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/12 19:17:26 by avieira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <X11/X.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -34,6 +22,24 @@ void	stt_audio_init(t_game *game)
 	game->assets.audio.no_ammo = Mix_LoadWAV("assets/audio/no_ammo.wav");
 }
 
+// TO CHANGE DESTINATION FOLDER >>>>>
+static
+void	keyboard_input_update()
+{
+	const uint8_t	*keyboard_state;
+
+	keyboard_state = SDL_GetKeyboardState(NULL);
+}
+
+static
+void	mouse_input_update()
+{
+	 uint32_t	mouse_state;
+
+	mouse_state = SDL_GetMouseState(NULL, NULL);
+}
+//  <<<<< TO CHANGE DESTINATION FOLDER
+
 static
 int	stt_mlx_init(t_game *game)
 {
@@ -46,11 +52,12 @@ int	stt_mlx_init(t_game *game)
 	if (game->frame.img == NULL)
 		return (cub_cleanup(game, "MLX (IMG) failed to initialize"));
 	window = game->mlx->win_list;
-	mlx_hook(window, KeyPress, KeyPressMask, cmlx_keydown, game);
+	
+	/*mlx_hook(window, KeyPress, KeyPressMask, cmlx_keydown, game);
 	mlx_hook(window, KeyRelease, KeyReleaseMask, cmlx_keyup, game);
 	mlx_hook(window, ButtonPress, ButtonPressMask, cmlx_mousedown, game);
 	mlx_hook(window, ButtonRelease, ButtonReleaseMask, cmlx_mouseup, game);
-	mlx_hook(window, DestroyNotify, 0, mlx_loop_end, game->mlx);
+	mlx_hook(window, DestroyNotify, 0, mlx_loop_end, game->mlx);*/
 	mlx_mouse_hide(game->mlx, window);
 	mlx_loop_hook(game->mlx, cmlx_loop, game);
 	return (0);
@@ -121,6 +128,25 @@ static void	stt_load_assets(t_game *game, t_enemy enemies[NUM_ENEMIES], t_hands 
 		enemies[i++] = enemies[0];
 }
 
+static
+void	stt_sdl_init()
+{
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0)
+	{
+		write(2, "failed to init sdl context\n", 26);
+		exit(1);
+	}
+	SDL_Window	*window = SDL_CreateWindow
+		(
+		 "SDL_WINDOW",
+		 SDL_WINDOWPOS_CENTERED,
+		 SDL_WINDOWPOS_CENTERED,
+		 s_width, s_height,
+		 0
+		);
+}
+
+
 int	cub_init(const char *filename, t_game *game, t_memory *memory)
 {
 	size_t		file_size;
@@ -136,6 +162,7 @@ int	cub_init(const char *filename, t_game *game, t_memory *memory)
 		return (cub_cleanup(game, "MLX initialization failed"));
 	cub_parse_textures(game, &str, memory);
 	cub_read_map(game, str, &game->map, &game->player);
+	stt_sdl_init();
 	stt_mlx_init(game);
 	stt_params_init(game, memory);
 	stt_load_assets(game, game->enemies, &game->player.hands);

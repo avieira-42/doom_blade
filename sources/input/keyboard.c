@@ -1,84 +1,67 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   keyboard.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/07 15:29:13 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:16:04 by adeimlin         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+#include <SDL2/SDL_scancode.h>
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 #include "cub_structs.h"
 #include "cub_utils.h"
 
-static inline
-void	stt_keydown(int keycode, t_game *game)
-{
-	if (keycode == XK_Shift_L)
-		game->state.key |= (size_t)key_shift;
-	if (keycode == XK_Control_L)
-		game->state.key |= (size_t)key_ctrl;
-	if (keycode == XK_Left)
-		game->state.key |= (size_t)key_left;
-	if (keycode == XK_Right)
-		game->state.key |= (size_t)key_right;
-}
-
 // Keymap
 // 2 KeyRelease
-int	cmlx_keydown(int keycode, t_game *game)
+int			cmlx_keydown(SDL_Scancode keycode, t_game *game)
 {
-	if (keycode == XK_Escape)
+	if (keycode == SDL_SCANCODE_ESCAPE)
 		return (mlx_loop_end(game->mlx));
-	game->state.paused ^= (keycode == XK_p);
+	game->state.paused ^= (keycode == SDL_SCANCODE_P);
 	if (game->state.paused == true)
 		return (0);
-	if (keycode == XK_w || keycode == XK_Up)
+	if (keycode == SDL_SCANCODE_W || keycode == SDL_SCANCODE_UP)
 		game->state.key |= (size_t)key_w;
-	if (keycode == XK_a)
+	if (keycode == SDL_SCANCODE_A)
 		game->state.key |= (size_t)key_a;
-	if (keycode == XK_s || keycode == XK_Down)
+	if (keycode == SDL_SCANCODE_S || keycode == SDL_SCANCODE_DOWN)
 		game->state.key |= (size_t)key_s;
-	if (keycode == XK_d)
+	if (keycode == SDL_SCANCODE_D)
 		game->state.key |= (size_t)key_d;
-	if (keycode == XK_r)
+	if (keycode == SDL_SCANCODE_R)
 		game->state.key |= (size_t)key_r;
-	if (keycode == XK_e)
+	if (keycode == SDL_SCANCODE_E)
 		game->state.key |= (size_t)key_e;
-	if (keycode == XK_Tab)
+	if (keycode == SDL_SCANCODE_TAB)
 		game->state.key |= (size_t)key_tab;
-	stt_keydown(keycode, game);
+	if (keycode == SDL_SCANCODE_LSHIFT)
+		game->state.key |= (size_t)key_shift;
+	if (keycode == SDL_SCANCODE_LCTRL)
+		game->state.key |= (size_t)key_ctrl;
+	if (keycode == SDL_SCANCODE_LEFT)
+		game->state.key |= (size_t)key_left;
+	if (keycode == SDL_SCANCODE_RIGHT)
+		game->state.key |= (size_t)key_right;
 	return (0);
 }
 
 // 3 KeyPress
-int	cmlx_keyup(int keycode, t_game *game)
+int			cmlx_keyup(SDL_Scancode keycode, t_game *game)
 {
-	if (keycode == XK_w || keycode == XK_Up)
+	if (keycode == SDL_SCANCODE_W || keycode == SDL_SCANCODE_UP)
 		game->state.key &= ~(size_t)key_w;
-	if (keycode == XK_a)
+	if (keycode == SDL_SCANCODE_A)
 		game->state.key &= ~(size_t)key_a;
-	if (keycode == XK_s || keycode == XK_Down)
+	if (keycode == SDL_SCANCODE_S || keycode == SDL_SCANCODE_DOWN)
 		game->state.key &= ~(size_t)key_s;
-	if (keycode == XK_d)
+	if (keycode == SDL_SCANCODE_D)
 		game->state.key &= ~(size_t)key_d;
-	if (keycode == XK_Shift_L)
+	if (keycode == SDL_SCANCODE_LSHIFT)
 		game->state.key &= ~(size_t)key_shift;
-	if (keycode == XK_Control_L)
+	if (keycode == SDL_SCANCODE_LCTRL)
 		game->state.key &= ~(size_t)key_ctrl;
-	if (keycode == XK_r)
+	if (keycode == SDL_SCANCODE_R)
 		game->state.key &= ~(size_t)key_r;
-	if (keycode == XK_e)
+	if (keycode == SDL_SCANCODE_E)
 		game->state.key &= ~(size_t)key_e;
-	if (keycode == XK_Tab)
+	if (keycode == SDL_SCANCODE_TAB)
 		game->state.key &= ~(size_t)key_tab;
-	if (keycode == XK_Left)
+	if (keycode == SDL_SCANCODE_LEFT)
 		game->state.key &= ~(size_t)key_left;
-	if (keycode == XK_Right)
+	if (keycode == SDL_SCANCODE_RIGHT)
 		game->state.key &= ~(size_t)key_right;
 	return (0);
 }

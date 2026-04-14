@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cub_utils.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/07 16:51:20 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/12 19:18:33 by avieira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef CUB_UTILS_H
 # define CUB_UTILS_H
 
@@ -21,6 +9,7 @@
 # include "cmlx_base.h"
 # include "cmlx_draw.h"
 # include "cub_structs.h"
+# include <SDL2/SDL.h>
 
 // Gameplay
 void		cub_update_game(t_game *game, long dt);
@@ -48,8 +37,8 @@ t_sides		cub_center_clip(t_mat32 frame, t_vec2 draw_pos, t_vec2 size);
 void		cub_play_audio(t_player *player, t_audio *audio, t_game *game, long dt);
 
 // Input
-int			cmlx_keydown(int keycode, t_game *game);
-int			cmlx_keyup(int keycode, t_game *game);
+int			cmlx_keydown(SDL_Scancode keycode, t_game *game);
+int			cmlx_keyup(SDL_Scancode keycode, t_game *game);
 int			cmlx_mousedown(int button, int32_t x, int32_t y, t_game *game);
 int			cmlx_mouseup(int button, int32_t x, int32_t y, t_game *game);
 int			cmlx_mousemove(t_game *game);
