@@ -8,8 +8,6 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 
-static	int32_t i = 0;
-
 static
 void	stt_cub_is_dead(t_game *game)
 {

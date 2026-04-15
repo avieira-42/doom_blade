@@ -1,4 +1,5 @@
 #include <X11/X.h>
+
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -137,6 +138,7 @@ int	cub_init(const char *filename, t_game *game, t_memory *memory)
 	game->mlx = mlx_init();
 	if (game->mlx == NULL)
 		return (cub_cleanup(game, "MLX initialization failed"));
+	// here we get each sprite from the paths written in the map input file
 	cub_parse_textures(game, &str, memory);
 	cub_read_map(game, str, &game->map, &game->player);
 	stt_sdl_init(game);

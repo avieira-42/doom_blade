@@ -4,7 +4,7 @@ VPATH = sources sources/utils sources/input sources/parse \
 		sources/gameplay sources/math sources/render sources/audio
 MLX_DIR = libraries/mlx
 MLX = $(MLX_DIR)/libmlx_Linux.a
-SDL_LDLIBS = -lSDL2 -lSDL2_mixer -lSDL2main
+SDL_LDLIBS = -lSDL2 -lSDL2_mixer -lSDL2main -lSDL2_image
 MLX_LDLIBS = $(MLX) -lXext -lX11 -lm
 LDLIBS = $(SDL_LDLIBS) $(MLX_LDLIBS)
 # CORE ------------------------------------ #

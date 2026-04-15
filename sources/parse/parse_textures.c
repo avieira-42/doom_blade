@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_textures.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/07 15:30:11 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/09 00:24:44 by adeimlin         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -20,7 +8,6 @@
 #include "cub_structs.h"
 #include "cub_utils.h"
 #include "cmlx_base.h"
-#include "mlx.h"
 
 static
 void	stt_texture_init(t_block *blocks, t_memory *memory)

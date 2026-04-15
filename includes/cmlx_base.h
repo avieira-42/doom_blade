@@ -1,26 +1,18 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cmlx_base.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/07 16:50:54 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 16:50:55 by adeimlin         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef CMLX_BASE_H
 # define CMLX_BASE_H
 
-# include "mlx.h"
 # include <stdint.h>
 # include <stddef.h>
 # include <stdbool.h>
+# include <SDL2/SDL_image.h>
+
+// TO REMOVE >>>>
 # include <X11/Xlib.h>
 # include <X11/Xutil.h>
 # include <X11/extensions/XShm.h>
 # include <X11/XKBlib.h>
+# include "mlx.h"
+// <<<<<< TO REMOVE
 
 # define MLX_MAX_EVENT LASTEvent
 
