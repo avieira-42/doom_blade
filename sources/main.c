@@ -20,43 +20,15 @@ void	stt_cub_is_dead(t_game *game)
 	}
 }
 
-static
-void	stt_sdl_input_update(t_game *game)
-{
-	SDL_Event		event;
-	i++;
-
-	while(SDL_PollEvent(&event))
-	{
-		switch(event.type)
-		{
-			case SDL_KEYDOWN:
-				cmlx_keydown(event.key.keysym.scancode, game);
-				break;
-			case SDL_KEYUP:
-				cmlx_keyup(event.key.keysym.scancode, game);
-				break;
-			case SDL_MOUSEBUTTONDOWN:
-				cmlx_mousedown(event.button.button, game);
-				break;
-			case SDL_MOUSEBUTTONUP:
-				cmlx_mouseup(event.button.button, game);
-				break;
-			default:
-				break;
-		}
-	}
-}
-
 int	cmlx_loop(t_game *game)
 {
 	static long	avg_fps = 0;
 	const long	dt = 1 + get_time();
 
-	stt_sdl_input_update(game);
 	if (game->state.paused == false)
 	{
 		avg_fps = (avg_fps - avg_fps / 8) + 125000 / dt;
+		sdl_input_update(game);
 		input_handler(game, &game->player);
 		cub_update_game(game, dt);
 		cub_draw_world(game);
@@ -69,7 +41,6 @@ int	cmlx_loop(t_game *game)
 		mlx_put_image_to_window(game->mlx,
 			game->mlx->win_list, game->frame.img, 0, 0);
 		stt_cub_is_dead(game);
-		cmlx_mousemove(game);
 		cub_play_audio(&game->player, &game->assets.audio, game, dt);
 		game->player.state &= ~(size_t)(st_shot);	// Clears the (just X animation)
 	}

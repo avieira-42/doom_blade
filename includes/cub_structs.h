@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cub_structs.h                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/07 16:51:15 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/12 19:15:57 by avieira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef CUB_STRUCTS_H
 # define CUB_STRUCTS_H
 
@@ -101,6 +89,7 @@ typedef struct s_assets
 
 typedef struct s_game
 {
+	SDL_Window	*window;
 	t_xvar		*mlx;
 	t_frame		frame;
 	t_gstate	state;

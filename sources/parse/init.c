@@ -105,14 +105,14 @@ static void	stt_load_assets(t_game *game, t_enemy enemies[NUM_ENEMIES], t_hands 
 }
 
 static
-void	stt_sdl_init()
+void	stt_sdl_init(t_game *game)
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0)
 	{
 		write(2, "failed to init sdl context\n", 26);
 		exit(1);
 	}
-	SDL_Window	*window = SDL_CreateWindow
+	game->window = SDL_CreateWindow
 		(
 		 "SDL_WINDOW",
 		 SDL_WINDOWPOS_CENTERED,
@@ -120,6 +120,7 @@ void	stt_sdl_init()
 		 s_width, s_height,
 		 0
 		);
+	SDL_ShowCursor(SDL_DISABLE);
 }
 
 
@@ -138,7 +139,7 @@ int	cub_init(const char *filename, t_game *game, t_memory *memory)
 		return (cub_cleanup(game, "MLX initialization failed"));
 	cub_parse_textures(game, &str, memory);
 	cub_read_map(game, str, &game->map, &game->player);
-	stt_sdl_init();
+	stt_sdl_init(game);
 	stt_mlx_init(game);
 	stt_params_init(game, memory);
 	stt_load_assets(game, game->enemies, &game->player.hands);
