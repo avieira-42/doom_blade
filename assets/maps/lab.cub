@@ -1,13 +1,13 @@
-NO assets/sprites/xpm/tiles/lab/lab0.xpm
-SO assets/sprites/xpm/tiles/lab/lab0.xpm
-WE assets/sprites/xpm/tiles/lab/lab0.xpm
-EA assets/sprites/xpm/tiles/lab/lab0.xpm
-F assets/sprites/xpm/tiles/lab/metal0.xpm
-C assets/sprites/xpm/tiles/lab/lamp0.xpm
-T2N assets/sprites/xpm/tiles/lab/lamp0.xpm
-T2E assets/sprites/xpm/tiles/lab/lamp0.xpm
-T2S assets/sprites/xpm/tiles/lab/lamp0.xpm
-T2W assets/sprites/xpm/tiles/lab/lamp0.xpm
+NO assets/sprites/png/tiles/lab/lab_wall0.png
+SO assets/sprites/png/tiles/lab/lab_wall0.png
+WE assets/sprites/png/tiles/lab/lab_wall0.png
+EA assets/sprites/png/tiles/lab/lab_wall0.png
+C assets/sprites/png/tiles/lab/lab_lamp0.png
+F assets/sprites/png/tiles/lab/lab_floor0.png
+T2N assets/sprites/png/tiles/lab/lamp0.xpm
+T2E assets/sprites/png/tiles/lab/lamp0.xpm
+T2S assets/sprites/png/tiles/lab/lamp0.xpm
+T2W assets/sprites/png/tiles/lab/lamp0.xpm
 
      111111111111111           11111
      10000000001111          11000111

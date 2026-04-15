@@ -1,13 +1,13 @@
-NO assets/sprites/xpm/tiles/hell/wallGore0.xpm
-SO assets/sprites/xpm/tiles/hell/wallGore0.xpm
-WE assets/sprites/xpm/tiles/hell/wallGore0.xpm
-EA assets/sprites/xpm/tiles/hell/wallGore0.xpm
-F assets/sprites/xpm/tiles/hell/stoneGore0.xpm
-C assets/sprites/xpm/tiles/hell/lampGore0.xpm
-T2N assets/sprites/xpm/tiles/hell/gates/doorGore0.xpm
-T2E assets/sprites/xpm/tiles/hell/gates/doorGore0.xpm
-T2S assets/sprites/xpm/tiles/hell/gates/doorGore0.xpm
-T2W assets/sprites/xpm/tiles/hell/gates/doorGore0.xpm
+NO assets/sprites/png/tiles/hell/wallGore0.png
+SO assets/sprites/png/tiles/hell/wallGore0.png
+WE assets/sprites/png/tiles/hell/wallGore0.png
+EA assets/sprites/png/tiles/hell/wallGore0.png
+F assets/sprites/png/tiles/hell/stoneGore0.png
+C assets/sprites/png/tiles/hell/lampGore0.png
+T2N assets/sprites/png/tiles/hell/gates/doorGore0.png
+T2E assets/sprites/png/tiles/hell/gates/doorGore0.png
+T2S assets/sprites/png/tiles/hell/gates/doorGore0.png
+T2W assets/sprites/png/tiles/hell/gates/doorGore0.png
 
      111111111111111           11111
      10000000001111          11000111

@@ -1,13 +1,13 @@
-NO assets/sprites/xpm/tiles/castle/castle_wall0.xpm
-SO assets/sprites/xpm/tiles/castle/castle_wall0.xpm
-WE assets/sprites/xpm/tiles/castle/castle_wall0.xpm
-EA assets/sprites/xpm/tiles/castle/castle_wall0.xpm
-F assets/sprites/xpm/tiles/castle/castle_floor0.xpm
-C assets/sprites/xpm/tiles/castle/castle_ceiling1.xpm
-T2N assets/sprites/xpm/tiles/castle/castle_door0.xpm
-T2E assets/sprites/xpm/tiles/castle/castle_door0.xpm
-T2S assets/sprites/xpm/tiles/castle/castle_door0.xpm
-T2W assets/sprites/xpm/tiles/castle/castle_door0.xpm
+NO assets/sprites/png/tiles/castle/castle_wall0.png
+SO assets/sprites/png/tiles/castle/castle_wall0.png
+WE assets/sprites/png/tiles/castle/castle_wall0.png
+EA assets/sprites/png/tiles/castle/castle_wall0.png
+F assets/sprites/png/tiles/castle/castle_floor0.png
+C assets/sprites/png/tiles/castle/castle_ceiling1.png
+T2N assets/sprites/png/tiles/castle/castle_door0.png
+T2E assets/sprites/png/tiles/castle/castle_door0.png
+T2S assets/sprites/png/tiles/castle/castle_door0.png
+T2W assets/sprites/png/tiles/castle/castle_door0.png
 
 
      111111111111111           11111
