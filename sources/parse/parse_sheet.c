@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:05 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/09 00:24:37 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/15 23:45:06 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 static
 void	stt_load_texture(t_game *game, t_str path, size_t count, t_mat32 *dst)
 {
-	static const char	append_str[5] = ".xpm";
+	static const char	append_str[5] = ".png";
 	size_t				number_length;
 	char				*append_ptr;
 
