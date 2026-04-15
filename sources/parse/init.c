@@ -26,14 +26,24 @@ void	stt_audio_init(t_game *game)
 static
 int	stt_mlx_init(t_game *game)
 {
-	t_win_list	*window;
+	t_win_list		*window; // to remove
 
 	mlx_new_window(game->mlx, s_width, s_height, "doom_blade");
 	if (game->mlx->win_list == NULL)
 		return (cub_cleanup(game, "MLX (WIN) failed to initialize"));
-	game->frame.img = mlx_int_new_image(game->mlx, s_width, s_height, ZPixmap);
-	if (game->frame.img == NULL)
-		return (cub_cleanup(game, "MLX (IMG) failed to initialize"));
+
+	game->frame.img = mlx_int_new_image(game->mlx, s_width, s_height, ZPixmap); // to remove
+	if (game->frame.img == NULL) // to remove
+		return (cub_cleanup(game, "MLX (IMG) failed to initialize")); // to remove
+	game->frame.img2 = SDL_CreateTexture
+		(
+		 game->renderer,
+		 SDL_PIXELFORMAT_ARGB8888,
+		 SDL_TEXTUREACCESS_STREAMING,
+		 s_width,
+		 s_height
+		 );
+
 	window = game->mlx->win_list;
 	mlx_hook(window, DestroyNotify, 0, mlx_loop_end, game->mlx);
 	mlx_loop_hook(game->mlx, cmlx_loop, game);

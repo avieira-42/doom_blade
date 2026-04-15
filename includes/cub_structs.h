@@ -89,16 +89,17 @@ typedef struct s_assets
 
 typedef struct s_game
 {
-	SDL_Window	*window;
-	t_xvar		*mlx;
-	t_frame		frame;
-	t_gstate	state;
-	t_map		map;
-	t_player	player;
-	t_enemy		enemies[NUM_ENEMIES];
-	t_block		blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
-	t_assets	assets;
-	char		*file;
+	SDL_Window		*window;
+	SDL_Renderer	*renderer;
+	t_xvar			*mlx; // to remove
+	t_frame			frame;
+	t_gstate		state;
+	t_map			map;
+	t_player		player;
+	t_enemy			enemies[NUM_ENEMIES];
+	t_block			blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
+	t_assets		assets;
+	char			*file;
 }	t_game;
 
 #endif
