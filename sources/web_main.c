@@ -7,7 +7,7 @@
 #include "cub_defines.h"
 #include "cub_structs.h"
 #include "cub_utils.h"
-//# include <emscripten.h>
+# include <emscripten.h>
 
 static
 void	stt_cub_is_dead(t_game *game)
@@ -60,9 +60,7 @@ int	main(int argc, char **argv)
 	/* here we set the loop manually
 	 * but techincally with emscripten
 	 * we loop like we do on mlx */
-	while (1)
-		cmlx_loop(&game);
-	//emspcripten_set_main_loop_arg(cmlx_loop, &game, -1, 1);
+	emspcripten_set_main_loop_arg(cmlx_loop, &game, -1, 1);
 
 	return (0);
 }

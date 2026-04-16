@@ -5,7 +5,10 @@ VPATH = sources sources/utils sources/input sources/parse \
 SDL_LDLIBS = -lSDL2 -lSDL2_mixer -lSDL2main -lSDL2_image -lm
 LDLIBS = $(SDL_LDLIBS)
 # CORE ------------------------------------ #
-SRCS = main.c cleanup.c
+UNIX_MAIN = main.c
+WEB_MAIN = web_main.c
+MAIN = $(UNIX_MAIN)
+SRCS = $(MAIN) cleanup.c
 # RENDER ------------------------------------ #
 SRCS += raycast.c planecast.c
 SRCS += draw_texture.c draw_utils.c draw_world.c draw_ascii.c
@@ -30,9 +33,12 @@ INC_PATH = includes
 OBJ_PATH = $(BUILD_PATH)/obj
 BIN = $(BUILD_PATH)/$(NAME)
 OBJS = $(addprefix $(OBJ_PATH)/, $(SRCS:.c=.o))
+OUTPUT = game.js
 
 # Flags --------------------------------------- #
 CC = clang
+EMCC = emcc
+COMPILER = $(CC)
 CPPFLAGS = $(addprefix -I,$(INC_PATH))
 CFLAGS = -Wall -Wextra -std=c11
 LDFLAGS =
@@ -43,11 +49,11 @@ FAST = -march=native -flto -O3 -ffast-math -fstrict-aliasing
 
 # Pattern Rules: Compilation ------------------ #
 $(OBJ_PATH)/%.o: %.c | $(OBJ_PATH)
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+	$(COMPILER) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 # Linking
 $(BIN): $(OBJS) | $(BUILD_PATH)
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
+	$(COMPILER) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS) -o build/$(OUTPUT)
 
 # Directory
 $(OBJ_PATH):
@@ -56,6 +62,8 @@ $(BUILD_PATH):
 	@mkdir -p $@
 
 # Phonies ------------------------------------- #
+web:
+
 all: $(BIN)
 
 clean:
@@ -80,5 +88,15 @@ tsan: clean $(BIN)
 fast: CFLAGS += $(FAST)
 fast: LDFLAGS += -flto
 fast: clean $(BIN)
+
+web: COMPILER = $(EMCC)
+web: OUTPUT = index.js
+web: MAIN = $(WEB_MAIN)
+web: $(BIN)
+
+unix: COMPILER = $(CC)
+unix: OUTPUT = doom_blade
+unix: MAIN = $(UNIX_MAIN)
+unix: $(BIN)
 
 .PHONY: all clean fclean re debug asan tsan fast
