@@ -1,5 +1,3 @@
-#include <X11/X.h>
-
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -40,21 +38,7 @@ void	stt_sdl_init(t_game *game)
 		 0
 		);
 	SDL_ShowCursor(SDL_DISABLE);
-}
 
-
-static
-int	stt_mlx_init(t_game *game)
-{
-	/*t_win_list		*window; // to remove
-
-	mlx_new_window(game->mlx, s_width, s_height, "doom_blade");
-	if (game->mlx->win_list == NULL)
-		return (cub_cleanup(game, "MLX (WIN) failed to initialize"));
-
-	game->frame.img2 = mlx_int_new_image(game->mlx, s_width, s_height, ZPixmap); // to remove
-	if (game->frame.img2 == NULL) // to remove
-		return (cub_cleanup(game, "MLX (IMG) failed to initialize")); // to remove*/
 	game->frame.img = SDL_CreateRGBSurfaceWithFormat
 		(
 		 0,
@@ -63,11 +47,6 @@ int	stt_mlx_init(t_game *game)
 		 32,
 		 SDL_PIXELFORMAT_ARGB8888
 		 );
-
-	/*window = game->mlx->win_list;
-	mlx_hook(window, DestroyNotify, 0, mlx_loop_end, game->mlx);
-	mlx_loop_hook(game->mlx, cmlx_loop, game);*/
-	return (0);
 }
 
 static
@@ -149,7 +128,6 @@ int	cub_init(const char *filename, t_game *game, t_memory *memory)
 	cub_parse_textures(game, &str, memory);
 	cub_read_map(game, str, &game->map, &game->player);
 	stt_sdl_init(game);
-	stt_mlx_init(game);
 	stt_params_init(game, memory);
 	stt_load_assets(game, game->enemies, &game->player.hands);
 	stt_radar_init(game, &game->player.hands.radar_l0);

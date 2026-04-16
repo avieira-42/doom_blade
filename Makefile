@@ -2,9 +2,8 @@
 NAME = main
 VPATH = sources sources/utils sources/input sources/parse \
 		sources/gameplay sources/math sources/render sources/audio
-SDL_LDLIBS = -lSDL2 -lSDL2_mixer -lSDL2main -lSDL2_image
-MLX_LDLIBS = $(MLX) -lXext -lX11 -lm
-LDLIBS = $(SDL_LDLIBS) $(MLX_LDLIBS)
+SDL_LDLIBS = -lSDL2 -lSDL2_mixer -lSDL2main -lSDL2_image -lm
+LDLIBS = $(SDL_LDLIBS)
 # CORE ------------------------------------ #
 SRCS = main.c cleanup.c
 # RENDER ------------------------------------ #
@@ -47,11 +46,8 @@ $(OBJ_PATH)/%.o: %.c | $(OBJ_PATH)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 # Linking
-$(BIN): $(MLX) $(OBJS) | $(BUILD_PATH)
+$(BIN): $(OBJS) | $(BUILD_PATH)
 	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
-
-$(MLX):
-	@make -C $(MLX_DIR)
 
 # Directory
 $(OBJ_PATH):

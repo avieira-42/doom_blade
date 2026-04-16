@@ -6,15 +6,13 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:30:34 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/09 00:25:29 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/16 23:31:30 by avieira-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
-#include <math.h>
-#include "cub_structs.h"
 #include "cub_utils.h"
 
 static inline
