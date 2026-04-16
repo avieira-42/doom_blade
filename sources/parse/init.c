@@ -24,29 +24,49 @@ void	stt_audio_init(t_game *game)
 }
 
 static
+void	stt_sdl_init(t_game *game)
+{
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0)
+	{
+		write(2, "failed to init sdl context\n", 26);
+		exit(1);
+	}
+	game->window = SDL_CreateWindow
+		(
+		 "SDL_WINDOW",
+		 SDL_WINDOWPOS_CENTERED,
+		 SDL_WINDOWPOS_CENTERED,
+		 s_width, s_height,
+		 0
+		);
+	SDL_ShowCursor(SDL_DISABLE);
+}
+
+
+static
 int	stt_mlx_init(t_game *game)
 {
-	t_win_list		*window; // to remove
+	/*t_win_list		*window; // to remove
 
 	mlx_new_window(game->mlx, s_width, s_height, "doom_blade");
 	if (game->mlx->win_list == NULL)
 		return (cub_cleanup(game, "MLX (WIN) failed to initialize"));
 
-	game->frame.img = mlx_int_new_image(game->mlx, s_width, s_height, ZPixmap); // to remove
-	if (game->frame.img == NULL) // to remove
-		return (cub_cleanup(game, "MLX (IMG) failed to initialize")); // to remove
-	game->frame.img2 = SDL_CreateTexture
+	game->frame.img2 = mlx_int_new_image(game->mlx, s_width, s_height, ZPixmap); // to remove
+	if (game->frame.img2 == NULL) // to remove
+		return (cub_cleanup(game, "MLX (IMG) failed to initialize")); // to remove*/
+	game->frame.img = SDL_CreateRGBSurfaceWithFormat
 		(
-		 game->renderer,
-		 SDL_PIXELFORMAT_ARGB8888,
-		 SDL_TEXTUREACCESS_STREAMING,
+		 0,
 		 s_width,
-		 s_height
+		 s_height,
+		 32,
+		 SDL_PIXELFORMAT_ARGB8888
 		 );
 
-	window = game->mlx->win_list;
+	/*window = game->mlx->win_list;
 	mlx_hook(window, DestroyNotify, 0, mlx_loop_end, game->mlx);
-	mlx_loop_hook(game->mlx, cmlx_loop, game);
+	mlx_loop_hook(game->mlx, cmlx_loop, game);*/
 	return (0);
 }
 
@@ -58,10 +78,10 @@ void	stt_params_init(t_game *game, t_memory *memory)
 	game->player.ammo = AMMO_COUNT;
 	game->player.health = PLAYER_HEALTH;
 	game->player.state = st_idle;
-	game->frame.display.ptr = (uint32_t *)game->frame.img->data;
-	game->frame.display.height = game->frame.img->height;
-	game->frame.display.width = game->frame.img->width;
-	game->frame.display.stride = game->frame.img->width;
+	game->frame.display.ptr = (uint32_t *)game->frame.img->pixels;
+	game->frame.display.height = game->frame.img->h;
+	game->frame.display.width = game->frame.img->w;
+	game->frame.display.stride = game->frame.img->w;
 	game->frame.render.ptr = (uint32_t *)memory->render_frame;
 	game->frame.render.height = R_HEIGHT;
 	game->frame.render.width = R_WIDTH;
@@ -114,26 +134,6 @@ static void	stt_load_assets(t_game *game, t_enemy enemies[NUM_ENEMIES], t_hands 
 	while (i < NUM_ENEMIES)
 		enemies[i++] = enemies[0];
 }
-
-static
-void	stt_sdl_init(t_game *game)
-{
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0)
-	{
-		write(2, "failed to init sdl context\n", 26);
-		exit(1);
-	}
-	game->window = SDL_CreateWindow
-		(
-		 "SDL_WINDOW",
-		 SDL_WINDOWPOS_CENTERED,
-		 SDL_WINDOWPOS_CENTERED,
-		 s_width, s_height,
-		 0
-		);
-	SDL_ShowCursor(SDL_DISABLE);
-}
-
 
 int	cub_init(const char *filename, t_game *game, t_memory *memory)
 {

@@ -89,8 +89,8 @@ typedef struct s_frame
 {
 	t_mat32		display;
 	t_mat32		render;
-	SDL_Texture	*img2;
-	t_img		*img;
+	SDL_Surface	*img;
+	t_img		*img2;
 	t_rayhit	*rays;
 	int32_t		offset;
 }	t_frame;

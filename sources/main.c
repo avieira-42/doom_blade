@@ -22,6 +22,7 @@ int	cmlx_loop(t_game *game)
 {
 	static long	avg_fps = 0;
 	const long	dt = 1 + get_time();
+	SDL_Surface	*window_surface = SDL_GetWindowSurface(game->window);
 
 	if (game->state.paused == false)
 	{
@@ -36,8 +37,11 @@ int	cmlx_loop(t_game *game)
 		ft_integer_scaling_t(game->frame.render, game->frame.display, UPSCALE);
 		cub_draw_crosshair(game->frame.display.ptr);
 		draw_number(game->frame.display, 8, 8, avg_fps);
-		mlx_put_image_to_window(game->mlx,
-			game->mlx->win_list, game->frame.img, 0, 0);
+		//SDL_BlitSurface(img, NULL, );
+		/*mlx_put_image_to_window(game->mlx,
+			game->mlx->win_list, game->frame.img, 0, 0);*/ // removed
+		SDL_BlitSurface(game->frame.img, NULL, window_surface, NULL);
+		SDL_UpdateWindowSurface(game->window);
 		stt_cub_is_dead(game);
 		cub_play_audio(&game->player, &game->assets.audio, game, dt);
 		game->player.state &= ~(size_t)(st_shot);	// Clears the (just X animation)
@@ -54,7 +58,9 @@ int	main(int argc, char **argv)
 		return (write(2, "Error\nInvalid Argument Count", 28), 1);
 	if (cub_init(argv[1], &game, &memory) == -1)
 		return (1);
-	mlx_loop(game.mlx);
-	cub_cleanup(&game, NULL);
+	while (1)
+		cmlx_loop(&game);
+	//mlx_loop(game.mlx);
+	//cub_cleanup(&game, NULL);
 	return (0);
 }
