@@ -145,9 +145,6 @@ int	cub_init(const char *filename, t_game *game, t_memory *memory)
 	str = game->file;
 	if (game->file == NULL)
 		return (cub_cleanup(game, "Failed to open file"));
-	game->mlx = mlx_init();
-	if (game->mlx == NULL)
-		return (cub_cleanup(game, "MLX initialization failed"));
 	// here we get each sprite from the paths written in the map input file
 	cub_parse_textures(game, &str, memory);
 	cub_read_map(game, str, &game->map, &game->player);

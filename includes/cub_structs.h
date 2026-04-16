@@ -100,6 +100,7 @@ typedef struct s_game
 	t_block			blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
 	t_assets		assets;
 	char			*file;
+	bool			quit;
 }	t_game;
 
 #endif

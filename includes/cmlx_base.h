@@ -11,7 +11,6 @@
 # include <X11/Xutil.h>
 # include <X11/extensions/XShm.h>
 # include <X11/XKBlib.h>
-# include "mlx.h"
 // <<<<<< TO REMOVE
 
 # define MLX_MAX_EVENT LASTEvent

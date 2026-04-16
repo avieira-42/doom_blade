@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cleanup.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/07 15:31:28 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/08 13:14:47 by adeimlin         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <stdlib.h>
 #include "cmlx_base.h"
 #include "cub_defines.h"
@@ -53,12 +41,12 @@ int	cub_cleanup(t_game *game, const char *msg)
 		stt_error(msg);
 	free(game->file);
 	free(game->map.tex_index);
-	if (game->mlx != NULL && game->mlx->win_list != NULL)
+	/*if (game->mlx != NULL && game->mlx->win_list != NULL)
 		mlx_destroy_window(game->mlx, game->mlx->win_list);
 	if (game->mlx != NULL && game->frame.img != NULL)
 		mlx_destroy_image(game->mlx, game->frame.img);
 	if (game->mlx != NULL)
-		mlx_destroy_display(game->mlx);
+		mlx_destroy_display(game->mlx);*/
 	stt_free_assets(&game->assets, &game->player, game->enemies);
 	free(game->mlx);
 	exit(rvalue);

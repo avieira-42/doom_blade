@@ -2,8 +2,6 @@
 NAME = main
 VPATH = sources sources/utils sources/input sources/parse \
 		sources/gameplay sources/math sources/render sources/audio
-MLX_DIR = libraries/mlx
-MLX = $(MLX_DIR)/libmlx_Linux.a
 SDL_LDLIBS = -lSDL2 -lSDL2_mixer -lSDL2main -lSDL2_image
 MLX_LDLIBS = $(MLX) -lXext -lX11 -lm
 LDLIBS = $(SDL_LDLIBS) $(MLX_LDLIBS)
@@ -29,7 +27,7 @@ SRCS += keyboard.c mouse.c input.c
 # Defaults ------------------------------------ #
 RM := rm -f
 BUILD_PATH = build
-INC_PATH = includes libraries/mlx
+INC_PATH = includes
 OBJ_PATH = $(BUILD_PATH)/obj
 BIN = $(BUILD_PATH)/$(NAME)
 OBJS = $(addprefix $(OBJ_PATH)/, $(SRCS:.c=.o))
@@ -55,9 +53,6 @@ $(BIN): $(MLX) $(OBJS) | $(BUILD_PATH)
 $(MLX):
 	@make -C $(MLX_DIR)
 
-mlx_fclean:
-	$(RM) $(MLX_DIR)/*.a
-
 # Directory
 $(OBJ_PATH):
 	@mkdir -p $@
@@ -70,7 +65,7 @@ all: $(BIN)
 clean:
 	$(RM) -r $(OBJ_PATH)
 
-fclean: clean mlx_fclean
+fclean: clean
 	$(RM) $(BIN) $(BONUS_BIN)
 
 re: fclean all

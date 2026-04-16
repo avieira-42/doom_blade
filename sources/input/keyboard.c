@@ -9,7 +9,10 @@
 int			cmlx_keydown(SDL_Scancode keycode, t_game *game)
 {
 	if (keycode == SDL_SCANCODE_ESCAPE)
-		return (mlx_loop_end(game->mlx));
+	{
+		game->quit = true;
+		exit(0);
+	}
 	game->state.paused ^= (keycode == SDL_SCANCODE_P);
 	if (game->state.paused == true)
 		return (0);
