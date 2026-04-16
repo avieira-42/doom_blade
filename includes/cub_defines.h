@@ -1,19 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cub_defines.h                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/07 16:51:10 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/12 20:02:49 by avieira-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef CUB_DEFINES_H
 # define CUB_DEFINES_H
 
-# define UPSCALE 2
+# define UPSCALE 3
 # define R_WIDTH 640
 # define R_HEIGHT 360
 
