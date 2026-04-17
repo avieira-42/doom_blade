@@ -1,4 +1,3 @@
-#include <SDL2/SDL_scancode.h>
 #include "cub_structs.h"
 #include "cub_utils.h"
 

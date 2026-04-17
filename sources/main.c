@@ -7,7 +7,6 @@
 #include "cub_defines.h"
 #include "cub_structs.h"
 #include "cub_utils.h"
-//# include <emscripten.h>
 
 static
 void	stt_cub_is_dead(t_game *game)
@@ -19,7 +18,7 @@ void	stt_cub_is_dead(t_game *game)
 	}
 }
 
-int	cmlx_loop(t_game *game)
+void	stt_cmlx_loop(t_game *game)
 {
 	static long	avg_fps = 0;
 	const long	dt = 1 + get_time();
@@ -44,7 +43,6 @@ int	cmlx_loop(t_game *game)
 		cub_play_audio(&game->player, &game->assets.audio, game, dt);
 		game->player.state &= ~(size_t)(st_shot);	// Clears the (just X animation)
 	}
-	return (1);
 }
 
 int	main(int argc, char **argv)
@@ -56,13 +54,7 @@ int	main(int argc, char **argv)
 		return (write(2, "Error\nInvalid Argument Count", 28), 1);
 	if (cub_init(argv[1], &game, &memory) == -1)
 		return (1);
-
-	/* here we set the loop manually
-	 * but techincally with emscripten
-	 * we loop like we do on mlx */
 	while (1)
-		cmlx_loop(&game);
-	//emspcripten_set_main_loop_arg(cmlx_loop, &game, -1, 1);
-
+		stt_cmlx_loop(&game);
 	return (0);
 }

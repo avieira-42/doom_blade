@@ -5,11 +5,9 @@
 # include <stddef.h>
 # include <stdbool.h>
 # include <unistd.h>
-# include <math.h>
 # include "cmlx_base.h"
 # include "cmlx_draw.h"
 # include "cub_structs.h"
-# include <SDL2/SDL.h>
 
 // Gameplay
 void		cub_update_game(t_game *game, long dt);
@@ -42,7 +40,6 @@ int			cmlx_keyup(SDL_Scancode keycode, t_game *game);
 int			cmlx_mouseup(uint8_t button, t_game *game);
 int			cmlx_mousedown(uint8_t button, t_game *game);
 int			cmlx_mousemove(Sint32 x, Sint32 y, t_game *game);
-int			cmlx_loop(t_game *game);
 void		input_handler(t_game *game, t_player *player);
 void		sdl_input_update(t_game *game);
 

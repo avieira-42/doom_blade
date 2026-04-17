@@ -1,5 +1,6 @@
 # Configuration ------------------------------- #
 NAME = main
+# include <math.h>
 VPATH = sources sources/utils sources/input sources/parse \
 		sources/gameplay sources/math sources/render sources/audio
 SDL_LDLIBS = -lSDL2 -lSDL2_mixer -lSDL2main -lSDL2_image -lm
@@ -31,6 +32,7 @@ RM := rm -f
 BUILD_PATH = build
 INC_PATH = includes
 OBJ_PATH = $(BUILD_PATH)/obj
+WEB = build/index.js
 BIN = $(BUILD_PATH)/$(NAME)
 OBJS = $(addprefix $(OBJ_PATH)/, $(SRCS:.c=.o))
 OUTPUT = game.js
@@ -89,10 +91,18 @@ fast: CFLAGS += $(FAST)
 fast: LDFLAGS += -flto
 fast: clean $(BIN)
 
-web: COMPILER = $(EMCC)
-web: OUTPUT = index.js
+# Emcripten for WEB
 web: MAIN = $(WEB_MAIN)
-web: $(BIN)
+web: SDL_LDLIBS = 
+web: LDLIBS = 
+web: LDFLAGS = -s USE_SDL=2 -s USE_SDL_IMAGE=2 \
+				-s SDL2_IMAGE_FORMATS='["png", "bmp"]' \
+				-s USE_SDL_MIXER=2
+web: SRCS := $(foreach f,$(SRCS),$(firstword $(wildcard $(addsuffix /$(f),$(VPATH)))))
+web: SRCS := $(filter-out $(UNIX_MAIN) $(WEB_MAIN) sources/$(WEB_MAIN),$(SRCS))
+web: SRCS := sources/$(WEB_MAIN) $(SRCS)
+web:
+	$(EMCC) $(CPPFLAGS) $(CFLAGS) $(SRCS) $(LDFLAGS) $(LDLIBS) -o $(WEB)
 
 unix: COMPILER = $(CC)
 unix: OUTPUT = doom_blade
