@@ -11,36 +11,7 @@
 #include "cmlx_base.h"
 
 static
-void	stt_texture_init(t_block *blocks, t_memory *memory)
-{
-	size_t		i;
-	uint32_t	*ptr;
-	size_t		total_size;
-	t_mat32		base;
-
-	base = (t_mat32){NULL, TEX_SIZE, TEX_SIZE, 0, TEX_SIZE};
-	i = 0;
-	while (i < NUM_BLOCKS)
-	{
-		blocks[i].north = base;
-		blocks[i].south = base;
-		blocks[i].east = base;
-		blocks[i].west = base;
-		blocks[i].north.ptr = &memory->textures[i][0][0][0];
-		blocks[i].south.ptr = &memory->textures[i][1][0][0];
-		blocks[i].east.ptr = &memory->textures[i][2][0][0];
-		blocks[i].west.ptr = &memory->textures[i][3][0][0];
-		i++;
-	}
-	i = 0;
-	ptr = (uint32_t *)memory->textures;
-	total_size = sizeof(memory->textures) / sizeof(uint32_t);
-	while (i < total_size)
-		ptr[i++] = rgb_pink;
-}
-
-static
-int	stt_read_texture(t_game *game, t_mat32 *texture, const char *filename, const char **filen_ptr)
+int	stt_dispatch(t_game *game, t_mat32 *texture, const char *filename, const char **filen_ptr)
 {
 	size_t		i;
 	uint32_t	color;
@@ -62,7 +33,7 @@ int	stt_read_texture(t_game *game, t_mat32 *texture, const char *filename, const
 			texture->ptr[i++] = color;
 	}
 	else
-		cub_read_xpm(game, texture, filename, filen_ptr);
+		cub_read_texture(game, texture, filename, filen_ptr);
 	texture->depth = 1;
 	return (0);
 }
@@ -98,38 +69,37 @@ static inline
 int	stt_match_texture(t_game *game, const char *str, t_block *block, const char **sptr)
 {
 	if (str[0] == 'N' && str[1] == 'O')
-		return (stt_read_texture(game, &block[1].north, str + 2, sptr));
-	else if (str[0] == 'E' && str[1] == 'A')
-		return (stt_read_texture(game, &block[1].east, str + 2, sptr));
-	else if (str[0] == 'S' && str[1] == 'O')
-		return (stt_read_texture(game, &block[1].south, str + 2, sptr));
-	else if (str[0] == 'W' && str[1] == 'E')
-		return (stt_read_texture(game, &block[1].west, str + 2, sptr));
-	else if (str[0] == 'F')
-		return (stt_read_texture(game, &block[0].south, str + 1, sptr));
-	else if (str[0] == 'C')
-		return (stt_read_texture(game, &block[0].north, str + 1, sptr));
-	else if (!(str[0] == 'T' && str[1] >= '2' && str[1] < ('0' + NUM_BLOCKS)))
+		return (stt_dispatch(game, &block[1].north, str + 2, sptr));
+	if (str[0] == 'E' && str[1] == 'A')
+		return (stt_dispatch(game, &block[1].east, str + 2, sptr));
+	if (str[0] == 'S' && str[1] == 'O')
+		return (stt_dispatch(game, &block[1].south, str + 2, sptr));
+	if (str[0] == 'W' && str[1] == 'E')
+		return (stt_dispatch(game, &block[1].west, str + 2, sptr));
+	if (str[0] == 'F')
+		return (stt_dispatch(game, &block[0].south, str + 1, sptr));
+	if (str[0] == 'C')
+		return (stt_dispatch(game, &block[0].north, str + 1, sptr));
+	if (!(str[0] == 'T' && str[1] >= '2' && str[1] < ('0' + NUM_BLOCKS)))
 		return (0);
 	if (str[2] == 'N')
-		return (stt_read_texture(game, &block[str[1] - '0'].north, str + 3, sptr));
-	else if (str[2] == 'E')
-		return (stt_read_texture(game, &block[str[1] - '0'].east, str + 3, sptr));
-	else if (str[2] == 'S')
-		return (stt_read_texture(game, &block[str[1] - '0'].south, str + 3, sptr));
-	else if (str[2] == 'W')
-		return (stt_read_texture(game, &block[str[1] - '0'].west, str + 3, sptr));
+		return (stt_dispatch(game, &block[str[1] - '0'].north, str + 3, sptr));
+	if (str[2] == 'E')
+		return (stt_dispatch(game, &block[str[1] - '0'].east, str + 3, sptr));
+	if (str[2] == 'S')
+		return (stt_dispatch(game, &block[str[1] - '0'].south, str + 3, sptr));
+	if (str[2] == 'W')
+		return (stt_dispatch(game, &block[str[1] - '0'].west, str + 3, sptr));
 	return (0);
 }
 
-int	cub_parse_textures(t_game *game, const char **str_ptr, t_memory *memory)
+int	cub_parse_textures(t_game *game, const char **str_ptr)
 {
 	const char	*str = *str_ptr;
 	const char	*end = stt_parse_length(str, str_ptr);
 
 	if (end == NULL)
 		return (cub_cleanup(game, "Map in incorrect format"));
-	stt_texture_init(game->blocks, memory);
 	while (str < end)
 	{
 		while (isspace(*str))

@@ -18,7 +18,7 @@ void	stt_load_texture(t_game *game, t_str path, size_t count, t_mat32 *dst)
 	number_length = ft_itoa_r((int64_t)count, append_ptr);
 	append_ptr += number_length;
 	memcpy(append_ptr, append_str, sizeof(append_str));
-	cub_read_xpm(game, dst, path.ptr, NULL);
+	cub_read_texture(game, dst, path.ptr, NULL);
 }
 
 // Loads a width by height image, and with already allocated memory, 

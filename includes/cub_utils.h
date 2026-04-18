@@ -46,15 +46,19 @@ void		sdl_input_update(t_game *game);
 // Parsing
 int			cub_init(const char *filename, t_game *game, t_memory *memory);
 int			cub_cleanup(t_game *game, const char *msg);
-int			cub_parse_textures(t_game *game, const char **str_ptr, t_memory *memory);
+int			cub_parse_textures(t_game *game, const char **str_ptr);
 int			cub_read_map(t_game *game, const char *str, t_map *map, t_player *player);
 t_sheet		cub_readsheet(t_game *game, const char *base_path, size_t count, long frame_time);
-int			cub_read_xpm(t_game *game, t_mat32 *dst, const char *filename, const char **filename_ptr);
+int			cub_read_texture(t_game *game, t_mat32 *dst, const char *filename, const char **filename_ptr);
+
+// Scaling
+void		ft_integer_scaling(t_mat32 src, t_mat32 dst, size_t factor);
+void		ft_integer_scaling_t(t_mat32 src, t_mat32 dst, size_t factor);
+void		ft_near_scale_t(t_mat32 dst, t_mat32 src);
 
 // Prototypes: Cub Utils -----------------------------------------------------
 size_t		cub_first_neighbour(t_vec2 pos, t_vec2 dir, uint32_t stride);
-void		ft_integer_scaling(t_mat32 src, t_mat32 dst, size_t factor);
-void		ft_integer_scaling_t(t_mat32 src, t_mat32 dst, size_t factor);
+
 t_vec2		random_valid_pos(t_map *map);
 void		ft_rng_init(void);
 uint64_t	ft_rand(void);

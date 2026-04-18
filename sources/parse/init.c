@@ -90,7 +90,8 @@ void	stt_radar_init(t_game *game, t_sheet *rd_0)
 	game->map.icon_quad.radius = game->map.icon_quad.size.x.i / 2;
 }
 
-static void	stt_load_assets(t_game *game, t_enemy enemies[NUM_ENEMIES], t_hands *hands)
+static
+void	stt_load_assets(t_game *game, t_enemy enemies[NUM_ENEMIES], t_hands *hands)
 {
 	size_t	i;
 
@@ -115,6 +116,35 @@ static void	stt_load_assets(t_game *game, t_enemy enemies[NUM_ENEMIES], t_hands 
 		enemies[i++] = enemies[0];
 }
 
+static
+void	stt_texture_init(t_block *blocks, t_memory *memory)
+{
+	size_t		i;
+	uint32_t	*ptr;
+	size_t		total_size;
+	t_mat32		base;
+
+	base = (t_mat32){NULL, TEX_SIZE, TEX_SIZE, 0, TEX_SIZE};
+	i = 0;
+	while (i < NUM_BLOCKS)
+	{
+		blocks[i].north = base;
+		blocks[i].south = base;
+		blocks[i].east = base;
+		blocks[i].west = base;
+		blocks[i].north.ptr = &memory->textures[i][0][0][0];
+		blocks[i].south.ptr = &memory->textures[i][1][0][0];
+		blocks[i].east.ptr = &memory->textures[i][2][0][0];
+		blocks[i].west.ptr = &memory->textures[i][3][0][0];
+		i++;
+	}
+	i = 0;
+	ptr = (uint32_t *)memory->textures;
+	total_size = sizeof(memory->textures) / sizeof(uint32_t);
+	while (i < total_size)
+		ptr[i++] = rgb_pink;
+}
+
 int	cub_init(const char *filename, t_game *game, t_memory *memory)
 {
 	size_t		file_size;
@@ -126,7 +156,8 @@ int	cub_init(const char *filename, t_game *game, t_memory *memory)
 	if (game->file == NULL)
 		return (cub_cleanup(game, "Failed to open file"));
 	// here we get each sprite from the paths written in the map input file
-	cub_parse_textures(game, &str, memory);
+	stt_texture_init(game->blocks, memory);
+	cub_parse_textures(game, &str);
 	cub_read_map(game, str, &game->map, &game->player);
 	stt_sdl_init(game);
 	stt_params_init(game, memory);

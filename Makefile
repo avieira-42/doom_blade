@@ -12,11 +12,11 @@ SRCS += draw_enemy.c draw_overlay.c draw_viewmodel.c
 # AUDIO --------------------------------------- #
 SRCS += audio.c
 # MATH ---------------------------------------- #
-SRCS += integer_scaling.c float_math.c vec2_math.c
+SRCS += integer_scaling.c near_scaling.c float_math.c vec2_math.c
 # UTILS --------------------------------------- #
 SRCS += rng.c cub_utils.c string.c io_basic.c cleanup.c
 # PARSE --------------------------------------- #
-SRCS += init.c map.c parse_textures.c read_xpm.c parse_sheet.c
+SRCS += init.c map.c parse_textures.c read_texture.c parse_sheet.c
 # GAMEPLAY ------------------------------------ #
 SRCS += movement.c player_state.c enemy_state.c game_state.c
 # INPUT --------------------------------------- #

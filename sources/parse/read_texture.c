@@ -8,46 +8,6 @@
 #include "cub_utils.h"
 #include "cub_defines.h"
 
-// Assumes source is not transposed
-static inline
-uint32_t	stt_nearest_neighbour(const t_mat32 *src, t_vec2 norm_pos)
-{
-	uint32_t	x;
-	uint32_t	y;
-
-	x = roundf(norm_pos.x.f * (src->width - 1));
-	y = roundf(norm_pos.y.f * (src->height - 1));
-	return (src->ptr[y * src->stride + x]);
-}
-
-// Scales a texture, storing the transposed result in dst
-void	ft_near_scale(t_mat32 dst, t_mat32 src)
-{
-	uint32_t		*ptr;
-	uint32_t		x;
-	uint32_t		y;
-	t_vec2			norm_pos;
-	const t_vec2	delta = {.x.f = 1.0 / (dst.width - 1),
-		.y.f = 1.0 / (dst.height - 1)};
-
-	x = 0;
-	norm_pos.x.f = 0.0f;
-	while (x < dst.width)
-	{
-		y = 0;
-		norm_pos.y.f = 0.0f;
-		ptr = dst.ptr + x * dst.stride;
-		while (y < dst.height)
-		{
-			ptr[y] = stt_nearest_neighbour(&src, norm_pos);
-			norm_pos.y.f += delta.y.f;
-			y++;
-		}
-		norm_pos.x.f += delta.x.f;
-		x++;
-	}
-}
-
 static inline
 void	stt_clean_texture(uint32_t *ptr, size_t length)
 {
@@ -63,7 +23,7 @@ void	stt_clean_texture(uint32_t *ptr, size_t length)
 }
 
 static
-SDL_Surface	*stt_read_xpm(const char *filename, const char **filename_ptr) // edited
+SDL_Surface	*stt_read_texture(const char *filename, const char **filename_ptr) // edited
 {
 	char		buffer[256];
 	char		*path;
@@ -85,14 +45,14 @@ SDL_Surface	*stt_read_xpm(const char *filename, const char **filename_ptr) // ed
 }
 
 // Todo: guarantee lower than render res
-int	cub_read_xpm(t_game *game, t_mat32 *dst, const char *filename, const char **filename_ptr)
+int	cub_read_texture(t_game *game, t_mat32 *dst, const char *filename, const char **filename_ptr)
 {
 	SDL_Surface	*im;
 	SDL_Surface	*im32;
 	t_mat32		src;
 	size_t		sz;
 
-	im = stt_read_xpm(filename, filename_ptr); // edited
+	im = stt_read_texture(filename, filename_ptr); // edited
 	if (im == NULL)
 		return (cub_cleanup(game, "Failed to load image"));
 	im32 = SDL_ConvertSurfaceFormat(im, SDL_PIXELFORMAT_ARGB8888, 0);
@@ -110,7 +70,7 @@ int	cub_read_xpm(t_game *game, t_mat32 *dst, const char *filename, const char **
 		}
 	}
 	src = (t_mat32){(uint32_t *)im32->pixels, im32->w, im32->h, 1, im32->w};
-	ft_near_scale(*dst, src);
+	ft_near_scale_t(*dst, src);
 	SDL_FreeSurface(im32);
 	stt_clean_texture(dst->ptr, dst->height * dst->width);
 	if (src.width != dst->width || src.height != dst->height)
