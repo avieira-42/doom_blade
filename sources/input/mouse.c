@@ -1,10 +1,19 @@
 #include "game_types.h"
 #include "game_prototypes.h"
 
+#ifdef __EMSCRIPTEN__
+	#include <emscripten/html5.h>
+#endif
+
 int	input_mousedown(uint8_t button, t_game *game)
 {
 	if (button == SDL_BUTTON_LEFT)
+	{
+		#ifdef __EMSCRIPTEN__
+			emscripten_request_pointerlock("#canvas", false);
+		#endif
 		game->state.key |= (size_t)key_lmb;
+	}
 	return (0);
 }
 
