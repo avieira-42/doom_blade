@@ -5,7 +5,7 @@
       "name": "Debug Executable (LLDB)",
       "type": "lldb",
       "request": "launch",
-      "program": "${workspaceFolder}/cub3D",
+      "program": "${workspaceFolder}/build/cub3D",
       "cwd": "${workspaceFolder}",
       "args": ["assets/maps/example.cub"],
       "env": { "LSAN_OPTIONS": "detect_leaks=0" },
