@@ -1,6 +1,5 @@
 # Configuration ------------------------------- #
 NAME = main
-# include <math.h>
 VPATH = sources sources/utils sources/input sources/parse \
 		sources/gameplay sources/math sources/render sources/audio
 SDL_LDLIBS = -lSDL2 -lSDL2_mixer -lSDL2main -lSDL2_image -lm
@@ -17,9 +16,9 @@ SRCS += draw_enemy.c draw_overlay.c draw_viewmodel.c
 # AUDIO -------------------------------------#
 SRCS += audio.c
 # MATH ------------------------------------ #
-SRCS += integer_scaling.c int_limits.c int_abs.c float_math.c float_abs.c vec2_algebra.c vec2_math.c
+SRCS += integer_scaling.c float_math.c vec2_math.c
 # UTILS ------------------------------------ #
-SRCS += rng.c cub_utils.c string.c io_basic.c memory.c char_ascii.c
+SRCS += rng.c cub_utils.c string.c io_basic.c
 # PARSE ------------------------------------ #
 SRCS += init.c map.c parse_textures.c read_xpm.c parse_sheet.c
 # GAMEPLAY ------------------------------------ #
@@ -64,9 +63,11 @@ $(BUILD_PATH):
 	@mkdir -p $@
 
 # Phonies ------------------------------------- #
-web:
-
 all: $(BIN)
+
+compdb: | $(BUILD_PATH)
+	$(RM) $(BUILD_PATH)/compile_commands.json
+	bear --output $(BUILD_PATH)/compile_commands.json -- $(MAKE) clean asan
 
 clean:
 	$(RM) -r $(OBJ_PATH)
@@ -111,4 +112,4 @@ unix: OUTPUT = doom_blade
 unix: MAIN = $(UNIX_MAIN)
 unix: $(BIN)
 
-.PHONY: all clean fclean re debug asan tsan fast
+.PHONY: all clean fclean re debug asan tsan fast compdb web

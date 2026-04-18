@@ -62,6 +62,10 @@ float		ft_randf(void);
 long		get_time(void);
 uint32_t	ft_strtoargb(const char *str, const char **str_ptr);
 void		*ft_read_all(const char *filename, size_t *file_size);
+float		ft_qinvsqrt(float number);
+float		ft_qsqrt(float number);
+
+// Prototypes: Vec2 Utils -----------------------------------------------------
 t_vec2		vec2_rotate(t_vec2 vec, float angle);
 t_vec2		vec2_norm(t_vec2 vec);
 t_vec2		vec2_mult(t_vec2 a, float scalar);
@@ -71,25 +75,8 @@ int32_t		vec2_dist(t_vec2 a, t_vec2 b);
 t_vec2		vec2_sub(t_vec2 a, t_vec2 b);
 float		vec2_max(t_vec2 vec);
 int32_t		vec2_idist(t_vec2 a, t_vec2 b);
-float		ft_qinvsqrt(float number);
-float		ft_qsqrt(float number);
 
 // Prototypes: Utils ----------------------------------------------------------
 size_t		ft_itoa_r(int64_t number, char *ptr);
-size_t		ft_strlen(const char *s);
-uint8_t		ft_isspace(int32_t c);
-void		*ft_memcpy(void *vdst, const void *vsrc, size_t length);
-void		*ft_memmove(void *vdst, const void *vsrc, size_t length);
-void		*ft_memset(void *vdst, const uint8_t byte, size_t length);
 int64_t		ft_strtol(const char *str, const char **str_ptr);
-float		ft_min(float number1, float number2);
-float		ft_max(float number1, float number2);
-float		ft_abs(float number);
-float		ft_absdiff(float number1, float number2);
-float		ft_absclamp(float number, float value);
-int64_t		ft_iabsmax(int64_t number1, int64_t number2);
-int64_t		ft_imin(int64_t number1, int64_t number2);
-int64_t		ft_imax(int64_t number1, int64_t number2);
-int64_t		ft_iabs(int64_t number);
-int64_t		ft_iclamp(int64_t value, int64_t min, int64_t max);
 #endif

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   draw_viewmodel.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/07 15:30:42 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/09 00:25:30 by adeimlin         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -103,10 +91,10 @@ void	stt_draw_radar(t_game *game, t_map *map, t_sheet *r0)
 	map->icon_quad.pos.y.i = ppos.y.f * map->radar_quad.size.y.i;
 	offset.x.i = map->icon_quad.pos.x.i - r0->texture.width / 2;
 	offset.y.i = map->icon_quad.pos.y.i - r0->texture.height / 2;
-	offset.x.i = ft_imax(offset.x.i, 0);
-	offset.x.i = ft_imin(offset.x.i, map->radar_size.x.i - r0->texture.width);
-	offset.y.i = ft_imax(offset.y.i, 0);
-	offset.y.i = ft_imin(offset.y.i, map->radar_size.y.i - r0->texture.height);
+	offset.x.i = MAX(offset.x.i, 0);
+	offset.x.i = MIN(offset.x.i, map->radar_size.x.i - r0->texture.width);
+	offset.y.i = MAX(offset.y.i, 0);
+	offset.y.i = MIN(offset.y.i, map->radar_size.y.i - r0->texture.height);
 	gpos.x.i = spos.x.i - offset.x.i;
 	gpos.y.i = spos.y.i - offset.y.i;
 	cub_draw_sheet(game->frame.render, r0, spos.x.i, spos.y.i);

@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 #include "cub_defines.h"
 #include "cub_utils.h"
 #include "cmlx_base.h"
@@ -16,7 +17,7 @@ void	stt_load_texture(t_game *game, t_str path, size_t count, t_mat32 *dst)
 	append_ptr = path.ptr + path.length;
 	number_length = ft_itoa_r((int64_t)count, append_ptr);
 	append_ptr += number_length;
-	ft_memcpy(append_ptr, append_str, sizeof(append_str));
+	memcpy(append_ptr, append_str, sizeof(append_str));
 	cub_read_xpm(game, dst, path.ptr, NULL);
 }
 
@@ -29,11 +30,11 @@ t_sheet	cub_readsheet(t_game *game, const char *base_path, size_t count, long fr
 	t_sheet			sheet;
 	t_mat32			tex;
 	char			buffer[256];
-	const t_str		path = {buffer, ft_strlen(base_path)};
+	const t_str		path = {buffer, strlen(base_path)};
 
 	if (path.length + 32 > sizeof(buffer))
 		return (cub_cleanup(game, "Texture path is too long"), (t_sheet){0});
-	ft_memcpy(buffer, base_path, path.length + 1);
+	memcpy(buffer, base_path, path.length + 1);
 	tex = (t_mat32){NULL, 0, 0, count, 0};
 	stt_load_texture(game, path, 0, &tex);
 	sheet = (t_sheet){tex, frame_time, 0, tex.width * tex.height, 0, count};

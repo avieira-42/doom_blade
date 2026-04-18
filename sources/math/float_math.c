@@ -1,30 +1,5 @@
 #include "cmlx_base.h"
 
-float	ft_min(float number1, float number2)
-{
-	if (number1 <= number2)
-		return (number1);
-	else
-		return (number2);
-}
-
-float	ft_max(float number1, float number2)
-{
-	if (number1 >= number2)
-		return (number1);
-	else
-		return (number2);
-}
-
-float	ft_clamp(float value, float min, float max)
-{
-	if (value > max)
-		value = max;
-	else if (value < min)
-		value = min;
-	return (value);
-}
-
 float	ft_qinvsqrt(float number)
 {
 	t_32	result;
@@ -44,3 +19,23 @@ float	ft_qsqrt(float number)
 	result.f = 0.5f * (result.f + number / result.f);
 	return (result.f);
 }
+
+// float	ft_absclamp(float number, float value)
+// {
+// 	t_32		number_union;
+// 	t_32		value_union;
+// 	uint32_t	sign_mask;
+
+// 	number_union.f = number;
+// 	value_union.f = value;
+// 	sign_mask = (number_union.u & 0x80000000);
+// 	number_union.u &= 0x7FFFFFFF;
+// 	value_union.u &= 0x7FFFFFFF;
+// 	if (number_union.f >= value_union.f)
+// 	{
+// 		value_union.u |= sign_mask;
+// 		return (value_union.f);
+// 	}
+// 	else
+// 		return (number);
+// }

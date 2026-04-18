@@ -15,7 +15,7 @@
 # include <SDL2/SDL_mixer.h>
 # endif
 
-# define MLX_MAX_EVENT LASTEvent
+# include "base.h"
 
 typedef struct s_str
 {

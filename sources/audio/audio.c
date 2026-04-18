@@ -11,7 +11,7 @@ void	cub_play_audio(t_player *player, t_audio *audio, t_game *game, long dt)
 	static void		*prev_move_state = NULL;
 	static int32_t	prev_ammo = AMMO_COUNT;
 	void			*new_move_state;
-	const float		new_spd = fmaxf(fabsf(player->speed.x.f), fabsf(player->speed.y.f));
+	const float		new_spd = ABSMAX(player->speed.x.f, player->speed.y.f);
 
 	if (new_spd < HALT_THR)
 		new_move_state = NULL;

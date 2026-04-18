@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 #include "cmlx_base.h"
 #include "cub_defines.h"
 #include "cub_structs.h"
@@ -119,7 +120,7 @@ int	cub_init(const char *filename, t_game *game, t_memory *memory)
 	size_t		file_size;
 	const char	*str;
 
-	ft_memset(game, 0, sizeof(t_game));
+	memset(game, 0, sizeof(t_game));
 	game->file = ft_read_all(filename, &file_size);
 	str = game->file;
 	if (game->file == NULL)

@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <string.h>
 #include <unistd.h>
 #include "cub_defines.h"
 #include "cub_structs.h"
@@ -46,7 +47,7 @@ static int	stt_read_texture(t_game *game, t_mat32 *texture, const char *filename
 
 	if (texture->depth != 0) 	// Sentinel value to see if the texture has already been initialized
 		return (-1);
-	while (ft_isspace(*filename))
+	while (isspace(*filename))
 		filename++;
 	i = 0;
 	while (filename[i] >= '0' && filename[i] <= '9')
@@ -129,7 +130,7 @@ int	cub_parse_textures(t_game *game, const char **str_ptr, t_memory *memory)
 	stt_texture_init(game->blocks, memory);
 	while (str < end)
 	{
-		while (ft_isspace(*str))
+		while (isspace(*str))
 			str++;
 		if (stt_match_texture(game, str, game->blocks, &str) < 0)
 			return (cub_cleanup(game, "Duplicate textures"));

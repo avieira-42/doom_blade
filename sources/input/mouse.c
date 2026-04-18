@@ -30,7 +30,7 @@ int cmlx_mousemove(Sint32 xrel, Sint32 yrel, t_game *game)
 
 	game->player.cam.dir   = vec2_rotate(game->player.cam.dir, dx);
 	game->player.cam.plane = vec2_rotate(game->player.cam.plane, dx);
-	game->frame.offset = ft_iclamp
+	game->frame.offset = CLAMP
 		(
 			game->frame.offset + dy,
 			-OFFSET_MAX,
@@ -48,8 +48,7 @@ int	cmlx_mousemove(Sint32 x, Sint32 y, t_game *game)
 	dy = ((float)y - ((float)s_height / 2.f));
 	game->player.cam.dir = vec2_rotate(game->player.cam.dir, dx);
 	game->player.cam.plane = vec2_rotate(game->player.cam.plane, dx);
-	game->frame.offset = ft_iclamp
-		(game->frame.offset + dy, -OFFSET_MAX, OFFSET_MAX);
+	game->frame.offset = CLAMP(game->frame.offset + dy, -OFFSET_MAX, OFFSET_MAX);
 	SDL_WarpMouseInWindow(game->window, s_width / 2, s_height / 2);
 	return (0);
 }

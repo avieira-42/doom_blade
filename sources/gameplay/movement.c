@@ -52,7 +52,7 @@ t_vec2	stt_move_toward(t_map *map, t_vec2 pos, t_enemy *enemy, float dt)
 	else
 	{
 		enemy->speed.y.f += mag_dist * ENEMY_ACCEL;
-		enemy->speed.y.f = ft_absclamp(enemy->speed.y.f, ENEMY_SPEED);
+		enemy->speed.y.f = CLAMP(enemy->speed.y.f, -ENEMY_SPEED, ENEMY_SPEED);
 	}
 	delta.x.f = enemy->cam.dir.x.f * enemy->speed.y.f * dt;	// forward
 	delta.y.f = enemy->cam.dir.y.f * enemy->speed.y.f * dt;
@@ -68,8 +68,8 @@ t_vec2	stt_player_move(t_player *player, t_map *map, float dt)
 
 	player->speed.x.f += player->spd_sideway * PLAYER_ACCEL;	// base accel, dt dependant
 	player->speed.y.f += player->spd_forward * PLAYER_ACCEL;
-	player->speed.x.f = ft_absclamp(player->speed.x.f, player->spd_max);
-	player->speed.y.f = ft_absclamp(player->speed.y.f, player->spd_max);
+	player->speed.x.f = CLAMP(player->speed.x.f, -player->spd_max, player->spd_max);
+	player->speed.y.f = CLAMP(player->speed.y.f, -player->spd_max, player->spd_max);
 	if (player->spd_sideway == 0.0f)
 		player->speed.x.f *= 0.9f;
 	if (player->spd_forward == 0.0f)

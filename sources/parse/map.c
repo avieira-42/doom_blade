@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include "cub_structs.h"
@@ -23,7 +24,7 @@ static ssize_t	stt_parse_line(t_game *game, const char *line, t_map *map, t_play
 	while (*line != '\n' && *line != 0)
 	{
 		c = *line;
-		if (c == '0' || c == '1' || c == '2' || ft_isspace(c))
+		if (c == '0' || c == '1' || c == '2' || isspace(c))
 			line++;
 		else if (c == 'N' || c == 'E' || c == 'S' || c == 'W')
 		{
@@ -125,8 +126,8 @@ int	cub_read_map(t_game *game, const char *str, t_map *map, t_player *player)
 	if (map->tex_index == NULL)
 		return (cub_cleanup(game, "Malloc failure"));
 	map->state = map->tex_index + map->height * map->width;
-	ft_memset(map->tex_index, 1, map->height * map->width);
-	ft_memset(map->state, 255, map->height * map->width);
+	memset(map->tex_index, 1, map->height * map->width);
+	memset(map->state, 255, map->height * map->width);
 	stt_filtercpy(ostr, map);
 	if (game->player.cam.dir.x.f == 0.0f && game->player.cam.dir.y.f == 0.0f)
 		return (cub_cleanup(game, "Player was not found in the map"));

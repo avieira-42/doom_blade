@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include "cmlx_base.h"
 #include "cub_structs.h"
 #include "cub_utils.h"
@@ -8,10 +9,10 @@ void	stt_error(const char *msg)
 {
 	char			buffer[1024];
 	const char		prefix[8] = "Error\n";
-	const size_t	msg_length = ft_strlen(msg) % 512;
+	const size_t	msg_length = strlen(msg) % 512;
 
-	ft_memcpy(buffer, prefix, 6);
-	ft_memcpy(buffer + 6, msg, msg_length);
+	memcpy(buffer, prefix, 6);
+	memcpy(buffer + 6, msg, msg_length);
 	write(STDERR_FILENO, buffer, msg_length + 6);
 }
 

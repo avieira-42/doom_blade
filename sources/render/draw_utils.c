@@ -38,7 +38,7 @@ void	draw_line(t_mat32 frame, t_vec2 p0, t_vec2 p1, uint32_t color)
 	t_vec2		pos;
 	t_vec2		delta;
 
-	length = ft_iabsmax(p1.x.i - p0.x.i, p1.y.i - p0.y.i);
+	length = ABSMAX(p1.x.i - p0.x.i, p1.y.i - p0.y.i);
 	p0.x.i <<= 16;
 	p0.y.i <<= 16;
 	p1.x.i <<= 16;

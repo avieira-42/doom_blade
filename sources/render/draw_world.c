@@ -33,8 +33,8 @@ static inline void	stt_texture_sample(t_mat32 texture, float line_height, uint32
 	float			draw_end;
 	const int32_t	dy = 65536.0f * texture.height / line_height;
 
-	draw_start = ft_imax(0, unclamped.x.f);
-	draw_end = ft_imin(R_HEIGHT, unclamped.y.f);
+	draw_start = MAX(0, unclamped.x.f);
+	draw_end = MIN(R_HEIGHT, unclamped.y.f);
 	tex_pos = dy * (draw_start - unclamped.x.f);
 	y = draw_start;
 	while (y < draw_end)
@@ -54,7 +54,7 @@ static inline void	stt_column_render(t_rayhit hit, uint32_t *render_col, t_block
 
 	texture = blocks[hit.tex_index].index[hit.tex_dir];	// THIS NEEDS TO CHECK IF TEX_INDEX > 0
 	texture.ptr += (size_t)(hit.x_pos * texture.width) * texture.stride;	// REVIEW
-	line_height = fmaxf(1.0f, R_HEIGHT / hit.perp_dist);
+	line_height = MAX(1.0f, R_HEIGHT / hit.perp_dist);
 	unclamped.x.f = 0.5f * (R_HEIGHT - line_height) - offset;
 	unclamped.y.f = 0.5f * (R_HEIGHT + line_height) - offset;
 	stt_texture_sample(texture, line_height, render_col, unclamped);

@@ -1,0 +1,24 @@
+---
+Checks: >-
+  -*,
+  clang-analyzer-*,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  performance-*,
+  portability-*,
+  readability-*,
+  -readability-identifier-length,
+  -readability-identifier-naming,
+  -readability-simplify-boolean-expr,
+  -readability-braces-around-statements,
+  modernize-*,
+  -modernize-redundant-void-arg,
+  -modernize-use-trailing-return-type,
+  -modernize-avoid-c-arrays,
+  cert-*,
+  -cert-err58-cpp,
+  misc-*,
+
+WarningsAsErrors: ''
+HeaderFilterRegex: '^(src|include|tests|sources)/'
+FormatStyle: file

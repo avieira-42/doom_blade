@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 #include "cmlx_base.h"
 #include "cub_utils.h"
@@ -70,9 +71,9 @@ static SDL_Surface	*stt_read_xpm(const char *filename, const char **filename_ptr
 	const char	*path_end = buffer + sizeof(buffer) - 1;
 
 	path = buffer;
-	while (ft_isspace(*filename))
+	while (isspace(*filename))
 		filename++;
-	while (*filename != 0 && !ft_isspace(*filename))
+	while (*filename != 0 && !isspace(*filename))
 	{
 		if (path >= path_end)
 			return (NULL);	// Path too long, TODO: print

@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <string.h>
 #include "cub_utils.h"
 #include "cub_structs.h"
 
@@ -43,7 +44,7 @@ void	ft_integer_scaling_t(t_mat32 src, t_mat32 dst, size_t factor)
 		k = 1;
 		while (k < factor)
 		{
-			ft_memcpy(dst.ptr, odst, line_size);	// Copies the line across N rows
+			memcpy(dst.ptr, odst, line_size);	// Copies the line across N rows
 			dst.ptr += dst.stride;
 			k++;
 		}

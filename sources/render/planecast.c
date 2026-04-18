@@ -56,7 +56,7 @@ void	stt_render_floor(t_frame *frame, t_mat32 texture, t_view *cam)
 	plane.ray_right.x.f = cam->dir.x.f + cam->plane.x.f;
 	plane.ray_right.y.f = cam->dir.y.f + cam->plane.y.f;
 	horizon = R_HEIGHT / 2 - frame->offset;
-	y = ft_imax(0, horizon + 1);
+	y = MAX(0, horizon + 1);
 	while (y < R_HEIGHT)
 	{
 		stt_plane_row(&plane, cam, y - horizon);
@@ -78,7 +78,7 @@ void	stt_render_ceil(t_frame *frame, t_mat32 texture, t_view *cam)
 	plane.ray_right.x.f = cam->dir.x.f + cam->plane.x.f;
 	plane.ray_right.y.f = cam->dir.y.f + cam->plane.y.f;
 	horizon = R_HEIGHT / 2 + frame->offset;
-	y = ft_imax(0, horizon + 1);
+	y = MAX(0, horizon + 1);
 	while (y < R_HEIGHT)
 	{
 		stt_plane_row(&plane, cam, y - horizon);
