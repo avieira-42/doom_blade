@@ -45,15 +45,13 @@ t_rayhit	stt_rayhit_info(t_ray *ray, uint8_t side,
 
 	if (side == 0)
 	{
-		hit.perp_dist = (ray->map_pos.x.i - pos.x.f + 0.5f
-				* (1 - ray->step.x.i)) / ray->ray_dir.x.f;
+		hit.perp_dist = (ray->map_pos.x.i - pos.x.f + 0.5f * (1 - ray->step.x.i)) / ray->ray_dir.x.f;
 		hit.tex_dir = 1 + ((ray->step.x.i > 0) << 1);
 		x_pos_texture = pos.y.f + hit.perp_dist * ray->ray_dir.y.f;
 	}
 	else
 	{
-		hit.perp_dist = (ray->map_pos.y.i - pos.y.f + 0.5f
-				* (1 - ray->step.y.i)) / ray->ray_dir.y.f;
+		hit.perp_dist = (ray->map_pos.y.i - pos.y.f + 0.5f * (1 - ray->step.y.i)) / ray->ray_dir.y.f;
 		hit.tex_dir = (ray->step.y.i < 0) << 1;
 		x_pos_texture = pos.x.f + hit.perp_dist * ray->ray_dir.x.f;
 	}

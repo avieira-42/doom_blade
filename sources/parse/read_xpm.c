@@ -58,8 +58,6 @@ void	stt_clean_texture(uint32_t *ptr, size_t length)
 	{
 		if (ptr[i] == ALPHA_SENTINEL1 || ptr[i] == ALPHA_SENTINEL2)
 			ptr[i] = 0;
-		else
-			ptr[i] |= 0xFF000000;	// mlx is so stupid // THERES HOPE!!!
 		i++;
 	}
 }
@@ -91,26 +89,30 @@ static SDL_Surface	*stt_read_xpm(const char *filename, const char **filename_ptr
 int	cub_read_xpm(t_game *game, t_mat32 *dst, const char *filename, const char **filename_ptr)
 {
 	SDL_Surface	*im;
+	SDL_Surface	*im32;
 	t_mat32		src;
 	size_t		sz;
 
 	im = stt_read_xpm(filename, filename_ptr); // edited
 	if (im == NULL)
 		return (cub_cleanup(game, "Failed to load image"));
+	im32 = SDL_ConvertSurfaceFormat(im, SDL_PIXELFORMAT_ARGB8888, 0);
+	SDL_FreeSurface(im);
+	if (im32 == NULL)
+		return (cub_cleanup(game, "Failed to load image"));
 	if (dst->ptr == NULL)	// DST needs to have depth defined
 	{
-		sz = (size_t)(im->h * im->w) * sizeof(uint32_t) * dst->depth;
-		*dst = (t_mat32){
-			malloc(sz), im->w, im->h, dst->depth, im->h};
+		sz = (size_t)(im32->h * im32->w) * sizeof(uint32_t) * dst->depth;
+		*dst = (t_mat32){malloc(sz), im32->w, im32->h, dst->depth, im32->h};
 		if (dst->ptr == NULL)
 		{
-			SDL_FreeSurface(im);
+			SDL_FreeSurface(im32);
 			return (cub_cleanup(game, "Error_leading dst data buffer\n"));
 		}
 	}
-	src = (t_mat32){(uint32_t *)im->pixels, im->w, im->h, 1, im->w};
+	src = (t_mat32){(uint32_t *)im32->pixels, im32->w, im32->h, 1, im32->w};
 	ft_near_scale(*dst, src);
-	SDL_FreeSurface(im);
+	SDL_FreeSurface(im32);
 	stt_clean_texture(dst->ptr, dst->height * dst->width);
 	if (src.width != dst->width || src.height != dst->height)
 		return (cub_cleanup(game, "Sheet frame dimensions do not match"));

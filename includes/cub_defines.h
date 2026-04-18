@@ -58,8 +58,8 @@ enum e_render
 # define AMMO_COUNT 8
 # define RELOAD_CYCLE 4
 
-# define ALPHA_SENTINEL1 0x000021FFFF
-# define ALPHA_SENTINEL2 0x000015FFFF
+# define ALPHA_SENTINEL1 0xFF21FFFF
+# define ALPHA_SENTINEL2 0xFF15FFFF
 
 // Mouse Movement
 # define OFFSET_MAX 650

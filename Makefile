@@ -78,7 +78,7 @@ web: $(WEB_BIN)
 
 compdb: | $(BUILD_PATH)
 	$(RM) $(BUILD_PATH)/compile_commands.json
-	bear --output $(BUILD_PATH)/compile_commands.json -- $(MAKE) clean asan
+	bear --output $(BUILD_PATH)/compile_commands.json -- $(MAKE) clean debug
 
 clean:
 	$(RM) -r $(OBJ_PATH) $(WEB_OBJ_PATH)

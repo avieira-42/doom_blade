@@ -25,7 +25,8 @@
 // 	}
 // }
 
-static inline void	stt_texture_sample(t_mat32 texture, float line_height, uint32_t *render_col, t_vec2 unclamped)
+static inline
+void	stt_texture_sample(t_mat32 texture, float line_height, uint32_t *render_col, float unclamped_start, float unclamped_end)
 {
 	int32_t			y;
 	int32_t			tex_pos;
@@ -33,9 +34,9 @@ static inline void	stt_texture_sample(t_mat32 texture, float line_height, uint32
 	float			draw_end;
 	const int32_t	dy = 65536.0f * texture.height / line_height;
 
-	draw_start = MAX(0, unclamped.x.f);
-	draw_end = MIN(R_HEIGHT, unclamped.y.f);
-	tex_pos = dy * (draw_start - unclamped.x.f);
+	draw_start = MAX(0, unclamped_start);
+	draw_end = MIN(R_HEIGHT, unclamped_end);
+	tex_pos = dy * (draw_start - unclamped_start);
 	y = draw_start;
 	while (y < draw_end)
 	{
@@ -46,18 +47,20 @@ static inline void	stt_texture_sample(t_mat32 texture, float line_height, uint32
 }
 
 // X is start, Y is end
-static inline void	stt_column_render(t_rayhit hit, uint32_t *render_col, t_block *blocks, int32_t offset)
+static inline
+void	stt_column_render(t_rayhit hit, uint32_t *render_col, t_block *blocks, int32_t offset)
 {
 	t_mat32	texture;
 	float	line_height;
-	t_vec2	unclamped;
+	float	unclamped_start;
+	float	unclamped_end;
 
 	texture = blocks[hit.tex_index].index[hit.tex_dir];	// THIS NEEDS TO CHECK IF TEX_INDEX > 0
 	texture.ptr += (size_t)(hit.x_pos * texture.width) * texture.stride;	// REVIEW
 	line_height = MAX(1.0f, R_HEIGHT / hit.perp_dist);
-	unclamped.x.f = 0.5f * (R_HEIGHT - line_height) - offset;
-	unclamped.y.f = 0.5f * (R_HEIGHT + line_height) - offset;
-	stt_texture_sample(texture, line_height, render_col, unclamped);
+	unclamped_start = 0.5f * (R_HEIGHT - line_height) - offset;
+	unclamped_end = 0.5f * (R_HEIGHT + line_height) - offset;
+	stt_texture_sample(texture, line_height, render_col, unclamped_start, unclamped_end);
 }
 
 // Blocks contains transposed rows for sequential memory access

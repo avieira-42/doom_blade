@@ -7,7 +7,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/build/cub3D",
       "cwd": "${workspaceFolder}",
-      "args": ["assets/maps/example.cub"],
+      "args": ["assets/maps/castle_porto.cub"],
       "env": { "LSAN_OPTIONS": "detect_leaks=0" },
       "stopOnEntry": false,
       "preLaunchTask": "build"
