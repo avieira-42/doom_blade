@@ -3,10 +3,11 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+#include <ctype.h>
 #include "game_types.h"
 #include "game_prototypes.h"
 #include "game_defines.h"
+#include <SDL3/SDL.h>
 
 static inline
 void	stt_clean_texture(uint32_t *ptr, size_t length)
@@ -23,7 +24,21 @@ void	stt_clean_texture(uint32_t *ptr, size_t length)
 }
 
 static
-SDL_Surface	*stt_read_texture(const char *filename, const char **filename_ptr) // edited
+SDL_Surface *cub_load_surface(const char *path)
+{
+	SDL_Surface	*loaded;
+	SDL_Surface	*converted;
+
+	loaded = SDL_LoadSurface(path);
+	if (loaded == NULL)
+		return NULL;
+	converted = SDL_ConvertSurface(loaded, SDL_PIXELFORMAT_RGBA8888);
+	SDL_DestroySurface(loaded);
+	return converted;
+}
+
+static
+SDL_Surface	*stt_read_texture(const char *filename, const char **filename_ptr)
 {
 	char		buffer[256];
 	char		*path;
@@ -41,10 +56,9 @@ SDL_Surface	*stt_read_texture(const char *filename, const char **filename_ptr) /
 	*path = 0;
 	if (filename_ptr != NULL)
 		*filename_ptr = filename;
-	return (IMG_Load(buffer));
+	return (cub_load_surface(buffer));
 }
 
-// Todo: guarantee lower than render res
 int	cub_read_texture(t_game *game, t_mat32 *dst, const char *filename, const char **filename_ptr)
 {
 	SDL_Surface	*im;
@@ -52,11 +66,11 @@ int	cub_read_texture(t_game *game, t_mat32 *dst, const char *filename, const cha
 	t_mat32		src;
 	size_t		sz;
 
-	im = stt_read_texture(filename, filename_ptr); // edited
+	im = stt_read_texture(filename, filename_ptr);
 	if (im == NULL)
 		return (cub_cleanup(game, "Failed to load image"));
-	im32 = SDL_ConvertSurfaceFormat(im, SDL_PIXELFORMAT_ARGB8888, 0);
-	SDL_FreeSurface(im);
+	im32 = SDL_ConvertSurface(im, SDL_PIXELFORMAT_ARGB8888);
+	SDL_DestroySurface(im);
 	if (im32 == NULL)
 		return (cub_cleanup(game, "Failed to load image"));
 	if (dst->ptr == NULL)	// DST needs to have depth defined
@@ -65,13 +79,13 @@ int	cub_read_texture(t_game *game, t_mat32 *dst, const char *filename, const cha
 		*dst = (t_mat32){malloc(sz), im32->w, im32->h, dst->depth, im32->h};
 		if (dst->ptr == NULL)
 		{
-			SDL_FreeSurface(im32);
+			SDL_DestroySurface(im32);
 			return (cub_cleanup(game, "Error_leading dst data buffer\n"));
 		}
 	}
 	src = (t_mat32){(uint32_t *)im32->pixels, im32->w, im32->h, 1, im32->w};
 	ft_near_scale_t(*dst, src);
-	SDL_FreeSurface(im32);
+	SDL_DestroySurface(im32);
 	stt_clean_texture(dst->ptr, dst->height * dst->width);
 	if (src.width != dst->width || src.height != dst->height)
 		return (cub_cleanup(game, "Sheet frame dimensions do not match"));

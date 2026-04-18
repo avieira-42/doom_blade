@@ -1,22 +1,12 @@
 #ifndef GAME_TYPES_H
 # define GAME_TYPES_H
 
-# include <stdint.h>
-# include <stddef.h>
-# include <stdbool.h>
-# ifdef __EMSCRIPTEN__
-# include <SDL.h>
-# include <SDL_image.h>
-# include <SDL_mixer.h>
-# else
-# include <SDL2/SDL.h>
-# include <SDL2/SDL_image.h>
-# include <SDL2/SDL_scancode.h>
-# include <SDL2/SDL_mixer.h>
-# endif
-
-# include "base.h"
-# include "game_defines.h"
+#include <stdint.h>
+#include <stddef.h>
+#include <stdbool.h>
+#include <SDL3/SDL.h>
+#include "base.h"
+#include "game_defines.h"
 
 typedef struct s_str
 {
@@ -182,13 +172,26 @@ typedef struct s_frame
 	int32_t		offset;
 }	t_frame;
 
+typedef struct s_sound
+{
+	SDL_AudioSpec	spec;
+	Uint8			*buf;
+	Uint32			len;
+}	t_sound;
+
 typedef struct s_audio
 {
-	Mix_Chunk	*no_ammo;
-	Mix_Chunk	*shot;
-	Mix_Chunk	*reload;
-	Mix_Chunk	*step;
-	Mix_Chunk	*step_fast;
+	SDL_AudioDeviceID	device;
+	SDL_AudioSpec		device_spec;
+	SDL_AudioStream		*stream_shot;
+	SDL_AudioStream		*stream_reload;
+	SDL_AudioStream		*stream_steps;
+	SDL_AudioStream		*stream_no_ammo;
+	t_sound				shot;
+	t_sound				reload;
+	t_sound				step;
+	t_sound				step_fast;
+	t_sound				no_ammo;
 }	t_audio;
 
 typedef struct s_hands

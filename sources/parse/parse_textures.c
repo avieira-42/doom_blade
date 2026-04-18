@@ -5,6 +5,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
+#include <ctype.h>
 #include "game_defines.h"
 #include "game_types.h"
 #include "game_prototypes.h"

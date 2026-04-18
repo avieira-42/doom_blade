@@ -38,12 +38,11 @@ CC = clang
 EMCC = emcc
 CPPFLAGS = $(addprefix -I,$(INC_PATH))
 CFLAGS = -Wall -Wextra -std=c11 -O1
-LDLIBS = -lSDL2 -lSDL2_mixer -lSDL2main -lSDL2_image -lm
+LDLIBS = -lSDL3 -lm
 LDFLAGS =
-WEB_CFLAGS = -Wall -Wextra -std=c11 -O1 -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_MIXER=2
+WEB_CFLAGS = -Wall -Wextra -std=c11 -O1 -sUSE_SDL=3
 WEB_LDLIBS = -lm
-WEB_LDFLAGS = -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_MIXER=2 \
-			  -sSDL2_IMAGE_FORMATS='["png","bmp"]' \
+WEB_LDFLAGS = -sUSE_SDL=3 \
 			  -sALLOW_MEMORY_GROWTH=1 \
 			  -sEXPORTED_RUNTIME_METHODS='["requestPointerLock"]' \
 			  --preload-file assets

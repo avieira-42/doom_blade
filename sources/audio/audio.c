@@ -4,32 +4,74 @@
 #include "game_defines.h"
 #include "game_types.h"
 
-// Todo: add state change function with hysteresis for audio
+static
+void	stt_play_once(SDL_AudioStream *stream, const t_sound *sound)
+{
+	if (stream == NULL || sound == NULL || sound->buf == NULL || sound->len == 0)
+		return ;
+	SDL_ClearAudioStream(stream);
+	SDL_PutAudioStreamData(stream, sound->buf, (int)sound->len);
+	SDL_FlushAudioStream(stream);
+}
+
+static
+void	stt_stop(SDL_AudioStream *stream)
+{
+	if (stream == NULL)
+		return ;
+	SDL_ClearAudioStream(stream);
+}
+
+static
+void	stt_keep_looping(SDL_AudioStream *stream, const t_sound *sound)
+{
+	int	queued;
+
+	if (stream == NULL || sound == NULL || sound->buf == NULL || sound->len == 0)
+		return ;
+	queued = SDL_GetAudioStreamQueued(stream);
+	if (queued < 0)
+		return ;
+	while (queued < (int)(sound->len * 2))
+	{
+		if (!SDL_PutAudioStreamData(stream, sound->buf, (int)sound->len))
+			return ;
+		queued += (int)sound->len;
+	}
+}
+
 void	cub_play_audio(t_player *player, t_audio *audio, t_game *game, long dt)
 {
-	static void		*prev_move_state = NULL;
-	static int32_t	prev_ammo = AMMO_COUNT;
-	void			*new_move_state;
-	const float		new_spd = ABSMAX(player->speed.x.f, player->speed.y.f);
+	static t_sound		*prev_move_state = NULL;
+	static int32_t		prev_ammo = AMMO_COUNT;
+	t_sound				*new_move_state;
+	const float			new_spd = ABSMAX(player->speed.x.f, player->speed.y.f);
 
+	(void)dt;
 	if (new_spd < HALT_THR)
 		new_move_state = NULL;
 	else if (new_spd > SPEED_THR)
-		new_move_state = game->assets.audio.step_fast;
+		new_move_state = &game->assets.audio.step_fast;
 	else
-		new_move_state = game->assets.audio.step;
+		new_move_state = &game->assets.audio.step;
+
 	if (player->ammo < prev_ammo)
-		Mix_PlayChannel(ch_shot, audio->shot, 0);
+		stt_play_once(audio->stream_shot, &audio->shot);
 	else if (player->ammo > prev_ammo)
-		Mix_PlayChannel(ch_reload, audio->reload, 0);
+		stt_play_once(audio->stream_reload, &audio->reload);
+
 	if (new_move_state != prev_move_state)
 	{
-		Mix_HaltChannel(ch_steps);
-		Mix_PlayChannel(ch_steps, new_move_state, -1);
+		stt_stop(audio->stream_steps);
+		if (new_move_state != NULL)
+			stt_keep_looping(audio->stream_steps, new_move_state);
 	}
+	else if (new_move_state != NULL)
+		stt_keep_looping(audio->stream_steps, new_move_state);
+
 	if (game->player.ammo == 0 && (game->state.key & key_rmb))
 	{
-		Mix_PlayChannel(ch_no_ammo, game->assets.audio.no_ammo, 0);
+		stt_play_once(audio->stream_no_ammo, &audio->no_ammo);
 		game->state.key &= ~(size_t)key_rmb;
 	}
 	prev_move_state = new_move_state;

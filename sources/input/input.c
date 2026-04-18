@@ -69,9 +69,7 @@ void	stt_minimap(t_game *game, t_player *player)
 		return ;
 	}
 	if (!(player->state & (st_reloading | st_radar)))
-	{
 		player->state |= st_radar;
-	}
 }
 
 void	input_handler(t_game *game, t_player *player)
@@ -89,62 +87,35 @@ void	input_handler(t_game *game, t_player *player)
 	}
 }
 
-#ifdef __EMSCRIPTEN__
 void	sdl_input_update(t_game *game)
 {
-	SDL_Event		event;
+	SDL_Event	event;
 
-	while(SDL_PollEvent(&event))
+	while (SDL_PollEvent(&event))
 	{
-		switch(event.type)
+		switch (event.type)
 		{
-			case SDL_KEYDOWN:
-				input_keydown(event.key.keysym.scancode, game);
+			case SDL_EVENT_QUIT:
+				game->quit = true;
 				break;
-			case SDL_KEYUP:
-				input_keyup(event.key.keysym.scancode, game);
+			case SDL_EVENT_KEY_DOWN:
+				if (!event.key.repeat)
+					input_keydown(event.key.scancode, game);
 				break;
-			case SDL_MOUSEBUTTONDOWN:
+			case SDL_EVENT_KEY_UP:
+				input_keyup(event.key.scancode, game);
+				break;
+			case SDL_EVENT_MOUSE_BUTTON_DOWN:
 				input_mousedown(event.button.button, game);
 				break;
-			case SDL_MOUSEBUTTONUP:
+			case SDL_EVENT_MOUSE_BUTTON_UP:
 				input_mouseup(event.button.button, game);
 				break;
-			case SDL_MOUSEMOTION:
-				input_mousemove(event.motion.xrel,event.motion.yrel, game);
+			case SDL_EVENT_MOUSE_MOTION:
+				input_mousemove(event.motion.xrel, event.motion.yrel, game);
 				break;
 			default:
 				break;
 		}
 	}
 }
-#else
-void	sdl_input_update(t_game *game)
-{
-	SDL_Event		event;
-
-	while(SDL_PollEvent(&event))
-	{
-		switch(event.type)
-		{
-			case SDL_KEYDOWN:
-				input_keydown(event.key.keysym.scancode, game);
-				break;
-			case SDL_KEYUP:
-				input_keyup(event.key.keysym.scancode, game);
-				break;
-			case SDL_MOUSEBUTTONDOWN:
-				input_mousedown(event.button.button, game);
-				break;
-			case SDL_MOUSEBUTTONUP:
-				input_mouseup(event.button.button, game);
-				break;
-			case SDL_MOUSEMOTION:
-				input_mousemove(event.motion.x, event.motion.y, game);
-				break;
-			default:
-				break;
-		}
-	}
-}
-#endif

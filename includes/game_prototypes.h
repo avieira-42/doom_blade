@@ -37,7 +37,7 @@ int			input_keydown(SDL_Scancode keycode, t_game *game);
 int			input_keyup(SDL_Scancode keycode, t_game *game);
 int			input_mouseup(uint8_t button, t_game *game);
 int			input_mousedown(uint8_t button, t_game *game);
-int			input_mousemove(Sint32 x, Sint32 y, t_game *game);
+int			input_mousemove(float xrel, float yrel, t_game *game);
 void		input_handler(t_game *game, t_player *player);
 void		sdl_input_update(t_game *game);
 

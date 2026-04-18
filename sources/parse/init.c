@@ -3,50 +3,90 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <SDL3/SDL.h>
 #include "game_types.h"
 #include "game_defines.h"
 #include "game_prototypes.h"
 #include "game_assets.h"
 
 static
+bool	stt_load_sound(t_sound *sound, const char *path)
+{
+	SDL_zero(*sound);
+	return SDL_LoadWAV(path, &sound->spec, &sound->buf, &sound->len);
+}
+
+static
+SDL_AudioStream	*stt_create_bound_stream(t_audio *audio,
+	const t_sound *sound)
+{
+	SDL_AudioStream	*stream;
+
+	if (audio->device == 0 || sound->buf == NULL || sound->len == 0)
+		return NULL;
+	stream = SDL_CreateAudioStream(&sound->spec, &audio->device_spec);
+	if (stream == NULL)
+		return NULL;
+	if (!SDL_BindAudioStream(audio->device, stream))
+	{
+		SDL_DestroyAudioStream(stream);
+		return NULL;
+	}
+	return stream;
+}
+
+static
 void	stt_audio_init(t_game *game)
 {
-	SDL_Init(SDL_INIT_AUDIO);
-	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-	Mix_AllocateChannels(10);
-	game->assets.audio.shot = Mix_LoadWAV("assets/audio/gun_shot.wav");
-	game->assets.audio.reload = Mix_LoadWAV("assets/audio/gun_reload.wav");
-	game->assets.audio.step = Mix_LoadWAV("assets/audio/step.wav");
-	game->assets.audio.step_fast = Mix_LoadWAV("assets/audio/step_fast.wav");
-	game->assets.audio.no_ammo = Mix_LoadWAV("assets/audio/no_ammo.wav");
+	t_audio			*audio;
+	SDL_AudioSpec	hint;
+
+	audio = &game->assets.audio;
+	SDL_zero(*audio);
+	if (!SDL_InitSubSystem(SDL_INIT_AUDIO))
+		return ;
+	hint = (SDL_AudioSpec){
+		.format = SDL_AUDIO_S16,
+		.channels = 2,
+		.freq = 44100
+	};
+	audio->device = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &hint);
+	if (audio->device == 0)
+		return ;
+	if (!SDL_GetAudioDeviceFormat(audio->device, &audio->device_spec, NULL))
+		return ;
+	stt_load_sound(&audio->shot, "assets/audio/gun_shot.wav");
+	stt_load_sound(&audio->reload, "assets/audio/gun_reload.wav");
+	stt_load_sound(&audio->step, "assets/audio/step.wav");
+	stt_load_sound(&audio->step_fast, "assets/audio/step_fast.wav");
+	stt_load_sound(&audio->no_ammo, "assets/audio/no_ammo.wav");
+	audio->stream_shot = stt_create_bound_stream(audio, &audio->shot);
+	audio->stream_reload = stt_create_bound_stream(audio, &audio->reload);
+	audio->stream_steps = stt_create_bound_stream(audio, &audio->step);
+	audio->stream_no_ammo = stt_create_bound_stream(audio, &audio->no_ammo);
 }
 
 static
 void	stt_sdl_init(t_game *game)
 {
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) < 0)
+	if (!SDL_Init(SDL_INIT_VIDEO))
 	{
-		write(2, "failed to init sdl context\n", 26);
+		write(2, "failed to init sdl context\n", 27);
 		exit(1);
 	}
-	game->window = SDL_CreateWindow
-		(
-		 "SDL_WINDOW",
-		 SDL_WINDOWPOS_CENTERED,
-		 SDL_WINDOWPOS_CENTERED,
-		 s_width, s_height,
-		 0
-		);
-	SDL_ShowCursor(SDL_DISABLE);
-
-	game->frame.img = SDL_CreateRGBSurfaceWithFormat
-		(
-		 0,
-		 s_width,
-		 s_height,
-		 32,
-		 SDL_PIXELFORMAT_ARGB8888
-		 );
+	game->window = SDL_CreateWindow("SDL_WINDOW", s_width, s_height, 0);
+	if (game->window == NULL)
+	{
+		write(2, "failed to create window\n", 24);
+		exit(1);
+	}
+	SDL_SetWindowRelativeMouseMode(game->window, true);
+	game->frame.img = SDL_CreateSurface(s_width, s_height, SDL_PIXELFORMAT_ARGB8888);
+	if (game->frame.img == NULL)
+	{
+		write(2, "failed to create frame surface\n", 31);
+		exit(1);
+	}
 }
 
 static
@@ -100,7 +140,7 @@ void	stt_load_assets(t_game *game, t_enemy enemies[NUM_ENEMIES], t_hands *hands)
 	enemies[0].dying = cub_readsheet(game, EDEATH, EDEATH_COUNT, EDEATH_SPEED);
 	enemies[0].state = e_dead;
 	enemies[0].model = &enemies[0].running;
-	enemies[0].health = 0;	// Enemies spawn dead
+	enemies[0].health = 0;		// Enemies spawn dead
 	enemies[0].cam.pos = random_valid_pos(&game->map);
 	hands->shoot = cub_readsheet(game, PLAYER_ATK, 5, ANIM_TIME);
 	hands->walk = cub_readsheet(game, PLAYER_WALK, 9, ANIM_TIME);
@@ -154,7 +194,6 @@ int	cub_init(const char *filename, t_game *game, t_memory *memory)
 	str = game->file;
 	if (game->file == NULL)
 		return (cub_cleanup(game, "Failed to open file"));
-	// here we get each sprite from the paths written in the map input file
 	stt_texture_init(game->blocks, memory);
 	cub_parse_textures(game, &str);
 	cub_read_map(game, str, &game->map, &game->player);

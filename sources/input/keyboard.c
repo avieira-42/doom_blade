@@ -1,13 +1,12 @@
+#include <stdlib.h>
 #include "game_types.h"
 #include "game_prototypes.h"
 
-// Keymap
-// 2 KeyRelease
-int	input_keydown(SDL_Scancode keycode, t_game *game)
+int input_keydown(SDL_Scancode keycode, t_game *game)
 {
 	if (keycode == SDL_SCANCODE_ESCAPE)
 	{
-		game->quit = true;
+		game->quit = true;	// TODO: this leaks
 		exit(0);
 	}
 	game->state.paused ^= (keycode == SDL_SCANCODE_P);
@@ -38,8 +37,7 @@ int	input_keydown(SDL_Scancode keycode, t_game *game)
 	return (0);
 }
 
-// 3 KeyPress
-int	input_keyup(SDL_Scancode keycode, t_game *game)
+int input_keyup(SDL_Scancode keycode, t_game *game)
 {
 	if (keycode == SDL_SCANCODE_W || keycode == SDL_SCANCODE_UP)
 		game->state.key &= ~(size_t)key_w;

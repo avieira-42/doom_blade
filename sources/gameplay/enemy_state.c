@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <math.h>
 #include "game_defines.h"
 #include "game_types.h"
 #include "game_prototypes.h"

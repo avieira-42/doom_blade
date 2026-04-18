@@ -9,7 +9,7 @@ void	stt_error(const char *msg)
 {
 	char			buffer[1024];
 	const char		prefix[8] = "Error\n";
-	const size_t	msg_length = strlen(msg) % 512;
+	const size_t	msg_length = MAX(1000, strlen(msg));
 
 	memcpy(buffer, prefix, 6);
 	memcpy(buffer + 6, msg, msg_length);

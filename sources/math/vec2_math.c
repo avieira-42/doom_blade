@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <math.h>
 #include "game_types.h"
 
 // Angle in radians

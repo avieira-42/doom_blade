@@ -1,11 +1,10 @@
+#include <SDL3/SDL_main.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include "game_types.h"
-#include "game_types.h"
 #include "game_defines.h"
-#include "game_types.h"
 #include "game_prototypes.h"
 
 static
