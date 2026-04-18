@@ -98,6 +98,7 @@ web: LDLIBS =
 web: LDFLAGS = -s USE_SDL=2 -s USE_SDL_IMAGE=2 \
 				-s SDL2_IMAGE_FORMATS='["png", "bmp"]' \
 				-s ALLOW_MEMORY_GROWTH=1 \
+				-s EXPORTED_RUNTIME_METHODS='["requestPointerLock"]' \
 				-s USE_SDL_MIXER=2 --preload-file assets
 web: SRCS := $(foreach f,$(SRCS),$(firstword $(wildcard $(addsuffix /$(f),$(VPATH)))))
 web: SRCS := $(filter-out $(UNIX_MAIN) $(WEB_MAIN) sources/$(WEB_MAIN),$(SRCS))

@@ -22,6 +22,23 @@ int	cmlx_mouseup(uint8_t button, t_game *game)
 	return (0);
 }
 
+#ifdef __EMSCRIPTEN__
+int cmlx_mousemove(Sint32 xrel, Sint32 yrel, t_game *game)
+{
+	float dx = (float)xrel * 0.002f;   // adjust sensitivity
+	float dy = (float)yrel;
+
+	game->player.cam.dir   = vec2_rotate(game->player.cam.dir, dx);
+	game->player.cam.plane = vec2_rotate(game->player.cam.plane, dx);
+	game->frame.offset = ft_iclamp
+		(
+			game->frame.offset + dy,
+			-OFFSET_MAX,
+			OFFSET_MAX
+		);
+	return 0;
+}
+#else
 int	cmlx_mousemove(Sint32 x, Sint32 y, t_game *game)
 {
 	float		dx;
@@ -36,3 +53,4 @@ int	cmlx_mousemove(Sint32 x, Sint32 y, t_game *game)
 	SDL_WarpMouseInWindow(game->window, s_width / 2, s_height / 2);
 	return (0);
 }
+#endif

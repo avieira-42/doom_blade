@@ -89,6 +89,36 @@ void	input_handler(t_game *game, t_player *player)
 	}
 }
 
+#ifdef __EMSCRIPTEN__
+void	sdl_input_update(t_game *game)
+{
+	SDL_Event		event;
+
+	while(SDL_PollEvent(&event))
+	{
+		switch(event.type)
+		{
+			case SDL_KEYDOWN:
+				cmlx_keydown(event.key.keysym.scancode, game);
+				break;
+			case SDL_KEYUP:
+				cmlx_keyup(event.key.keysym.scancode, game);
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				cmlx_mousedown(event.button.button, game);
+				break;
+			case SDL_MOUSEBUTTONUP:
+				cmlx_mouseup(event.button.button, game);
+				break;
+			case SDL_MOUSEMOTION:
+				cmlx_mousemove(event.motion.xrel,event.motion.yrel, game);
+				break;
+			default:
+				break;
+		}
+	}
+}
+#else
 void	sdl_input_update(t_game *game)
 {
 	SDL_Event		event;
@@ -117,4 +147,4 @@ void	sdl_input_update(t_game *game)
 		}
 	}
 }
-
+#endif
