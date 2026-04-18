@@ -37,14 +37,16 @@ WEB_OBJS = $(addprefix $(WEB_OBJ_PATH)/, $(SRCS:.c=.o) $(WEB_SRCS:.c=.o))
 CC = clang
 EMCC = emcc
 CPPFLAGS = $(addprefix -I,$(INC_PATH))
-CFLAGS = -Wall -Wextra -std=c11 -march=native -O1
+CFLAGS = -Wall -Wextra -std=c11 -O1
 LDLIBS = -lSDL2 -lSDL2_mixer -lSDL2main -lSDL2_image -lm
 LDFLAGS =
-WEB_LDFLAGS = -s USE_SDL=2 -s USE_SDL_IMAGE=2 \
-				-s SDL2_IMAGE_FORMATS='["png", "bmp"]' \
-				-s ALLOW_MEMORY_GROWTH=1 \
-				-s EXPORTED_RUNTIME_METHODS='["requestPointerLock"]' \
-				-s USE_SDL_MIXER=2 --preload-file assets
+WEB_CFLAGS = -Wall -Wextra -std=c11 -O1 -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_MIXER=2
+WEB_LDLIBS = -lm
+WEB_LDFLAGS = -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_MIXER=2 \
+			  -sSDL2_IMAGE_FORMATS='["png","bmp"]' \
+			  -sALLOW_MEMORY_GROWTH=1 \
+			  -sEXPORTED_RUNTIME_METHODS='["requestPointerLock"]' \
+			  --preload-file assets
 DEBUG = -g -Wpedantic -Wcast-qual -Wfloat-equal -Wswitch-default -Wsign-conversion
 ASAN = -fsanitize=address,undefined,leak -fno-omit-frame-pointer
 TSAN = -fsanitize=thread -fno-omit-frame-pointer
@@ -55,14 +57,14 @@ $(OBJ_PATH)/%.o: %.c | $(OBJ_PATH)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 $(WEB_OBJ_PATH)/%.o: %.c | $(WEB_OBJ_PATH)
-	$(EMCC) $(CPPFLAGS) $(WEB_LDFLAGS) -c $< -o $@
+	$(EMCC) $(CPPFLAGS) $(WEB_CFLAGS) -c $< -o $@
 
 # Linking ------------------------------------- #
 $(BIN): $(OBJS) | $(BUILD_PATH)
 	$(CC) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $@
 
 $(WEB_BIN): $(WEB_OBJS) | $(BUILD_PATH)
-	$(EMCC) $(WEB_OBJS) $(WEB_LDFLAGS) -o $@
+	$(EMCC) $(WEB_OBJS) $(WEB_LDFLAGS) $(WEB_LDLIBS) -o $@
 
 # Directory ----------------------------------- #
 $(OBJ_PATH):
