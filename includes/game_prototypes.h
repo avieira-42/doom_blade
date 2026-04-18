@@ -33,11 +33,11 @@ t_sides		cub_center_clip(t_mat32 frame, t_vec2 draw_pos, t_vec2 size);
 void		cub_play_audio(t_player *player, t_audio *audio, t_game *game, long dt);
 
 // Input
-int			cmlx_keydown(SDL_Scancode keycode, t_game *game);
-int			cmlx_keyup(SDL_Scancode keycode, t_game *game);
-int			cmlx_mouseup(uint8_t button, t_game *game);
-int			cmlx_mousedown(uint8_t button, t_game *game);
-int			cmlx_mousemove(Sint32 x, Sint32 y, t_game *game);
+int			input_keydown(SDL_Scancode keycode, t_game *game);
+int			input_keyup(SDL_Scancode keycode, t_game *game);
+int			input_mouseup(uint8_t button, t_game *game);
+int			input_mousedown(uint8_t button, t_game *game);
+int			input_mousemove(Sint32 x, Sint32 y, t_game *game);
 void		input_handler(t_game *game, t_player *player);
 void		sdl_input_update(t_game *game);
 

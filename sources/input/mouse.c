@@ -3,7 +3,7 @@
 
 // 4 ButtonPress
 // 12345 = LMB MMB RMB WHEELUP WHEELDOWN
-int	cmlx_mousedown(uint8_t button, t_game *game)
+int	input_mousedown(uint8_t button, t_game *game)
 {
 	if (button == SDL_BUTTON_LEFT)
 		game->state.key |= (size_t) key_lmb;
@@ -11,7 +11,7 @@ int	cmlx_mousedown(uint8_t button, t_game *game)
 }
 
 // 5 ButtonRelease
-int	cmlx_mouseup(uint8_t button, t_game *game)
+int	input_mouseup(uint8_t button, t_game *game)
 {
 	if (button == SDL_BUTTON_LEFT)
 		game->state.key &= ~(size_t)key_lmb;
@@ -19,7 +19,7 @@ int	cmlx_mouseup(uint8_t button, t_game *game)
 }
 
 #ifdef __EMSCRIPTEN__
-int cmlx_mousemove(Sint32 xrel, Sint32 yrel, t_game *game)
+int input_mousemove(Sint32 xrel, Sint32 yrel, t_game *game)
 {
 	float dx = (float)xrel * 0.002f;   // adjust sensitivity
 	float dy = (float)yrel;
@@ -30,7 +30,7 @@ int cmlx_mousemove(Sint32 xrel, Sint32 yrel, t_game *game)
 	return (0);
 }
 #else
-int	cmlx_mousemove(Sint32 x, Sint32 y, t_game *game)
+int	input_mousemove(Sint32 x, Sint32 y, t_game *game)
 {
 	float		dx;
 	float		dy;

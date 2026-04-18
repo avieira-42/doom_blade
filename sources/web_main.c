@@ -19,7 +19,7 @@ void	stt_cub_is_dead(t_game *game)
 	}
 }
 
-void	stt_cmlx_loop(void *arg)
+void	stt_loop(void *arg)
 {
 	t_game		*game = (t_game *)arg;
 	static long	avg_fps = 0;
@@ -74,7 +74,7 @@ int	main(void)
 		 s_height
 		);
 
-	emscripten_set_main_loop_arg(stt_cmlx_loop, &game, -1, 1);
+	emscripten_set_main_loop_arg(stt_loop, &game, -1, 1);
 
 	return (0);
 }

@@ -99,19 +99,19 @@ void	sdl_input_update(t_game *game)
 		switch(event.type)
 		{
 			case SDL_KEYDOWN:
-				cmlx_keydown(event.key.keysym.scancode, game);
+				input_keydown(event.key.keysym.scancode, game);
 				break;
 			case SDL_KEYUP:
-				cmlx_keyup(event.key.keysym.scancode, game);
+				input_keyup(event.key.keysym.scancode, game);
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				cmlx_mousedown(event.button.button, game);
+				input_mousedown(event.button.button, game);
 				break;
 			case SDL_MOUSEBUTTONUP:
-				cmlx_mouseup(event.button.button, game);
+				input_mouseup(event.button.button, game);
 				break;
 			case SDL_MOUSEMOTION:
-				cmlx_mousemove(event.motion.xrel,event.motion.yrel, game);
+				input_mousemove(event.motion.xrel,event.motion.yrel, game);
 				break;
 			default:
 				break;
@@ -128,19 +128,19 @@ void	sdl_input_update(t_game *game)
 		switch(event.type)
 		{
 			case SDL_KEYDOWN:
-				cmlx_keydown(event.key.keysym.scancode, game);
+				input_keydown(event.key.keysym.scancode, game);
 				break;
 			case SDL_KEYUP:
-				cmlx_keyup(event.key.keysym.scancode, game);
+				input_keyup(event.key.keysym.scancode, game);
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				cmlx_mousedown(event.button.button, game);
+				input_mousedown(event.button.button, game);
 				break;
 			case SDL_MOUSEBUTTONUP:
-				cmlx_mouseup(event.button.button, game);
+				input_mouseup(event.button.button, game);
 				break;
 			case SDL_MOUSEMOTION:
-				cmlx_mousemove(event.motion.x, event.motion.y, game);
+				input_mousemove(event.motion.x, event.motion.y, game);
 				break;
 			default:
 				break;
