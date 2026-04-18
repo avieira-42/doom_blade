@@ -30,7 +30,7 @@ OBJ_PATH = $(BUILD_PATH)/obj/native
 OBJS = $(addprefix $(OBJ_PATH)/, $(SRCS:.c=.o) $(UNIX_SRCS:.c=.o))
 BIN = $(BUILD_PATH)/$(NAME)
 WEB_OBJ_PATH = $(BUILD_PATH)/obj/web
-WEB_BIN = $(BUILD_PATH)/index.js
+WEB_BIN = $(BUILD_PATH)/index.html
 WEB_OBJS = $(addprefix $(WEB_OBJ_PATH)/, $(SRCS:.c=.o) $(WEB_SRCS:.c=.o))
 
 # Flags --------------------------------------- #
