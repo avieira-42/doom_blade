@@ -91,7 +91,7 @@ typedef struct s_game
 {
 	SDL_Window		*window;
 	SDL_Renderer	*renderer;
-	//t_xvar			*mlx; // to remove
+	SDL_Texture		*texture;
 	t_frame			frame;
 	t_gstate		state;
 	t_map			map;
