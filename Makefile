@@ -55,7 +55,7 @@ $(OBJ_PATH)/%.o: %.c | $(OBJ_PATH)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 $(WEB_OBJ_PATH)/%.o: %.c | $(WEB_OBJ_PATH)
-	$(EMCC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+	$(EMCC) $(CPPFLAGS) $(WEB_LDFLAGS) -c $< -o $@
 
 # Linking ------------------------------------- #
 $(BIN): $(OBJS) | $(BUILD_PATH)
