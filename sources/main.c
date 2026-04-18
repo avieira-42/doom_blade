@@ -2,11 +2,11 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include "cmlx_base.h"
-#include "cmlx_draw.h"
-#include "cub_defines.h"
-#include "cub_structs.h"
-#include "cub_utils.h"
+#include "game_types.h"
+#include "game_types.h"
+#include "game_defines.h"
+#include "game_types.h"
+#include "game_prototypes.h"
 
 static
 void	stt_cub_is_dead(t_game *game)
@@ -18,7 +18,7 @@ void	stt_cub_is_dead(t_game *game)
 	}
 }
 
-void	stt_cmlx_loop(t_game *game)
+void	stt_loop(t_game *game)
 {
 	static long	avg_fps = 0;
 	const long	dt = 1 + get_time();
@@ -55,6 +55,6 @@ int	main(int argc, char **argv)
 	if (cub_init(argv[1], &game, &memory) == -1)
 		return (1);
 	while (1)
-		stt_cmlx_loop(&game);
+		stt_loop(&game);
 	return (0);
 }

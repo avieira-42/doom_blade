@@ -1,9 +1,8 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
-#include <cub_defines.h>
-#include "cub_defines.h"
-#include "cub_structs.h"
+#include "game_defines.h"
+#include "game_types.h"
 
 // Todo: add state change function with hysteresis for audio
 void	cub_play_audio(t_player *player, t_audio *audio, t_game *game, long dt)

@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "cmlx_base.h"
-#include "cub_utils.h"
-#include "cub_defines.h"
+#include "game_types.h"
+#include "game_prototypes.h"
+#include "game_defines.h"
 
 static inline
 void	stt_clean_texture(uint32_t *ptr, size_t length)

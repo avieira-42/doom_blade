@@ -1,8 +1,8 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
-#include "cub_structs.h"
-#include "cub_utils.h"
+#include "game_types.h"
+#include "game_prototypes.h"
 
 void	cub_draw_crosshair(uint32_t *ptr)
 {

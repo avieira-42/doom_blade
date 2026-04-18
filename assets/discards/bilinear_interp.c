@@ -6,7 +6,7 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 15:13:28 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/04 22:17:17 by avieira-         ###   ########.fr       */
+/*   Updated: 2026/04/18 21:29:31 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <math.h>
-#include "cub_structs.h"
-#include "cub_utils.h"
+#include "game_types.h"
+#include "game_prototypes.h"
 
 static inline
 uint32_t	stt_lerp_argb(uint32_t p0, uint32_t p1, uint8_t alpha)

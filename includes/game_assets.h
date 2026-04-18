@@ -1,8 +1,7 @@
-#ifndef CUB_ASSETS_H
-# define CUB_ASSETS_H
+#ifndef GAME_ASSETS_H
+# define GAME_ASSETS_H
 
-# include "cub_defines.h"
-
+# include "game_defines.h"
 # define MAP_CASTLE
 
 # define PLAYER_ATK "assets/sprites/hud/hands/hands_shooting"

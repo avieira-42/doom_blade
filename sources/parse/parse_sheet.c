@@ -3,9 +3,9 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include "cub_defines.h"
-#include "cub_utils.h"
-#include "cmlx_base.h"
+#include "game_defines.h"
+#include "game_prototypes.h"
+#include "game_types.h"
 
 static
 void	stt_load_texture(t_game *game, t_str path, size_t count, t_mat32 *dst)

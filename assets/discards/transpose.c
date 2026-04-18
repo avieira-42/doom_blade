@@ -6,14 +6,14 @@
 /*   By: adeimlin <adeimlin@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/07 15:29:36 by adeimlin          #+#    #+#             */
-/*   Updated: 2026/04/07 15:29:37 by adeimlin         ###   ########.fr       */
+/*   Updated: 2026/04/18 21:29:01 by adeimlin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <stddef.h>
 #include <stdlib.h>
-#include "cub_utils.h"
+#include "game_prototypes.h"
 
 void	sqr_transpose(uint32_t *src, uint32_t length)
 {

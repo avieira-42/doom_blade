@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
-#include "cub_utils.h"
+#include "game_prototypes.h"
 
 static inline
 void	stt_plane_row(t_plane *plane, t_view *cam, int32_t dist)

@@ -5,8 +5,8 @@
 #include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include "cub_structs.h"
-#include "cub_utils.h"
+#include "game_types.h"
+#include "game_prototypes.h"
 
 // Save max wall width and height
 // Validate wall exterior

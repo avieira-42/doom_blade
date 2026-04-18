@@ -1,5 +1,5 @@
-#ifndef FTCORE_HPP
-# define FTCORE_HPP
+#ifndef BASE_H
+# define BASE_H
 
 #include <stddef.h>
 #include <stdint.h>

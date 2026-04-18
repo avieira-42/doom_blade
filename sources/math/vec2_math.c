@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
-#include "cmlx_base.h"
+#include "game_types.h"
 
 // Angle in radians
 t_vec2	vec2_rotate(t_vec2 vec, float angle)

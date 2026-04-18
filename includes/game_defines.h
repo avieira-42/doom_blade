@@ -1,5 +1,5 @@
-#ifndef CUB_DEFINES_H
-# define CUB_DEFINES_H
+#ifndef GAME_DEFINES_H
+# define GAME_DEFINES_H
 
 # define UPSCALE 3
 # define R_WIDTH 640

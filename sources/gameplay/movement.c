@@ -2,8 +2,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <math.h>
-#include "cub_structs.h"
-#include "cub_utils.h"
+#include "game_types.h"
+#include "game_prototypes.h"
 
 // Map is defined by uint16_t width height. If x or y are negative,
 // the integer wraparound will be guaranteed to be higher than u16_max

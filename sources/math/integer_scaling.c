@@ -2,8 +2,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <string.h>
-#include "cub_utils.h"
-#include "cub_structs.h"
+#include "game_prototypes.h"
+#include "game_types.h"
 
 static inline
 void	stt_linecpy_t(uint32_t *restrict dst, const t_mat32 src, size_t factor)

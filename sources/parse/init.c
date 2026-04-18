@@ -3,11 +3,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include "cmlx_base.h"
-#include "cub_defines.h"
-#include "cub_structs.h"
-#include "cub_utils.h"
-#include "cub_assets.h"
+#include "game_types.h"
+#include "game_defines.h"
+#include "game_prototypes.h"
+#include "game_assets.h"
 
 static
 void	stt_audio_init(t_game *game)
@@ -101,7 +100,7 @@ void	stt_load_assets(t_game *game, t_enemy enemies[NUM_ENEMIES], t_hands *hands)
 	enemies[0].dying = cub_readsheet(game, EDEATH, EDEATH_COUNT, EDEATH_SPEED);
 	enemies[0].state = e_dead;
 	enemies[0].model = &enemies[0].running;
-	enemies[0].health = 100;	// Enemies spawn dead
+	enemies[0].health = 0;	// Enemies spawn dead
 	enemies[0].cam.pos = random_valid_pos(&game->map);
 	hands->shoot = cub_readsheet(game, PLAYER_ATK, 5, ANIM_TIME);
 	hands->walk = cub_readsheet(game, PLAYER_WALK, 9, ANIM_TIME);

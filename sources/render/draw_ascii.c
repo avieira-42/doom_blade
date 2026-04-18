@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <stddef.h>
-#include <cub_utils.h>
+#include "game_prototypes.h"
 
 #define _X20 0x0000000000000000
 #define _X21 0x1010101010001000

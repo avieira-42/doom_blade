@@ -1,5 +1,5 @@
-#include "cub_structs.h"
-#include "cub_utils.h"
+#include "game_types.h"
+#include "game_prototypes.h"
 
 // Keymap
 // 2 KeyRelease

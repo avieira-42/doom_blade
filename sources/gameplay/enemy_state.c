@@ -2,9 +2,9 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include "cub_defines.h"
-#include "cub_structs.h"
-#include "cub_utils.h"
+#include "game_defines.h"
+#include "game_types.h"
+#include "game_prototypes.h"
 
 static
 bool	stt_enemy_dead(t_map *map, t_enemy *enemy, long dt)

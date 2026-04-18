@@ -1,13 +1,11 @@
-#ifndef CUB_UTILS_H
-# define CUB_UTILS_H
+#ifndef GAME_PROTOTYPES_H
+# define GAME_PROTOTYPES_H
 
 # include <stdint.h>
 # include <stddef.h>
 # include <stdbool.h>
 # include <unistd.h>
-# include "cmlx_base.h"
-# include "cmlx_draw.h"
-# include "cub_structs.h"
+# include "game_types.h"
 
 // Gameplay
 void		cub_update_game(t_game *game, long dt);

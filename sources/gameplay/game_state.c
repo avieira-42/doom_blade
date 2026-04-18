@@ -2,9 +2,9 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include "cub_defines.h"
-#include "cub_structs.h"
-#include "cub_utils.h"
+#include "game_defines.h"
+#include "game_types.h"
+#include "game_prototypes.h"
 
 void	cub_update_pos(t_game *game, float dt);
 void	update_enemy_state(t_map *map, t_player *p, t_enemy *enemy, long dt);

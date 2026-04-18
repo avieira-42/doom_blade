@@ -2,11 +2,11 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include "cmlx_base.h"
-#include "cmlx_draw.h"
-#include "cub_defines.h"
-#include "cub_structs.h"
-#include "cub_utils.h"
+#include "game_types.h"
+#include "game_types.h"
+#include "game_defines.h"
+#include "game_types.h"
+#include "game_prototypes.h"
 #include <emscripten.h>
 
 static

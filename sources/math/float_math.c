@@ -1,4 +1,4 @@
-#include "cmlx_base.h"
+#include "game_types.h"
 
 float	ft_qinvsqrt(float number)
 {

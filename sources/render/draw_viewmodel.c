@@ -1,9 +1,9 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
-#include "cub_defines.h"
-#include "cub_structs.h"
-#include "cub_utils.h"
+#include "game_defines.h"
+#include "game_types.h"
+#include "game_prototypes.h"
 
 // the result of integer division might make it unrenderable
 static

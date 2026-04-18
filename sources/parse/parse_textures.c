@@ -5,10 +5,9 @@
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
-#include "cub_defines.h"
-#include "cub_structs.h"
-#include "cub_utils.h"
-#include "cmlx_base.h"
+#include "game_defines.h"
+#include "game_types.h"
+#include "game_prototypes.h"
 
 static
 int	stt_dispatch(t_game *game, t_mat32 *texture, const char *filename, const char **filen_ptr)

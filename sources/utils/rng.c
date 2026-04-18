@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <sys/time.h>
-#include "cmlx_base.h"
+#include "game_types.h"
 
 // https://prng.di.unimi.it/xoroshiro128plus.c
 

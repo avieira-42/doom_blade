@@ -1,5 +1,5 @@
-#include "cub_structs.h"
-#include "cub_utils.h"
+#include "game_types.h"
+#include "game_prototypes.h"
 
 // 4 ButtonPress
 // 12345 = LMB MMB RMB WHEELUP WHEELDOWN

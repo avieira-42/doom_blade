@@ -1,10 +1,9 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
-#include "cmlx_base.h"
-#include "cub_defines.h"
-#include "cub_structs.h"
-#include "cub_utils.h"
+#include "game_types.h"
+#include "game_defines.h"
+#include "game_prototypes.h"
 
 static inline
 void	stt_minimap(t_player *player, t_map *map, long dt)

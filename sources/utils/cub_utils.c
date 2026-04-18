@@ -2,7 +2,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <sys/time.h>
-#include "cub_utils.h"
+#include "game_prototypes.h"
 
 t_sides	cub_center_clip(t_mat32 frame, t_vec2 draw_pos, t_vec2 new_size)
 {

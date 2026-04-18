@@ -2,9 +2,9 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <math.h>
-#include "cub_defines.h"
-#include "cub_structs.h"
-#include "cub_utils.h"
+#include "game_defines.h"
+#include "game_types.h"
+#include "game_prototypes.h"
 
 // Aliasing is caused by differing line heights. This will reduce the effect
 // static inline

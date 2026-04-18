@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include "string.h"
-#include "cub_utils.h"
+#include "game_prototypes.h"
 
 #ifndef FT_IO_BUFSIZE
 # define FT_IO_BUFSIZE 4096

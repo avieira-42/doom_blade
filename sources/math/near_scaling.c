@@ -2,7 +2,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <math.h>
-#include "cmlx_base.h"
+#include "game_types.h"
 
 // Assumes source is not transposed
 static inline

@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
-#include "cmlx_base.h"
-#include "cub_structs.h"
-#include "cub_utils.h"
+#include "game_types.h"
+#include "game_types.h"
+#include "game_prototypes.h"
 
 static
 void	stt_error(const char *msg)

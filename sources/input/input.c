@@ -1,5 +1,5 @@
-#include "cub_structs.h"
-#include "cub_utils.h"
+#include "game_types.h"
+#include "game_prototypes.h"
 
 static
 void	stt_moving(t_game *game, t_player *player)
