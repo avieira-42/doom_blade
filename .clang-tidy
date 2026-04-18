@@ -2,6 +2,7 @@
 Checks: >-
   -*,
   clang-analyzer-*,
+  -clang-analyzer-cplusplus*,
   bugprone-*,
   -bugprone-easily-swappable-parameters,
   performance-*,
@@ -11,13 +12,9 @@ Checks: >-
   -readability-identifier-naming,
   -readability-simplify-boolean-expr,
   -readability-braces-around-statements,
-  modernize-*,
-  -modernize-redundant-void-arg,
-  -modernize-use-trailing-return-type,
-  -modernize-avoid-c-arrays,
   cert-*,
-  -cert-err58-cpp,
-  misc-*,
+  -cert-*-cpp,
+  misc-*
 
 WarningsAsErrors: ''
 HeaderFilterRegex: '^(src|include|tests|sources)/'

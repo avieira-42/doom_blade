@@ -3,7 +3,7 @@
 
 // Keymap
 // 2 KeyRelease
-int			cmlx_keydown(SDL_Scancode keycode, t_game *game)
+int	cmlx_keydown(SDL_Scancode keycode, t_game *game)
 {
 	if (keycode == SDL_SCANCODE_ESCAPE)
 	{
@@ -39,7 +39,7 @@ int			cmlx_keydown(SDL_Scancode keycode, t_game *game)
 }
 
 // 3 KeyPress
-int			cmlx_keyup(SDL_Scancode keycode, t_game *game)
+int	cmlx_keyup(SDL_Scancode keycode, t_game *game)
 {
 	if (keycode == SDL_SCANCODE_W || keycode == SDL_SCANCODE_UP)
 		game->state.key &= ~(size_t)key_w;

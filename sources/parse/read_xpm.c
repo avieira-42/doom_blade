@@ -62,7 +62,8 @@ void	stt_clean_texture(uint32_t *ptr, size_t length)
 	}
 }
 
-static SDL_Surface	*stt_read_xpm(const char *filename, const char **filename_ptr) // edited
+static
+SDL_Surface	*stt_read_xpm(const char *filename, const char **filename_ptr) // edited
 {
 	char		buffer[256];
 	char		*path;
@@ -82,8 +83,6 @@ static SDL_Surface	*stt_read_xpm(const char *filename, const char **filename_ptr
 		*filename_ptr = filename;
 	return (IMG_Load(buffer));
 }
-
-#define E1 "Malloc Failure"
 
 // Todo: guarantee lower than render res
 int	cub_read_xpm(t_game *game, t_mat32 *dst, const char *filename, const char **filename_ptr)

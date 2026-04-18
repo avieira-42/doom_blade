@@ -35,8 +35,8 @@ int	cmlx_mousemove(Sint32 x, Sint32 y, t_game *game)
 	float		dx;
 	float		dy;
 
-	dx = (float)(x - ((float)s_width / 2.f)) * (1.0f / 512.0f);
-	dy = ((float)y - ((float)s_height / 2.f));
+	dx = (float)(x - ((float)s_width / 2)) * (1.0f / 512.0f);
+	dy = ((float)y - ((float)s_height / 2));
 	game->player.cam.dir = vec2_rotate(game->player.cam.dir, dx);
 	game->player.cam.plane = vec2_rotate(game->player.cam.plane, dx);
 	game->frame.offset = CLAMP(game->frame.offset + dy, -OFFSET_MAX, OFFSET_MAX);
