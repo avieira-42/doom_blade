@@ -9,37 +9,15 @@
 #include "game_prototypes.h"
 
 static
-void	stt_cub_is_dead(t_game *game)
-{
-	if (game->player.health <= 0)
-		exit_log(1, "You are dead!\n", 0);
-}
-
-static
 void	stt_loop(t_game *game)
 {
-	static long	avg_fps = 0;
-	const long	dt = 1 + get_time();
 	SDL_Surface	*window_surface = SDL_GetWindowSurface(game->window);	// Why is this inside the loop?
 
 	if (game->state.paused == false)
 	{
-		avg_fps = (avg_fps - avg_fps / 8) + 125000 / dt;
-		sdl_input_update(game);
-		input_handler(game, &game->player);
-		cub_update_game(game, dt);
-		cub_draw_world(game);
-		cub_draw_enemies(game, dt);
-		cub_draw_viewmodel(game->frame.render, &game->player, game, dt);
-		cub_draw_blood(game->frame.render, game);
-		ft_integer_scaling_t(game->frame.render, game->frame.display, UPSCALE);
-		cub_draw_crosshair(game->frame.display.ptr);
-		draw_number(game->frame.display, 8, 8, avg_fps, 0xFFFFFFFF);
+		loop_update(game);
 		SDL_BlitSurface(game->frame.img, NULL, window_surface, NULL);
 		SDL_UpdateWindowSurface(game->window);
-		stt_cub_is_dead(game);
-		cub_play_audio(&game->player, &game->assets.audio, game, dt);
-		game->player.state &= ~(size_t)(st_shot);	// Clears the (just X animation)
 	}
 }
 

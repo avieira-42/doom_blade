@@ -8,6 +8,7 @@
 #include "game_types.h"
 
 // Gameplay
+void		loop_update(t_game *game);
 void		cub_update_game(t_game *game, long dt);
 void		cub_update_pos(t_game *game, float dt);
 // Draw

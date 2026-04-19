@@ -10,11 +10,19 @@ void	cub_update_pos(t_game *game, float dt);
 void	update_enemy_state(t_map *map, t_player *p, t_enemy *enemy, long dt);
 void	update_player_state(t_player *player, t_map *map, long dt);
 
+static
+void	stt_cub_is_dead(t_game *game)
+{
+	if (game->player.health <= 0)
+		exit_log(1, "You are dead!\n", 0);
+}
+
 void	cub_update_game(t_game *game, long dt)
 {
 	size_t	i;
 	t_enemy	*enemy;
 
+	stt_cub_is_dead(game);
 	cub_update_pos(game, (double)dt * 0.000001);
 	update_player_state(&game->player, &game->map, dt);
 	i = 0;

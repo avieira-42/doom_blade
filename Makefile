@@ -18,7 +18,7 @@ SRCS += rng.c cub_utils.c string.c io_basic.c
 # PARSE --------------------------------------- #
 SRCS += init.c map.c parse_textures.c read_texture.c parse_sheet.c
 # GAMEPLAY ------------------------------------ #
-SRCS += movement.c player_state.c enemy_state.c game_state.c
+SRCS += movement.c player_state.c enemy_state.c game_state.c update.c
 # INPUT --------------------------------------- #
 SRCS += keyboard.c mouse.c input.c
 
