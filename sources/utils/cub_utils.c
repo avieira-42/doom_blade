@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <sys/time.h>
 #include <math.h>
+#include <unistd.h>
 #include "game_prototypes.h"
 
 t_sides	cub_center_clip(t_mat32 frame, t_vec2 draw_pos, t_vec2 new_size)
@@ -86,4 +87,12 @@ long	get_time_v2(void)
 	prev_time[index] = now.tv_sec * 1000000 + now.tv_usec;
 	dt += prev_time[index];
 	return (dt);
+}
+
+void	exit_log(int fd, const char *str, int code)
+{
+	size_t	length = strlen(str);
+
+	write(fd, str, length);
+	_exit(code);
 }

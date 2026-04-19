@@ -96,7 +96,7 @@ void	sdl_input_update(t_game *game)
 		switch (event.type)
 		{
 			case SDL_EVENT_QUIT:
-				game->quit = true;
+				game->state.quit = true;
 				break;
 			case SDL_EVENT_KEY_DOWN:
 				if (!event.key.repeat)

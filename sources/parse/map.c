@@ -30,14 +30,14 @@ static ssize_t	stt_parse_line(t_game *game, const char *line, t_map *map, t_play
 		else if (c == 'N' || c == 'E' || c == 'S' || c == 'W')
 		{
 			if (player->cam.pos.x.f != 0.0f)
-				return (cub_cleanup(game, "Two player positions"));
+				exit_log(2, "Two player positions", 1);
 			player->cam.pos.x.f = (line++ - oline) + 0.5f;
 			player->cam.pos.y.f = map->height + 0.5f;
 			player->cam.dir.y.f = (c == 'N') - (c == 'S');
 			player->cam.dir.x.f = (c == 'W') - (c == 'E');
 		}
 		else
-			return (cub_cleanup(game, "Invalid map index"));
+			exit_log(2, "Invalid map index", 1);
 	}
 	width = (size_t)(line - oline);
 	if (width > map->width)
@@ -122,18 +122,18 @@ int	cub_read_map(t_game *game, const char *str, t_map *map, t_player *player)
 		map->height++;
 	}
 	if (map->height < 3 || map->width < 3)
-		return (cub_cleanup(game, "Invalid map configuration"));	// REVIEW
+		exit_log(2, "Invalid map configuration", 1);	// REVIEW
 	map->tex_index = malloc(map->height * map->width * 2);
 	if (map->tex_index == NULL)
-		return (cub_cleanup(game, "Malloc failure"));
+		exit_log(2, "Malloc failure", 1);
 	map->state = map->tex_index + map->height * map->width;
 	memset(map->tex_index, 1, map->height * map->width);
 	memset(map->state, 255, map->height * map->width);
 	stt_filtercpy(ostr, map);
 	if (game->player.cam.dir.x.f == 0.0f && game->player.cam.dir.y.f == 0.0f)
-		return (cub_cleanup(game, "Player was not found in the map"));
+		exit_log(2, "Player was not found in the map", 1);
 	if (stt_validate_map(map) == -1)
-		return (cub_cleanup(game, "Invalid map configuration"));	// TODO: free and print
+		exit_log(2, "Invalid map configuration", 1);
 	stt_init_map(map);
 	return (0);
 }

@@ -40,7 +40,6 @@ int	cub_cleanup(t_game *game, const char *msg)
 
 	if (msg != NULL && *msg != 0)
 		stt_error(msg);
-	free(game->file);
 	free(game->map.tex_index);
 	stt_free_assets(&game->assets, &game->player, game->enemies);
 	exit(rvalue);

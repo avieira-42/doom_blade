@@ -19,7 +19,7 @@ void	stt_cub_is_dead(t_game *game)
 	if (game->player.health <= 0)
 	{
 		write(1, "You are dead!\n", 14);
-		cub_cleanup(game, NULL);
+		_exit(1);
 	}
 }
 
@@ -43,7 +43,7 @@ void	stt_loop(void *arg)
 		cub_draw_blood(game->frame.render, game);
 		ft_integer_scaling_t(game->frame.render, game->frame.display, UPSCALE);
 		cub_draw_crosshair(game->frame.display.ptr);
-		draw_number(game->frame.display, 8, 8, avg_fps);
+		draw_number(game->frame.display, 8, 8, avg_fps, 0xFFFFFFFF);
 		SDL_UpdateTexture (game->texture, NULL, game->frame.img->pixels, game->frame.img->pitch);
 		SDL_RenderClear(game->renderer);
 		SDL_RenderTexture(game->renderer, game->texture, NULL, NULL);

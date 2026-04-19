@@ -66,23 +66,14 @@ static
 void	stt_sdl_init(t_game *game)
 {
 	if (!SDL_Init(SDL_INIT_VIDEO))
-	{
-		write(2, "failed to init sdl context\n", 27);
-		exit(1);
-	}
+		exit_log(2, "Failed to init SDL", 1);
 	game->window = SDL_CreateWindow("SDL_WINDOW", S_WIDTH, S_HEIGHT, 0);
 	if (game->window == NULL)
-	{
-		write(2, "failed to create window\n", 24);
-		exit(1);
-	}
+		exit_log(2, "Failed to create Window", 1);
 	SDL_SetWindowRelativeMouseMode(game->window, true);
 	game->frame.img = SDL_CreateSurface(S_WIDTH, S_HEIGHT, SDL_PIXELFORMAT_ARGB8888);
 	if (game->frame.img == NULL)
-	{
-		write(2, "failed to create frame surface\n", 31);
-		exit(1);
-	}
+		exit_log(2, "Failed to create surface", 1);
 }
 
 static
@@ -183,16 +174,16 @@ void	stt_texture_init(t_block *blocks, t_memory *memory)
 int	cub_init(const char *filename, t_game *game, t_memory *memory)
 {
 	size_t		file_size;
-	const char	*str;
+	const char	*ostr = ft_read_all(filename, &file_size);
+	const char	*str = ostr;
 
+	if (str == NULL)
+		exit_log(2, "Failed to open file", 1);
 	memset(game, 0, sizeof(t_game));
-	game->file = ft_read_all(filename, &file_size);
-	str = game->file;
-	if (game->file == NULL)
-		return (cub_cleanup(game, "Failed to open file"));
 	stt_texture_init(game->blocks, memory);
 	cub_parse_textures(game, &str);
 	cub_read_map(game, str, &game->map, &game->player);
+	free(ostr);
 	stt_sdl_init(game);
 	stt_params_init(game, memory);
 	stt_load_assets(game, game->enemies, &game->player.hands);

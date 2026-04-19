@@ -74,7 +74,7 @@ int	cub_read_texture(t_game *game, t_mat32 *dst, const char *filename, const cha
 
 	img = stt_read_texture(filename, filename_ptr);
 	if (img == NULL)
-		return (cub_cleanup(game, "Failed to load image"));
+		exit_log(2, "Failed to load image", 1);
 	if (dst->ptr == NULL)	// DST needs to have depth defined
 	{
 		size = (size_t)(img->h * img->w) * sizeof(uint32_t) * dst->depth;
@@ -82,7 +82,7 @@ int	cub_read_texture(t_game *game, t_mat32 *dst, const char *filename, const cha
 		if (dst->ptr == NULL)
 		{
 			SDL_DestroySurface(img);
-			return (cub_cleanup(game, "Error_leading dst data buffer"));
+			exit_log(2, "Error_leading dst data buffer", 1);
 		}
 	}
 	src = (t_mat32){(uint32_t *)img->pixels, img->w, img->h, 1, img->w};
@@ -90,6 +90,6 @@ int	cub_read_texture(t_game *game, t_mat32 *dst, const char *filename, const cha
 	SDL_DestroySurface(img);
 	stt_clean_texture(dst->ptr, dst->height * dst->width);
 	if (src.width != dst->width || src.height != dst->height)
-		return (cub_cleanup(game, "Sheet frame dimensions do not match"));
+		exit_log(2, "Sheet frame dimensions do not match", 1);
 	return (0);
 }

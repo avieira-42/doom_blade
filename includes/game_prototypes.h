@@ -10,7 +10,6 @@
 // Gameplay
 void		cub_update_game(t_game *game, long dt);
 void		cub_update_pos(t_game *game, float dt);
-
 // Draw
 void		raycast(t_view *cam, t_map *map, t_rayhit *rays);
 void		planecast(t_frame *frame, t_mat32 floor, t_mat32 ceil, t_view *cam);
@@ -44,7 +43,6 @@ void		sdl_input_update(t_game *game);
 
 // Parsing
 int			cub_init(const char *filename, t_game *game, t_memory *memory);
-int			cub_cleanup(t_game *game, const char *msg);
 int			cub_parse_textures(t_game *game, const char **str_ptr);
 int			cub_read_map(t_game *game, const char *str, t_map *map, t_player *player);
 t_sheet		cub_readsheet(t_game *game, const char *base_path, size_t count, long frame_time);
@@ -57,7 +55,7 @@ void		ft_near_scale_t(t_mat32 dst, t_mat32 src);
 
 // Prototypes: Cub Utils -----------------------------------------------------
 size_t		cub_first_neighbour(t_vec2 pos, t_vec2 dir, uint32_t stride);
-
+void		exit_log(int fd, const char *str, int code);
 t_vec2		random_valid_pos(t_map *map);
 void		ft_rng_init(void);
 uint64_t	ft_rand(void);

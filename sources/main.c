@@ -12,17 +12,15 @@ static
 void	stt_cub_is_dead(t_game *game)
 {
 	if (game->player.health <= 0)
-	{
-		write(1, "You are dead!\n", 14);
-		cub_cleanup(game, NULL);
-	}
+		exit_log(1, "You are dead!\n", 0);
 }
 
+static
 void	stt_loop(t_game *game)
 {
 	static long	avg_fps = 0;
 	const long	dt = 1 + get_time();
-	SDL_Surface	*window_surface = SDL_GetWindowSurface(game->window);
+	SDL_Surface	*window_surface = SDL_GetWindowSurface(game->window);	// Why is this inside the loop?
 
 	if (game->state.paused == false)
 	{

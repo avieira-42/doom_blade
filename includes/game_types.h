@@ -259,6 +259,7 @@ typedef struct s_memory
 typedef struct s_gstate
 {
 	bool	paused;
+	bool	quit;
 	long	time;
 	size_t	key;
 
@@ -284,8 +285,6 @@ typedef struct s_game
 	t_enemy			enemies[NUM_ENEMIES];
 	t_block			blocks[NUM_BLOCKS];	// World, Ceil/Floor, Doors, etc...
 	t_assets		assets;
-	char			*file;
-	bool			quit;
 }	t_game;
 
 #endif

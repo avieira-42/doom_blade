@@ -6,7 +6,7 @@ int input_keydown(SDL_Scancode keycode, t_game *game)
 {
 	if (keycode == SDL_SCANCODE_ESCAPE)
 	{
-		game->quit = true;	// TODO: this leaks
+		game->state.quit = true;
 		exit(0);
 	}
 	game->state.paused ^= (keycode == SDL_SCANCODE_P);

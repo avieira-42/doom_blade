@@ -99,13 +99,13 @@ int	cub_parse_textures(t_game *game, const char **str_ptr)
 	const char	*end = stt_parse_length(str, str_ptr);
 
 	if (end == NULL)
-		return (cub_cleanup(game, "Map in incorrect format"));
+		exit_log(2, "Map in incorrect format", 1);
 	while (str < end)
 	{
 		while (isspace(*str))
 			str++;
 		if (stt_match_texture(game, str, game->blocks, &str) < 0)
-			return (cub_cleanup(game, "Duplicate textures"));
+			exit_log(2, "Duplicate textures", 1);
 		str++;
 	}
 	return (0);

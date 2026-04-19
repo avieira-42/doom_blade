@@ -33,7 +33,7 @@ t_sheet	cub_readsheet(t_game *game, const char *base_path, size_t count, long fr
 	const t_str		path = {buffer, strlen(base_path)};
 
 	if (path.length + 32 > sizeof(buffer))
-		return (cub_cleanup(game, "Texture path is too long"), (t_sheet){0});
+		exit_log(2, "Texture path is too long", 1);
 	memcpy(buffer, base_path, path.length + 1);
 	tex = (t_mat32){NULL, 0, 0, count, 0};
 	stt_load_texture(game, path, 0, &tex);
