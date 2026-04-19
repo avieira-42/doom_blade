@@ -15,7 +15,7 @@ void	stt_loop(t_game *game)
 
 	if (game->state.paused == false)
 	{
-		loop_update(game);
+		game_update(game);
 		SDL_BlitSurface(game->frame.img, NULL, window_surface, NULL);
 		SDL_UpdateWindowSurface(game->window);
 	}

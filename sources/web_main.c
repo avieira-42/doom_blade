@@ -21,7 +21,7 @@ void	stt_loop(void *arg)
 	game = (t_game *)arg;
 	if (game->state.paused == false)
 	{
-		loop_update(game);
+		game_update(game);
 		SDL_UpdateTexture (game->texture, NULL, game->frame.img->pixels, game->frame.img->pitch);
 		SDL_RenderClear(game->renderer);
 		SDL_RenderTexture(game->renderer, game->texture, NULL, NULL);

@@ -8,9 +8,11 @@
 #include "game_types.h"
 
 // Gameplay
-void		loop_update(t_game *game);
-void		cub_update_game(t_game *game, long dt);
-void		cub_update_pos(t_game *game, float dt);
+void	game_update(t_game *game);
+void	cub_update_pos(t_game *game, float dt);
+void	update_enemy_state(t_map *map, t_player *p, t_enemy *enemy, long dt);
+void	update_player_state(t_player *player, t_map *map, long dt);
+
 // Draw
 void		raycast(t_view *cam, t_map *map, t_rayhit *rays);
 void		planecast(t_frame *frame, t_mat32 floor, t_mat32 ceil, t_view *cam);
