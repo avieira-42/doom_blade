@@ -2,9 +2,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <math.h>
-#include "game_defines.h"
 #include "game_types.h"
-#include "game_prototypes.h"
 
 static inline
 t_ray	stt_raycast_init(float camera_x, t_vec2 pos, t_vec2 dir, t_vec2 plane)

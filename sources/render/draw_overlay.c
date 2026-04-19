@@ -8,22 +8,22 @@ void	cub_draw_crosshair(uint32_t *ptr)
 {
 	size_t	index;
 
-	index = (s_height / 2 - 1) * s_width + (s_width / 2 - 1);
+	index = (S_HEIGHT / 2 - 1) * S_WIDTH + (S_WIDTH / 2 - 1);
 	ptr[index] = 0;
 	ptr[index + 1] = 0;
 	ptr[index + 2] = 0;
 	ptr[index + 3] = 0;
-	index += s_width;
+	index += S_WIDTH;
 	ptr[index] = 0;
 	ptr[index + 1] = 0xFFFFFFFF;
 	ptr[index + 2] = 0xFFFFFFFF;
 	ptr[index + 3] = 0;
-	index += s_width;
+	index += S_WIDTH;
 	ptr[index] = 0;
 	ptr[index + 1] = 0xFFFFFFFF;
 	ptr[index + 2] = 0xFFFFFFFF;
 	ptr[index + 3] = 0;
-	index += s_width;
+	index += S_WIDTH;
 	ptr[index] = 0;
 	ptr[index + 1] = 0;
 	ptr[index + 2] = 0;

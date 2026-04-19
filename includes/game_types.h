@@ -175,8 +175,8 @@ typedef struct s_frame
 typedef struct s_sound
 {
 	SDL_AudioSpec	spec;
-	Uint8			*buf;
-	Uint32			len;
+	uint8_t			*buf;
+	uint32_t		len;
 }	t_sound;
 
 typedef struct s_audio

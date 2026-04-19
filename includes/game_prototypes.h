@@ -1,11 +1,11 @@
 #ifndef GAME_PROTOTYPES_H
 # define GAME_PROTOTYPES_H
 
-# include <stdint.h>
-# include <stddef.h>
-# include <stdbool.h>
-# include <unistd.h>
-# include "game_types.h"
+#include <stdint.h>
+#include <stddef.h>
+#include <stdbool.h>
+#include <sys/types.h>
+#include "game_types.h"
 
 // Gameplay
 void		cub_update_game(t_game *game, long dt);
@@ -23,11 +23,12 @@ void		cub_draw_crosshair(uint32_t *ptr);
 // Draw Utils
 void		draw_line(t_mat32 frame, t_vec2 p0, t_vec2 p1, uint32_t color);
 void		draw_circle(t_mat32 frame, t_quad quad);
-void		draw_number(t_mat32 frame, size_t x, size_t y, uint32_t value);
 uint8_t		cub_advance_animation(t_sheet *sheet, long dt);
 void		cub_draw_texture(t_mat32 frame, t_mat32 image, uint32_t xc, uint32_t yc);
 void		cub_draw_sheet(t_mat32 frame, const t_sheet *sheet, uint32_t xc, uint32_t yc);
 t_sides		cub_center_clip(t_mat32 frame, t_vec2 draw_pos, t_vec2 size);
+void		draw_ascii(t_mat32 frame, uint32_t x, uint32_t y, const char *str, uint32_t color);
+void		draw_number(t_mat32 frame, size_t xpos, size_t ypos, uint32_t value, uint32_t color);
 
 // Audio
 void		cub_play_audio(t_player *player, t_audio *audio, t_game *game, long dt);

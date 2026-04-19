@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <SDL3/SDL.h>
 #include "game_types.h"
 #include "game_defines.h"
@@ -13,12 +14,11 @@ static
 bool	stt_load_sound(t_sound *sound, const char *path)
 {
 	SDL_zero(*sound);
-	return SDL_LoadWAV(path, &sound->spec, &sound->buf, &sound->len);
+	return (SDL_LoadWAV(path, &sound->spec, &sound->buf, &sound->len));
 }
 
 static
-SDL_AudioStream	*stt_create_bound_stream(t_audio *audio,
-	const t_sound *sound)
+SDL_AudioStream	*stt_create_bound_stream(t_audio *audio, const t_sound *sound)
 {
 	SDL_AudioStream	*stream;
 
@@ -45,17 +45,13 @@ void	stt_audio_init(t_game *game)
 	SDL_zero(*audio);
 	if (!SDL_InitSubSystem(SDL_INIT_AUDIO))
 		return ;
-	hint = (SDL_AudioSpec){
-		.format = SDL_AUDIO_S16,
-		.channels = 2,
-		.freq = 44100
-	};
+	hint = (SDL_AudioSpec){.format = SDL_AUDIO_S16, .channels = 2, .freq = 44100};
 	audio->device = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &hint);
 	if (audio->device == 0)
 		return ;
 	if (!SDL_GetAudioDeviceFormat(audio->device, &audio->device_spec, NULL))
 		return ;
-	stt_load_sound(&audio->shot, "assets/audio/gun_shot.wav");
+	stt_load_sound(&audio->shot,  "assets/audio/gun_shot.wav");
 	stt_load_sound(&audio->reload, "assets/audio/gun_reload.wav");
 	stt_load_sound(&audio->step, "assets/audio/step.wav");
 	stt_load_sound(&audio->step_fast, "assets/audio/step_fast.wav");
@@ -74,14 +70,14 @@ void	stt_sdl_init(t_game *game)
 		write(2, "failed to init sdl context\n", 27);
 		exit(1);
 	}
-	game->window = SDL_CreateWindow("SDL_WINDOW", s_width, s_height, 0);
+	game->window = SDL_CreateWindow("SDL_WINDOW", S_WIDTH, S_HEIGHT, 0);
 	if (game->window == NULL)
 	{
 		write(2, "failed to create window\n", 24);
 		exit(1);
 	}
 	SDL_SetWindowRelativeMouseMode(game->window, true);
-	game->frame.img = SDL_CreateSurface(s_width, s_height, SDL_PIXELFORMAT_ARGB8888);
+	game->frame.img = SDL_CreateSurface(S_WIDTH, S_HEIGHT, SDL_PIXELFORMAT_ARGB8888);
 	if (game->frame.img == NULL)
 	{
 		write(2, "failed to create frame surface\n", 31);

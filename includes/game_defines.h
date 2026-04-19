@@ -4,12 +4,8 @@
 # define UPSCALE 3
 # define R_WIDTH 640
 # define R_HEIGHT 360
-
-enum e_render
-{
-	s_width = R_WIDTH * UPSCALE,
-	s_height = R_HEIGHT * UPSCALE,
-};
+# define S_WIDTH (R_WIDTH * UPSCALE)
+# define S_HEIGHT (R_HEIGHT * UPSCALE)
 
 # define TEX_SIZE 128
 # define NUM_BLOCKS 4
@@ -106,15 +102,6 @@ enum e_keys
 	key_tab = 1u << 12,
 	key_left = 1u << 13,
 	key_right = 1u << 14
-};
-
-// Audio
-enum e_audio_channel
-{
-	ch_steps = 1,
-	ch_shot = 2,
-	ch_reload = 3,
-	ch_no_ammo = 4,
 };
 
 // Colors

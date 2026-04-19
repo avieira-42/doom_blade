@@ -74,8 +74,8 @@ int	main(int argc, char **argv)
 		game.renderer,
 		SDL_PIXELFORMAT_ARGB8888,
 		SDL_TEXTUREACCESS_STREAMING,
-		s_width,
-		s_height
+		S_WIDTH,
+		S_HEIGHT
 	);
 	if (game.texture == NULL)
 		return (write(2, SDL_GetError(), SDL_strlen(SDL_GetError())), write(2, "\n", 1), 1);

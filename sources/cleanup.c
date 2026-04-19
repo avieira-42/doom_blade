@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "game_types.h"
 #include "game_types.h"
 #include "game_prototypes.h"

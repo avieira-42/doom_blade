@@ -32,7 +32,8 @@ void	stt_grid_draw(t_mat32 frame, t_map *map, t_vec2 grid_pos, t_quad cell)
 	}
 }
 
-static void	stt_player_icon_draw(t_mat32 frame, t_map *map, t_vec2 grid_pos, t_player *player)
+static
+void	stt_player_icon_draw(t_mat32 frame, t_map *map, t_vec2 grid_pos, t_player *player)
 {
 	t_vec2	line_dst;
 	t_quad	icon;
@@ -51,7 +52,8 @@ static void	stt_player_icon_draw(t_mat32 frame, t_map *map, t_vec2 grid_pos, t_p
 	draw_circle(frame, icon);
 }
 
-static void	stt_enemies_icon_draw(t_mat32 frame, t_map *map, t_vec2 grid_pos, t_enemy *enemies)
+static
+void	stt_enemies_icon_draw(t_mat32 frame, t_map *map, t_vec2 grid_pos, t_enemy *enemies)
 {
 	int32_t			i;
 	t_quad			icon;

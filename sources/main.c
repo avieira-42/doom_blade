@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "game_types.h"
 #include "game_defines.h"
 #include "game_prototypes.h"
@@ -35,7 +36,7 @@ void	stt_loop(t_game *game)
 		cub_draw_blood(game->frame.render, game);
 		ft_integer_scaling_t(game->frame.render, game->frame.display, UPSCALE);
 		cub_draw_crosshair(game->frame.display.ptr);
-		draw_number(game->frame.display, 8, 8, avg_fps);
+		draw_number(game->frame.display, 8, 8, avg_fps, 0xFFFFFFFF);
 		SDL_BlitSurface(game->frame.img, NULL, window_surface, NULL);
 		SDL_UpdateWindowSurface(game->window);
 		stt_cub_is_dead(game);

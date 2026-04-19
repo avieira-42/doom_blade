@@ -7,11 +7,6 @@ Checks: >-
   -bugprone-easily-swappable-parameters,
   performance-*,
   portability-*,
-  readability-*,
-  -readability-identifier-length,
-  -readability-identifier-naming,
-  -readability-simplify-boolean-expr,
-  -readability-braces-around-statements,
   cert-*,
   -cert-*-cpp,
   misc-*

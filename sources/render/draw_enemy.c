@@ -33,7 +33,8 @@ float	stt_init(t_form *f, t_frame *frame, t_view *p, t_enemy *enemy)
 	return (enemy->dist);
 }
 
-static inline void	stt_draw_col(t_vec2 norm_pos, t_form *form, uint32_t *dst, t_sheet *sheet)
+static inline
+void	stt_draw_col(t_vec2 norm_pos, t_form *form, uint32_t *dst, t_sheet *sheet)
 {
 	uint32_t	y;
 	uint32_t	c;

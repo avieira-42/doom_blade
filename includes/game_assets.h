@@ -14,7 +14,7 @@
 # define PLAYER_IDLE "assets/sprites/hud/hands/hands_idle"
 
 # ifdef MAP_HELL
-#  define EWALK "assets/sprites/characters/zombie/EWALKing_front"
+#  define EWALK "assets/sprites/characters/zombie/EWALKing_front" // TODO: FIX
 #  define EATK "assets/sprites/characters/zombie/enemy_shooting"
 #  define EHIT "assets/sprites/characters/zombie/enemy_shot"
 #  define EDEATH "assets/sprites/characters/zombie/enemy_exploding"
