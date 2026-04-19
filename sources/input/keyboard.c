@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include "game_types.h"
 #include "game_prototypes.h"
 
@@ -7,7 +6,7 @@ int input_keydown(SDL_Scancode keycode, t_game *game)
 	if (keycode == SDL_SCANCODE_ESCAPE)
 	{
 		game->state.quit = true;
-		exit(0);
+		exit_log(1, "Thank you for playing the game!\n", 0);
 	}
 	game->state.paused ^= (keycode == SDL_SCANCODE_P);
 	if (game->state.paused == true)
